@@ -19,7 +19,10 @@ public final class CosmeticsData {
 	private static final String API = System.getProperty("phase.cosmetics.api", "https://phase.fujimc.workers.dev/api/cosmetics/worn");
 	private static volatile Map<String, Worn> worn = Map.of();
 	/** Для проверки без сервера: -Dphase.cosmetics.test=hat=straw_hat,pet=ender_dragon — всем игрокам */
-	private static final Worn TEST = parseTest(System.getProperty("phase.cosmetics.test"));
+	private static volatile Worn TEST = parseTest(System.getProperty("phase.cosmetics.test"));
+
+	/** Для автотеста: надеть всем игрокам (null — снять подмену) */
+	public static void setTest(String hat, String pet) { TEST = hat == null && pet == null ? null : new Worn(hat, pet); }
 
 	private CosmeticsData() {}
 

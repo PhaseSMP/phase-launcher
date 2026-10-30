@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "id": "phase-cosmetics-test",
+  "version": "1.0.0",
+  "name": "Phase Cosmetics test",
+  "environment": "*",
+  "entrypoints": { "fabric-client-gametest": ["gg.phase.cosmetics.test.CosmeticsGameTest"] }
+}

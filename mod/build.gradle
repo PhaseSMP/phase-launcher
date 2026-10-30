@@ -13,3 +13,13 @@ processResources {
 }
 tasks.withType(JavaCompile).configureEach { it.options.release = 25 }
 java { sourceCompatibility = JavaVersion.VERSION_25; targetCompatibility = JavaVersion.VERSION_25 }
+
+fabricApi {
+	configureTests {
+		createSourceSet = true
+		modId = "phase-cosmetics-test"
+		enableGameTests = false
+		enableClientGameTests = true
+		eula = true
+	}
+}

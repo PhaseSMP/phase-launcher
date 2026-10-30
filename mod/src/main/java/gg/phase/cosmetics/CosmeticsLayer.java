@@ -67,7 +67,7 @@ public class CosmeticsLayer extends RenderLayer<AvatarRenderState, PlayerModel> 
 		this.getParentModel().root().translateAndRotate(pose);
 		this.getParentModel().translateToHead(pose);
 		// пространство головы: ось y вниз, лицо к −z. Поворот на 180° вокруг z переводит модель «вверх ногами» в «нормально»
-		pose.mulPose(Axis.ZP.rotationDegrees(180.0F));
+		pose.rotateDegrees(Axis.ZP, 180.0F);
 		pose.translate(0.0F, 0.5F, 0.0F);
 		this.model(hat).submit(pose, out, light, OverlayTexture.NO_OVERLAY, state.outlineColor);
 		pose.popPose();
@@ -87,9 +87,9 @@ public class CosmeticsLayer extends RenderLayer<AvatarRenderState, PlayerModel> 
 			// на земле слева, чуть повернувшись к игроку
 			float ground = 1.5F - (state.isCrouching ? 0.133F : 0.0F);
 			pose.translate(0.85F, ground, -0.05F);
-			pose.mulPose(Axis.YP.rotationDegrees(-30.0F));
+			pose.rotateDegrees(Axis.YP, -30.0F);
 		}
-		pose.mulPose(Axis.ZP.rotationDegrees(180.0F)); // дальше ось y вверх, как в моделях
+		pose.rotateDegrees(Axis.ZP, 180.0F); // дальше ось y вверх, как в моделях
 		if (st == 0) {
 			this.part(pose, out, light, state, "dragon_fly", s, 0, 0, 0, 0);
 			float flap = (float) Math.sin(t * 0.55F) * 34.0F + 8.0F;
@@ -105,7 +105,7 @@ public class CosmeticsLayer extends RenderLayer<AvatarRenderState, PlayerModel> 
 	private void part(PoseStack pose, SubmitNodeCollector out, int light, AvatarRenderState state, String name, float s, float x, float y, float z, float rollDeg) {
 		pose.pushPose();
 		pose.translate(x, y, z);
-		if (rollDeg != 0) pose.mulPose(Axis.ZP.rotationDegrees(rollDeg));
+		if (rollDeg != 0) pose.rotateDegrees(Axis.ZP, rollDeg);
 		pose.scale(s, s, s);
 		this.model(name).submit(pose, out, light, OverlayTexture.NO_OVERLAY, state.outlineColor);
 		pose.popPose();
