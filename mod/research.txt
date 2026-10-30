@@ -1,0 +1,18 @@
+class CustomHeadLayer
+class ParrotOnShoulderLayer
+class AvatarRenderer
+class PlayerRenderer
+abstract class RenderLayer
+class LivingEntityRenderer
+class AvatarRenderState
+class PlayerRenderState
+class HumanoidRenderState
+class LivingEntityRenderState
+class EntityRenderState
+interface SubmitNodeCollector
+class ItemStackRenderState
+class ItemModelResolver
+class ItemDisplayContext
+class PlayerModel
+class HumanoidModel
+class ModelPart\b

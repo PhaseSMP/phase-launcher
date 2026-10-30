@@ -1,0 +1,46 @@
+name: mod-research
+on:
+  push:
+    branches: [mod]
+    paths: ['.github/workflows/mod-research.yml', 'mod/research.txt']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '25' }
+      - name: Gen sources
+        working-directory: mod
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon genSources > ../gen.log 2>&1 || true
+          tail -50 ../gen.log
+      - name: Dump API
+        run: |
+          set +e
+          mkdir -p dump/src
+          SRC=$(find ~/.gradle mod/.gradle -name '*minecraft*sources*.jar' 2>/dev/null | head -5)
+          echo "$SRC" > dump/sources-jars.txt
+          for j in $SRC; do unzip -oq "$j" -d /tmp/mcsrc; done
+          (cd /tmp/mcsrc && find . -name '*.java' | sort) > dump/all-classes.txt
+          while read -r pat; do
+            [ -z "$pat" ] && continue
+            for f in $(grep -rlE "$pat" /tmp/mcsrc --include=*.java | head -8); do
+              d=dump/src/$(echo ${f#/tmp/mcsrc/} | tr / .); cp "$f" "$d"
+            done
+          done < mod/research.txt
+          # Fabric API: какие модули и классы есть
+          FA=$(find ~/.gradle -name 'fabric-*.jar' -not -name '*sources*' 2>/dev/null)
+          for j in $FA; do unzip -l "$j" 2>/dev/null | awk '{print $4}' | grep '\.class$' | sed "s|^|$(basename $j): |"; done > dump/fabric-classes.txt
+          for c in $(grep -E 'rendering|event/lifecycle|LivingEntityRenderLayer|RenderStateDataKey|FabricRenderState|ClientTickEvents|WorldRender|LevelRender|ClientPlayConnection' dump/fabric-classes.txt | awk '{print $2}' | sed 's/\.class$//' | grep -v '\$' | grep -v impl | sort -u); do
+            j=$(grep -l "" $FA | head -0); for jj in $FA; do if unzip -l "$jj" | grep -q "$c.class"; then javap -cp "$jj" -public "${c//\//.}" >> dump/fabric-api.txt 2>/dev/null; break; fi; done
+          done
+          cp gen.log dump/gen.log
+      - name: Commit
+        run: |
+          git config user.name "phase-ci"; git config user.email "ci@phase.local"
+          git add dump && git commit -qm "API dump" && git push
