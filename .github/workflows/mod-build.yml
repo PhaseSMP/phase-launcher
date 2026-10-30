@@ -26,8 +26,8 @@ jobs:
         continue-on-error: true
         working-directory: mod
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq xvfb mesa-utils > /dev/null
-          (xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew --no-daemon runClientGameTest > ../gametest-full.log 2>&1 || true) &
+          sudo apt-get update -qq && sudo apt-get install -y -qq xvfb mesa-utils libgl1-mesa-dri libglx-mesa0 libegl1 > /dev/null
+          (LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s "-screen 0 1280x720x24 +extension GLX +render -noreset" ./gradlew --no-daemon runClientGameTest > ../gametest-full.log 2>&1 || true) &
           PID=$!
           # не ждём вечно: через 14 минут забираем что есть
           for i in $(seq 1 168); do sleep 5; kill -0 $PID 2>/dev/null || break; done
