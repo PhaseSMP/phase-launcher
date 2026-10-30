@@ -1,0 +1,168 @@
+/home/runner/.gradle/caches/modules-2/files-2.1/net.fabricmc.fabric-api/fabric-client-gametest-api-v1/6.0.11+131f8d475d/a7603e4cc6174b19a2a2f8a4e114314b4f0dcd7a/fabric-client-gametest-api-v1-6.0.11+131f8d475d.jar
+Compiled from "FabricClientGameTest.java"
+public interface net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest {
+  public abstract void runTest(net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext);
+}
+Compiled from "TestInput.java"
+public interface net.fabricmc.fabric.api.client.gametest.v1.TestInput {
+  public abstract void holdKey(net.minecraft.client.KeyMapping);
+  public abstract void holdKey(java.util.function.Function<net.minecraft.client.Options, net.minecraft.client.KeyMapping>);
+  public abstract void holdKey(com.mojang.blaze3d.platform.InputConstants$Key);
+  public abstract void holdKey(int);
+  public abstract void holdMouse(int);
+  public abstract void holdControl();
+  public abstract void holdShift();
+  public abstract void holdAlt();
+  public abstract void releaseKey(net.minecraft.client.KeyMapping);
+  public abstract void releaseKey(java.util.function.Function<net.minecraft.client.Options, net.minecraft.client.KeyMapping>);
+  public abstract void releaseKey(com.mojang.blaze3d.platform.InputConstants$Key);
+  public abstract void releaseKey(int);
+  public abstract void releaseMouse(int);
+  public abstract void releaseControl();
+  public abstract void releaseShift();
+  public abstract void releaseAlt();
+  public abstract void pressKey(net.minecraft.client.KeyMapping);
+  public abstract void pressKey(java.util.function.Function<net.minecraft.client.Options, net.minecraft.client.KeyMapping>);
+  public abstract void pressKey(com.mojang.blaze3d.platform.InputConstants$Key);
+  public abstract void pressKey(int);
+  public abstract void pressMouse(int);
+  public abstract void holdKeyFor(net.minecraft.client.KeyMapping, int);
+  public abstract void holdKeyFor(java.util.function.Function<net.minecraft.client.Options, net.minecraft.client.KeyMapping>, int);
+  public abstract void holdKeyFor(com.mojang.blaze3d.platform.InputConstants$Key, int);
+  public abstract void holdKeyFor(int, int);
+  public abstract void holdMouseFor(int, int);
+  public abstract void lookAt(float, float);
+  public abstract void lookAt(net.minecraft.core.BlockPos);
+  public abstract void typeChar(int);
+  public abstract void typeChars(java.lang.String);
+  public abstract void scroll(double);
+  public abstract void scroll(double, double);
+  public abstract void setCursorPos(double, double);
+  public abstract void moveCursor(double, double);
+  public abstract void resizeWindow(int, int);
+}
+Compiled from "package-info.java"
+interface net.fabricmc.fabric.api.client.gametest.v1.package-info {
+}
+Compiled from "ClientGameTestContext.java"
+public interface net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext {
+  public static final int NO_TIMEOUT;
+  public static final int DEFAULT_TIMEOUT;
+  public abstract void waitTick();
+  public abstract void waitTicks(int);
+  public abstract int waitFor(java.util.function.Predicate<net.minecraft.client.Minecraft>);
+  public abstract int waitFor(java.util.function.Predicate<net.minecraft.client.Minecraft>, int);
+  public abstract int waitForScreen(java.lang.Class<? extends net.minecraft.client.gui.screens.Screen>);
+  public abstract void setScreen(java.util.function.Supplier<net.minecraft.client.gui.screens.Screen>);
+  public abstract void clickScreenButton(java.lang.String);
+  public abstract boolean tryClickScreenButton(java.lang.String);
+  public default java.nio.file.Path takeScreenshot(java.lang.String);
+  public abstract java.nio.file.Path takeScreenshot(net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotOptions);
+  public default void assertScreenshotEquals(java.lang.String);
+  public abstract void assertScreenshotEquals(net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonOptions);
+  public default org.joml.Vector2i assertScreenshotContains(java.lang.String);
+  public abstract org.joml.Vector2i assertScreenshotContains(net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonOptions);
+  public abstract net.fabricmc.fabric.api.client.gametest.v1.TestInput getInput();
+  public abstract net.fabricmc.fabric.api.client.gametest.v1.world.TestWorldBuilder worldBuilder();
+  public abstract void restoreDefaultGameOptions();
+  public abstract <E extends java.lang.Throwable> void runOnClient(org.apache.commons.lang3.function.FailableConsumer<net.minecraft.client.Minecraft, E>) throws E;
+  public abstract <T, E extends java.lang.Throwable> T computeOnClient(org.apache.commons.lang3.function.FailableFunction<net.minecraft.client.Minecraft, T, E>) throws E;
+}
+Compiled from "TestDedicatedServerConnection.java"
+public interface net.fabricmc.fabric.api.client.gametest.v1.context.TestDedicatedServerConnection extends net.fabricmc.fabric.api.client.gametest.v1.context.TestServerConnection,java.lang.AutoCloseable {
+  public abstract void close();
+}
+Compiled from "TestDedicatedServerContext.java"
+public interface net.fabricmc.fabric.api.client.gametest.v1.context.TestDedicatedServerContext extends net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext,java.lang.AutoCloseable {
+  public abstract net.fabricmc.fabric.api.client.gametest.v1.context.TestDedicatedServerConnection connect();
+  public abstract void close();
+}
+Compiled from "TestServerConnection.java"
+public interface net.fabricmc.fabric.api.client.gametest.v1.context.TestServerConnection {
+  public static final int DEFAULT_CHUNK_LOAD_TIMEOUT;
+  public default int waitForChunksDownload();
+  public abstract int waitForChunksDownload(int);
+  public default int waitForChunksRender();
+  public default int waitForChunksRender(int);
+  public default int waitForChunksRender(boolean);
+  public abstract int waitForChunksRender(boolean, int);
+  public abstract void waitForClientboundPackets();
+  public abstract void waitForServerboundPackets();
+  public abstract void waitForClientboundEntityUpdates(net.minecraft.world.entity.EntityType<?>, net.minecraft.world.entity.EntityType<?>...);
+  public abstract net.minecraft.client.player.LocalPlayer getClientPlayer();
+  public abstract net.minecraft.server.level.ServerPlayer getServerPlayer();
+  public abstract net.minecraft.client.multiplayer.ClientLevel getClientLevel();
+  public abstract net.minecraft.server.level.ServerLevel getServerLevel();
+}
+Compiled from "TestServerContext.java"
+public interface net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext {
+  public abstract void runCommand(java.lang.String);
+  public abstract <E extends java.lang.Throwable> void runOnServer(org.apache.commons.lang3.function.FailableConsumer<net.minecraft.server.MinecraftServer, E>) throws E;
+  public abstract <T, E extends java.lang.Throwable> T computeOnServer(org.apache.commons.lang3.function.FailableFunction<net.minecraft.server.MinecraftServer, T, E>) throws E;
+  public abstract int waitFor(java.util.function.Predicate<net.minecraft.server.MinecraftServer>);
+  public abstract int waitFor(java.util.function.Predicate<net.minecraft.server.MinecraftServer>, int);
+}
+Compiled from "TestSingleplayerContext.java"
+public interface net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext extends java.lang.AutoCloseable {
+  public abstract net.fabricmc.fabric.api.client.gametest.v1.world.TestWorldSave getWorldSave();
+  public abstract net.fabricmc.fabric.api.client.gametest.v1.context.TestServerConnection getConnection();
+  public abstract net.fabricmc.fabric.api.client.gametest.v1.context.TestServerContext getServer();
+  public abstract void close();
+}
+Compiled from "package-info.java"
+interface net.fabricmc.fabric.api.client.gametest.v1.context.package-info {
+}
+Compiled from "TestScreenshotCommonOptions.java"
+public interface net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotCommonOptions<SELF extends net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotCommonOptions<SELF>> {
+  public abstract SELF disableCounterPrefix();
+  public abstract SELF withDeltaTicks(float);
+  public abstract SELF withSize(int, int);
+  public abstract SELF withDestinationDir(java.nio.file.Path);
+}
+Compiled from "TestScreenshotComparisonAlgorithm.java"
+public interface net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm$RawImage<DATA> {
+  public abstract int width();
+  public abstract int height();
+  public abstract DATA data();
+}
+Compiled from "TestScreenshotComparisonAlgorithm.java"
+public interface net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm {
+  public static net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm defaultAlgorithm();
+  public static net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm meanSquaredDifference(float);
+  public static net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm exact();
+  public abstract org.joml.Vector2i findColor(net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm$RawImage<int[]>, net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm$RawImage<int[]>);
+  public default org.joml.Vector2i findGrayscale(net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm$RawImage<byte[]>, net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm$RawImage<byte[]>);
+}
+Compiled from "TestScreenshotComparisonOptions.java"
+public interface net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonOptions extends net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotCommonOptions<net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonOptions> {
+  public static net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonOptions of(java.lang.String);
+  public static net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonOptions of(com.mojang.blaze3d.platform.NativeImage);
+  public abstract net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonOptions save();
+  public abstract net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonOptions saveWithFileName(java.lang.String);
+  public abstract net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonOptions withAlgorithm(net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonAlgorithm);
+  public abstract net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonOptions withGrayscale();
+  public abstract net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotComparisonOptions withRegion(int, int, int, int);
+}
+Compiled from "TestScreenshotOptions.java"
+public interface net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotOptions extends net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotCommonOptions<net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotOptions> {
+  public static net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotOptions of(java.lang.String);
+}
+Compiled from "package-info.java"
+interface net.fabricmc.fabric.api.client.gametest.v1.screenshot.package-info {
+}
+Compiled from "TestWorldBuilder.java"
+public interface net.fabricmc.fabric.api.client.gametest.v1.world.TestWorldBuilder {
+  public abstract net.fabricmc.fabric.api.client.gametest.v1.world.TestWorldBuilder setUseConsistentSettings(boolean);
+  public abstract net.fabricmc.fabric.api.client.gametest.v1.world.TestWorldBuilder adjustSettings(java.util.function.Consumer<net.minecraft.client.gui.screens.worldselection.WorldCreationUiState>);
+  public abstract net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext create();
+  public default net.fabricmc.fabric.api.client.gametest.v1.context.TestDedicatedServerContext createServer();
+  public abstract net.fabricmc.fabric.api.client.gametest.v1.context.TestDedicatedServerContext createServer(java.util.Properties);
+}
+Compiled from "TestWorldSave.java"
+public interface net.fabricmc.fabric.api.client.gametest.v1.world.TestWorldSave {
+  public abstract java.nio.file.Path getSaveDirectory();
+  public abstract net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext open();
+}
+Compiled from "package-info.java"
+interface net.fabricmc.fabric.api.client.gametest.v1.world.package-info {
+}

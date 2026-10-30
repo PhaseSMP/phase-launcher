@@ -1,0 +1,96 @@
+Fetching distribution.
+Downloading https://services.gradle.org/distributions/gradle-9.8.2-bin.zip
+..............10%..............20%...............30%..............40%...............50%..............60%...............70%..............80%...............90%..............100%
+
+Welcome to Gradle 9.8.2!
+
+Here are the highlights of this release:
+ - Java 27 support
+ - Maven mirror settings reuse
+ - Linked problem locations in build output
+
+For more details see https://docs.gradle.org/9.8.2/release-notes.html
+
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.8.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :
+Fabric Loom: 1.19.3
+
+> Task :compileJava
+/home/runner/work/phase-launcher/phase-launcher/mod/src/main/java/gg/phase/cosmetics/CosmeticsLayer.java:70: error: no suitable method found for mulPose(Quaternionf)
+		pose.mulPose(Axis.ZP.rotationDegrees(180.0F));
+		    ^
+    method PoseStack.mulPose(Matrix4fc) is not applicable
+      (argument mismatch; Quaternionf cannot be converted to Matrix4fc)
+    method PoseStack.mulPose(Transformation) is not applicable
+      (argument mismatch; Quaternionf cannot be converted to Transformation)
+/home/runner/work/phase-launcher/phase-launcher/mod/src/main/java/gg/phase/cosmetics/CosmeticsLayer.java:90: error: no suitable method found for mulPose(Quaternionf)
+			pose.mulPose(Axis.YP.rotationDegrees(-30.0F));
+			    ^
+    method PoseStack.mulPose(Matrix4fc) is not applicable
+      (argument mismatch; Quaternionf cannot be converted to Matrix4fc)
+    method PoseStack.mulPose(Transformation) is not applicable
+      (argument mismatch; Quaternionf cannot be converted to Transformation)
+/home/runner/work/phase-launcher/phase-launcher/mod/src/main/java/gg/phase/cosmetics/CosmeticsLayer.java:92: error: no suitable method found for mulPose(Quaternionf)
+		pose.mulPose(Axis.ZP.rotationDegrees(180.0F)); // дальше ось y вверх, как в моделях
+		    ^
+    method PoseStack.mulPose(Matrix4fc) is not applicable
+      (argument mismatch; Quaternionf cannot be converted to Matrix4fc)
+    method PoseStack.mulPose(Transformation) is not applicable
+      (argument mismatch; Quaternionf cannot be converted to Transformation)
+/home/runner/work/phase-launcher/phase-launcher/mod/src/main/java/gg/phase/cosmetics/CosmeticsLayer.java:108: error: no suitable method found for mulPose(Quaternionf)
+		if (rollDeg != 0) pose.mulPose(Axis.ZP.rotationDegrees(rollDeg));
+		                      ^
+    method PoseStack.mulPose(Matrix4fc) is not applicable
+      (argument mismatch; Quaternionf cannot be converted to Matrix4fc)
+    method PoseStack.mulPose(Transformation) is not applicable
+      (argument mismatch; Quaternionf cannot be converted to Transformation)
+4 errors
+
+> Task :compileJava FAILED
+
+[Incubating] Problems report is available at: file:///home/runner/work/phase-launcher/phase-launcher/mod/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava' (registered by plugin class 'org.gradle.api.plugins.JavaBasePlugin').
+> Compilation failed; see the compiler output below.
+  /home/runner/work/phase-launcher/phase-launcher/mod/src/main/java/gg/phase/cosmetics/CosmeticsLayer.java:70: error: no suitable method found for mulPose(Quaternionf)
+  		pose.mulPose(Axis.ZP.rotationDegrees(180.0F));
+  		    ^
+      method PoseStack.mulPose(Matrix4fc) is not applicable
+        (argument mismatch; Quaternionf cannot be converted to Matrix4fc)
+      method PoseStack.mulPose(Transformation) is not applicable
+        (argument mismatch; Quaternionf cannot be converted to Transformation)
+  /home/runner/work/phase-launcher/phase-launcher/mod/src/main/java/gg/phase/cosmetics/CosmeticsLayer.java:90: error: no suitable method found for mulPose(Quaternionf)
+  			pose.mulPose(Axis.YP.rotationDegrees(-30.0F));
+  			    ^
+      method PoseStack.mulPose(Matrix4fc) is not applicable
+        (argument mismatch; Quaternionf cannot be converted to Matrix4fc)
+      method PoseStack.mulPose(Transformation) is not applicable
+        (argument mismatch; Quaternionf cannot be converted to Transformation)
+  /home/runner/work/phase-launcher/phase-launcher/mod/src/main/java/gg/phase/cosmetics/CosmeticsLayer.java:92: error: no suitable method found for mulPose(Quaternionf)
+  		pose.mulPose(Axis.ZP.rotationDegrees(180.0F)); // дальше ось y вверх, как в моделях
+  		    ^
+      method PoseStack.mulPose(Matrix4fc) is not applicable
+        (argument mismatch; Quaternionf cannot be converted to Matrix4fc)
+      method PoseStack.mulPose(Transformation) is not applicable
+        (argument mismatch; Quaternionf cannot be converted to Transformation)
+  /home/runner/work/phase-launcher/phase-launcher/mod/src/main/java/gg/phase/cosmetics/CosmeticsLayer.java:108: error: no suitable method found for mulPose(Quaternionf)
+  		if (rollDeg != 0) pose.mulPose(Axis.ZP.rotationDegrees(rollDeg));
+  		                      ^
+      method PoseStack.mulPose(Matrix4fc) is not applicable
+        (argument mismatch; Quaternionf cannot be converted to Matrix4fc)
+      method PoseStack.mulPose(Transformation) is not applicable
+        (argument mismatch; Quaternionf cannot be converted to Transformation)
+  4 errors
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 33s
+1 actionable task: 1 executed
+BUILD_FAILED
