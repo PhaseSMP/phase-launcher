@@ -1,2 +1,0 @@
-MISSING net/minecraft/client/renderer/LightCoordsUtil.java
-MISSING net/minecraft/client/renderer/LightTexture.java
