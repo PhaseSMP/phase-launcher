@@ -36,6 +36,8 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 					mc.getTextureManager().register(id, new DynamicTexture(() -> "phase test skin", NativeImage.read(in)));
 					ClientAsset.ResourceTexture tex = new ClientAsset.ResourceTexture(id, id);
 					SkinData.setTest(new PlayerSkin(tex, null, null, PlayerModelType.WIDE, true));
+				} catch (java.io.IOException e) {
+					throw new java.io.UncheckedIOException(e);
 				}
 			});
 			CosmeticsData.setTest("kabuto", "ender_dragon");
