@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "phase-cosmetics",
+  "version": "${version}",
+  "name": "Phase Cosmetics",
+  "description": "Косметика персонажей Phase: шляпы и питомцы, которые видят все игроки с лаунчером Phase.",
+  "authors": ["Phase"],
+  "contact": { "homepage": "https://phase.fujimc.workers.dev" },
+  "license": "All-Rights-Reserved",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["gg.phase.cosmetics.PhaseCosmetics"]
+  },
+  "depends": {
+    "fabricloader": ">=0.20.1",
+    "minecraft": "~26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}
