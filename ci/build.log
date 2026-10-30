@@ -17,7 +17,7 @@ Daemon will be stopped at the end of the build
 > Configure project :
 Fabric Loom: 1.19.3
 
-> Task :compileJava FAILED
+> Task :compileJava
 /home/runner/work/phase-launcher/phase-launcher/mod/src/main/java/gg/phase/cosmetics/PhaseCosmetics.java:34: error: cannot find symbol
 				if (mc.screen == null && mc.player != null) mc.setScreen(new PhaseMenuScreen());
 				      ^
@@ -29,6 +29,8 @@ Fabric Loom: 1.19.3
   symbol:   method setScreen(PhaseMenuScreen)
   location: variable mc of type Minecraft
 2 errors
+
+> Task :compileJava FAILED
 
 [Incubating] Problems report is available at: file:///home/runner/work/phase-launcher/phase-launcher/mod/build/reports/problems/problems-report.html
 
@@ -53,6 +55,6 @@ Execution failed for task ':compileJava' (registered by plugin class 'org.gradle
 > Check your code and dependencies to fix the compilation error(s)
 > Run with --scan to get full insights from a Build Scan (powered by Develocity).
 
-BUILD FAILED in 36s
+BUILD FAILED in 41s
 1 actionable task: 1 executed
 BUILD_FAILED
