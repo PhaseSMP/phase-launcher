@@ -31,7 +31,7 @@ public class PhaseCosmetics implements ClientModInitializer {
 		MENU = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.phase.menu", InputConstants.KEY_J, CATEGORY));
 		ClientTickEvents.END_CLIENT_TICK.register(mc -> {
 			while (MENU.consumeClick()) {
-				if (mc.screen == null && mc.player != null) mc.setScreen(new PhaseMenuScreen());
+				if (mc.gui.screen() == null && mc.player != null) mc.gui.setScreen(new PhaseMenuScreen());
 			}
 			PetManager.INSTANCE.tick(mc);
 			SkinData.tick(mc);
