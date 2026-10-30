@@ -1,0 +1,39 @@
+name: mod-research
+on:
+  push:
+    branches: [mod]
+    paths: ['.github/workflows/mod-research.yml', 'mod/research.txt']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '25' }
+      - name: Gen sources
+        working-directory: mod
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon genSources > ../gen.log 2>&1 || true
+          tail -20 ../gen.log
+      - name: Dump API
+        run: |
+          set +e
+          rm -rf dump && mkdir -p dump/src
+          for j in $(find ~/.gradle mod/.gradle -name '*minecraft*sources*.jar' 2>/dev/null | head -5); do unzip -oq "$j" -d /tmp/mcsrc; done
+          FA=$(find ~/.gradle -name 'fabric-*.jar' -not -name '*sources*' 2>/dev/null)
+          while read -r kind a b; do
+            case "$kind" in
+              F) [ -f "/tmp/mcsrc/$a" ] && cp "/tmp/mcsrc/$a" "dump/src/$(echo $a | tr / .)" || echo "MISSING $a" >> dump/missing.txt ;;
+              G) if [ -f "/tmp/mcsrc/$a" ]; then echo "=== $a" >> dump/grep.txt; grep -nE "$b" "/tmp/mcsrc/$a" | cut -c1-260 >> dump/grep.txt; else echo "MISSING $a" >> dump/missing.txt; fi ;;
+              S) echo "=== search $a $b" >> dump/search.txt; grep -rnE "$a${b:+ $b}" /tmp/mcsrc --include=*.java | sed 's|/tmp/mcsrc/||' | cut -c1-260 | head -40 >> dump/search.txt ;;
+              J) for jj in $FA; do p=$(echo "$a" | tr . /); if unzip -l "$jj" | grep -qF "$p.class"; then javap -cp "$jj" -public "$a" >> dump/fabric-api.txt 2>&1; break; fi; done ;;
+            esac
+          done < mod/research.txt
+      - name: Commit
+        run: |
+          git config user.name "phase-ci"; git config user.email "ci@phase.local"
+          git add dump && git commit -qm "API dump [skip ci]" && git pull -q --rebase && git push -q
