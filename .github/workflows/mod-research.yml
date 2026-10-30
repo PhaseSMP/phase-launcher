@@ -17,13 +17,15 @@ jobs:
         working-directory: mod
         run: |
           chmod +x gradlew
-          ./gradlew --no-daemon genSources > ../gen.log 2>&1 || true
+          ./gradlew --no-daemon genSources > ../gen.log 2>&1 || ./gradlew --no-daemon genSourcesWithVineflower >> ../gen.log 2>&1 || true
           tail -20 ../gen.log
       - name: Dump API
         run: |
           set +e
           rm -rf dump && mkdir -p dump/src
-          for j in $(find ~/.gradle mod/.gradle -name '*minecraft*sources*.jar' 2>/dev/null | head -5); do unzip -oq "$j" -d /tmp/mcsrc; done
+          find ~/.gradle mod/.gradle mod/build -name '*sources*.jar' 2>/dev/null | grep -i minecraft > dump/sources-jars.txt
+          for j in $(head -5 dump/sources-jars.txt); do unzip -oq "$j" -d /tmp/mcsrc; done
+          cp gen.log dump/gen.log
           FA=$(find ~/.gradle -name 'fabric-*.jar' -not -name '*sources*' 2>/dev/null)
           while read -r kind a b; do
             case "$kind" in
