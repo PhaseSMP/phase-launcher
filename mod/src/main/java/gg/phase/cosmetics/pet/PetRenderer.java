@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
  * Единицы внутри — пиксели модели (1 px = SCALE/16 блока).
  */
 public final class PetRenderer {
-	public static final float SCALE = 0.38F;
+	public static final float SCALE = 0.42F;
 	private static final float PX = 1F / 16F;
 
 	private PetRenderer() {}

@@ -22,6 +22,8 @@ public class PhaseMenuScreen extends Screen {
 	private boolean loading = true;
 	private int px, top, bottom;
 	private int hatLabelY = -1, petLabelY = -1, setLabelY = -1, shopY = -1;
+	private int headH = 40;
+	private boolean footer = true;
 
 	public PhaseMenuScreen() {
 		super(Component.literal("Phase"));
@@ -53,8 +55,20 @@ public class PhaseMenuScreen extends Screen {
 		CosmeticsData.Mine m = CosmeticsData.mine;
 		int x = this.px + 12, w = PANEL_W - 24;
 		int avail = this.bottom - this.top;
-		int rh = avail < 300 ? 14 : avail < 350 ? 16 : 18, gap = avail < 300 ? 2 : 3, sec = avail < 300 ? 6 : 10;
-		int y = this.top + 40;
+		// подбираем плотность под высоту окна: сколько строк кнопок нужно
+		int hatRows = 1;
+		if (m != null) hatRows = (int) (m.items().stream().filter(i -> i.slot().equals("hat")).count() / 2) + 1;
+		boolean pet = m != null && m.items().stream().anyMatch(i -> i.id().equals("ender_dragon"));
+		int rh = 18, gap = 3, sec = 10;
+		this.headH = 40;
+		this.footer = true;
+		int[][] levels = { { 18, 3, 10, 40, 1 }, { 16, 3, 8, 40, 1 }, { 14, 2, 6, 38, 1 }, { 14, 2, 5, 30, 0 }, { 12, 2, 4, 30, 0 } };
+		for (int[] lv : levels) {
+			rh = lv[0]; gap = lv[1]; sec = lv[2]; this.headH = lv[3]; this.footer = lv[4] == 1;
+			int need = this.headH + 11 + hatRows * (rh + gap) + sec + 11 + (pet ? 4 * (rh + gap) : 30) + sec + 11 + 3 * (rh + gap) + (this.footer ? 30 : 14);
+			if (need <= avail) break;
+		}
+		int y = this.top + this.headH;
 		this.hatLabelY = this.petLabelY = this.setLabelY = this.shopY = -1;
 
 		if (m != null) {
@@ -155,8 +169,8 @@ public class PhaseMenuScreen extends Screen {
 		g.pose().popMatrix();
 		g.text(this.font, "相", x + 54, this.top + 13, Style.GOLD, false);
 		String who = this.minecraft.getUser().getName();
-		g.text(this.font, "Косметика · " + who, x, this.top + 25, Style.MUTED, false);
-		g.fill(x, this.top + 35, x + w, this.top + 36, Style.LINE);
+		if (this.headH >= 38) g.text(this.font, "Косметика · " + who, x, this.top + 25, Style.MUTED, false);
+		g.fill(x, this.top + this.headH - 5, x + w, this.top + this.headH - 4, Style.LINE);
 
 		if (this.loading && CosmeticsData.mine == null) g.text(this.font, "Загружаю вашу косметику…", x, this.top + 44, Style.MUTED, false);
 		this.label(g, "ШЛЯПА", x, this.hatLabelY);
@@ -171,10 +185,12 @@ public class PhaseMenuScreen extends Screen {
 		}
 		super.extractRenderState(g, mouseX, mouseY, a);
 		// подвал
-		int fy = this.bottom - 22;
-		if (!this.status.isEmpty()) g.text(this.font, this.font.plainSubstrByWidth(this.status, w), x, fy - 12, this.statusColor, false);
-		g.fill(x, fy - 2, x + w, fy - 1, Style.LINE);
-		g.text(this.font, "J — меню  ·  Esc — закрыть", x, fy + 4, Style.MUTED_D, false);
+		int fy = this.bottom - (this.footer ? 22 : 12);
+		if (!this.status.isEmpty()) g.text(this.font, this.font.plainSubstrByWidth(this.status, w), x, fy - (this.footer ? 12 : 0), this.statusColor, false);
+		if (this.footer) {
+			g.fill(x, fy - 2, x + w, fy - 1, Style.LINE);
+			g.text(this.font, "J — меню  ·  Esc — закрыть", x, fy + 4, Style.MUTED_D, false);
+		}
 	}
 
 	private void label(GuiGraphicsExtractor g, String s, int x, int y) {
