@@ -1,0 +1,44 @@
+=== search getLightCoords\( 
+net/minecraft/util/LightCoordsUtil.java:105:	public static int getLightCoords(final BlockAndLightGetter level, final BlockPos pos) {
+net/minecraft/util/LightCoordsUtil.java:106:		return getLightCoords(LightCoordsUtil.BrightnessGetter.DEFAULT, level, level.getBlockState(pos), pos);
+net/minecraft/util/LightCoordsUtil.java:109:	public static int getLightCoords(
+net/minecraft/client/particle/SculkChargeParticle.java:26:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/SculkChargeParticle.java:27:		return LightCoordsUtil.withBlock(super.getLightCoords(a), 15);
+net/minecraft/client/particle/GlowParticle.java:32:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/GlowParticle.java:33:		return LightCoordsUtil.addSmoothBlockEmission(super.getLightCoords(a), (this.age + a) / this.lifetime);
+net/minecraft/client/particle/EmissiveRisingParticle.java:25:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/EmissiveRisingParticle.java:26:		return this.isGlowing ? LightCoordsUtil.withBlock(super.getLightCoords(a), 15) : super.getLightCoords(a);
+net/minecraft/client/particle/LavaParticle.java:32:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/LavaParticle.java:33:		return LightCoordsUtil.withBlock(super.getLightCoords(a), 15);
+net/minecraft/client/particle/DripParticle.java:43:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/DripParticle.java:44:		return this.isGlowing ? LightCoordsUtil.withBlock(super.getLightCoords(a), 15) : super.getLightCoords(a);
+net/minecraft/client/particle/TrialSpawnerDetectionParticle.java:51:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/TrialSpawnerDetectionParticle.java:52:		return LightCoordsUtil.withBlock(super.getLightCoords(a), 15);
+net/minecraft/client/particle/VibrationSignalParticle.java:63:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/VibrationSignalParticle.java:64:		return LightCoordsUtil.withBlock(super.getLightCoords(a), 15);
+net/minecraft/client/particle/GustParticle.java:28:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/HugeExplosionParticle.java:26:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/FlyTowardsPositionParticle.java:76:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/FlyTowardsPositionParticle.java:78:			return LightCoordsUtil.withBlock(super.getLightCoords(a), 15);
+net/minecraft/client/particle/FlyTowardsPositionParticle.java:84:		return LightCoordsUtil.addSmoothBlockEmission(super.getLightCoords(a), brightness);
+net/minecraft/client/particle/Particle.java:188:	protected int getLightCoords(final float a) {
+net/minecraft/client/particle/Particle.java:190:		return this.level.hasChunkAt(pos) ? LightCoordsUtil.getLightCoords(this.level, pos) : 15728640;
+net/minecraft/client/particle/FireflyParticle.java:39:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/PortalParticle.java:59:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/PortalParticle.java:63:		return LightCoordsUtil.addSmoothBlockEmission(super.getLightCoords(a), brightness);
+net/minecraft/client/particle/ShriekParticle.java:49:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/ShriekParticle.java:50:		return LightCoordsUtil.withBlock(super.getLightCoords(a), 15);
+net/minecraft/client/particle/AttackSweepParticle.java:26:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/SimpleAnimatedParticle.java:57:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/TrailParticle.java:60:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/FlameParticle.java:37:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/FlameParticle.java:38:		return LightCoordsUtil.addSmoothBlockEmission(super.getLightCoords(a), (this.age + a) / this.lifetime);
+net/minecraft/client/particle/SculkChargePopParticle.java:26:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/SculkChargePopParticle.java:27:		return LightCoordsUtil.withBlock(super.getLightCoords(a), 15);
+net/minecraft/client/particle/FlyStraightTowardsParticle.java:63:	public int getLightCoords(final float a) {
+net/minecraft/client/particle/FlyStraightTowardsParticle.java:64:		return LightCoordsUtil.withBlock(super.getLightCoords(a), 15);
+net/minecraft/client/particle/SingleQuadParticle.java:87:			this.getLightCoords(partialTickTime)
+net/minecraft/client/renderer/blockentity/state/BlockEntityRenderState.java:31:		state.lightCoords = blockEntity.getLevel() != null ? LightCoordsUtil.getLightCoords(blockEntity.getLevel(), blockEntity.getBlockPos()) : 15728880;
+=== search class .*KeyMapping\.Category|record Category
+net/minecraft/client/KeyMapping.java:204:	public record Category(Identifier id) {
+=== search static .*renderEntityInInventory

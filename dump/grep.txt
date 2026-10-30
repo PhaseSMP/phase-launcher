@@ -1,0 +1,1011 @@
+=== com/mojang/blaze3d/platform/NativeImage.java
+40:public final class NativeImage implements AutoCloseable {
+53:	public NativeImage(final int width, final int height, final boolean zero) {
+57:	public NativeImage(final NativeImage.Format format, final int width, final int height, final boolean zero) {
+79:	public NativeImage(final NativeImage.Format format, final int width, final int height, final boolean useStbFree, final long pixels) {
+93:	public String toString() {
+101:	public static NativeImage read(final InputStream inputStream) throws IOException {
+113:	public static NativeImage read(final byte[] bytes) throws IOException {
+138:	public static NativeImage read(final ByteBuffer bytes) throws IOException {
+167:	public void close() {
+181:	public boolean isClosed() {
+185:	public int getWidth() {
+189:	public int getHeight() {
+193:	public NativeImage.Format format() {
+211:	public int getPixel(final int x, final int y) {
+215:	public void setPixelABGR(final int x, final int y, final int pixel) {
+229:	public void setPixel(final int x, final int y, final int pixel) {
+233:	public NativeImage mappedCopy(final IntUnaryOperator function) {
+253:	public int[] getPixelsABGR() {
+264:	public int[] getPixels() {
+274:	public byte getLuminanceOrAlpha(final int x, final int y) {
+288:	public int[] makePixelArray() {
+305:	public void writeToFile(final File file) throws IOException {
+309:	public boolean copyFromFont(final FT_Face face, final int index) {
+334:	public void writeToFile(final Path file) throws IOException {
+364:	public void copyFrom(final NativeImage from) {
+386:	public void fillRect(final int xs, final int ys, final int width, final int height, final int pixel) {
+394:	public void copyRect(
+400:	public void copyRect(
+421:	public void resizeSubRectTo(final int sourceX, final int sourceY, final int sizeX, final int sizeY, final NativeImage to) {
+441:	public void untrack() {
+445:	public long getPointer() {
+449:	public ByteBuffer getPixelBytes() {
+453:	public Transparency computeTransparency(final int x0, final int y0, final int x1, final int y1) {
+487:	public Transparency computeTransparency() {
+536:		public int components() {
+540:		public boolean hasRed() {
+544:		public boolean hasGreen() {
+548:		public boolean hasBlue() {
+552:		public boolean hasLuminance() {
+556:		public boolean hasAlpha() {
+560:		public int redOffset() {
+564:		public int greenOffset() {
+568:		public int blueOffset() {
+572:		public int luminanceOffset() {
+576:		public int alphaOffset() {
+580:		public boolean hasLuminanceOrRed() {
+584:		public boolean hasLuminanceOrGreen() {
+588:		public boolean hasLuminanceOrBlue() {
+592:		public boolean hasLuminanceOrAlpha() {
+596:		public int luminanceOrRedOffset() {
+600:		public int luminanceOrGreenOffset() {
+604:		public int luminanceOrBlueOffset() {
+608:		public int luminanceOrAlphaOffset() {
+628:	private static class WriteCallback extends STBIWriteCallback {
+637:		public void invoke(final long context, final long data, final int size) {
+647:		public void throwIfException() throws IOException {
+=== net/minecraft/client/gui/Font.java
+41:	public Font(final Font.Provider provider) {
+50:	public String bidirectionalShaping(final String text) {
+60:	public Font.PreparedText prepare8xTextOutline(final FormattedCharSequence str, final float x, final float y, final int outlineColor) {
+85:	public TextRenderable prepareBackground(final float x0, final float y0, final float x1, final float y1, final int color) {
+100:	public Font.PreparedText prepareText(String text, final float x, final float y, final int originalColor, final boolean drawShadow, final int backgroundColor) {
+110:	public Font.PreparedText prepareText(
+124:	public int width(final String str) {
+128:	public int width(final FormattedText text) {
+132:	public int width(final FormattedCharSequence text) {
+136:	public String plainSubstrByWidth(final String str, final int width, final boolean reverse) {
+140:	public String plainSubstrByWidth(final String str, final int width) {
+144:	public FormattedText substrByWidth(final FormattedText text, final int width) {
+148:	public int wordWrapHeight(final FormattedText input, final int textWidth) {
+152:	public List<FormattedCharSequence> split(final FormattedText input, final int maxWidth) {
+156:	public List<FormattedText> splitIgnoringLanguage(final FormattedText input, final int maxWidth) {
+160:	public boolean isBidirectional() {
+164:	public StringSplitter getSplitter() {
+219:		public PreparedTextBuilder(final float x, final float y, final int color, final boolean drawShadow, final boolean includeEmpty) {
+223:		public PreparedTextBuilder(final float x, final float y, final int color, final int backgroundColor, final boolean drawShadow, final boolean includeEmpty) {
+273:		public boolean accept(final int position, final Style style, final int c) {
+278:		public boolean accept(final int position, final Style style, final BakedGlyph glyph) {
+313:		public void visit(final Font.GlyphVisitor visitor) {
+339:		public void discardEffects() {
+365:		public @Nullable ScreenRectangle bounds() {
+=== net/minecraft/client/renderer/LevelRenderer.java
+112:	public static final int OIT_COEFFICIENT_COUNT = Math.powExact(2, 3);
+153:	public LevelRenderer(
+186:	public void render(
+285:			public void beforeExecutePass(final String name) {
+290:			public void afterExecutePass(final String name) {
+785:	public ChunkSectionsToRender prepareChunkRenders(final Matrix4fc modelViewMatrix, final boolean respectTranslucentOrder) {
+836:	public void addTransientBlock(final long blockNode, final TransientBlockRenderState state) {
+840:	public void removeTransientBlocksInSection(final long sectionNode, final long compileTaskStartTimeNs) {
+871:	public ChunkSectionsToRender prepareChunkRendersIndirect(final Matrix4fc modelViewMatrix, final boolean respectTranslucentOrder) {
+1112:	public void resize(final int width, final int height) {
+1117:	public void endFrame() {
+1122:	public void close() {
+1138:	public void blitEntityOutline() {
+1145:	public void invalidateCompiledGeometry(final ClientLevel level, final Options options, final Camera camera, final BlockColors blockColors) {
+1223:	public void clearVisibleSections() {
+1228:	public void resetLevelRenderData() {
+1243:	public boolean hasRenderedAllSections() {
+1247:	public boolean isSectionCompiledAndVisible(final BlockPos blockPos, final long chunkFadeDuration) {
+1258:	public @Nullable SectionRenderDispatcher sectionRenderDispatcher() {
+1262:	public EntityRenderDispatcher entityRenderDispatcher() {
+1266:	public BlockEntityRenderDispatcher blockEntityRenderDispatcher() {
+1270:	public CloudRenderer cloudRenderer() {
+1274:	public @Nullable SkyRenderer skyRenderer() {
+1278:	public WeatherEffectRenderer weatherEffectRenderer() {
+1282:	public WorldBorderRenderer worldBorderRenderer() {
+1286:	public @Nullable ViewArea viewArea() {
+1290:	public ObjectArrayList<SectionRenderDispatcher.RenderSection> visibleSections() {
+1294:	public ObjectArrayList<SectionRenderDispatcher.RenderSection> nearbyVisibleSections() {
+1298:	public LongCollection expectedChunks() {
+1302:	public SectionOcclusionGraph sectionOcclusionGraph() {
+1306:	public Gizmos.TemporaryCollection collectPerFrameRenderThreadGizmos() {
+1310:	public boolean isChunkRenderingUsingMultiDrawIndirect() {
+1326:	public void addMainThreadGizmos(final List<SimpleGizmoCollector.GizmoInstance> mainThreadGizmos) {
+=== net/minecraft/client/multiplayer/ClientLevel.java
+378:					this.addParticle(
+388:					this.playLocalSound(rainParticlePosition, SoundEvents.WEATHER_RAIN_ABOVE, SoundSource.WEATHER, 0.1F, 0.5F, false);
+390:					this.playLocalSound(rainParticlePosition, SoundEvents.WEATHER_RAIN, SoundSource.WEATHER, 0.2F, 1.0F, false);
+604:			this.addParticle(new BlockParticleOption(ParticleTypes.BLOCK_MARKER, state), x + 0.5, y + 0.5, z + 0.5, 0.0, 0.0, 0.0);
+610:					this.addParticle(
+655:		this.addParticle(dripParticle, Mth.lerp(this.random.nextDouble(), x1, x2), y, Mth.lerp(this.random.nextDouble(), z1, z2), 0.0, 0.0, 0.0);
+683:			this.playSound(x, y, z, sound.value(), source, volume, pitch, false, seed);
+703:	public void playLocalSound(final Entity sourceEntity, final SoundEvent sound, final SoundSource source, final float volume, final float pitch) {
+715:	public void playLocalSound(
+725:		this.playSound(x, y, z, sound, source, volume, pitch, distanceDelay, this.random.nextLong());
+728:	private void playSound(
+758:		final boolean playSound
+762:				this.addParticle(ParticleTypes.POOF, x, y, z, this.random.nextGaussian() * 0.05, 0.005, this.random.nextGaussian() * 0.05);
+765:			this.minecraft.particleEngine.add(new FireworkParticles.Starter(this, x, y, z, xd, yd, zd, this.minecraft.particleEngine, explosions, playSound));
+897:	public void addParticle(final ParticleOptions particle, final double x, final double y, final double z, final double xd, final double yd, final double zd) {
+902:	public void addParticle(
+1116:	public void addBreakingBlockEffects(final BlockPos pos, final Direction direction, final boolean playSound) {
+1119:			if (playSound) {
+=== net/minecraft/world/level/Level.java
+383:	public void playSound(
+425:	public void playSound(final @Nullable Entity except, final double x, final double y, final double z, final SoundEvent sound, final SoundSource source) {
+429:	public void playSound(
+442:	public void playSound(
+455:	public void playSound(
+461:	public void playSound(
+467:	public void playLocalSound(
+473:	public void playLocalSound(final Entity sourceEntity, final SoundEvent sound, final SoundSource source, final float volume, final float pitch) {
+476:	public void playLocalSound(
+492:	public void addParticle(final ParticleOptions particle, final double x, final double y, final double z, final double xd, final double yd, final double zd) {
+495:	public void addParticle(
+=== net/minecraft/sounds/SoundEvents.java
+24:	public static final SoundEvent ALLAY_AMBIENT_WITH_ITEM = register("entity.allay.ambient_with_item");
+25:	public static final SoundEvent ALLAY_AMBIENT_WITHOUT_ITEM = register("entity.allay.ambient_without_item");
+26:	public static final SoundEvent ALLAY_DEATH = register("entity.allay.death");
+27:	public static final SoundEvent ALLAY_HURT = register("entity.allay.hurt");
+28:	public static final SoundEvent ALLAY_ITEM_GIVEN = register("entity.allay.item_given");
+29:	public static final SoundEvent ALLAY_ITEM_TAKEN = register("entity.allay.item_taken");
+30:	public static final SoundEvent ALLAY_THROW = register("entity.allay.item_thrown");
+53:	public static final SoundEvent AMETHYST_BLOCK_BREAK = register("block.amethyst_block.break");
+54:	public static final SoundEvent AMETHYST_BLOCK_CHIME = register("block.amethyst_block.chime");
+55:	public static final SoundEvent AMETHYST_BLOCK_FALL = register("block.amethyst_block.fall");
+56:	public static final SoundEvent AMETHYST_BLOCK_HIT = register("block.amethyst_block.hit");
+57:	public static final SoundEvent AMETHYST_BLOCK_PLACE = register("block.amethyst_block.place");
+58:	public static final SoundEvent AMETHYST_BLOCK_RESONATE = register("block.amethyst_block.resonate");
+59:	public static final SoundEvent AMETHYST_BLOCK_STEP = register("block.amethyst_block.step");
+60:	public static final SoundEvent AMETHYST_CLUSTER_BREAK = register("block.amethyst_cluster.break");
+61:	public static final SoundEvent AMETHYST_CLUSTER_FALL = register("block.amethyst_cluster.fall");
+62:	public static final SoundEvent AMETHYST_CLUSTER_HIT = register("block.amethyst_cluster.hit");
+63:	public static final SoundEvent AMETHYST_CLUSTER_PLACE = register("block.amethyst_cluster.place");
+64:	public static final SoundEvent AMETHYST_CLUSTER_STEP = register("block.amethyst_cluster.step");
+78:	public static final SoundEvent ARMADILLO_EAT = register("entity.armadillo.eat");
+79:	public static final SoundEvent ARMADILLO_HURT = register("entity.armadillo.hurt");
+80:	public static final SoundEvent ARMADILLO_HURT_REDUCED = register("entity.armadillo.hurt_reduced");
+81:	public static final SoundEvent ARMADILLO_AMBIENT = register("entity.armadillo.ambient");
+82:	public static final SoundEvent ARMADILLO_STEP = register("entity.armadillo.step");
+83:	public static final SoundEvent ARMADILLO_DEATH = register("entity.armadillo.death");
+84:	public static final SoundEvent ARMADILLO_ROLL = register("entity.armadillo.roll");
+85:	public static final SoundEvent ARMADILLO_LAND = register("entity.armadillo.land");
+86:	public static final SoundEvent ARMADILLO_SCUTE_DROP = register("entity.armadillo.scute_drop");
+87:	public static final SoundEvent ARMADILLO_UNROLL_FINISH = register("entity.armadillo.unroll_finish");
+88:	public static final SoundEvent ARMADILLO_PEEK = register("entity.armadillo.peek");
+89:	public static final SoundEvent ARMADILLO_UNROLL_START = register("entity.armadillo.unroll_start");
+90:	public static final SoundEvent ARMADILLO_BRUSH = register("entity.armadillo.brush");
+171:	public static final SoundEvent BAT_AMBIENT = register("entity.bat.ambient");
+172:	public static final SoundEvent BAT_DEATH = register("entity.bat.death");
+173:	public static final SoundEvent BAT_HURT = register("entity.bat.hurt");
+174:	public static final SoundEvent BAT_LOOP = register("entity.bat.loop");
+175:	public static final SoundEvent BAT_TAKEOFF = register("entity.bat.takeoff");
+222:	public static final SoundEvent BREEZE_CHARGE = register("entity.breeze.charge");
+223:	public static final SoundEvent BREEZE_DEFLECT = register("entity.breeze.deflect");
+224:	public static final SoundEvent BREEZE_INHALE = register("entity.breeze.inhale");
+225:	public static final SoundEvent BREEZE_IDLE_GROUND = register("entity.breeze.idle_ground");
+226:	public static final SoundEvent BREEZE_IDLE_AIR = register("entity.breeze.idle_air");
+227:	public static final SoundEvent BREEZE_SHOOT = register("entity.breeze.shoot");
+228:	public static final SoundEvent BREEZE_JUMP = register("entity.breeze.jump");
+229:	public static final SoundEvent BREEZE_LAND = register("entity.breeze.land");
+230:	public static final SoundEvent BREEZE_SLIDE = register("entity.breeze.slide");
+231:	public static final SoundEvent BREEZE_DEATH = register("entity.breeze.death");
+232:	public static final SoundEvent BREEZE_HURT = register("entity.breeze.hurt");
+233:	public static final SoundEvent BREEZE_WHIRL = register("entity.breeze.whirl");
+234:	public static final Holder.Reference<SoundEvent> BREEZE_WIND_CHARGE_BURST = registerForHolder("entity.breeze.wind_burst");
+261:	public static final SoundEvent BUNDLE_DROP_CONTENTS = register("item.bundle.drop_contents");
+262:	public static final SoundEvent BUNDLE_INSERT = register("item.bundle.insert");
+263:	public static final SoundEvent BUNDLE_INSERT_FAIL = register("item.bundle.insert_fail");
+264:	public static final SoundEvent BUNDLE_REMOVE_ONE = register("item.bundle.remove_one");
+303:	public static final Holder.Reference<SoundEvent> CAT_AMBIENT_BABY = registerForHolder("entity.baby_cat.ambient");
+304:	public static final Holder.Reference<SoundEvent> CAT_STRAY_AMBIENT_BABY = registerForHolder("entity.baby_cat.stray_ambient");
+305:	public static final Holder.Reference<SoundEvent> CAT_DEATH_BABY = registerForHolder("entity.baby_cat.death");
+306:	public static final Holder.Reference<SoundEvent> CAT_EAT_BABY = registerForHolder("entity.baby_cat.eat");
+307:	public static final Holder.Reference<SoundEvent> CAT_HISS_BABY = registerForHolder("entity.baby_cat.hiss");
+308:	public static final Holder.Reference<SoundEvent> CAT_BEG_FOR_FOOD_BABY = registerForHolder("entity.baby_cat.beg_for_food");
+309:	public static final Holder.Reference<SoundEvent> CAT_HURT_BABY = registerForHolder("entity.baby_cat.hurt");
+310:	public static final Holder.Reference<SoundEvent> CAT_PURR_BABY = registerForHolder("entity.baby_cat.purr");
+311:	public static final Holder.Reference<SoundEvent> CAT_PURREOW_BABY = registerForHolder("entity.baby_cat.purreow");
+312:	public static final Map<CatSoundVariants.SoundSet, CatSoundVariant> CAT_SOUNDS = registerCatSoundVariants();
+359:	public static final SoundEvent CHICKEN_EGG = register("entity.chicken.egg");
+584:	public static final SoundEvent ENDER_DRAGON_AMBIENT = register("entity.ender_dragon.ambient");
+585:	public static final SoundEvent ENDER_DRAGON_DEATH = register("entity.ender_dragon.death");
+587:	public static final SoundEvent ENDER_DRAGON_FLAP = register("entity.ender_dragon.flap");
+588:	public static final SoundEvent ENDER_DRAGON_GROWL = register("entity.ender_dragon.growl");
+589:	public static final SoundEvent ENDER_DRAGON_HURT = register("entity.ender_dragon.hurt");
+590:	public static final SoundEvent ENDER_DRAGON_SHOOT = register("entity.ender_dragon.shoot");
+617:	public static final SoundEvent EXPERIENCE_ORB_PICKUP = register("entity.experience_orb.pickup");
+627:	public static final SoundEvent FIREWORK_ROCKET_BLAST = register("entity.firework_rocket.blast");
+628:	public static final SoundEvent FIREWORK_ROCKET_BLAST_FAR = register("entity.firework_rocket.blast_far");
+629:	public static final SoundEvent FIREWORK_ROCKET_LARGE_BLAST = register("entity.firework_rocket.large_blast");
+630:	public static final SoundEvent FIREWORK_ROCKET_LARGE_BLAST_FAR = register("entity.firework_rocket.large_blast_far");
+631:	public static final SoundEvent FIREWORK_ROCKET_LAUNCH = register("entity.firework_rocket.launch");
+632:	public static final SoundEvent FIREWORK_ROCKET_SHOOT = register("entity.firework_rocket.shoot");
+633:	public static final SoundEvent FIREWORK_ROCKET_TWINKLE = register("entity.firework_rocket.twinkle");
+634:	public static final SoundEvent FIREWORK_ROCKET_TWINKLE_FAR = register("entity.firework_rocket.twinkle_far");
+647:	public static final SoundEvent FOX_AGGRO = register("entity.fox.aggro");
+648:	public static final SoundEvent FOX_AMBIENT = register("entity.fox.ambient");
+649:	public static final SoundEvent FOX_BITE = register("entity.fox.bite");
+650:	public static final SoundEvent FOX_DEATH = register("entity.fox.death");
+651:	public static final SoundEvent FOX_EAT = register("entity.fox.eat");
+652:	public static final SoundEvent FOX_HURT = register("entity.fox.hurt");
+653:	public static final SoundEvent FOX_SCREECH = register("entity.fox.screech");
+654:	public static final SoundEvent FOX_SLEEP = register("entity.fox.sleep");
+655:	public static final SoundEvent FOX_SNIFF = register("entity.fox.sniff");
+656:	public static final SoundEvent FOX_SPIT = register("entity.fox.spit");
+657:	public static final SoundEvent FOX_TELEPORT = register("entity.fox.teleport");
+784:	public static final SoundEvent HAPPY_GHAST_AMBIENT = register("entity.happy_ghast.ambient");
+785:	public static final SoundEvent HAPPY_GHAST_DEATH = register("entity.happy_ghast.death");
+786:	public static final SoundEvent HAPPY_GHAST_HURT = register("entity.happy_ghast.hurt");
+787:	public static final SoundEvent HAPPY_GHAST_RIDING = register("entity.happy_ghast.riding");
+904:	public static final SoundEvent ITEM_PICKUP = register("entity.item.pickup");
+915:	public static final SoundEvent LARGE_AMETHYST_BUD_BREAK = register("block.large_amethyst_bud.break");
+916:	public static final SoundEvent LARGE_AMETHYST_BUD_PLACE = register("block.large_amethyst_bud.place");
+966:	public static final SoundEvent MEDIUM_AMETHYST_BUD_BREAK = register("block.medium_amethyst_bud.break");
+967:	public static final SoundEvent MEDIUM_AMETHYST_BUD_PLACE = register("block.medium_amethyst_bud.place");
+1154:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_BASEDRUM = registerForHolder("block.note_block.basedrum");
+1155:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_BASS = registerForHolder("block.note_block.bass");
+1156:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_BELL = registerForHolder("block.note_block.bell");
+1157:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_CHIME = registerForHolder("block.note_block.chime");
+1158:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_FLUTE = registerForHolder("block.note_block.flute");
+1159:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_GUITAR = registerForHolder("block.note_block.guitar");
+1160:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_HARP = registerForHolder("block.note_block.harp");
+1161:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_HAT = registerForHolder("block.note_block.hat");
+1162:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_PLING = registerForHolder("block.note_block.pling");
+1163:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_SNARE = registerForHolder("block.note_block.snare");
+1164:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_TRUMPET = registerForHolder("block.note_block.trumpet");
+1165:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_TRUMPET_EXPOSED = registerForHolder("block.note_block.trumpet_exposed");
+1166:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_TRUMPET_OXIDIZED = registerForHolder("block.note_block.trumpet_oxidized");
+1167:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_TRUMPET_WEATHERED = registerForHolder("block.note_block.trumpet_weathered");
+1168:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_XYLOPHONE = registerForHolder("block.note_block.xylophone");
+1169:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_IRON_XYLOPHONE = registerForHolder("block.note_block.iron_xylophone");
+1170:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_COW_BELL = registerForHolder("block.note_block.cow_bell");
+1171:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_DIDGERIDOO = registerForHolder("block.note_block.didgeridoo");
+1172:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_BIT = registerForHolder("block.note_block.bit");
+1173:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_BANJO = registerForHolder("block.note_block.banjo");
+1174:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_IMITATE_ZOMBIE = registerForHolder("block.note_block.imitate.zombie");
+1175:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_IMITATE_SKELETON = registerForHolder("block.note_block.imitate.skeleton");
+1176:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_IMITATE_CREEPER = registerForHolder("block.note_block.imitate.creeper");
+1177:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_IMITATE_ENDER_DRAGON = registerForHolder("block.note_block.imitate.ender_dragon");
+1178:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_IMITATE_WITHER_SKELETON = registerForHolder("block.note_block.imitate.wither_skeleton");
+1179:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_IMITATE_PIGLIN = registerForHolder("block.note_block.imitate.piglin");
+1202:	public static final SoundEvent PARROT_AMBIENT = register("entity.parrot.ambient");
+1203:	public static final SoundEvent PARROT_DEATH = register("entity.parrot.death");
+1204:	public static final SoundEvent PARROT_EAT = register("entity.parrot.eat");
+1205:	public static final SoundEvent PARROT_FLY = register("entity.parrot.fly");
+1206:	public static final SoundEvent PARROT_HURT = register("entity.parrot.hurt");
+1207:	public static final SoundEvent PARROT_IMITATE_BLAZE = register("entity.parrot.imitate.blaze");
+1208:	public static final SoundEvent PARROT_IMITATE_BOGGED = register("entity.parrot.imitate.bogged");
+1209:	public static final SoundEvent PARROT_IMITATE_BREEZE = register("entity.parrot.imitate.breeze");
+1210:	public static final SoundEvent PARROT_IMITATE_CAMEL_HUSK = register("entity.parrot.imitate.camel_husk");
+1211:	public static final SoundEvent PARROT_IMITATE_CREAKING = register("entity.parrot.imitate.creaking");
+1212:	public static final SoundEvent PARROT_IMITATE_CREEPER = register("entity.parrot.imitate.creeper");
+1213:	public static final SoundEvent PARROT_IMITATE_DROWNED = register("entity.parrot.imitate.drowned");
+1214:	public static final SoundEvent PARROT_IMITATE_ELDER_GUARDIAN = register("entity.parrot.imitate.elder_guardian");
+1215:	public static final SoundEvent PARROT_IMITATE_ENDER_DRAGON = register("entity.parrot.imitate.ender_dragon");
+1216:	public static final SoundEvent PARROT_IMITATE_ENDERMITE = register("entity.parrot.imitate.endermite");
+1217:	public static final SoundEvent PARROT_IMITATE_EVOKER = register("entity.parrot.imitate.evoker");
+1218:	public static final SoundEvent PARROT_IMITATE_GHAST = register("entity.parrot.imitate.ghast");
+1219:	public static final SoundEvent PARROT_IMITATE_GUARDIAN = register("entity.parrot.imitate.guardian");
+1220:	public static final SoundEvent PARROT_IMITATE_HOGLIN = register("entity.parrot.imitate.hoglin");
+1221:	public static final SoundEvent PARROT_IMITATE_HUSK = register("entity.parrot.imitate.husk");
+1222:	public static final SoundEvent PARROT_IMITATE_ILLUSIONER = register("entity.parrot.imitate.illusioner");
+1223:	public static final SoundEvent PARROT_IMITATE_MAGMA_CUBE = register("entity.parrot.imitate.magma_cube");
+1224:	public static final SoundEvent PARROT_IMITATE_PHANTOM = register("entity.parrot.imitate.phantom");
+1225:	public static final SoundEvent PARROT_IMITATE_PARCHED = register("entity.parrot.imitate.parched");
+1226:	public static final SoundEvent PARROT_IMITATE_PIGLIN = register("entity.parrot.imitate.piglin");
+1227:	public static final SoundEvent PARROT_IMITATE_PIGLIN_BRUTE = register("entity.parrot.imitate.piglin_brute");
+1228:	public static final SoundEvent PARROT_IMITATE_PILLAGER = register("entity.parrot.imitate.pillager");
+1229:	public static final SoundEvent PARROT_IMITATE_RAVAGER = register("entity.parrot.imitate.ravager");
+1230:	public static final SoundEvent PARROT_IMITATE_SHULKER = register("entity.parrot.imitate.shulker");
+1231:	public static final SoundEvent PARROT_IMITATE_SILVERFISH = register("entity.parrot.imitate.silverfish");
+1232:	public static final SoundEvent PARROT_IMITATE_SKELETON = register("entity.parrot.imitate.skeleton");
+1233:	public static final SoundEvent PARROT_IMITATE_SLIME = register("entity.parrot.imitate.slime");
+1234:	public static final SoundEvent PARROT_IMITATE_SPIDER = register("entity.parrot.imitate.spider");
+1235:	public static final SoundEvent PARROT_IMITATE_STRAY = register("entity.parrot.imitate.stray");
+1236:	public static final SoundEvent PARROT_IMITATE_VEX = register("entity.parrot.imitate.vex");
+1237:	public static final SoundEvent PARROT_IMITATE_VINDICATOR = register("entity.parrot.imitate.vindicator");
+1238:	public static final SoundEvent PARROT_IMITATE_WARDEN = register("entity.parrot.imitate.warden");
+1239:	public static final SoundEvent PARROT_IMITATE_WITCH = register("entity.parrot.imitate.witch");
+1240:	public static final SoundEvent PARROT_IMITATE_WITHER = register("entity.parrot.imitate.wither");
+1241:	public static final SoundEvent PARROT_IMITATE_WITHER_SKELETON = register("entity.parrot.imitate.wither_skeleton");
+1242:	public static final SoundEvent PARROT_IMITATE_ZOGLIN = register("entity.parrot.imitate.zoglin");
+1243:	public static final SoundEvent PARROT_IMITATE_ZOMBIE = register("entity.parrot.imitate.zombie");
+1244:	public static final SoundEvent PARROT_IMITATE_ZOMBIE_HORSE = register("entity.parrot.imitate.zombie_horse");
+1245:	public static final SoundEvent PARROT_IMITATE_ZOMBIE_NAUTILUS = register("entity.parrot.imitate.zombie_nautilus");
+1246:	public static final SoundEvent PARROT_IMITATE_ZOMBIE_VILLAGER = register("entity.parrot.imitate.zombie_villager");
+1247:	public static final SoundEvent PARROT_STEP = register("entity.parrot.step");
+1248:	public static final SoundEvent PHANTOM_AMBIENT = register("entity.phantom.ambient");
+1249:	public static final SoundEvent PHANTOM_BITE = register("entity.phantom.bite");
+1250:	public static final SoundEvent PHANTOM_DEATH = register("entity.phantom.death");
+1251:	public static final SoundEvent PHANTOM_FLAP = register("entity.phantom.flap");
+1252:	public static final SoundEvent PHANTOM_HURT = register("entity.phantom.hurt");
+1253:	public static final SoundEvent PHANTOM_SWOOP = register("entity.phantom.swoop");
+1485:	public static final SoundEvent SMALL_AMETHYST_BUD_BREAK = register("block.small_amethyst_bud.break");
+1486:	public static final SoundEvent SMALL_AMETHYST_BUD_PLACE = register("block.small_amethyst_bud.place");
+1534:	public static final SoundEvent SNIFFER_STEP = register("entity.sniffer.step");
+1535:	public static final SoundEvent SNIFFER_EAT = register("entity.sniffer.eat");
+1536:	public static final SoundEvent SNIFFER_IDLE = register("entity.sniffer.idle");
+1537:	public static final SoundEvent SNIFFER_HURT = register("entity.sniffer.hurt");
+1538:	public static final SoundEvent SNIFFER_DEATH = register("entity.sniffer.death");
+1539:	public static final SoundEvent SNIFFER_DROP_SEED = register("entity.sniffer.drop_seed");
+1540:	public static final SoundEvent SNIFFER_SCENTING = register("entity.sniffer.scenting");
+1541:	public static final SoundEvent SNIFFER_SNIFFING = register("entity.sniffer.sniffing");
+1542:	public static final SoundEvent SNIFFER_SEARCHING = register("entity.sniffer.searching");
+1543:	public static final SoundEvent SNIFFER_DIGGING = register("entity.sniffer.digging");
+1544:	public static final SoundEvent SNIFFER_DIGGING_STOP = register("entity.sniffer.digging_stop");
+1545:	public static final SoundEvent SNIFFER_HAPPY = register("entity.sniffer.happy");
+1546:	public static final SoundEvent SNIFFER_EGG_PLOP = register("block.sniffer_egg.plop");
+1547:	public static final SoundEvent SNIFFER_EGG_CRACK = register("block.sniffer_egg.crack");
+1548:	public static final SoundEvent SNIFFER_EGG_HATCH = register("block.sniffer_egg.hatch");
+1650:	public static final Holder.Reference<SoundEvent> UI_BUTTON_CLICK = registerForHolder("ui.button.click");
+1673:	public static final SoundEvent VEX_AMBIENT = register("entity.vex.ambient");
+1674:	public static final SoundEvent VEX_CHARGE = register("entity.vex.charge");
+1675:	public static final SoundEvent VEX_DEATH = register("entity.vex.death");
+1676:	public static final SoundEvent VEX_HURT = register("entity.vex.hurt");
+1754:	public static final Holder.Reference<SoundEvent> WIND_CHARGE_BURST = registerForHolder("entity.wind_charge.wind_burst");
+1755:	public static final SoundEvent WIND_CHARGE_THROW = register("entity.wind_charge.throw");
+2066:							CAT_AMBIENT_BABY,
+2067:							CAT_STRAY_AMBIENT_BABY,
+2068:							CAT_HISS_BABY,
+2069:							CAT_HURT_BABY,
+2070:							CAT_DEATH_BABY,
+2071:							CAT_EAT_BABY,
+2072:							CAT_BEG_FOR_FOOD_BABY,
+2073:							CAT_PURR_BABY,
+2074:							CAT_PURREOW_BABY
+=== net/minecraft/core/particles/ParticleTypes.java
+14:	public static final SimpleParticleType ANGRY_VILLAGER = register("angry_villager", false);
+15:	public static final ParticleType<BlockParticleOption> BLOCK = register("block", false, BlockParticleOption::codec, BlockParticleOption::streamCodec);
+16:	public static final ParticleType<BlockParticleOption> BLOCK_MARKER = register(
+19:	public static final SimpleParticleType BUBBLE = register("bubble", false);
+20:	public static final SimpleParticleType SULFUR_BUBBLES = register("sulfur_bubbles", false);
+21:	public static final SimpleParticleType NOXIOUS_GAS = register("noxious_gas", false);
+22:	public static final SimpleParticleType NOXIOUS_GAS_CLOUD = register("noxious_gas_cloud", false);
+23:	public static final ParticleType<GeyserParticleOptions> GEYSER = register("geyser", true, GeyserParticleOptions::codec, GeyserParticleOptions::streamCodec);
+24:	public static final ParticleType<GeyserBaseParticleOptions> GEYSER_BASE = register(
+27:	public static final ParticleType<GeyserBaseParticleOptions> GEYSER_POOF = register(
+30:	public static final ParticleType<GeyserParticleOptions> GEYSER_PLUME = register(
+33:	public static final SimpleParticleType CLOUD = register("cloud", false);
+34:	public static final SimpleParticleType COPPER_FIRE_FLAME = register("copper_fire_flame", false);
+35:	public static final SimpleParticleType CRIT = register("crit", false);
+36:	public static final SimpleParticleType DAMAGE_INDICATOR = register("damage_indicator", true);
+37:	public static final ParticleType<PowerParticleOption> DRAGON_BREATH = register(
+40:	public static final SimpleParticleType DRIPPING_LAVA = register("dripping_lava", false);
+41:	public static final SimpleParticleType FALLING_LAVA = register("falling_lava", false);
+42:	public static final SimpleParticleType LANDING_LAVA = register("landing_lava", false);
+43:	public static final SimpleParticleType DRIPPING_WATER = register("dripping_water", false);
+44:	public static final SimpleParticleType FALLING_WATER = register("falling_water", false);
+45:	public static final ParticleType<DustParticleOptions> DUST = register("dust", false, t -> DustParticleOptions.CODEC, t -> DustParticleOptions.STREAM_CODEC);
+46:	public static final ParticleType<DustColorTransitionOptions> DUST_COLOR_TRANSITION = register(
+49:	public static final ParticleType<SpellParticleOption> EFFECT = register("effect", false, SpellParticleOption::codec, SpellParticleOption::streamCodec);
+50:	public static final SimpleParticleType ELDER_GUARDIAN = register("elder_guardian", true);
+51:	public static final SimpleParticleType ENCHANTED_HIT = register("enchanted_hit", false);
+52:	public static final SimpleParticleType ENCHANT = register("enchant", false);
+53:	public static final SimpleParticleType END_ROD = register("end_rod", false);
+54:	public static final ParticleType<ColorParticleOption> ENTITY_EFFECT = register(
+57:	public static final SimpleParticleType EXPLOSION_EMITTER = register("explosion_emitter", true);
+58:	public static final SimpleParticleType EXPLOSION = register("explosion", true);
+59:	public static final SimpleParticleType GUST = register("gust", true);
+60:	public static final SimpleParticleType SMALL_GUST = register("small_gust", false);
+61:	public static final SimpleParticleType GUST_EMITTER_LARGE = register("gust_emitter_large", true);
+62:	public static final SimpleParticleType GUST_EMITTER_SMALL = register("gust_emitter_small", true);
+63:	public static final SimpleParticleType SONIC_BOOM = register("sonic_boom", true);
+64:	public static final ParticleType<BlockParticleOption> FALLING_DUST = register(
+67:	public static final SimpleParticleType FIREWORK = register("firework", false);
+68:	public static final SimpleParticleType FISHING = register("fishing", false);
+69:	public static final SimpleParticleType FLAME = register("flame", false);
+70:	public static final SimpleParticleType INFESTED = register("infested", false);
+71:	public static final SimpleParticleType CHERRY_LEAVES = register("cherry_leaves", false);
+72:	public static final SimpleParticleType PALE_OAK_LEAVES = register("pale_oak_leaves", false);
+73:	public static final SimpleParticleType RED_POPLAR_LEAVES = register("red_poplar_leaves", false);
+74:	public static final SimpleParticleType ORANGE_POPLAR_LEAVES = register("orange_poplar_leaves", false);
+75:	public static final SimpleParticleType YELLOW_POPLAR_LEAVES = register("yellow_poplar_leaves", false);
+76:	public static final ParticleType<ColorParticleOption> TINTED_LEAVES = register(
+79:	public static final SimpleParticleType SCULK_SOUL = register("sculk_soul", false);
+80:	public static final ParticleType<SculkChargeParticleOptions> SCULK_CHARGE = register(
+83:	public static final SimpleParticleType SCULK_CHARGE_POP = register("sculk_charge_pop", true);
+84:	public static final SimpleParticleType SOUL_FIRE_FLAME = register("soul_fire_flame", false);
+85:	public static final SimpleParticleType SOUL = register("soul", false);
+86:	public static final ParticleType<ColorParticleOption> FLASH = register("flash", false, ColorParticleOption::codec, ColorParticleOption::streamCodec);
+87:	public static final SimpleParticleType HAPPY_VILLAGER = register("happy_villager", false);
+88:	public static final SimpleParticleType COMPOSTER = register("composter", false);
+89:	public static final SimpleParticleType HEART = register("heart", false);
+90:	public static final ParticleType<SpellParticleOption> INSTANT_EFFECT = register(
+93:	public static final ParticleType<ItemParticleOption> ITEM = register("item", false, ItemParticleOption::codec, ItemParticleOption::streamCodec);
+94:	public static final ParticleType<VibrationParticleOption> VIBRATION = register(
+97:	public static final ParticleType<TrailParticleOption> TRAIL = register("trail", false, t -> TrailParticleOption.CODEC, t -> TrailParticleOption.STREAM_CODEC);
+98:	public static final SimpleParticleType PAUSE_MOB_GROWTH = register("pause_mob_growth", false);
+99:	public static final SimpleParticleType RESET_MOB_GROWTH = register("reset_mob_growth", false);
+100:	public static final SimpleParticleType ITEM_SLIME = register("item_slime", false);
+101:	public static final SimpleParticleType ITEM_COBWEB = register("item_cobweb", false);
+102:	public static final SimpleParticleType ITEM_SNOWBALL = register("item_snowball", false);
+103:	public static final SimpleParticleType LARGE_SMOKE = register("large_smoke", false);
+104:	public static final SimpleParticleType LAVA = register("lava", false);
+105:	public static final SimpleParticleType MYCELIUM = register("mycelium", false);
+106:	public static final SimpleParticleType NOTE = register("note", false);
+107:	public static final SimpleParticleType POOF = register("poof", true);
+108:	public static final SimpleParticleType PORTAL = register("portal", false);
+109:	public static final SimpleParticleType RAIN = register("rain", false);
+110:	public static final SimpleParticleType SMOKE = register("smoke", false);
+111:	public static final SimpleParticleType WHITE_SMOKE = register("white_smoke", false);
+112:	public static final SimpleParticleType SNEEZE = register("sneeze", false);
+113:	public static final SimpleParticleType SPIT = register("spit", true);
+114:	public static final SimpleParticleType SQUID_INK = register("squid_ink", true);
+115:	public static final SimpleParticleType SWEEP_ATTACK = register("sweep_attack", true);
+116:	public static final SimpleParticleType TOTEM_OF_UNDYING = register("totem_of_undying", false);
+117:	public static final SimpleParticleType UNDERWATER = register("underwater", false);
+118:	public static final SimpleParticleType SPLASH = register("splash", false);
+119:	public static final SimpleParticleType WITCH = register("witch", false);
+120:	public static final SimpleParticleType BUBBLE_POP = register("bubble_pop", false);
+121:	public static final SimpleParticleType CURRENT_DOWN = register("current_down", false);
+122:	public static final SimpleParticleType BUBBLE_COLUMN_UP = register("bubble_column_up", false);
+123:	public static final SimpleParticleType NAUTILUS = register("nautilus", false);
+124:	public static final SimpleParticleType DOLPHIN = register("dolphin", false);
+125:	public static final SimpleParticleType CAMPFIRE_COSY_SMOKE = register("campfire_cosy_smoke", true);
+126:	public static final SimpleParticleType CAMPFIRE_SIGNAL_SMOKE = register("campfire_signal_smoke", true);
+127:	public static final SimpleParticleType DRIPPING_HONEY = register("dripping_honey", false);
+128:	public static final SimpleParticleType FALLING_HONEY = register("falling_honey", false);
+129:	public static final SimpleParticleType LANDING_HONEY = register("landing_honey", false);
+130:	public static final SimpleParticleType FALLING_NECTAR = register("falling_nectar", false);
+131:	public static final SimpleParticleType FALLING_SPORE_BLOSSOM = register("falling_spore_blossom", false);
+132:	public static final SimpleParticleType ASH = register("ash", false);
+133:	public static final SimpleParticleType CRIMSON_SPORE = register("crimson_spore", false);
+134:	public static final SimpleParticleType WARPED_SPORE = register("warped_spore", false);
+135:	public static final SimpleParticleType SPORE_BLOSSOM_AIR = register("spore_blossom_air", false);
+136:	public static final SimpleParticleType DRIPPING_OBSIDIAN_TEAR = register("dripping_obsidian_tear", false);
+137:	public static final SimpleParticleType FALLING_OBSIDIAN_TEAR = register("falling_obsidian_tear", false);
+138:	public static final SimpleParticleType LANDING_OBSIDIAN_TEAR = register("landing_obsidian_tear", false);
+139:	public static final SimpleParticleType REVERSE_PORTAL = register("reverse_portal", false);
+140:	public static final SimpleParticleType WHITE_ASH = register("white_ash", false);
+141:	public static final SimpleParticleType SMALL_FLAME = register("small_flame", false);
+142:	public static final SimpleParticleType SNOWFLAKE = register("snowflake", false);
+143:	public static final SimpleParticleType DRIPPING_DRIPSTONE_LAVA = register("dripping_dripstone_lava", false);
+144:	public static final SimpleParticleType FALLING_DRIPSTONE_LAVA = register("falling_dripstone_lava", false);
+145:	public static final SimpleParticleType DRIPPING_DRIPSTONE_WATER = register("dripping_dripstone_water", false);
+146:	public static final SimpleParticleType FALLING_DRIPSTONE_WATER = register("falling_dripstone_water", false);
+147:	public static final SimpleParticleType GLOW_SQUID_INK = register("glow_squid_ink", true);
+148:	public static final SimpleParticleType GLOW = register("glow", true);
+149:	public static final SimpleParticleType WAX_ON = register("wax_on", true);
+150:	public static final SimpleParticleType WAX_OFF = register("wax_off", true);
+151:	public static final SimpleParticleType ELECTRIC_SPARK = register("electric_spark", true);
+152:	public static final SimpleParticleType SCRAPE = register("scrape", true);
+153:	public static final ParticleType<ShriekParticleOption> SHRIEK = register(
+156:	public static final SimpleParticleType EGG_CRACK = register("egg_crack", false);
+157:	public static final SimpleParticleType DUST_PLUME = register("dust_plume", false);
+158:	public static final SimpleParticleType TRIAL_SPAWNER_DETECTED_PLAYER = register("trial_spawner_detection", true);
+159:	public static final SimpleParticleType TRIAL_SPAWNER_DETECTED_PLAYER_OMINOUS = register("trial_spawner_detection_ominous", true);
+160:	public static final SimpleParticleType VAULT_CONNECTION = register("vault_connection", true);
+161:	public static final ParticleType<BlockParticleOption> DUST_PILLAR = register(
+164:	public static final SimpleParticleType OMINOUS_SPAWNING = register("ominous_spawning", true);
+165:	public static final SimpleParticleType RAID_OMEN = register("raid_omen", false);
+166:	public static final SimpleParticleType TRIAL_OMEN = register("trial_omen", false);
+167:	public static final ParticleType<BlockParticleOption> BLOCK_CRUMBLE = register(
+170:	public static final SimpleParticleType FIREFLY = register("firefly", false);
+171:	public static final SimpleParticleType SULFUR_CUBE_GOO = register("sulfur_cube_goo", false);
+172:	public static final Codec<ParticleOptions> CODEC = BuiltInRegistries.PARTICLE_TYPE.byNameCodec().dispatch(ParticleOptions::getType, ParticleType::codec);
+173:	public static final StreamCodec<RegistryFriendlyByteBuf, ParticleOptions> STREAM_CODEC = ByteBufCodecs.registry(Registries.PARTICLE_TYPE)
+=== net/minecraft/client/Minecraft.java
+299:	public final Font font;
+300:	public final Font fontFilterFishy;
+301:	public final GameRenderer gameRenderer;
+303:	public final Options options;
+348:	public @Nullable ClientLevel level;
+349:	public @Nullable LocalPlayer player;
+2191:	public void setScreenAndShow(final Screen screen) {
+2544:	public static Minecraft getInstance() {
+2595:	public TextureManager getTextureManager() {
+2635:	public SoundManager getSoundManager() {
+2675:	public @Nullable Entity getCameraEntity() {
+2720:	public DeltaTracker getDeltaTracker() {
+=== net/minecraft/client/renderer/GameRenderer.java
+105:	public static Identifier END_OF_FRAME_POST_EFFECT = Identifier.withDefaultNamespace("end_of_frame");
+145:	public GameRenderer(
+186:	public void close() {
+204:	public RenderBuffers renderBuffers() {
+208:	public FeatureRenderDispatcher featureRenderDispatcher() {
+212:	public GameRenderState gameRenderState() {
+216:	public void setRenderBlockOutline(final boolean renderBlockOutline) {
+220:	public void clearSpectatedEntityPostEffect() {
+225:	public void toggleSpectatorPostEffect() {
+229:	public void checkEntityPostEffect(final @Nullable Entity cameraEntity) {
+251:	public void processBlurEffect() {
+258:	public static void preloadUiShader(final ResourceManager resourceManager) {
+263:			public @Nullable String getShader(final Identifier id, final ShaderType type) {
+275:			public ShaderSource.@Nullable CachedIncludeSource getInclude(final Identifier id) {
+280:			public void close() {
+292:	public void tick() {
+317:	public @Nullable Identifier spectatedEntityPostEffect() {
+321:	public List<Identifier> getRequestedPostEffects() {
+326:	public List<Identifier> getAppliedPostEffects() {
+331:	public void onResourceManagerReload(final ResourceManager resourceManager) {
+335:	public void resize(final int width, final int height) {
+418:	public static float nightVisionScale(final LivingEntity camera, final float a) {
+423:	public void update(final DeltaTracker deltaTracker) {
+439:	public void extract(final DeltaTracker deltaTracker, final boolean advanceGameTime) {
+466:	public void render() {
+631:	public void renderLevel() {
+780:	public void resetData() {
+790:	public float bossOverlayWorldDarkening(final float a) {
+794:	public Camera mainCamera() {
+798:	public GpuTextureView lightmap() {
+802:	public GpuTextureView levelLightmap() {
+806:	public OverlayTexture overlayTexture() {
+810:	public RenderTarget mainRenderTarget() {
+815:	public Vec3 projectPointToScreen(final Vec3 point) {
+824:	public double projectHorizonToScreen() {
+838:	public Lighting lighting() {
+842:	public void setLevel(final @Nullable ClientLevel level) {
+850:	public Panorama panorama() {
+854:	public void registerPanoramaTextures(final TextureManager textureManager) {
+858:	public boolean useImprovedTransparency() {
+=== net/minecraft/client/DeltaTracker.java
+3:import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
+8:public interface DeltaTracker {
+12:	float getGameTimeDeltaTicks();
+14:	float getGameTimeDeltaPartialTick(boolean ignoreFrozenGame);
+16:	float getRealtimeDeltaTicks();
+20:		private final float value;
+22:		private DefaultValue(final float value) {
+27:		public float getGameTimeDeltaTicks() {
+32:		public float getGameTimeDeltaPartialTick(final boolean ignored) {
+37:		public float getRealtimeDeltaTicks() {
+44:		private float deltaTicks;
+45:		private float deltaTickResidual;
+46:		private float realtimeDeltaTicks;
+47:		private float pausedDeltaTickResidual;
+50:		private final float msPerTick;
+55:		public Timer(final float ticksPerSecond, final long currentMs, final FloatUnaryOperator targetMsptProvider) {
+62:			this.deltaTicks = (float)(currentMs - this.lastMs) / this.targetMsptProvider.apply(this.msPerTick);
+71:			this.realtimeDeltaTicks = (float)(currentMs - this.lastUiMs) / this.msPerTick;
+104:		public float getGameTimeDeltaTicks() {
+109:		public float getGameTimeDeltaPartialTick(final boolean ignoreFrozenGame) {
+118:		public float getRealtimeDeltaTicks() {
+=== net/minecraft/client/renderer/RenderPipelines.java
+34:	public static final RenderPipeline.Snippet GLOBALS_SNIPPET = RenderPipeline.builder().withBindGroupLayout(BindGroupLayouts.GLOBALS).buildSnippet();
+38:	public static final RenderPipeline.Snippet MATRICES_FOG_SNIPPET = RenderPipeline.builder(GLOBALS_SNIPPET)
+46:	public static final RenderPipeline.Snippet MATRICES_FOG_LIGHT_DIR_SNIPPET = RenderPipeline.builder(MATRICES_FOG_SNIPPET)
+52:	public static final RenderPipeline.Snippet OIT_SNIPPET = RenderPipeline.builder(GLOBALS_SNIPPET)
+58:	public static final RenderPipeline.Snippet OIT_DEPTH_BOUNDS_SNIPPET = RenderPipeline.builder(OIT_SNIPPET)
+66:	public static final RenderPipeline.Snippet OIT_TRANSMITTANCE_SNIPPET = RenderPipeline.builder(OIT_SNIPPET)
+77:	public static final RenderPipeline.Snippet OIT_ACCUMULATE_SNIPPET = RenderPipeline.builder(OIT_SNIPPET)
+87:	public static final RenderPipeline.Snippet GENERIC_BLOCKS_SNIPPET = RenderPipeline.builder(GLOBALS_SNIPPET)
+97:	public static final RenderPipeline.Snippet LIT_BLOCKS_SNIPPET = RenderPipeline.builder(GENERIC_BLOCKS_SNIPPET)
+103:	public static final RenderPipeline.Snippet TERRAIN_SNIPPET = RenderPipeline.builder(LIT_BLOCKS_SNIPPET)
+113:	public static final RenderPipeline.Snippet MULTIDRAW_TERRAIN_SNIPPET = RenderPipeline.builder(LIT_BLOCKS_SNIPPET)
+124:	public static final RenderPipeline.Snippet BLOCK_SNIPPET = RenderPipeline.builder(LIT_BLOCKS_SNIPPET)
+133:	public static final RenderPipeline.Snippet WATER_MASK_SNIPPET = RenderPipeline.builder(GLOBALS_SNIPPET)
+145:	public static final RenderPipeline.Snippet LIGHTNING_SNIPPET = RenderPipeline.builder(MATRICES_FOG_SNIPPET)
+155:	public static final RenderPipeline.Snippet DRAGON_RAYS_SNIPPET = RenderPipeline.builder(MATRICES_FOG_SNIPPET)
+165:	public static final RenderPipeline.Snippet ENTITY_NO_LIGHTMAP_SNIPPET = RenderPipeline.builder(MATRICES_FOG_SNIPPET)
+176:	public static final RenderPipeline.Snippet ENTITY_SNIPPET = RenderPipeline.builder(ENTITY_NO_LIGHTMAP_SNIPPET)
+183:	public static final RenderPipeline.Snippet OIT_ENTITY_SNIPPET = RenderPipeline.builder()
+198:	public static final RenderPipeline.Snippet ENTITY_EMISSIVE_SNIPPET = RenderPipeline.builder(MATRICES_FOG_LIGHT_DIR_SNIPPET)
+210:	public static final RenderPipeline.Snippet EYES_SNIPPET = RenderPipeline.builder()
+218:	public static final RenderPipeline.Snippet BEACON_BEAM_SNIPPET = RenderPipeline.builder(MATRICES_FOG_SNIPPET)
+229:	public static final RenderPipeline.Snippet ITEM_SNIPPET = RenderPipeline.builder(MATRICES_FOG_LIGHT_DIR_SNIPPET)
+240:	public static final RenderPipeline.Snippet OIT_ITEM_SNIPPET = RenderPipeline.builder()
+255:	public static final RenderPipeline.Snippet TEXT_SNIPPET = RenderPipeline.builder(GLOBALS_SNIPPET)
+268:	public static final RenderPipeline.Snippet WORLD_TEXT_SNIPPET = RenderPipeline.builder(TEXT_SNIPPET)
+277:	public static final RenderPipeline.Snippet END_PORTAL_SNIPPET = RenderPipeline.builder(GLOBALS_SNIPPET)
+292:	public static final RenderPipeline.Snippet CLOUDS_SNIPPET = RenderPipeline.builder(MATRICES_FOG_SNIPPET)
+303:	public static final RenderPipeline.Snippet OIT_CLOUDS_SNIPPET = RenderPipeline.builder()
+314:	public static final RenderPipeline.Snippet LINES_SNIPPET = RenderPipeline.builder(MATRICES_FOG_SNIPPET)
+325:	public static final RenderPipeline.Snippet OIT_LINES_SNIPPET = RenderPipeline.builder()
+337:	public static final RenderPipeline.Snippet DEBUG_FILLED_SNIPPET = RenderPipeline.builder(GLOBALS_SNIPPET)
+351:	public static final RenderPipeline.Snippet OIT_DEBUG_FILLED_SNIPPET = RenderPipeline.builder()
+362:	public static final RenderPipeline.Snippet DEBUG_POINTS_SNIPPET = RenderPipeline.builder()
+373:	public static final RenderPipeline.Snippet PARTICLE_SNIPPET = RenderPipeline.builder(MATRICES_FOG_SNIPPET)
+384:	public static final RenderPipeline.Snippet OIT_PARTICLE_SNIPPET = RenderPipeline.builder()
+397:	public static final RenderPipeline.Snippet WEATHER_SNIPPET = RenderPipeline.builder(PARTICLE_SNIPPET)
+404:	public static final RenderPipeline.Snippet CRUMBLING_SNIPPET = RenderPipeline.builder()
+417:	public static final RenderPipeline.Snippet GUI_SNIPPET = RenderPipeline.builder(GLOBALS_SNIPPET)
+429:	public static final RenderPipeline.Snippet GUI_TEXTURED_SNIPPET = RenderPipeline.builder(GLOBALS_SNIPPET)
+442:	public static final RenderPipeline.Snippet GUI_TEXT_SNIPPET = RenderPipeline.builder(TEXT_SNIPPET)
+443:		.withShaderDefine("IS_GUI")
+450:	public static final RenderPipeline.Snippet OUTLINE_SNIPPET = RenderPipeline.builder(GLOBALS_SNIPPET)
+460:	public static final RenderPipeline.Snippet POST_PROCESSING_SNIPPET = RenderPipeline.builder(GLOBALS_SNIPPET)
+463:	public static final RenderPipeline SOLID_BLOCK = register(
+466:	public static final RenderPipeline SOLID_TERRAIN = register(
+469:	public static final RenderPipeline SOLID_TERRAIN_MULTIDRAW = register(
+472:	public static final RenderPipeline WIREFRAME = registerOptional(
+479:	public static final RenderPipeline WIREFRAME_MULTIDRAW = registerOptional(
+486:	public static final RenderPipeline CUTOUT_BLOCK = register(
+493:	public static final RenderPipeline CUTOUT_TERRAIN = register(
+500:	public static final RenderPipeline CUTOUT_TERRAIN_MULTIDRAW = register(
+507:	public static final RenderPipeline TRANSLUCENT_TERRAIN = register(
+514:	public static final RenderPipeline TRANSLUCENT_TERRAIN_MULTIDRAW = register(
+521:	public static final OitPipelineSet OIT_TERRAIN = register(
+534:	public static final OitPipelineSet OIT_TERRAIN_MULTIDRAW = register(
+548:	public static final RenderPipeline TRANSLUCENT_BLOCK = register(
+556:	public static final OitPipelineSet OIT_TRANSLUCENT_BLOCK = register(
+568:	public static final RenderPipeline ARMOR_CUTOUT_NO_CULL = register(
+578:	public static final RenderPipeline ARMOR_DECAL_CUTOUT_NO_CULL = register(
+589:	public static final RenderPipeline WOLF_ARMOR_CRACKS = register(
+599:	public static final RenderPipeline ENTITY_SOLID = register(
+606:	public static final RenderPipeline ENTITY_SOLID_Z_OFFSET_FORWARD = register(
+613:	public static final RenderPipeline ENTITY_CUTOUT_CULL = register(
+621:	public static final RenderPipeline ENTITY_CUTOUT = register(
+631:	public static final RenderPipeline ENTITY_CUTOUT_Z_OFFSET = register(
+641:	public static final RenderPipeline ENTITY_CUTOUT_DISSOLVE = register(
+653:	public static final RenderPipeline ENTITY_TRANSLUCENT = register(
+663:	public static final OitPipelineSet OIT_ENTITY = register(
+672:	public static final RenderPipeline ENTITY_TRANSLUCENT_EMISSIVE = register(
+683:	public static final OitPipelineSet OIT_ENTITY_EMISSIVE = register(
+690:	public static final RenderPipeline ENTITY_TRANSLUCENT_CULL = register(
+698:	public static final OitPipelineSet OIT_ENTITY_CULL = register(
+703:	public static final RenderPipeline END_CRYSTAL_BEAM = register(
+712:	public static final RenderPipeline BANNER_PATTERN = register(
+720:	public static final RenderPipeline BREEZE_WIND = register(
+731:	public static final OitPipelineSet OIT_BREEZE_WIND = register(
+746:	public static final RenderPipeline.Snippet ENERGY_SWIRL_SNIPPET = RenderPipeline.builder(MATRICES_FOG_SNIPPET)
+759:	public static final RenderPipeline ENERGY_SWIRL = register(
+766:	public static final OitPipelineSet OIT_ENERGY_SWIRL = register(
+769:	public static final RenderPipeline EYES = register(
+776:	public static final OitPipelineSet OIT_EYES = register(OitPipelineSet.builder("eyes", RenderPipeline.builder(OIT_ENTITY_SNIPPET, EYES_SNIPPET)).build());
+780:	public static final RenderPipeline.Snippet ENTITY_SHADOW_SNIPPET = RenderPipeline.builder(MATRICES_FOG_SNIPPET)
+788:	public static final RenderPipeline ENTITY_SHADOW = register(
+794:	public static final OitPipelineSet OIT_ENTITY_SHADOW = register(OitPipelineSet.builder("entity_shadow", RenderPipeline.builder(ENTITY_SHADOW_SNIPPET)).build());
+795:	public static final RenderPipeline.Snippet GLINT_SNIPPET = RenderPipeline.builder()
+799:	public static final RenderPipeline.Snippet GLINT_SPECIAL_SNIPPET = RenderPipeline.builder(GLINT_SNIPPET).withShaderDefine("GLINT_SPECIAL").buildSnippet();
+800:	public static final RenderPipeline ARMOR_CUTOUT_NO_CULL_GLINT = register(
+810:	public static final RenderPipeline ENTITY_SOLID_GLINT = register(
+817:	public static final RenderPipeline ITEM_CUTOUT = register(
+824:	public static final RenderPipeline ITEM_CUTOUT_GLINT = register(
+831:	public static final RenderPipeline ITEM_CUTOUT_GLINT_SPECIAL = register(
+839:	public static final RenderPipeline ITEM_TRANSLUCENT = register(
+846:	public static final OitPipelineSet OIT_ITEM = register(
+851:	public static final RenderPipeline ITEM_TRANSLUCENT_GLINT = register(
+858:	public static final RenderPipeline ITEM_TRANSLUCENT_GLINT_SPECIAL = register(
+866:	public static final OitPipelineSet OIT_ITEM_GLINT = register(
+876:	public static final OitPipelineSet OIT_ITEM_GLINT_SPECIAL = register(
+886:	public static final RenderPipeline BEACON_BEAM_OPAQUE = register(
+889:	public static final RenderPipeline BEACON_BEAM_TRANSLUCENT = register(
+896:	public static final OitPipelineSet OIT_BEACON_BEAM = register(OitPipelineSet.builder("beacon_beam", RenderPipeline.builder(BEACON_BEAM_SNIPPET)).build());
+897:	public static final RenderPipeline LEASH = register(
+910:	public static final RenderPipeline WATER_MASK = register(
+916:	public static final RenderPipeline OIT_WATER_MASK = register(RenderPipeline.builder(WATER_MASK_SNIPPET).withLocation("pipeline/oit_water_mask").build());
+917:	public static final RenderPipeline GLINT = register(
+933:	public static final RenderPipeline CRUMBLING = register(
+940:	public static final OitPipelineSet OIT_CRUMBLING = register(OitPipelineSet.builder("crumbling", RenderPipeline.builder(CRUMBLING_SNIPPET)).build());
+941:	public static final RenderPipeline TEXT = register(
+944:	public static final OitPipelineSet OIT_TEXT = register(OitPipelineSet.builder("text", RenderPipeline.builder(WORLD_TEXT_SNIPPET)).build());
+945:	public static final RenderPipeline GUI_TEXT = register(RenderPipeline.builder(GUI_TEXT_SNIPPET).withLocation("pipeline/gui_text").build());
+946:	public static final RenderPipeline TEXT_GRAYSCALE = register(
+953:	public static final OitPipelineSet OIT_TEXT_GRAYSCALE = register(
+956:	public static final RenderPipeline GUI_TEXT_GRAYSCALE = register(
+957:		RenderPipeline.builder(GUI_TEXT_SNIPPET).withLocation("pipeline/gui_text_grayscale").withShaderDefine("IS_GRAYSCALE").build()
+959:	public static final RenderPipeline TEXT_POLYGON_OFFSET = register(
+966:	public static final OitPipelineSet OIT_TEXT_POLYGON_OFFSET = register(
+969:	public static final RenderPipeline TEXT_GRAYSCALE_POLYGON_OFFSET = register(
+977:	public static final OitPipelineSet OIT_TEXT_GRAYSCALE_POLYGON_OFFSET = register(
+980:	public static final RenderPipeline TEXT_SEE_THROUGH = register(
+988:	public static final RenderPipeline TEXT_GRAYSCALE_SEE_THROUGH = register(
+997:	public static final RenderPipeline LIGHTNING = register(
+1000:	public static final OitPipelineSet OIT_LIGHTNING = register(
+1003:	public static final RenderPipeline DRAGON_RAYS = register(
+1006:	public static final OitPipelineSet OIT_DRAGON_RAYS = register(
+1009:	public static final RenderPipeline END_PORTAL = register(
+1012:	public static final RenderPipeline END_GATEWAY = register(
+1015:	public static final RenderPipeline FLAT_CLOUDS = register(RenderPipeline.builder(CLOUDS_SNIPPET).withLocation("pipeline/flat_clouds").withCull(false).build());
+1016:	public static final RenderPipeline CLOUDS = register(RenderPipeline.builder(CLOUDS_SNIPPET).withLocation("pipeline/clouds").build());
+1017:	public static final OitPipelineSet OIT_CLOUDS = register(
+1022:	public static final OitPipelineSet OIT_FLAT_CLOUDS = register(
+1025:	public static final RenderPipeline LINES = register(
+1028:	public static final RenderPipeline LINES_TRANSLUCENT = register(
+1034:	public static final RenderPipeline LINES_TRANSLUCENT_NO_DEPTH_WRITE = register(
+1041:	public static final OitPipelineSet OIT_LINES_TRANSLUCENT = register(
+1044:	public static final RenderPipeline LINES_DEPTH_BIAS = register(
+1051:	public static final RenderPipeline SECONDARY_BLOCK_OUTLINE = register(
+1058:	public static final RenderPipeline DEBUG_POINTS = register(
+1067:	public static final OitPipelineSet OIT_DEBUG_POINTS = register(OitPipelineSet.builder("debug_points", RenderPipeline.builder(DEBUG_POINTS_SNIPPET)).build());
+1068:	public static final RenderPipeline DEBUG_FILLED_BOX = register(RenderPipeline.builder(DEBUG_FILLED_SNIPPET).withLocation("pipeline/debug_filled_box").build());
+1069:	public static final OitPipelineSet OIT_DEBUG_FILLED_BOX = register(
+1072:	public static final RenderPipeline DEBUG_QUADS = register(
+1075:	public static final OitPipelineSet OIT_DEBUG_QUADS = register(OitPipelineSet.builder("debug_quads", RenderPipeline.builder(OIT_DEBUG_FILLED_SNIPPET)).build());
+1076:	public static final RenderPipeline DEBUG_TRIANGLE_FAN = register(
+1084:	public static final OitPipelineSet OIT_DEBUG_TRIANGLE_FAN = register(
+1093:	public static final RenderPipeline WORLD_BORDER = register(
+1108:	public static final OitPipelineSet OIT_WORLD_BORDER = register(
+1124:	public static final RenderPipeline OPAQUE_PARTICLE = register(
+1127:	public static final RenderPipeline TRANSLUCENT_PARTICLE = register(
+1133:	public static final OitPipelineSet OIT_PARTICLE = register(OitPipelineSet.builder("particle", RenderPipeline.builder(OIT_PARTICLE_SNIPPET)).build());
+1134:	public static final RenderPipeline WEATHER = register(
+1140:	public static final OitPipelineSet OIT_WEATHER = register(
+1143:	public static final RenderPipeline SKY = register(
+1153:	public static final RenderPipeline END_SKY = register(
+1166:	public static final RenderPipeline SUNRISE_SUNSET = register(
+1178:	public static final RenderPipeline STARS = register(
+1190:	public static final RenderPipeline CELESTIAL = register(
+1203:	public static final RenderPipeline GUI = register(RenderPipeline.builder(GUI_SNIPPET).withLocation("pipeline/gui").build());
+1204:	public static final RenderPipeline GUI_INVERT = register(
+1205:		RenderPipeline.builder(GUI_SNIPPET).withLocation("pipeline/gui_invert").withColorTargetState(new ColorTargetState(BlendFunction.INVERT)).build()
+1207:	public static final RenderPipeline GUI_TEXT_HIGHLIGHT = register(
+1208:		RenderPipeline.builder(GUI_SNIPPET).withLocation("pipeline/gui_text_highlight").withColorTargetState(new ColorTargetState(BlendFunction.ADDITIVE)).build()
+1210:	public static final RenderPipeline GUI_TEXTURED = register(RenderPipeline.builder(GUI_TEXTURED_SNIPPET).withLocation("pipeline/gui_textured").build());
+1211:	public static final RenderPipeline GUI_TEXTURED_PREMULTIPLIED_ALPHA = register(
+1212:		RenderPipeline.builder(GUI_TEXTURED_SNIPPET)
+1217:	public static final RenderPipeline BLOCK_SCREEN_EFFECT = register(
+1218:		RenderPipeline.builder(GUI_TEXTURED_SNIPPET).withLocation("pipeline/block_screen_effect").build()
+1220:	public static final RenderPipeline FIRE_SCREEN_EFFECT = register(
+1221:		RenderPipeline.builder(GUI_TEXTURED_SNIPPET).withLocation("pipeline/fire_screen_effect").build()
+1223:	public static final RenderPipeline GUI_OPAQUE_TEXTURED_BACKGROUND = register(
+1224:		RenderPipeline.builder(GUI_TEXTURED_SNIPPET)
+1229:	public static final RenderPipeline GUI_NAUSEA_OVERLAY = register(
+1230:		RenderPipeline.builder(GUI_TEXTURED_SNIPPET)
+1235:	public static final RenderPipeline VIGNETTE = register(
+1236:		RenderPipeline.builder(GUI_TEXTURED_SNIPPET)
+1241:	public static final RenderPipeline CROSSHAIR = register(
+1242:		RenderPipeline.builder(GUI_TEXTURED_SNIPPET).withLocation("pipeline/crosshair").withColorTargetState(new ColorTargetState(BlendFunction.INVERT)).build()
+1244:	public static final RenderPipeline MOJANG_LOGO = register(
+1245:		RenderPipeline.builder(GUI_TEXTURED_SNIPPET)
+1250:	public static final RenderPipeline ENTITY_OUTLINE_BLIT = register(
+1260:	public static final RenderPipeline TRACY_BLIT = register(
+1270:	public static final RenderPipeline PANORAMA = register(
+1283:	public static final RenderPipeline OUTLINE_CULL = register(RenderPipeline.builder(OUTLINE_SNIPPET).withLocation("pipeline/outline_cull").build());
+1284:	public static final RenderPipeline OUTLINE_NO_CULL = register(
+1287:	public static final RenderPipeline LIGHTMAP = register(
+1297:	public static final RenderPipeline.Snippet ANIMATE_SPRITE_SNIPPET = RenderPipeline.builder(GLOBALS_SNIPPET)
+1303:	public static final RenderPipeline ANIMATE_SPRITE_BLIT = register(
+1310:	public static final RenderPipeline ANIMATE_SPRITE_INTERPOLATE = register(
+1317:	public static final RenderPipeline BLIT_DEPTH_BOUNDS = register(
+1327:	public static final RenderPipeline OIT_DEPTH_BOUNDS_CULL = register(
+1339:	public static final RenderPipeline BLIT_DEPTH_DURING_DEPTH_BOUNDS = register(
+1350:	public static final RenderPipeline BLIT_DEPTH = register(
+1360:	public static final RenderPipeline OIT_COMPOSITE = register(
+1372:	public static final RenderPipeline INTEGRATE_DEPTH = register(
+=== net/minecraft/client/renderer/texture/OverlayTexture.java
+10:public class OverlayTexture implements AutoCloseable {
+12:	public static final int NO_WHITE_U = 0;
+13:	public static final int RED_OVERLAY_V = 3;
+14:	public static final int WHITE_OVERLAY_V = 10;
+15:	public static final int NO_OVERLAY = pack(0, 10);
+18:	public OverlayTexture() {
+36:	public void close() {
+40:	public static int u(final float whiteOverlayProgress) {
+44:	public static int v(final boolean hurtOverlay) {
+48:	public static int pack(final int u, final int v) {
+52:	public static int pack(final float whiteOverlayProgress, final boolean redOverlay) {
+56:	public GpuTextureView getTextureView() {
+=== net/minecraft/util/LightCoordsUtil.java
+8:public class LightCoordsUtil {
+9:	public static final int FULL_BRIGHT = 15728880;
+10:	public static final int FULL_SKY = 15728640;
+13:	public static int pack(final int block, final int sky) {
+17:	public static int block(final int packed) {
+21:	public static int sky(final int packed) {
+25:	public static int withBlock(final int coords, final int block) {
+29:	public static int smoothPack(final int block, final int sky) {
+33:	public static int smoothBlock(final int packed) {
+37:	public static int smoothSky(final int packed) {
+41:	public static int addSmoothBlockEmission(final int lightCoords, float blockLightEmission) {
+48:	public static int max(final int coords1, final int coords2) {
+56:	public static int lightCoordsWithEmission(final int lightCoords, final int emission) {
+66:	public static int smoothBlend(int neighbor1, int neighbor2, int neighbor3, final int center) {
+90:	public static int smoothWeightedBlend(
+105:	public static int getLightCoords(final BlockAndLightGetter level, final BlockPos pos) {
+109:	public static int getLightCoords(
+123:	public interface BrightnessGetter {
+=== com/mojang/blaze3d/platform/InputConstants.java
+31:	public static final int KEY_0 = 39;
+32:	public static final int KEY_1 = 30;
+33:	public static final int KEY_2 = 31;
+34:	public static final int KEY_3 = 32;
+35:	public static final int KEY_4 = 33;
+36:	public static final int KEY_5 = 34;
+37:	public static final int KEY_6 = 35;
+38:	public static final int KEY_7 = 36;
+39:	public static final int KEY_8 = 37;
+40:	public static final int KEY_9 = 38;
+41:	public static final int KEY_A = 4;
+42:	public static final int KEY_B = 5;
+43:	public static final int KEY_C = 6;
+44:	public static final int KEY_D = 7;
+45:	public static final int KEY_E = 8;
+46:	public static final int KEY_F = 9;
+47:	public static final int KEY_G = 10;
+48:	public static final int KEY_H = 11;
+49:	public static final int KEY_I = 12;
+50:	public static final int KEY_J = 13;
+51:	public static final int KEY_K = 14;
+52:	public static final int KEY_L = 15;
+53:	public static final int KEY_M = 16;
+54:	public static final int KEY_N = 17;
+55:	public static final int KEY_O = 18;
+56:	public static final int KEY_P = 19;
+57:	public static final int KEY_Q = 20;
+58:	public static final int KEY_R = 21;
+59:	public static final int KEY_S = 22;
+60:	public static final int KEY_T = 23;
+61:	public static final int KEY_U = 24;
+62:	public static final int KEY_V = 25;
+63:	public static final int KEY_W = 26;
+64:	public static final int KEY_X = 27;
+65:	public static final int KEY_Y = 28;
+66:	public static final int KEY_Z = 29;
+67:	public static final int KEY_F1 = 58;
+68:	public static final int KEY_F2 = 59;
+69:	public static final int KEY_F3 = 60;
+70:	public static final int KEY_F4 = 61;
+71:	public static final int KEY_F5 = 62;
+72:	public static final int KEY_F6 = 63;
+73:	public static final int KEY_F7 = 64;
+74:	public static final int KEY_F8 = 65;
+75:	public static final int KEY_F9 = 66;
+76:	public static final int KEY_F10 = 67;
+77:	public static final int KEY_F11 = 68;
+78:	public static final int KEY_F12 = 69;
+79:	public static final int KEY_F13 = 104;
+80:	public static final int KEY_F14 = 105;
+81:	public static final int KEY_F15 = 106;
+82:	public static final int KEY_F16 = 107;
+83:	public static final int KEY_F17 = 108;
+84:	public static final int KEY_F18 = 109;
+85:	public static final int KEY_F19 = 110;
+86:	public static final int KEY_F20 = 111;
+87:	public static final int KEY_F21 = 112;
+88:	public static final int KEY_F22 = 113;
+89:	public static final int KEY_F23 = 114;
+90:	public static final int KEY_F24 = 115;
+91:	public static final int KEY_NUMLOCK = 83;
+92:	public static final int KEY_NUMPAD0 = 98;
+93:	public static final int KEY_NUMPAD1 = 89;
+94:	public static final int KEY_NUMPAD2 = 90;
+95:	public static final int KEY_NUMPAD3 = 91;
+96:	public static final int KEY_NUMPAD4 = 92;
+97:	public static final int KEY_NUMPAD5 = 93;
+98:	public static final int KEY_NUMPAD6 = 94;
+99:	public static final int KEY_NUMPAD7 = 95;
+100:	public static final int KEY_NUMPAD8 = 96;
+101:	public static final int KEY_NUMPAD9 = 97;
+102:	public static final int KEY_NUMPADCOMMA = 220;
+103:	public static final int KEY_NUMPADENTER = 88;
+104:	public static final int KEY_NUMPADEQUALS = 103;
+105:	public static final int KEY_DOWN = 81;
+106:	public static final int KEY_LEFT = 80;
+107:	public static final int KEY_RIGHT = 79;
+108:	public static final int KEY_UP = 82;
+109:	public static final int KEY_ADD = 87;
+110:	public static final int KEY_APOSTROPHE = 52;
+111:	public static final int KEY_BACKSLASH = 49;
+112:	public static final int KEY_COMMA = 54;
+113:	public static final int KEY_EQUALS = 46;
+114:	public static final int KEY_GRAVE = 53;
+115:	public static final int KEY_LBRACKET = 47;
+116:	public static final int KEY_MINUS = 45;
+117:	public static final int KEY_MULTIPLY = 85;
+118:	public static final int KEY_PERIOD = 55;
+119:	public static final int KEY_RBRACKET = 48;
+120:	public static final int KEY_SEMICOLON = 51;
+121:	public static final int KEY_SLASH = 56;
+122:	public static final int KEY_SPACE = 44;
+123:	public static final int KEY_TAB = 43;
+124:	public static final int KEY_LALT = 226;
+125:	public static final int KEY_LCONTROL = 224;
+126:	public static final int KEY_LSHIFT = 225;
+127:	public static final int KEY_LGUI = 227;
+128:	public static final int KEY_RALT = 230;
+129:	public static final int KEY_RCONTROL = 228;
+130:	public static final int KEY_RSHIFT = 229;
+131:	public static final int KEY_RGUI = 231;
+132:	public static final int KEY_RETURN = 40;
+133:	public static final int KEY_ESCAPE = 41;
+134:	public static final int KEY_BACKSPACE = 42;
+135:	public static final int KEY_DELETE = 76;
+136:	public static final int KEY_END = 77;
+137:	public static final int KEY_HOME = 74;
+138:	public static final int KEY_INSERT = 73;
+139:	public static final int KEY_PAGEDOWN = 78;
+140:	public static final int KEY_PAGEUP = 75;
+141:	public static final int KEY_CAPSLOCK = 57;
+142:	public static final int KEY_PAUSE = 72;
+143:	public static final int KEY_SCROLLLOCK = 71;
+144:	public static final int KEY_PRINTSCREEN = 70;
+145:	public static final int PRESS = 1;
+146:	public static final int RELEASE = 0;
+147:	public static final int REPEAT = -1;
+148:	public static final int MOUSE_BUTTON_LEFT = 1;
+149:	public static final int MOUSE_BUTTON_MIDDLE = 2;
+150:	public static final int MOUSE_BUTTON_RIGHT = 3;
+151:	public static final int MOUSE_BUTTON_4 = 4;
+152:	public static final int MOUSE_BUTTON_5 = 5;
+153:	public static final int MOUSE_BUTTON_6 = 6;
+154:	public static final int MOUSE_BUTTON_7 = 7;
+155:	public static final int MOUSE_BUTTON_8 = 8;
+156:	public static final int MOD_SHIFT = 3;
+157:	public static final int MOD_CONTROL = 192;
+158:	public static final int MOD_ALT = 768;
+159:	public static final int MOD_SUPER = 3072;
+160:	public static final int MOD_CAPS_LOCK = 8192;
+161:	public static final int MOD_NUM_LOCK = 4096;
+162:	public static final int KEYCODE_A = 97;
+163:	public static final int KEYCODE_B = 98;
+164:	public static final int KEYCODE_C = 99;
+165:	public static final int KEYCODE_E = 101;
+166:	public static final int KEYCODE_F = 102;
+167:	public static final int KEYCODE_L = 108;
+168:	public static final int KEYCODE_M = 109;
+169:	public static final int KEYCODE_O = 111;
+170:	public static final int KEYCODE_R = 114;
+171:	public static final int KEYCODE_U = 117;
+172:	public static final int KEYCODE_V = 118;
+173:	public static final int KEYCODE_W = 119;
+174:	public static final int KEYCODE_X = 120;
+175:	public static final int KEYCODE_Y = 121;
+176:	public static final int KEYCODE_Z = 122;
+177:	public static final int KEYCODE_RETURN = 13;
+178:	public static final int KEYCODE_NUMPADENTER = 1073741912;
+179:	public static final int KEYCODE_PAGEUP = 1073741899;
+180:	public static final int KEYCODE_PAGEDOWN = 1073741902;
+181:	public static final int KEYCODE_BACKSPACE = 8;
+182:	public static final int KEYCODE_UP = 1073741906;
+183:	public static final int KEYCODE_DOWN = 1073741905;
+184:	public static final int KEYCODE_FORWARD = 1073741906;
+185:	public static final int KEYCODE_BACKWARD = 1073741905;
+186:	public static final int KEYCODE_LEFT = 1073741904;
+187:	public static final int KEYCODE_RIGHT = 1073741903;
+188:	public static final int KEYCODE_NUMPAD9 = 1073741921;
+189:	public static final int KEYCODE_NUMPAD3 = 1073741915;
+190:	public static final int KEYCODE_DELETE = 127;
+191:	public static final int KEYCODE_HOME = 1073741898;
+192:	public static final int KEYCODE_END = 1073741901;
+193:	public static final int KEYCODE_F5 = 1073741886;
+194:	public static final int KEYCODE_TAB = 9;
+195:	public static final int KEYCODE_LCONTROL = 1073742048;
+196:	public static final int KEYCODE_RCONTROL = 1073742052;
+197:	public static final int KEYCODE_SPACE = 32;
+198:	public static final InputConstants.Key UNKNOWN = InputConstants.Type.KEYBOARD.getOrCreate(0);
+200:	public static InputConstants.Key getKey(final KeyEvent event) {
+204:	public static InputConstants.Key getKey(final String name) {
+220:	public static boolean isKeyDown(final int key) {
+225:	public static void grabMouse(final Window window, final double xpos, final double ypos) {
+232:	public static void releaseMouse(final Window window, final double xpos, final double ypos) {
+240:	public static final class Key {
+=== net/minecraft/client/sounds/SoundManager.java
+45:	public static final Identifier EMPTY_SOUND_LOCATION = Identifier.withDefaultNamespace("empty");
+46:	public static final Sound EMPTY_SOUND = new Sound(EMPTY_SOUND_LOCATION, ConstantFloat.of(1.0F), ConstantFloat.of(1.0F), 1, Sound.Type.FILE, false, false, 16);
+47:	public static final Identifier INTENTIONALLY_EMPTY_SOUND_LOCATION = Identifier.withDefaultNamespace("intentionally_empty");
+48:	public static final WeighedSoundEvents INTENTIONALLY_EMPTY_SOUND_EVENT = new WeighedSoundEvents(INTENTIONALLY_EMPTY_SOUND_LOCATION, null);
+49:	public static final Sound INTENTIONALLY_EMPTY_SOUND = new Sound(
+60:	public SoundManager(final Options options) {
+121:	public List<String> getAvailableSoundDevices() {
+125:	public ListenerTransform getListenerTransform() {
+139:	public @Nullable WeighedSoundEvents getSoundEvent(final Identifier location) {
+143:	public Collection<Identifier> getAvailableSounds() {
+147:	public void queueTickingSound(final TickableSoundInstance instance) {
+151:	public SoundEngine.PlayResult play(final SoundInstance instance) {
+155:	public void playDelayed(final SoundInstance instance, final int delay) {
+159:	public void updateSource(final Camera camera) {
+163:	public void pauseAllExcept(final SoundSource... ignoredSources) {
+167:	public void stop() {
+171:	public void destroy() {
+175:	public void emergencyShutdown() {
+179:	public void tick(final boolean paused) {
+183:	public void resume() {
+187:	public void refreshCategoryVolume(final SoundSource category) {
+191:	public void stop(final SoundInstance soundInstance) {
+195:	public void updateCategoryVolume(final SoundSource source, final float gain) {
+199:	public boolean isActive(final SoundInstance instance) {
+203:	public void addListener(final SoundEventListener listener) {
+207:	public void removeListener(final SoundEventListener listener) {
+211:	public void stop(final @Nullable Identifier sound, final @Nullable SoundSource source) {
+215:	public String getChannelDebugString() {
+219:	public void getSoundCacheDebugStats(final SoundBufferLibrary.DebugOutput output) {
+223:	public void reload() {
+264:							public int getWeight() {
+269:							public Sound getSound(final RandomSource random) {
+289:							public void preloadIfRequired(final SoundEngine soundEngine) {
+305:		public void apply(final Map<Identifier, WeighedSoundEvents> registry, final Map<Identifier, Resource> soundCache, final SoundEngine engine) {
+=== net/minecraft/client/gui/components/Tooltip.java
+35:	public static Tooltip create(final Component message) {
+39:	public static Tooltip create(final Component message, final @Nullable Component narration) {
+43:	public static Tooltip create(final Component message, final Optional<TooltipComponent> component, final @Nullable Identifier style) {
+47:	public Optional<TooltipComponent> component() {
+51:	public @Nullable Identifier style() {
+56:	public void updateNarration(final NarrationElementOutput output) {
+62:	public List<FormattedCharSequence> toCharSequence(final Minecraft minecraft) {
+72:	public static List<FormattedCharSequence> splitTooltip(final Minecraft minecraft, final Component message) {
+=== net/minecraft/network/chat/Component.java
