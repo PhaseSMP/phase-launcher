@@ -15,7 +15,7 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 			sp.getServer().runCommand("time set noon");
 			sp.getServer().runCommand("weather clear");
 			sp.getServer().runCommand("gamerule doDaylightCycle false");
-			ctx.runOnClient(mc -> { mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT); mc.options.hideGui = true; });
+			ctx.runOnClient(mc -> { mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT); });
 			for (String hat : new String[] { "straw_hat", "kitsune_mask", "oni_horns", "kabuto" }) {
 				CosmeticsData.setTest(hat, "ender_dragon");
 				ctx.waitTicks(10);
