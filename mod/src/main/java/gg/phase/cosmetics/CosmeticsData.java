@@ -1,5 +1,6 @@
 package gg.phase.cosmetics;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -8,27 +9,51 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import net.minecraft.client.Minecraft;
 
-/** Кто что надел: раз в минуту спрашивает сервер аккаунтов Phase (то же самое видно в лаунчере). */
+/**
+ * Кто что надел: раз в 30 секунд спрашивает сервер аккаунтов Phase (то же самое видно в лаунчере).
+ * Свою косметику игрок меняет прямо в игре (меню J) — изменения видны у него сразу, у остальных — в течение полуминуты.
+ */
 public final class CosmeticsData {
-	public record Worn(String hat, String pet) {}
+	public record Worn(String hat, String pet, String mode) {}
+	public record Item(String id, String slot, String name, int price) {}
+	public record Mine(List<Item> items, List<Item> shop, String hat, String pet, String mode) {}
 
-	private static final String API = System.getProperty("phase.cosmetics.api", "https://phase.fujimc.workers.dev/api/cosmetics/worn");
+	public static final String BASE = System.getProperty("phase.api", "https://phase.fujimc.workers.dev");
 	private static volatile Map<String, Worn> worn = Map.of();
-	/** Для проверки без сервера: -Dphase.cosmetics.test=hat=straw_hat,pet=ender_dragon — всем игрокам */
 	private static volatile Worn TEST = parseTest(System.getProperty("phase.cosmetics.test"));
-
-	/** Для автотеста: надеть всем игрокам (null — снять подмену) */
-	public static void setTest(String hat, String pet) { TEST = hat == null && pet == null ? null : new Worn(hat, pet); }
+	private static final Map<String, Worn> OVERRIDE = new ConcurrentHashMap<>();
+	private static final Map<String, Long> OVERRIDE_AT = new ConcurrentHashMap<>();
+	static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
+	public static volatile Mine mine;
 
 	private CosmeticsData() {}
 
+	/** Для автотеста: надеть всем игрокам (null — снять подмену) */
+	public static void setTest(String hat, String pet) { TEST = hat == null && pet == null ? null : new Worn(hat, pet, "follow"); }
+	public static boolean isTest() { return TEST != null; }
+
 	public static Worn get(String name) {
+		if (name == null) return null;
+		String key = name.toLowerCase(Locale.ROOT);
+		Long at = OVERRIDE_AT.get(key);
+		if (at != null && System.currentTimeMillis() - at < 45_000) return OVERRIDE.get(key);
 		if (TEST != null) return TEST;
-		return name == null ? null : worn.get(name.toLowerCase(Locale.ROOT));
+		return worn.get(key);
+	}
+
+	/** Своё изменение — показываем сразу, не дожидаясь опроса сервера */
+	static void overrideOwn(String name, String hat, String pet) {
+		String key = name.toLowerCase(Locale.ROOT);
+		OVERRIDE.put(key, new Worn(hat, pet, Config.get().mode));
+		OVERRIDE_AT.put(key, System.currentTimeMillis());
 	}
 
 	static void start() {
@@ -38,28 +63,110 @@ public final class CosmeticsData {
 	}
 
 	private static void loop() {
-		HttpClient http = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
 		while (true) {
 			try {
-				HttpResponse<String> res = http.send(HttpRequest.newBuilder(URI.create(API)).timeout(Duration.ofSeconds(15))
-					.header("User-Agent", "PhaseCosmetics/1.0").GET().build(), HttpResponse.BodyHandlers.ofString());
+				HttpResponse<String> res = HTTP.send(HttpRequest.newBuilder(URI.create(BASE + "/api/cosmetics/worn")).timeout(Duration.ofSeconds(15))
+					.header("User-Agent", "PhaseCosmetics/2").GET().build(), HttpResponse.BodyHandlers.ofString());
 				if (res.statusCode() == 200) {
 					JsonObject players = JsonParser.parseString(res.body()).getAsJsonObject().getAsJsonObject("players");
 					Map<String, Worn> next = new ConcurrentHashMap<>();
 					for (Map.Entry<String, JsonElement> e : players.entrySet()) {
 						JsonObject o = e.getValue().getAsJsonObject();
-						next.put(e.getKey().toLowerCase(Locale.ROOT), new Worn(str(o, "hat"), str(o, "pet")));
+						String mode = str(o, "mode");
+						next.put(e.getKey().toLowerCase(Locale.ROOT), new Worn(str(o, "hat"), str(o, "pet"), mode == null ? "follow" : mode));
 					}
 					worn = next;
 				}
 			} catch (Exception ignored) {
 				// нет сети — показываем то, что было
 			}
-			try { Thread.sleep(60_000); } catch (InterruptedException e) { return; }
+			try { Thread.sleep(30_000); } catch (InterruptedException e) { return; }
 		}
 	}
 
-	private static String str(JsonObject o, String k) {
+	// ───────── API игрока (токен игровой сессии от лаунчера) ─────────
+	private static String token() {
+		try {
+			return Minecraft.getInstance().getUser().getAccessToken();
+		} catch (Exception e) {
+			return "";
+		}
+	}
+
+	private static CompletableFuture<JsonObject> call(String method, String path, String body) {
+		HttpRequest.Builder b = HttpRequest.newBuilder(URI.create(BASE + path)).timeout(Duration.ofSeconds(15))
+			.header("User-Agent", "PhaseCosmetics/2").header("Authorization", "Bearer " + token());
+		if (body != null) b.header("Content-Type", "application/json").method(method, HttpRequest.BodyPublishers.ofString(body));
+		else b.method(method, HttpRequest.BodyPublishers.noBody());
+		return HTTP.sendAsync(b.build(), HttpResponse.BodyHandlers.ofString()).thenApply(r -> {
+			JsonObject o;
+			try { o = JsonParser.parseString(r.body()).getAsJsonObject(); } catch (Exception e) { o = new JsonObject(); }
+			if (r.statusCode() != 200) {
+				String err = o.has("error") ? o.get("error").getAsString() : r.statusCode() == 401 ? "Войдите через лаунчер Phase" : "Сервер Phase недоступен";
+				throw new IllegalStateException(err);
+			}
+			return o;
+		});
+	}
+
+	/** Своя косметика: что есть, что надето, что можно купить */
+	public static CompletableFuture<Mine> loadMine() {
+		if (TEST != null) {
+			Mine m = new Mine(List.of(new Item("kabuto", "hat", "Шлем кабуто", 0), new Item("straw_hat", "hat", "Соломенная каса", 0),
+				new Item("ender_dragon", "pet", "Эндер-дракончик", 0)), List.of(new Item("oni_horns", "hat", "Рога они", 199)), TEST.hat(), TEST.pet(), Config.get().mode);
+			mine = m;
+			return CompletableFuture.completedFuture(m);
+		}
+		return call("GET", "/api/game/me", null).thenApply(CosmeticsData::parseMine);
+	}
+
+	public static CompletableFuture<Mine> equip(String slot, String item) {
+		String name = Minecraft.getInstance().getUser().getName();
+		Mine cur = mine;
+		if (cur != null) {
+			String hat = slot.equals("hat") ? item : cur.hat(), pet = slot.equals("pet") ? item : cur.pet();
+			overrideOwn(name, hat, pet);
+			mine = new Mine(cur.items(), cur.shop(), hat, pet, cur.mode());
+		}
+		if (TEST != null) {
+			TEST = new Worn(mine.hat(), mine.pet(), "follow");
+			return CompletableFuture.completedFuture(mine);
+		}
+		JsonObject b = new JsonObject();
+		b.addProperty("slot", slot);
+		if (item != null) b.addProperty("item", item);
+		return call("POST", "/api/game/equip", b.toString()).thenApply(CosmeticsData::parseMine);
+	}
+
+	public static void sendMode(String mode) {
+		Config.get().mode = mode;
+		Config.get().save();
+		if (TEST != null) return;
+		JsonObject b = new JsonObject();
+		b.addProperty("mode", mode);
+		call("POST", "/api/game/pet", b.toString()).exceptionally(e -> null);
+	}
+
+	private static Mine parseMine(JsonObject o) {
+		JsonObject eq = o.getAsJsonObject("equipped");
+		Mine m = new Mine(items(o.getAsJsonArray("items")), items(o.getAsJsonArray("shop")), str(eq, "hat"), str(eq, "pet"), str(o, "mode"));
+		mine = m;
+		overrideOwn(Minecraft.getInstance().getUser().getName(), m.hat(), m.pet());
+		return m;
+	}
+
+	private static List<Item> items(JsonArray a) {
+		List<Item> out = new ArrayList<>();
+		if (a == null) return out;
+		for (JsonElement e : a) {
+			JsonObject o = e.getAsJsonObject();
+			out.add(new Item(str(o, "id"), str(o, "slot"), str(o, "name"), o.has("price") ? o.get("price").getAsInt() : 0));
+		}
+		return out;
+	}
+
+	static String str(JsonObject o, String k) {
+		if (o == null) return null;
 		JsonElement v = o.get(k);
 		return v == null || v.isJsonNull() ? null : v.getAsString();
 	}
@@ -73,6 +180,6 @@ public final class CosmeticsData {
 			if (kv[0].trim().equals("hat")) hat = kv[1].trim();
 			if (kv[0].trim().equals("pet")) pet = kv[1].trim();
 		}
-		return new Worn(hat, pet);
+		return new Worn(hat, pet, "follow");
 	}
 }

@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "gg.phase.cosmetics.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": ["PlayerInfoMixin", "AvatarRendererMixin"],
+  "injectors": { "defaultRequire": 1 }
+}
