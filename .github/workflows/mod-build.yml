@@ -26,13 +26,14 @@ jobs:
         continue-on-error: true
         working-directory: mod
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq xvfb mesa-utils libgl1-mesa-dri libglx-mesa0 libegl1 mesa-vulkan-drivers libvulkan1 vulkan-tools > /dev/null
+          set +e
+          (sudo apt-get update -qq; for p in xvfb mesa-utils libgl1-mesa-dri libglx-mesa0 libegl1 mesa-vulkan-drivers libvulkan1 vulkan-tools; do sudo apt-get install -y -qq $p || echo "no package $p"; done) > ../apt.log 2>&1
           (LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s "-screen 0 1280x720x24 +extension GLX +render -noreset" ./gradlew --no-daemon runClientGameTest > ../gametest-full.log 2>&1 || true) &
           PID=$!
-          # не ждём вечно: через 14 минут забираем что есть
-          for i in $(seq 1 168); do sleep 5; kill -0 $PID 2>/dev/null || break; done
-          kill $PID 2>/dev/null; pkill -f java 2>/dev/null; true
-          tail -300 ../gametest-full.log > ../gametest.log
+          # не ждём вечно: через 15 минут забираем что есть
+          for i in $(seq 1 180); do sleep 5; kill -0 $PID 2>/dev/null || break; done
+          kill $PID 2>/dev/null; pkill -f runClientGameTest 2>/dev/null; true
+          tail -400 ../gametest-full.log > ../gametest.log
       - name: Dump gametest API
         run: |
           set +e
@@ -44,7 +45,7 @@ jobs:
         run: |
           set +e
           rm -rf ci && mkdir -p ci/screenshots
-          cp build.log gametest.log gametest-api.txt ci/ 2>/dev/null
+          cp build.log gametest.log apt.log gametest-api.txt ci/ 2>/dev/null
           find mod -path '*clientGameTest*' -name 'latest.log' -exec cp {} ci/game-latest.log \; 2>/dev/null
           JAR=$(ls mod/build/libs/*.jar 2>/dev/null | grep -v sources | head -1)
           [ -n "$JAR" ] && cp "$JAR" ci/phase-cosmetics.jar

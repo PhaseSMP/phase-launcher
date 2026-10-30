@@ -85,7 +85,9 @@ public final class Pet {
 		float by = owner.yBodyRot * Mth.DEG_TO_RAD;
 		Vec3 fwd = new Vec3(-Mth.sin(by), 0, Mth.cos(by));
 		Vec3 left = new Vec3(Mth.cos(by), 0, Mth.sin(by));
-		boolean ownerMoving = owner.getDeltaMovement().horizontalDistanceSqr() > 0.0009 || !owner.onGround();
+		// движение считаем по смещению за тик: у чужих игроков на клиенте скорость (deltaMovement) обычно нулевая
+		double mdx = owner.getX() - owner.xo, mdz = owner.getZ() - owner.zo, mdy = owner.getY() - owner.yo;
+		boolean ownerMoving = mdx * mdx + mdz * mdz > 0.0009 || Math.abs(mdy) > 0.05 || !owner.onGround();
 		this.idleFor = ownerMoving || owner.isSprinting() ? 0 : this.idleFor + 1;
 
 		// далеко отстал (телепорт игрока, смена мира, полёт на элитрах) — появляется рядом
@@ -114,7 +116,8 @@ public final class Pet {
 		float stiff = 0.05F, maxSpeed = 0.55F;
 		boolean grounded = false; // стоит/сидит/лежит на чём-то
 		float wantSit = 0, wantLie = 0, wantPerch = 0;
-		float faceYaw = Float.NaN, wantPitch = 0, wantRoll = Float.NaN;
+		float faceYaw = Float.NaN, wantPitch = 0, wantRoll = 0;
+		boolean customRoll = false;
 		Vec3 lookAt = owner.getEyePosition();
 		float flapAmp = 1F, flapSpeed = 0.55F;
 		this.head = 0;
@@ -188,7 +191,6 @@ public final class Pet {
 			}
 			case ROLL -> {
 				goal = hover;
-				wantRoll = Float.NaN;
 				this.roll = 360F * smooth(this.actTicks / (float) this.actLen);
 				if (this.actTicks >= this.actLen) { this.roll = this.rollO = 0; begin(Act.HOVER, 0); }
 			}
@@ -197,14 +199,14 @@ public final class Pet {
 				float a = this.actTicks * 0.16F + by;
 				goal = base.add(Mth.cos(a) * 1.6, 1.7 + Mth.sin(this.actTicks * 0.2F) * 0.25, Mth.sin(a) * 1.6);
 				stiff = 0.16F; maxSpeed = 0.6F; flapAmp = 1.2F; flapSpeed = 0.8F;
-				wantRoll = -38F;
+				wantRoll = -38F; customRoll = true;
 				if (this.actTicks >= this.actLen) begin(Act.HOVER, 0);
 			}
 			case CIRCLE -> {
 				float a = this.actTicks * 0.09F + by;
 				goal = base.add(Mth.cos(a) * 1.3, 1.9, Mth.sin(a) * 1.3);
 				stiff = 0.1F; maxSpeed = 0.4F;
-				wantRoll = -25F;
+				wantRoll = -25F; customRoll = true;
 				if (this.actTicks >= this.actLen || ownerMoving) begin(Act.HOVER, 0);
 			}
 			case DIVE -> {
@@ -225,7 +227,7 @@ public final class Pet {
 				goal = owner.getEyePosition().add(owner.getViewVector(1F).scale(0.95)).add(0, -0.3, 0);
 				stiff = 0.12F; maxSpeed = 0.4F;
 				faceYaw = yawTo(this.pos, owner.getEyePosition());
-				wantRoll = Mth.sin(this.actTicks * 0.45F) * 14F;
+				wantRoll = Mth.sin(this.actTicks * 0.45F) * 14F; customRoll = true;
 				this.head = 2;
 				this.happyLeft = 60;
 				if (this.actTicks == 12) fx.purr(this);
@@ -303,12 +305,10 @@ public final class Pet {
 			wantPitch = grounded ? 0F : Mth.clamp((float) -this.vel.y * 160F, -35F, 35F);
 			this.pitch += (wantPitch - this.pitch) * 0.2F;
 		}
-		if (!Float.isNaN(wantRoll)) {
-			float wr = Float.isNaN(wantRoll) ? 0 : wantRoll;
-			if (this.act != Act.SPIN && this.act != Act.CIRCLE && this.act != Act.PETTED) wr = grounded ? 0F : Mth.clamp(-turn * 3.2F, -40F, 40F);
+		if (this.act != Act.ROLL) {
+			// крен: в поворотах наклоняется, в трюках — свой
+			float wr = customRoll ? wantRoll : grounded ? 0F : Mth.clamp(-turn * 3.2F, -40F, 40F);
 			this.roll += (wr - this.roll) * 0.15F;
-		} else if (this.act != Act.ROLL) {
-			this.roll += (0 - this.roll) * 0.15F;
 		}
 
 		// голова смотрит на цель (+ иногда оглядывается)
