@@ -22,10 +22,17 @@ jobs:
           ./gradlew --no-daemon build -x test 2>&1 | tee ../build.log || echo BUILD_FAILED >> ../build.log
       - name: Client game test (screenshots)
         if: hashFiles('mod/src/gametest/**') != ''
+        timeout-minutes: 18
+        continue-on-error: true
         working-directory: mod
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq xvfb mesa-utils > /dev/null
-          xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew --no-daemon runClientGameTest 2>&1 | tail -200 > ../gametest.log || true
+          (xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew --no-daemon runClientGameTest > ../gametest-full.log 2>&1 || true) &
+          PID=$!
+          # не ждём вечно: через 14 минут забираем что есть
+          for i in $(seq 1 168); do sleep 5; kill -0 $PID 2>/dev/null || break; done
+          kill $PID 2>/dev/null; pkill -f java 2>/dev/null; true
+          tail -300 ../gametest-full.log > ../gametest.log
       - name: Dump gametest API
         run: |
           set +e
@@ -33,10 +40,12 @@ jobs:
           echo "$FA" > gametest-api.txt
           for c in $(unzip -l "$FA" | awk '{print $4}' | grep 'api/client/gametest/v1/.*\.class$' | sed 's/\.class$//'); do javap -cp "$FA" -public "${c//\//.}" >> gametest-api.txt 2>/dev/null; done
       - name: Publish result
+        if: always()
         run: |
           set +e
           rm -rf ci && mkdir -p ci/screenshots
           cp build.log gametest.log gametest-api.txt ci/ 2>/dev/null
+          find mod -path '*clientGameTest*' -name 'latest.log' -exec cp {} ci/game-latest.log \; 2>/dev/null
           JAR=$(ls mod/build/libs/*.jar 2>/dev/null | grep -v sources | head -1)
           [ -n "$JAR" ] && cp "$JAR" ci/phase-cosmetics.jar
           find mod -path '*screenshots*' -name '*.png' -exec cp {} ci/screenshots/ \; 2>/dev/null
