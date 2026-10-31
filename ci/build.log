@@ -17,16 +17,30 @@ Daemon will be stopped at the end of the build
 > Configure project :
 Fabric Loom: 1.19.3
 
-> Task :compileJava
-> Task :processResources
-> Task :classes
-> Task :processIncludeJars
-> Task :jar
-> Task :validateAccessWidener NO-SOURCE
-> Task :assemble
-> Task :check
-> Task :build
+> Task :compileJava FAILED
+/home/runner/work/phase-launcher/phase-launcher/mod/src/main/java/gg/phase/cosmetics/AuraFx.java:77: error: incompatible types: ParticleType<PowerParticleOption> cannot be converted to ParticleOptions
+				if (age % 20 == 0) mc.level.addParticle(ParticleTypes.DRAGON_BREATH, x + (RND.nextDouble() - 0.5) * 0.6, y + 0.05, z + (RND.nextDouble() - 0.5) * 0.6, 0, 0.0, 0);
+				                                                     ^
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+1 error
 
-BUILD SUCCESSFUL in 41s
-4 actionable tasks: 4 executed
-Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.2/userguide/configuration_cache_enabling.html
+[Incubating] Problems report is available at: file:///home/runner/work/phase-launcher/phase-launcher/mod/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava' (registered by plugin class 'org.gradle.api.plugins.JavaBasePlugin').
+> Compilation failed; see the compiler output below.
+  /home/runner/work/phase-launcher/phase-launcher/mod/src/main/java/gg/phase/cosmetics/AuraFx.java:77: error: incompatible types: ParticleType<PowerParticleOption> cannot be converted to ParticleOptions
+  				if (age % 20 == 0) mc.level.addParticle(ParticleTypes.DRAGON_BREATH, x + (RND.nextDouble() - 0.5) * 0.6, y + 0.05, z + (RND.nextDouble() - 0.5) * 0.6, 0, 0.0, 0);
+  				                                                     ^
+  Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+  1 error
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 25s
+1 actionable task: 1 executed
+BUILD_FAILED
