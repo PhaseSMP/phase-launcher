@@ -1,141 +1,55 @@
-=== net/minecraft/client/renderer/entity/state/EntityRenderState.java
-10:import net.minecraft.network.chat.Component;
-17:public class EntityRenderState implements FabricRenderState {
-18:	public static final int NO_OUTLINE = 0;
-19:	public EntityType<?> entityType;
-20:	public double x;
-21:	public double y;
-22:	public double z;
-23:	public float ageInTicks;
-24:	public float boundingBoxWidth;
-25:	public float boundingBoxHeight;
-26:	public float eyeHeight;
-27:	public double distanceToCameraSq;
-28:	public boolean isInvisible;
-29:	public boolean isDiscrete;
-30:	public boolean displayFireAnimation;
-31:	public int lightCoords = 15728880;
-32:	public int outlineColor = 0;
-33:	public @Nullable Vec3 passengerOffset;
-34:	public @Nullable Component nameTag;
-35:	public @Nullable Component scoreText;
-36:	public @Nullable Vec3 nameTagAttachment;
-37:	public @Nullable List<EntityRenderState.LeashState> leashStates;
-38:	public float shadowRadius;
-39:	public final List<EntityRenderState.ShadowPiece> shadowPieces = new ArrayList<>();
-41:	public boolean appearsGlowing() {
-45:	public void fillCrashReportCategory(final CrashReportCategory category) {
-51:	public static class LeashState implements FabricRenderState {
-52:		public Vec3 offset = Vec3.ZERO;
-53:		public Vec3 start = Vec3.ZERO;
-54:		public Vec3 end = Vec3.ZERO;
-55:		public int startBlockLight = 0;
-56:		public int endBlockLight = 0;
-57:		public int startSkyLight = 15;
-58:		public int endSkyLight = 15;
-59:		public boolean slack = true;
-63:	public record ShadowPiece(float relativeX, float relativeY, float relativeZ, VoxelShape shapeBelow, float alpha) {
-=== net/minecraft/client/renderer/entity/state/AvatarRenderState.java
-13:public class AvatarRenderState extends HumanoidRenderState {
-14:	public PlayerSkin skin = DefaultPlayerSkin.getDefaultSkin();
-15:	public float capeFlap;
-16:	public float capeLean;
-17:	public float capeLean2;
-18:	public int arrowCount;
-19:	public int stingerCount;
-20:	public boolean isSpectator;
-21:	public boolean showHat = true;
-22:	public boolean showJacket = true;
-23:	public boolean showLeftPants = true;
-24:	public boolean showRightPants = true;
-25:	public boolean showLeftSleeve = true;
-26:	public boolean showRightSleeve = true;
-27:	public boolean showCape = true;
-28:	public float fallFlyingTimeInTicks;
-29:	public boolean shouldApplyFlyingYRot;
-30:	public float flyingYRot;
-31:	public Parrot.@Nullable Variant parrotOnLeftShoulder;
-32:	public Parrot.@Nullable Variant parrotOnRightShoulder;
-33:	public int id;
-34:	public boolean showExtraEars = false;
-35:	public final ItemStackRenderState heldOnHead = new ItemStackRenderState();
-37:	public float fallFlyingScale() {
-=== net/minecraft/client/renderer/entity/EntityRenderer.java
-46:	protected EntityRenderer(final EntityRendererProvider.Context context) {
-51:	public final int getPackedLightCoords(final T entity, final float partialTickTime) {
-56:	protected int getSkyLightLevel(final T entity, final BlockPos blockPos) {
-60:	protected int getBlockLightLevel(final T entity, final BlockPos blockPos) {
-64:	public boolean shouldRender(final T entity, final Frustum culler, final double camX, final double camY, final double camZ, final float partialTicks) {
-93:	protected AABB getBoundingBoxForCulling(final T entity, final float partialTicks) {
-97:	protected boolean affectedByCulling(final T entity) {
-101:	public Vec3 getRenderOffset(final S state) {
-105:	public void submit(final S state, final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final CameraRenderState camera) {
-115:	protected boolean shouldShowName(final T entity, final double distanceToCameraSq) {
-119:	public Font getFont() {
-123:	protected void submitNameDisplay(final S state, final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final CameraRenderState camera) {
-127:	protected final <S extends EntityRenderState> void submitNameDisplay(
-132:			submitNodeCollector.submitNameTag(poseStack, state.nameTagAttachment, offset, state.scoreText, !state.isDiscrete, state.lightCoords, camera);
-136:		if (state.nameTag != null) {
-137:			submitNodeCollector.submitNameTag(poseStack, state.nameTagAttachment, offset, state.nameTag, !state.isDiscrete, state.lightCoords, camera);
-143:	protected @Nullable Component getNameTag(final T entity) {
-147:	protected float getShadowRadius(final S state) {
-151:	protected float getShadowStrength(final S state) {
-155:	public abstract S createRenderState();
-157:	public final S createRenderState(final T entity, final float partialTicks) {
-164:	public void extractRenderState(final T entity, final S state, final float partialTicks) {
-248:	protected void extractNameTags(final T entity, final S state, final float partialTicks) {
-252:	protected final void extractNameTags(final T entity, final S state, final float partialTicks, final double nameTagDistance, final double belowNameDistance) {
-255:			boolean shouldShowName = state.distanceToCameraSq < Mth.square(nameTagDistance) && this.shouldShowName(entity, state.distanceToCameraSq);
-257:				state.nameTag = this.getNameTag(entity);
-258:				state.nameTagAttachment = entity.getAttachments().getNullable(EntityAttachment.NAME_TAG, 0, entity.getYRot(partialTicks));
-260:				state.nameTag = null;
-271:	protected void finalizeRenderState(final T entity, final S state) {
+=== com/mojang/blaze3d/platform/InputConstants.java
+50:	public static final int KEY_J = 13;
+114:	public static final int KEY_GRAVE = 53;
+=== net/minecraft/world/item/ItemStack.java
+346:	public Item getItem() {
+355:	public boolean is(final Predicate<Holder<Item>> item) {
+981:	public boolean hasFoil() {
+986:	public Rarity getRarity() {
+1012:	public boolean isEnchanted() {
+=== net/minecraft/world/item/Rarity.java
+12:public enum Rarity implements StringRepresentable {
+13:	COMMON(0, "common", ChatFormatting.WHITE),
+14:	UNCOMMON(1, "uncommon", ChatFormatting.YELLOW),
+15:	RARE(2, "rare", ChatFormatting.AQUA),
+16:	EPIC(3, "epic", ChatFormatting.LIGHT_PURPLE);
+=== net/minecraft/world/item/Items.java
+246:	public static final Item ANCIENT_DEBRIS = registerBlock(BlockItemIds.ANCIENT_DEBRIS, Blocks.ANCIENT_DEBRIS, new Item.Properties().fireResistant());
+252:	public static final Item RAW_GOLD_BLOCK = registerBlock(BlockItemIds.RAW_GOLD_BLOCK, Blocks.RAW_GOLD_BLOCK);
+253:	public static final Item HEAVY_CORE = registerBlock(BlockItemIds.HEAVY_CORE, Blocks.HEAVY_CORE, new Item.Properties().rarity(Rarity.EPIC));
+260:	public static final Item GOLD_BLOCK = registerBlock(BlockItemIds.GOLD_BLOCK, Blocks.GOLD_BLOCK);
+261:	public static final Item DIAMOND_BLOCK = registerBlock(BlockItemIds.DIAMOND_BLOCK, Blocks.DIAMOND_BLOCK);
+925:	public static final Item DRAGON_EGG = registerBlock(BlockItemIds.DRAGON_EGG, Blocks.DRAGON_EGG, new Item.Properties().rarity(Rarity.EPIC));
+928:	public static final Item EMERALD_BLOCK = registerBlock(BlockItemIds.EMERALD_BLOCK, Blocks.EMERALD_BLOCK);
+970:	public static final Item BEACON = registerBlock(BlockItemIds.BEACON, Blocks.BEACON, new Item.Properties().rarity(Rarity.RARE));
+1458:	public static final Item ELYTRA = registerItem(
+1586:	public static final Item DIAMOND = registerItem(ItemIds.DIAMOND, new Item.Properties().trimMaterial(TrimMaterials.DIAMOND));
+1587:	public static final Item EMERALD = registerItem(ItemIds.EMERALD, new Item.Properties().trimMaterial(TrimMaterials.EMERALD));
+1595:	public static final Item RAW_GOLD = registerItem(ItemIds.RAW_GOLD);
+1596:	public static final Item GOLD_INGOT = registerItem(ItemIds.GOLD_INGOT, new Item.Properties().trimMaterial(TrimMaterials.GOLD));
+1597:	public static final Item NETHERITE_INGOT = registerItem(ItemIds.NETHERITE_INGOT, new Item.Properties().fireResistant().trimMaterial(TrimMaterials.NETHERITE));
+1598:	public static final Item NETHERITE_SCRAP = registerItem(ItemIds.NETHERITE_SCRAP, new Item.Properties().fireResistant());
+1727:	public static final Item ENCHANTED_GOLDEN_APPLE = registerItem(
+1728:		ItemIds.ENCHANTED_GOLDEN_APPLE,
+1731:			.food(Foods.ENCHANTED_GOLDEN_APPLE, Consumables.ENCHANTED_GOLDEN_APPLE)
+2185:	public static final Item MACE = registerItem(
+2263:	public static final Item NETHER_STAR = registerItem(
+2264:		ItemIds.NETHER_STAR,
+2277:	public static final Item ENCHANTED_BOOK = registerItem(
+2278:		ItemIds.ENCHANTED_BOOK,
+2406:	public static final Item TOTEM_OF_UNDYING = registerItem(
+2407:		ItemIds.TOTEM_OF_UNDYING,
+2408:		new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).component(DataComponents.DEATH_PROTECTION, DeathProtection.TOTEM_OF_UNDYING)
+2410:	public static final Item SHULKER_SHELL = registerItem(ItemIds.SHULKER_SHELL);
+2492:	public static final Item TRIDENT = registerItem(
+2503:	public static final Item NAUTILUS_SHELL = registerItem(ItemIds.NAUTILUS_SHELL, new Item.Properties().rarity(Rarity.UNCOMMON));
+2511:	public static final Item HEART_OF_THE_SEA = registerItem(ItemIds.HEART_OF_THE_SEA, new Item.Properties().rarity(Rarity.UNCOMMON));
+2704:	public static final Item ECHO_SHARD = registerItem(ItemIds.ECHO_SHARD, new Item.Properties().rarity(Rarity.UNCOMMON));
 === net/minecraft/world/entity/LivingEntity.java
-236:	public int hurtTime;
-473:		if (this.hurtTime > 0) {
-474:			this.hurtTime--;
-745:		output.putShort("HurtTime", (short)this.hurtTime);
-811:		this.hurtTime = input.getShortOr("HurtTime", (short)0);
-1154:	public float getHealth() {
-1167:		return this.hurtTime > 0;
-1225:			this.hurtTime = this.hurtDuration;
-1866:		this.hurtTime = this.hurtDuration;
-2045:		this.hurtTime = this.hurtDuration;
-=== net/minecraft/world/entity/item/ItemEntity.java
-40:public class ItemEntity extends Entity implements TraceableEntity {
-372:	public ItemStack getItem() {
-388:	public int getAge() {
-436:		return 180.0F - getSpin(this.getAge() + 0.5F, this.bobOffs) / (float) (Math.PI * 2) * 360.0F;
-=== net/minecraft/network/chat/Component.java
-135:	static MutableComponent literal(final String text) {
-166:	static MutableComponent empty() {
-=== net/minecraft/network/chat/MutableComponent.java
-48:	public MutableComponent append(final String text) {
-52:	public MutableComponent append(final Component component) {
-57:	public MutableComponent withStyle(final UnaryOperator<Style> updater) {
-62:	public MutableComponent withStyle(final Style patch) {
-67:	public MutableComponent withStyle(final ChatFormatting... formats) {
-72:	public MutableComponent withStyle(final ChatFormatting format) {
-77:	public MutableComponent withColor(final int color) {
-82:	public MutableComponent withColor(final TextColor color) {
-=== net/minecraft/core/particles/ParticleTypes.java
-53:	public static final SimpleParticleType END_ROD = register("end_rod", false);
-67:	public static final SimpleParticleType FIREWORK = register("firework", false);
-71:	public static final SimpleParticleType CHERRY_LEAVES = register("cherry_leaves", false);
-84:	public static final SimpleParticleType SOUL_FIRE_FLAME = register("soul_fire_flame", false);
-86:	public static final ParticleType<ColorParticleOption> FLASH = register("flash", false, ColorParticleOption::codec, ColorParticleOption::streamCodec);
-89:	public static final SimpleParticleType HEART = register("heart", false);
-106:	public static final SimpleParticleType NOTE = register("note", false);
-118:	public static final SimpleParticleType SPLASH = register("splash", false);
-132:	public static final SimpleParticleType ASH = register("ash", false);
-135:	public static final SimpleParticleType SPORE_BLOSSOM_AIR = register("spore_blossom_air", false);
-140:	public static final SimpleParticleType WHITE_ASH = register("white_ash", false);
-142:	public static final SimpleParticleType SNOWFLAKE = register("snowflake", false);
-147:	public static final SimpleParticleType GLOW_SQUID_INK = register("glow_squid_ink", true);
-148:	public static final SimpleParticleType GLOW = register("glow", true);
-149:	public static final SimpleParticleType WAX_ON = register("wax_on", true);
-151:	public static final SimpleParticleType ELECTRIC_SPARK = register("electric_spark", true);
-152:	public static final SimpleParticleType SCRAPE = register("scrape", true);
-157:	public static final SimpleParticleType DUST_PLUME = register("dust_plume", false);
-158:	public static final SimpleParticleType TRIAL_SPAWNER_DETECTED_PLAYER = register("trial_spawner_detection", true);
-159:	public static final SimpleParticleType TRIAL_SPAWNER_DETECTED_PLAYER_OMINOUS = register("trial_spawner_detection_ominous", true);
+=== net/minecraft/world/entity/Entity.java
+249:	public double fallDistance;
+733:	public boolean onGround() {
+2027:		double y = Mth.lerp(partialTickTime, this.yo, this.getY()) + this.getEyeHeight();
+2788:	public boolean isSprinting() {
+3572:	public final float getEyeHeight() {
+3792:		return this.getEyeHeight() < 0.4 ? 0.0 : 0.4;

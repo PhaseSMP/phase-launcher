@@ -1,4 +1,0 @@
-=== search class ItemEntity
-net/minecraft/client/renderer/entity/state/ItemEntityRenderState.java:7:public class ItemEntityRenderState extends ItemClusterRenderState {
-net/minecraft/client/renderer/entity/ItemEntityRenderer.java:20:public class ItemEntityRenderer extends EntityRenderer<ItemEntity, ItemEntityRenderState> {
-net/minecraft/world/entity/item/ItemEntity.java:40:public class ItemEntity extends Entity implements TraceableEntity {
