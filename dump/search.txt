@@ -1,7 +1,4 @@
-=== search public void setScreen\(
-net/minecraft/client/gui/Gui.java:221:	public void setScreen(@Nullable Screen screen) {
-=== search public .*Screen screen\(\)|Screen getScreen\(\)
-net/minecraft/client/gui/Gui.java:217:	public @Nullable Screen screen() {
-net/minecraft/client/gui/screens/advancements/AdvancementTab.java:237:	public AdvancementsScreen getScreen() {
-net/minecraft/client/gui/screens/worldselection/WorldSelectionList.java:271:	public Screen getScreen() {
-=== search public .*Screen screen;
+=== search class ItemEntity
+net/minecraft/client/renderer/entity/state/ItemEntityRenderState.java:7:public class ItemEntityRenderState extends ItemClusterRenderState {
+net/minecraft/client/renderer/entity/ItemEntityRenderer.java:20:public class ItemEntityRenderer extends EntityRenderer<ItemEntity, ItemEntityRenderState> {
+net/minecraft/world/entity/item/ItemEntity.java:40:public class ItemEntity extends Entity implements TraceableEntity {

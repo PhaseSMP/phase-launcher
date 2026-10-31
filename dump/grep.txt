@@ -1,27 +1,141 @@
-=== net/minecraft/client/gui/Gui.java
-70:public class Gui {
-74:	public static final Component SAVING_LEVEL = Component.translatable("menu.savingLevel");
-76:	public final Hud hud;
-87:	public Gui(final Minecraft minecraft, final Hud hud, final GuiRenderState guiRenderState) {
-97:	public void registerReloadListeners(final ReloadableResourceManager resourceManager) {
-102:	public void tick() {
-132:	public void update() {
-147:	public void extractRenderState(final DeltaTracker deltaTracker, final boolean shouldRenderLevel, final boolean resourcesLoaded) {
-217:	public @Nullable Screen screen() {
-221:	public void setScreen(@Nullable Screen screen) {
-283:	public @Nullable Overlay overlay() {
-287:	public void setOverlay(final @Nullable Overlay overlay) {
-291:	public boolean isPausing() {
-295:	public SplashManager splashManager() {
-299:	public ToastManager toastManager() {
-303:	public ChatListener chatListener() {
-307:	public void addSocialInteractionsToast() {
-314:	public void setPauseScreen(final boolean suppressPauseMenuIfWeReallyArePausing, final boolean canGameReallyBePaused) {
-324:	public void handleKeybinds() {
-358:	public void openChatScreen(final ChatComponent.ChatMethod chatMethod) {
-364:	public void openChatAndAddText(final ChatComponent.ChatMethod chatMethod, final String text) {
-371:	public Runnable buildInitialScreens(final @Nullable GameLoadCookie cookie) {
-424:	public boolean canInterruptScreen() {
-428:	public void setClientLevelTeardownInProgress(final boolean clientLevelTeardownInProgress) {
-442:							public void acceptGlyph(final TextRenderable.Styled glyph) {
-447:							public void acceptEmptyArea(final EmptyArea empty) {
+=== net/minecraft/client/renderer/entity/state/EntityRenderState.java
+10:import net.minecraft.network.chat.Component;
+17:public class EntityRenderState implements FabricRenderState {
+18:	public static final int NO_OUTLINE = 0;
+19:	public EntityType<?> entityType;
+20:	public double x;
+21:	public double y;
+22:	public double z;
+23:	public float ageInTicks;
+24:	public float boundingBoxWidth;
+25:	public float boundingBoxHeight;
+26:	public float eyeHeight;
+27:	public double distanceToCameraSq;
+28:	public boolean isInvisible;
+29:	public boolean isDiscrete;
+30:	public boolean displayFireAnimation;
+31:	public int lightCoords = 15728880;
+32:	public int outlineColor = 0;
+33:	public @Nullable Vec3 passengerOffset;
+34:	public @Nullable Component nameTag;
+35:	public @Nullable Component scoreText;
+36:	public @Nullable Vec3 nameTagAttachment;
+37:	public @Nullable List<EntityRenderState.LeashState> leashStates;
+38:	public float shadowRadius;
+39:	public final List<EntityRenderState.ShadowPiece> shadowPieces = new ArrayList<>();
+41:	public boolean appearsGlowing() {
+45:	public void fillCrashReportCategory(final CrashReportCategory category) {
+51:	public static class LeashState implements FabricRenderState {
+52:		public Vec3 offset = Vec3.ZERO;
+53:		public Vec3 start = Vec3.ZERO;
+54:		public Vec3 end = Vec3.ZERO;
+55:		public int startBlockLight = 0;
+56:		public int endBlockLight = 0;
+57:		public int startSkyLight = 15;
+58:		public int endSkyLight = 15;
+59:		public boolean slack = true;
+63:	public record ShadowPiece(float relativeX, float relativeY, float relativeZ, VoxelShape shapeBelow, float alpha) {
+=== net/minecraft/client/renderer/entity/state/AvatarRenderState.java
+13:public class AvatarRenderState extends HumanoidRenderState {
+14:	public PlayerSkin skin = DefaultPlayerSkin.getDefaultSkin();
+15:	public float capeFlap;
+16:	public float capeLean;
+17:	public float capeLean2;
+18:	public int arrowCount;
+19:	public int stingerCount;
+20:	public boolean isSpectator;
+21:	public boolean showHat = true;
+22:	public boolean showJacket = true;
+23:	public boolean showLeftPants = true;
+24:	public boolean showRightPants = true;
+25:	public boolean showLeftSleeve = true;
+26:	public boolean showRightSleeve = true;
+27:	public boolean showCape = true;
+28:	public float fallFlyingTimeInTicks;
+29:	public boolean shouldApplyFlyingYRot;
+30:	public float flyingYRot;
+31:	public Parrot.@Nullable Variant parrotOnLeftShoulder;
+32:	public Parrot.@Nullable Variant parrotOnRightShoulder;
+33:	public int id;
+34:	public boolean showExtraEars = false;
+35:	public final ItemStackRenderState heldOnHead = new ItemStackRenderState();
+37:	public float fallFlyingScale() {
+=== net/minecraft/client/renderer/entity/EntityRenderer.java
+46:	protected EntityRenderer(final EntityRendererProvider.Context context) {
+51:	public final int getPackedLightCoords(final T entity, final float partialTickTime) {
+56:	protected int getSkyLightLevel(final T entity, final BlockPos blockPos) {
+60:	protected int getBlockLightLevel(final T entity, final BlockPos blockPos) {
+64:	public boolean shouldRender(final T entity, final Frustum culler, final double camX, final double camY, final double camZ, final float partialTicks) {
+93:	protected AABB getBoundingBoxForCulling(final T entity, final float partialTicks) {
+97:	protected boolean affectedByCulling(final T entity) {
+101:	public Vec3 getRenderOffset(final S state) {
+105:	public void submit(final S state, final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final CameraRenderState camera) {
+115:	protected boolean shouldShowName(final T entity, final double distanceToCameraSq) {
+119:	public Font getFont() {
+123:	protected void submitNameDisplay(final S state, final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final CameraRenderState camera) {
+127:	protected final <S extends EntityRenderState> void submitNameDisplay(
+132:			submitNodeCollector.submitNameTag(poseStack, state.nameTagAttachment, offset, state.scoreText, !state.isDiscrete, state.lightCoords, camera);
+136:		if (state.nameTag != null) {
+137:			submitNodeCollector.submitNameTag(poseStack, state.nameTagAttachment, offset, state.nameTag, !state.isDiscrete, state.lightCoords, camera);
+143:	protected @Nullable Component getNameTag(final T entity) {
+147:	protected float getShadowRadius(final S state) {
+151:	protected float getShadowStrength(final S state) {
+155:	public abstract S createRenderState();
+157:	public final S createRenderState(final T entity, final float partialTicks) {
+164:	public void extractRenderState(final T entity, final S state, final float partialTicks) {
+248:	protected void extractNameTags(final T entity, final S state, final float partialTicks) {
+252:	protected final void extractNameTags(final T entity, final S state, final float partialTicks, final double nameTagDistance, final double belowNameDistance) {
+255:			boolean shouldShowName = state.distanceToCameraSq < Mth.square(nameTagDistance) && this.shouldShowName(entity, state.distanceToCameraSq);
+257:				state.nameTag = this.getNameTag(entity);
+258:				state.nameTagAttachment = entity.getAttachments().getNullable(EntityAttachment.NAME_TAG, 0, entity.getYRot(partialTicks));
+260:				state.nameTag = null;
+271:	protected void finalizeRenderState(final T entity, final S state) {
+=== net/minecraft/world/entity/LivingEntity.java
+236:	public int hurtTime;
+473:		if (this.hurtTime > 0) {
+474:			this.hurtTime--;
+745:		output.putShort("HurtTime", (short)this.hurtTime);
+811:		this.hurtTime = input.getShortOr("HurtTime", (short)0);
+1154:	public float getHealth() {
+1167:		return this.hurtTime > 0;
+1225:			this.hurtTime = this.hurtDuration;
+1866:		this.hurtTime = this.hurtDuration;
+2045:		this.hurtTime = this.hurtDuration;
+=== net/minecraft/world/entity/item/ItemEntity.java
+40:public class ItemEntity extends Entity implements TraceableEntity {
+372:	public ItemStack getItem() {
+388:	public int getAge() {
+436:		return 180.0F - getSpin(this.getAge() + 0.5F, this.bobOffs) / (float) (Math.PI * 2) * 360.0F;
+=== net/minecraft/network/chat/Component.java
+135:	static MutableComponent literal(final String text) {
+166:	static MutableComponent empty() {
+=== net/minecraft/network/chat/MutableComponent.java
+48:	public MutableComponent append(final String text) {
+52:	public MutableComponent append(final Component component) {
+57:	public MutableComponent withStyle(final UnaryOperator<Style> updater) {
+62:	public MutableComponent withStyle(final Style patch) {
+67:	public MutableComponent withStyle(final ChatFormatting... formats) {
+72:	public MutableComponent withStyle(final ChatFormatting format) {
+77:	public MutableComponent withColor(final int color) {
+82:	public MutableComponent withColor(final TextColor color) {
+=== net/minecraft/core/particles/ParticleTypes.java
+53:	public static final SimpleParticleType END_ROD = register("end_rod", false);
+67:	public static final SimpleParticleType FIREWORK = register("firework", false);
+71:	public static final SimpleParticleType CHERRY_LEAVES = register("cherry_leaves", false);
+84:	public static final SimpleParticleType SOUL_FIRE_FLAME = register("soul_fire_flame", false);
+86:	public static final ParticleType<ColorParticleOption> FLASH = register("flash", false, ColorParticleOption::codec, ColorParticleOption::streamCodec);
+89:	public static final SimpleParticleType HEART = register("heart", false);
+106:	public static final SimpleParticleType NOTE = register("note", false);
+118:	public static final SimpleParticleType SPLASH = register("splash", false);
+132:	public static final SimpleParticleType ASH = register("ash", false);
+135:	public static final SimpleParticleType SPORE_BLOSSOM_AIR = register("spore_blossom_air", false);
+140:	public static final SimpleParticleType WHITE_ASH = register("white_ash", false);
+142:	public static final SimpleParticleType SNOWFLAKE = register("snowflake", false);
+147:	public static final SimpleParticleType GLOW_SQUID_INK = register("glow_squid_ink", true);
+148:	public static final SimpleParticleType GLOW = register("glow", true);
+149:	public static final SimpleParticleType WAX_ON = register("wax_on", true);
+151:	public static final SimpleParticleType ELECTRIC_SPARK = register("electric_spark", true);
+152:	public static final SimpleParticleType SCRAPE = register("scrape", true);
+157:	public static final SimpleParticleType DUST_PLUME = register("dust_plume", false);
+158:	public static final SimpleParticleType TRIAL_SPAWNER_DETECTED_PLAYER = register("trial_spawner_detection", true);
+159:	public static final SimpleParticleType TRIAL_SPAWNER_DETECTED_PLAYER_OMINOUS = register("trial_spawner_detection_ominous", true);
