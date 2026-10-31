@@ -49,6 +49,9 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 			CosmeticsData.setTest("kabuto", "ender_dragon", "aura_oni");
 			ctx.waitTicks(40);
 			ctx.takeScreenshot("01c-aura-oni");
+			CosmeticsData.setTest("hat_kitsune_gold", "ender_dragon", "aura_limbo");
+			ctx.waitTicks(40);
+			ctx.takeScreenshot("01d-exclusive-pass");
 			CosmeticsData.setTest("kabuto", "ender_dragon", "aura_sakura");
 			sp.getServer().runCommand("item replace entity @p armor.head with minecraft:diamond_helmet");
 			ctx.waitTicks(5);

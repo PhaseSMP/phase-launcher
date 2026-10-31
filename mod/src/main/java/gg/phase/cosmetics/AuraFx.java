@@ -63,7 +63,22 @@ public final class AuraFx {
 				}
 				if (age % 7 == 0) mc.level.addParticle(ParticleTypes.FLAME, x + (RND.nextDouble() - 0.5) * 0.9, y + 0.1, z + (RND.nextDouble() - 0.5) * 0.9, 0, 0.03, 0);
 			}
+			case "aura_limbo" -> {
+				if (firstPerson && age % 2 != 0) return;
+				// разлом Limbo: алое пламя у ног + фиолетовые искры по спирали вверх
+				double a0 = age * 0.1;
+				for (int k = 0; k < 2; k++) {
+					double a = a0 + k * Math.PI;
+					mc.level.addParticle(ParticleTypes.SMALL_FLAME, x + Math.cos(a) * 0.62, y + 0.06, z + Math.sin(a) * 0.62, 0, 0.01, 0);
+				}
+				double sp = age * 0.3, h = (age * 0.04) % 2.0;
+				mc.level.addParticle(k(age) ? ParticleTypes.PORTAL : ParticleTypes.CRIMSON_SPORE, x + Math.cos(sp) * (0.6 - h * 0.1), y + 0.1 + h, z + Math.sin(sp) * (0.6 - h * 0.1), 0, 0.02, 0);
+				if (age % 8 == 0) mc.level.addParticle(ParticleTypes.END_ROD, x + (RND.nextDouble() - 0.5) * 0.9, y + 0.1 + RND.nextDouble() * 1.8, z + (RND.nextDouble() - 0.5) * 0.9, 0, 0.02, 0);
+				if (age % 20 == 0) mc.level.addParticle(ParticleTypes.DRAGON_BREATH, x + (RND.nextDouble() - 0.5) * 0.6, y + 0.05, z + (RND.nextDouble() - 0.5) * 0.6, 0, 0.0, 0);
+			}
 			default -> { }
 		}
 	}
+
+	private static boolean k(int a) { return (a / 3) % 2 == 0; }
 }
