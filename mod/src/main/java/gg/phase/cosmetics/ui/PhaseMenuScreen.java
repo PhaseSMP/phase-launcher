@@ -2,6 +2,7 @@ package gg.phase.cosmetics.ui;
 
 import gg.phase.cosmetics.Config;
 import gg.phase.cosmetics.CosmeticsData;
+import gg.phase.cosmetics.PhaseCosmetics;
 import gg.phase.cosmetics.pet.Pet;
 import gg.phase.cosmetics.pet.PetManager;
 import java.util.List;
@@ -12,7 +13,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 /**
- * Меню Phase в игре (клавиша J): шляпа, питомец, его команды и настройки.
+ * Меню Phase в игре (клавиша Ё): шляпа, питомец, его команды и настройки.
  * Панель справа, мир слева не размыт и не на паузе — видно, как питомец выполняет команду.
  */
 public class PhaseMenuScreen extends Screen {
@@ -21,7 +22,7 @@ public class PhaseMenuScreen extends Screen {
 	private int statusColor = Style.MUTED;
 	private boolean loading = true;
 	private int px, top, bottom;
-	private int hatLabelY = -1, petLabelY = -1, setLabelY = -1, shopY = -1, auraLabelY = -1, trailLabelY = -1;
+	private int hatLabelY = -1, petLabelY = -1, setLabelY = -1, shopY = -1, auraLabelY = -1;
 	private int headH = 40;
 	private boolean footer = true;
 	private boolean settingsPage, split;
@@ -62,8 +63,7 @@ public class PhaseMenuScreen extends Screen {
 		boolean pet = m != null && m.items().stream().anyMatch(i -> i.id().equals("ender_dragon"));
 		long auras = m == null ? 0 : m.items().stream().filter(i -> i.slot().equals("aura")).count();
 		int auraRows = auras == 0 ? 0 : (int) ((auras + 1 + 2) / 3);
-		long trails = m == null ? 0 : m.items().stream().filter(i -> i.slot().equals("trail")).count();
-		int trailRows = trails == 0 ? 0 : (int) ((trails + 1 + 2) / 3);
+
 		int rh = 18, gap = 3, sec = 10;
 		this.headH = 40;
 		this.footer = true;
@@ -74,9 +74,9 @@ public class PhaseMenuScreen extends Screen {
 			boolean fits = false;
 			for (int[] lv : levels) {
 				rh = lv[0]; gap = lv[1]; sec = lv[2]; this.headH = lv[3]; this.footer = lv[4] == 1;
-				int settings = this.split ? rh + gap : 11 + 5 * (rh + gap);
-				int need = this.headH + 11 + hatRows * (rh + gap) + sec + (auraRows > 0 ? 11 + auraRows * (rh + gap) + sec : 0)
-					+ (trailRows > 0 ? 11 + trailRows * (rh + gap) + sec : 0) + 11 + (pet ? 5 * (rh + gap) : 30) + sec + settings + (this.footer ? 30 : 14);
+				int settings = this.split ? rh + gap : 11 + 6 * (rh + gap);
+				int need = this.headH + 11 + hatRows * (rh + gap) + sec + (auraRows > 0 ? 11 + (auraRows + 1) * (rh + gap) + sec : 0)
+					+ 11 + (pet ? 5 * (rh + gap) : 30) + sec + settings + (this.footer ? 18 : 4);
 				if (need <= avail) { fits = true; break; }
 			}
 			if (fits) break;
@@ -84,7 +84,7 @@ public class PhaseMenuScreen extends Screen {
 		}
 		if (!this.split) this.settingsPage = false;
 		int y = this.top + this.headH;
-		this.hatLabelY = this.petLabelY = this.setLabelY = this.shopY = this.auraLabelY = this.trailLabelY = -1;
+		this.hatLabelY = this.petLabelY = this.setLabelY = this.shopY = this.auraLabelY = -1;
 
 		if (this.split && this.settingsPage) {
 			this.addRenderableWidget(new PhaseButton(x, y, w, rh, "‹ Назад к косметике", PhaseButton.Kind.ACTION, null, () -> { this.settingsPage = false; this.rebuildWidgets(); }));
@@ -121,23 +121,17 @@ public class PhaseMenuScreen extends Screen {
 				}
 				this.addRenderableWidget(new PhaseButton(x + c3 * (third + gap), y, third, rh, "Без ауры", PhaseButton.Kind.CHIP,
 					() -> CosmeticsData.mine.aura() == null, () -> this.equip("aura", null)));
-				y += rh + sec;
-			}
-
-			// ── След ──
-			List<CosmeticsData.Item> trailItems = m.items().stream().filter(i -> i.slot().equals("trail")).toList();
-			if (!trailItems.isEmpty()) {
-				this.trailLabelY = y;
-				y += 11;
-				int third = (w - gap * 2) / 3, c3 = 0;
-				for (CosmeticsData.Item it : trailItems) {
-					String label = it.name().replace("След ", "").replace("«", "").replace("»", "").replace("Звёздная пыль", "Звёзды");
-					this.addRenderableWidget(new PhaseButton(x + c3 * (third + gap), y, third, rh, label, PhaseButton.Kind.CHIP,
-						() -> Objects.equals(CosmeticsData.mine.trail(), it.id()), () -> this.equip("trail", it.id())));
-					if (++c3 == 3) { c3 = 0; y += rh + gap; }
+				y += rh + gap;
+				// части пака: аура, след, вспышка при приземлении — каждую можно выключить
+				char[] parts = { 'a', 't', 'b' };
+				String[] names = { "Аура", "След", "Вспышка" };
+				for (int i = 0; i < 3; i++) {
+					char part = parts[i];
+					PhaseButton b = new PhaseButton(x + i * (third + gap), y, third, rh, names[i], PhaseButton.Kind.CHIP,
+						() -> CosmeticsData.mine != null && CosmeticsData.fxOn(CosmeticsData.mine.fx(), part), () -> this.toggleFx(part));
+					b.active = m.aura() != null;
+					this.addRenderableWidget(b);
 				}
-				this.addRenderableWidget(new PhaseButton(x + c3 * (third + gap), y, third, rh, "Без следа", PhaseButton.Kind.CHIP,
-					() -> CosmeticsData.mine.trail() == null, () -> this.equip("trail", null)));
 				y += rh + sec;
 			}
 
@@ -214,6 +208,29 @@ public class PhaseMenuScreen extends Screen {
 		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Своя аура у меня на экране", PhaseButton.Kind.TOGGLE, () -> c.ownAura, () -> { c.ownAura = !c.ownAura; c.save(); }));
 		y += rh + gap;
 		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Клан и значки над никами", PhaseButton.Kind.TOGGLE, () -> c.nametags, () -> { c.nametags = !c.nametags; c.save(); }));
+		y += rh + gap;
+		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "↻ Перезагрузить косметику", PhaseButton.Kind.ACTION, null, this::reload));
+	}
+
+	private void reload() {
+		this.status = "Перезагружаю…";
+		this.statusColor = Style.MUTED;
+		CosmeticsData.reload().whenComplete((m, err) -> this.minecraft.execute(() -> {
+			if (err != null) this.fail(err);
+			else { this.status = "Косметика и скины обновлены"; this.statusColor = Style.GOLD; }
+			this.rebuildWidgets();
+		}));
+	}
+
+	private void toggleFx(char part) {
+		this.status = "Сохраняю…";
+		this.statusColor = Style.MUTED;
+		CosmeticsData.toggleFx(part).whenComplete((m, err) -> this.minecraft.execute(() -> {
+			if (err != null) this.fail(err);
+			else { this.status = "Сохранено"; this.statusColor = Style.GOLD; }
+			this.rebuildWidgets();
+		}));
+		this.rebuildWidgets();
 	}
 
 	private void petColor(String id) {
@@ -259,13 +276,16 @@ public class PhaseMenuScreen extends Screen {
 		g.pose().popMatrix();
 		g.text(this.font, "相", x + 54, this.top + 13, Style.GOLD, false);
 		String who = this.minecraft.getUser().getName();
-		if (this.headH >= 38) g.text(this.font, "Косметика · " + who, x, this.top + 25, Style.MUTED, false);
+		// статус сохранения — в шапке, чтобы никогда не наезжать на кнопки
+		if (!this.status.isEmpty()) {
+			if (this.headH >= 38) g.text(this.font, this.font.plainSubstrByWidth(this.status, w), x, this.top + 25, this.statusColor, false);
+			else g.text(this.font, this.font.plainSubstrByWidth(this.status, w - 74), x + 74, this.top + 13, this.statusColor, false);
+		} else if (this.headH >= 38) g.text(this.font, "Косметика · " + who, x, this.top + 25, Style.MUTED, false);
 		g.fill(x, this.top + this.headH - 5, x + w, this.top + this.headH - 4, Style.LINE);
 
 		if (this.loading && CosmeticsData.mine == null) g.text(this.font, "Загружаю вашу косметику…", x, this.top + 44, Style.MUTED, false);
 		this.label(g, "ШЛЯПА", x, this.hatLabelY);
 		this.label(g, "АУРА", x, this.auraLabelY);
-		this.label(g, "СЛЕД", x, this.trailLabelY);
 		this.label(g, "ПИТОМЕЦ", x, this.petLabelY);
 		this.label(g, "НАСТРОЙКИ", x, this.setLabelY);
 		if (this.shopY >= 0) {
@@ -277,11 +297,10 @@ public class PhaseMenuScreen extends Screen {
 		}
 		super.extractRenderState(g, mouseX, mouseY, a);
 		// подвал
-		int fy = this.bottom - (this.footer ? 22 : 12);
-		if (!this.status.isEmpty()) g.text(this.font, this.font.plainSubstrByWidth(this.status, w), x, fy - (this.footer ? 12 : 0), this.statusColor, false);
+		int fy = this.bottom - 16;
 		if (this.footer) {
 			g.fill(x, fy - 2, x + w, fy - 1, Style.LINE);
-			g.text(this.font, "J — меню  ·  Esc — закрыть", x, fy + 4, Style.MUTED_D, false);
+			g.text(this.font, PhaseCosmetics.MENU.getTranslatedKeyMessage().getString() + " — меню  ·  Esc — закрыть", x, fy + 4, Style.MUTED_D, false);
 		}
 	}
 

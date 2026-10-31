@@ -7,6 +7,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -125,7 +129,7 @@ public final class Pet {
 			begin(Act.GUARD, 44);
 		}
 		this.wasHurt = hurtNow;
-		// свой питомец замечает выпавшие вещи рядом и подсвечивает их
+		// свой питомец замечает ценные выпавшие вещи рядом и подсвечивает их
 		if (this.lootCd > 0) this.lootCd--;
 		boolean busy = special || this.act == Act.GUARD || this.act == Act.LOOT || this.act == Act.LAND || this.act == Act.TAKEOFF;
 		if (own && follow && !busy && this.lootCd == 0 && ((int) this.age) % 20 == 0 && !owner.isFallFlying() && owner.getHealth() > 6F) {
@@ -133,7 +137,7 @@ public final class Pet {
 			double bd = 8.5 * 8.5;
 			for (ItemEntity ie : level.getEntitiesOfClass(ItemEntity.class, owner.getBoundingBox().inflate(8.0))) {
 				double d = ie.distanceToSqr(owner);
-				if (d > 6.0 && d < bd && ie.tickCount > 30 && ie.isAlive()) { bd = d; best = ie; }
+				if (d > 6.0 && d < bd && ie.tickCount > 30 && ie.isAlive() && valuable(ie.getItem())) { bd = d; best = ie; }
 			}
 			if (best != null) {
 				this.lootId = best.getId();
@@ -348,6 +352,7 @@ public final class Pet {
 				next = new Vec3(next.x, Math.max(next.y, Math.floor(next.y + 0.12) + 1.02), next.z);
 				this.vel = new Vec3(this.vel.x * 0.5, Math.max(this.vel.y, 0.05), this.vel.z * 0.5);
 			}
+			if (this.act != Act.PERCH && this.act != Act.TAKEOFF) next = this.keepOff(owner, next);
 			this.pos = next;
 		}
 
@@ -455,4 +460,37 @@ public final class Pet {
 		}
 		return Double.NaN;
 	}
+
+	/** Ценное: редкое, зачарованное или из списка (алмазы, незерит, золото, элитры…) — остальное дракон не ищет */
+	private static boolean valuable(ItemStack st) {
+		if (st.isEmpty()) return false;
+		if (st.getRarity() != Rarity.COMMON || st.isEnchanted()) return true;
+		Item it = st.getItem();
+		return it == Items.DIAMOND || it == Items.DIAMOND_BLOCK || it == Items.EMERALD || it == Items.EMERALD_BLOCK
+			|| it == Items.NETHERITE_INGOT || it == Items.NETHERITE_SCRAP || it == Items.ANCIENT_DEBRIS
+			|| it == Items.GOLD_INGOT || it == Items.GOLD_BLOCK || it == Items.RAW_GOLD || it == Items.RAW_GOLD_BLOCK
+			|| it == Items.ELYTRA || it == Items.TRIDENT || it == Items.MACE || it == Items.SHULKER_SHELL
+			|| it == Items.HEART_OF_THE_SEA || it == Items.ECHO_SHARD || it == Items.TOTEM_OF_UNDYING;
+	}
+
+	/** Не влетать в хозяина: держится снаружи его тела, мягко огибая */
+	private Vec3 keepOff(Player owner, Vec3 next) {
+		double oy = owner.getY();
+		if (next.y < oy - 0.3 || next.y > oy + owner.getEyeHeight() + 0.45) return next;
+		double dx = next.x - owner.getX(), dz = next.z - owner.getZ();
+		double d = Math.sqrt(dx * dx + dz * dz);
+		final double r = 0.62;
+		if (d >= r) return next;
+		if (d < 1.0E-4) {
+			float by = owner.yBodyRot * Mth.DEG_TO_RAD;
+			dx = Mth.cos(by); dz = Mth.sin(by); d = 1.0;
+		}
+		double nx = dx / d, nz = dz / d;
+		// гасим скорость в сторону хозяина
+		double into = this.vel.x * nx + this.vel.z * nz;
+		if (into < 0) this.vel = new Vec3(this.vel.x - into * nx, this.vel.y, this.vel.z - into * nz);
+		Vec3 out = new Vec3(owner.getX() + nx * r, next.y, owner.getZ() + nz * r);
+		return next.add(out.subtract(next).scale(0.6));
+	}
+
 }

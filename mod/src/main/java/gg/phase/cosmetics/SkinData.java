@@ -43,6 +43,12 @@ public final class SkinData {
 
 	private SkinData() {}
 
+	/** «Перезагрузить»: заново спросить скины всех игроков рядом (старые видны, пока не придут новые) */
+	public static void clear() {
+		ASKED.clear();
+		tickIn = 0;
+	}
+
 	/** Для автотеста: этот скин всем игрокам */
 	public static void setTest(PlayerSkin skin) { TEST = skin; }
 

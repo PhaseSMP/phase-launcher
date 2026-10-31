@@ -52,6 +52,11 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 			CosmeticsData.setTest("hat_kitsune_gold", "ender_dragon", "aura_limbo");
 			ctx.waitTicks(40);
 			ctx.takeScreenshot("01d-exclusive-pass");
+			for (String hat : new String[] { "hat_kabuto_shogun", "hat_oni_void", "hat_straw_ash" }) {
+				CosmeticsData.setTestFull(hat, null, null, null, null);
+				ctx.waitTicks(10);
+				ctx.takeScreenshot("01d-" + hat);
+			}
 			// раскраски дракончика
 			CosmeticsData.setTestFull("kabuto", "ender_dragon", null, "gold", null);
 			ctx.waitTicks(30);
@@ -62,20 +67,35 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 			CosmeticsData.setTestFull("kabuto", "ender_dragon", null, "crimson", null);
 			ctx.waitTicks(10);
 			ctx.takeScreenshot("01g-dragon-crimson");
-			// следы: игрок идёт вперёд, камера сзади
+			// ауры-паки (аура + след): спереди стоя, затем в движении сзади
+			for (String au : new String[] { "aura_eclipse", "aura_foxfire", "aura_limbo", "aura_ash" }) {
+				CosmeticsData.setTestFull(null, null, au, null, null);
+				ctx.waitTicks(30);
+				ctx.takeScreenshot("01h-" + au + "-front");
+			}
 			ctx.runOnClient(mc -> mc.options.setCameraType(CameraType.THIRD_PERSON_BACK));
-			for (String t : new String[] { "trail_sakura", "trail_ember", "trail_frost", "trail_stars" }) {
-				CosmeticsData.setTestFull(null, null, null, null, t);
-				// настоящая ходьба: телепорт не даёт движения, и след (верно) не рисуется
+			for (String au : new String[] { "aura_eclipse", "aura_foxfire", "aura_sakura" }) {
+				CosmeticsData.setTestFull(null, null, au, null, null);
 				ctx.getInput().holdKey(o -> o.keyUp);
-				ctx.waitTicks(22);
-				ctx.takeScreenshot("01h-" + t);
+				ctx.waitTicks(16);
+				ctx.getInput().pressKey(o -> o.keyJump);
+				ctx.waitTicks(14);
+				ctx.takeScreenshot("01i-" + au + "-run");
 				ctx.getInput().releaseKey(o -> o.keyUp);
 				ctx.getInput().holdKey(o -> o.keyDown);
-				ctx.waitTicks(22);
-				ctx.getInput().releaseKey(o -> o.keyDown);
 				ctx.waitTicks(30);
+				ctx.getInput().releaseKey(o -> o.keyDown);
+				ctx.waitTicks(10);
 			}
+			// от первого лица аура не должна лезть в глаза
+			ctx.runOnClient(mc -> mc.options.setCameraType(CameraType.FIRST_PERSON));
+			CosmeticsData.setTestFull(null, null, "aura_foxfire", null, null);
+			ctx.waitTicks(30);
+			ctx.takeScreenshot("01j-first-person-foxfire");
+			ctx.runOnClient(mc -> mc.player.setXRot(55F));
+			ctx.waitTicks(10);
+			ctx.takeScreenshot("01k-first-person-look-down");
+			ctx.runOnClient(mc -> mc.player.setXRot(0F));
 			ctx.runOnClient(mc -> mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT));
 			CosmeticsData.setTest("kabuto", "ender_dragon", "aura_sakura");
 			sp.getServer().runCommand("item replace entity @p armor.head with minecraft:diamond_helmet");

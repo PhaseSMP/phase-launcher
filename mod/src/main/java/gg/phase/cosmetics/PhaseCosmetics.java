@@ -29,7 +29,7 @@ public class PhaseCosmetics implements ClientModInitializer {
 	public void onInitializeClient() {
 		ModGuard.check();
 		CosmeticsData.start();
-		MENU = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.phase.menu", InputConstants.KEY_J, CATEGORY));
+		MENU = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.phase.menu2", InputConstants.KEY_GRAVE, CATEGORY)); // Ё (клавиша слева от 1)
 		ClientTickEvents.END_CLIENT_TICK.register(mc -> {
 			while (MENU.consumeClick()) {
 				if (mc.gui.screen() == null && mc.player != null) mc.gui.setScreen(new PhaseMenuScreen());
@@ -45,6 +45,9 @@ public class PhaseCosmetics implements ClientModInitializer {
 				helper.register(new CosmeticsLayer((RenderLayerParent<AvatarRenderState, PlayerModel>) renderer));
 			}
 		});
-		LevelRenderEvents.COLLECT_SUBMITS.register(ctx -> PetManager.INSTANCE.render(ctx.poseStack(), ctx.submitNodeCollector()));
+		LevelRenderEvents.COLLECT_SUBMITS.register(ctx -> {
+			PetManager.INSTANCE.render(ctx.poseStack(), ctx.submitNodeCollector());
+			AuraFx.render(ctx.poseStack(), ctx.submitNodeCollector());
+		});
 	}
 }
