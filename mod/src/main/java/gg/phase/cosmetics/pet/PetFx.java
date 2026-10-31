@@ -14,4 +14,6 @@ public interface PetFx {
 	void breath(Pet pet, Vec3 dir);
 	void snore(Pet pet);
 	void teleport(Pet pet, Vec3 at);
+	/** Подсветить найденную вещь: искры вокруг предмета на земле */
+	void sparkle(Pet pet, Vec3 at);
 }

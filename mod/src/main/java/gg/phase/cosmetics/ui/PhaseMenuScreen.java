@@ -21,7 +21,7 @@ public class PhaseMenuScreen extends Screen {
 	private int statusColor = Style.MUTED;
 	private boolean loading = true;
 	private int px, top, bottom;
-	private int hatLabelY = -1, petLabelY = -1, setLabelY = -1, shopY = -1, auraLabelY = -1;
+	private int hatLabelY = -1, petLabelY = -1, setLabelY = -1, shopY = -1, auraLabelY = -1, trailLabelY = -1;
 	private int headH = 40;
 	private boolean footer = true;
 	private boolean settingsPage, split;
@@ -62,6 +62,8 @@ public class PhaseMenuScreen extends Screen {
 		boolean pet = m != null && m.items().stream().anyMatch(i -> i.id().equals("ender_dragon"));
 		long auras = m == null ? 0 : m.items().stream().filter(i -> i.slot().equals("aura")).count();
 		int auraRows = auras == 0 ? 0 : (int) ((auras + 1 + 2) / 3);
+		long trails = m == null ? 0 : m.items().stream().filter(i -> i.slot().equals("trail")).count();
+		int trailRows = trails == 0 ? 0 : (int) ((trails + 1 + 2) / 3);
 		int rh = 18, gap = 3, sec = 10;
 		this.headH = 40;
 		this.footer = true;
@@ -72,8 +74,9 @@ public class PhaseMenuScreen extends Screen {
 			boolean fits = false;
 			for (int[] lv : levels) {
 				rh = lv[0]; gap = lv[1]; sec = lv[2]; this.headH = lv[3]; this.footer = lv[4] == 1;
-				int settings = this.split ? rh + gap : 11 + 4 * (rh + gap);
-				int need = this.headH + 11 + hatRows * (rh + gap) + sec + (auraRows > 0 ? 11 + auraRows * (rh + gap) + sec : 0) + 11 + (pet ? 4 * (rh + gap) : 30) + sec + settings + (this.footer ? 30 : 14);
+				int settings = this.split ? rh + gap : 11 + 5 * (rh + gap);
+				int need = this.headH + 11 + hatRows * (rh + gap) + sec + (auraRows > 0 ? 11 + auraRows * (rh + gap) + sec : 0)
+					+ (trailRows > 0 ? 11 + trailRows * (rh + gap) + sec : 0) + 11 + (pet ? 5 * (rh + gap) : 30) + sec + settings + (this.footer ? 30 : 14);
 				if (need <= avail) { fits = true; break; }
 			}
 			if (fits) break;
@@ -81,7 +84,7 @@ public class PhaseMenuScreen extends Screen {
 		}
 		if (!this.split) this.settingsPage = false;
 		int y = this.top + this.headH;
-		this.hatLabelY = this.petLabelY = this.setLabelY = this.shopY = this.auraLabelY = -1;
+		this.hatLabelY = this.petLabelY = this.setLabelY = this.shopY = this.auraLabelY = this.trailLabelY = -1;
 
 		if (this.split && this.settingsPage) {
 			this.addRenderableWidget(new PhaseButton(x, y, w, rh, "‹ Назад к косметике", PhaseButton.Kind.ACTION, null, () -> { this.settingsPage = false; this.rebuildWidgets(); }));
@@ -121,6 +124,23 @@ public class PhaseMenuScreen extends Screen {
 				y += rh + sec;
 			}
 
+			// ── След ──
+			List<CosmeticsData.Item> trailItems = m.items().stream().filter(i -> i.slot().equals("trail")).toList();
+			if (!trailItems.isEmpty()) {
+				this.trailLabelY = y;
+				y += 11;
+				int third = (w - gap * 2) / 3, c3 = 0;
+				for (CosmeticsData.Item it : trailItems) {
+					String label = it.name().replace("След ", "").replace("«", "").replace("»", "").replace("Звёздная пыль", "Звёзды");
+					this.addRenderableWidget(new PhaseButton(x + c3 * (third + gap), y, third, rh, label, PhaseButton.Kind.CHIP,
+						() -> Objects.equals(CosmeticsData.mine.trail(), it.id()), () -> this.equip("trail", it.id())));
+					if (++c3 == 3) { c3 = 0; y += rh + gap; }
+				}
+				this.addRenderableWidget(new PhaseButton(x + c3 * (third + gap), y, third, rh, "Без следа", PhaseButton.Kind.CHIP,
+					() -> CosmeticsData.mine.trail() == null, () -> this.equip("trail", null)));
+				y += rh + sec;
+			}
+
 			// ── Питомец ──
 			this.petLabelY = y;
 			y += 11;
@@ -130,6 +150,18 @@ public class PhaseMenuScreen extends Screen {
 					() -> CosmeticsData.mine.pet() != null, () -> this.equip("pet", CosmeticsData.mine.pet() == null ? "ender_dragon" : null)));
 				y += rh + gap;
 				boolean shown = m.pet() != null;
+				// раскраска дракончика
+				String[][] colors = { { "default", "Эндер" }, { "crimson", "Пламя" }, { "frost", "Иней" }, { "gold", "Злато" }, { "void", "Бездна" } };
+				int fifth = (w - gap * 4) / 5;
+				for (int i = 0; i < colors.length; i++) {
+					String id = colors[i][0];
+					PhaseButton b = new PhaseButton(x + i * (fifth + gap), y, fifth, rh, colors[i][1], PhaseButton.Kind.CHIP,
+						() -> id.equals(CosmeticsData.mine == null || CosmeticsData.mine.petColor() == null ? "default" : CosmeticsData.mine.petColor()),
+						() -> this.petColor(id));
+					b.active = shown;
+					this.addRenderableWidget(b);
+				}
+				y += rh + gap;
 				int third = (w - gap * 2) / 3;
 				String[][] modes = { { "follow", "Рядом" }, { "shoulder", "На плечо" }, { "stay", "Ждать тут" } };
 				for (int i = 0; i < 3; i++) {
@@ -180,6 +212,19 @@ public class PhaseMenuScreen extends Screen {
 		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Шляпа поверх шлема", PhaseButton.Kind.TOGGLE, () -> c.hideHelmet, () -> { c.hideHelmet = !c.hideHelmet; c.save(); }));
 		y += rh + gap;
 		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Своя аура у меня на экране", PhaseButton.Kind.TOGGLE, () -> c.ownAura, () -> { c.ownAura = !c.ownAura; c.save(); }));
+		y += rh + gap;
+		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Клан и значки над никами", PhaseButton.Kind.TOGGLE, () -> c.nametags, () -> { c.nametags = !c.nametags; c.save(); }));
+	}
+
+	private void petColor(String id) {
+		this.status = "Сохраняю…";
+		this.statusColor = Style.MUTED;
+		CosmeticsData.setPetColor(id).whenComplete((m, err) -> this.minecraft.execute(() -> {
+			if (err != null) this.fail(err);
+			else { this.status = "Раскраска сохранена"; this.statusColor = Style.GOLD; }
+			this.rebuildWidgets();
+		}));
+		this.rebuildWidgets();
 	}
 
 	private void equip(String slot, String item) {
@@ -220,6 +265,7 @@ public class PhaseMenuScreen extends Screen {
 		if (this.loading && CosmeticsData.mine == null) g.text(this.font, "Загружаю вашу косметику…", x, this.top + 44, Style.MUTED, false);
 		this.label(g, "ШЛЯПА", x, this.hatLabelY);
 		this.label(g, "АУРА", x, this.auraLabelY);
+		this.label(g, "СЛЕД", x, this.trailLabelY);
 		this.label(g, "ПИТОМЕЦ", x, this.petLabelY);
 		this.label(g, "НАСТРОЙКИ", x, this.setLabelY);
 		if (this.shopY >= 0) {

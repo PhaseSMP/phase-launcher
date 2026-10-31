@@ -4,6 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,7 +23,7 @@ public final class Pet {
 		CURL = 8, PERCH = 9, WAG = 10, LEAN = 11, N = 12;
 	private static final float[] RATE = { 0.12F, 0.1F, 0.06F, 0.14F, 0.2F, 0.2F, 0.3F, 0.15F, 0.06F, 0.2F, 0.1F, 0.15F };
 
-	public enum Act { HOVER, LOOP, CIRCLE, ROLL, DIVE, LAND, GROUND, TAKEOFF, PERCH, STAY, PETTED, ROAR, SPIN, VISIT }
+	public enum Act { HOVER, LOOP, CIRCLE, ROLL, DIVE, LAND, GROUND, TAKEOFF, PERCH, STAY, PETTED, ROAR, SPIN, VISIT, GUARD, LOOT }
 
 	public final int ownerId;
 	public Vec3 pos, prevPos;
@@ -31,11 +33,15 @@ public final class Pet {
 	private final float[] target = new float[N];
 	public float flap, flapO, tail, tailO, age;
 	public int head; // 0 открыты, 1 моргает, 2 счастлив, 3 спит
+	public String color = ""; // раскраска: "", crimson, frost, gold, void
 	public boolean hidden;
 
 	public Act act = Act.HOVER;
 	private int actTicks, actLen, idleFor, blinkIn = 40, blinkLeft, chirpIn = 200, snoreIn = 60, playIn = 200, flapSoundIn;
 	private int happyLeft;
+	// «Питомец 2.0»: защита хозяина, поиск выпавших вещей, поддержка при малом здоровье
+	private boolean wasHurt;
+	private int lootId = -1, lootCd = 100;
 	private Vec3 stayPos, landAt;
 	private float lookYaw, lookPitch, lookIn;
 	private final RandomSource rnd = RandomSource.create();
@@ -110,6 +116,31 @@ public final class Pet {
 		if (!special) {
 			if (mode.equals("shoulder") && this.act != Act.PERCH) begin(Act.PERCH, 0);
 			if (mode.equals("stay") && this.act != Act.STAY) { if (this.stayPos == null) this.stayPos = this.pos; begin(Act.STAY, 0); }
+		}
+		// хозяина ударили — вылетает вперёд и рычит (только в режиме «Рядом»)
+		boolean hurtNow = owner.hurtTime > 0;
+		boolean follow = mode.equals("follow");
+		if (hurtNow && !this.wasHurt && follow && this.act != Act.GUARD && owner.getHealth() > 0F) {
+			if (this.act == Act.LOOT) this.lootId = -1;
+			begin(Act.GUARD, 44);
+		}
+		this.wasHurt = hurtNow;
+		// свой питомец замечает выпавшие вещи рядом и подсвечивает их
+		if (this.lootCd > 0) this.lootCd--;
+		boolean busy = special || this.act == Act.GUARD || this.act == Act.LOOT || this.act == Act.LAND || this.act == Act.TAKEOFF;
+		if (own && follow && !busy && this.lootCd == 0 && ((int) this.age) % 20 == 0 && !owner.isFallFlying() && owner.getHealth() > 6F) {
+			ItemEntity best = null;
+			double bd = 8.5 * 8.5;
+			for (ItemEntity ie : level.getEntitiesOfClass(ItemEntity.class, owner.getBoundingBox().inflate(8.0))) {
+				double d = ie.distanceToSqr(owner);
+				if (d > 6.0 && d < bd && ie.tickCount > 30 && ie.isAlive()) { bd = d; best = ie; }
+			}
+			if (best != null) {
+				this.lootId = best.getId();
+				this.lootCd = 260;
+				begin(Act.LOOT, 100);
+				fx.chirp(this);
+			} else this.lootCd = 20;
 		}
 
 		Vec3 goal;               // куда лететь (точка «под брюшком»)
@@ -223,6 +254,36 @@ public final class Pet {
 				if (this.actTicks > 30) this.head = 2;
 				if (this.actTicks >= this.actLen || ownerMoving) begin(Act.HOVER, 0);
 			}
+			case GUARD -> {
+				// встаёт между хозяином и опасностью: перед лицом, смотрит наружу, рычит и дышит пламенем Края
+				goal = base.add(fwd.scale(1.3)).add(0, 1.45, 0);
+				stiff = 0.22F; maxSpeed = 0.9F; flapAmp = 1.35F; flapSpeed = 0.95F;
+				faceYaw = owner.yBodyRot;
+				lookAt = base.add(fwd.scale(8)).add(0, 1.4, 0);
+				float gt = this.actTicks;
+				this.target[JAW] = gt > 6 && gt < 30 ? 1F : 0F;
+				if (this.actTicks == 7) fx.roar(this);
+				if (gt > 8 && gt < 28 && this.actTicks % 2 == 0) fx.breath(this, fwd);
+				if (this.actTicks >= this.actLen) begin(Act.HOVER, 0);
+			}
+			case LOOT -> {
+				Entity it = this.lootId >= 0 ? level.getEntity(this.lootId) : null;
+				if (it == null || !it.isAlive() || this.actTicks >= this.actLen || it.distanceToSqr(owner) > 14 * 14) {
+					// вещь подобрали — радуется
+					if (it == null || !it.isAlive()) this.happyLeft = 40;
+					this.lootId = -1;
+					begin(Act.HOVER, 0);
+					goal = hover;
+					break;
+				}
+				Vec3 ip = it.position();
+				goal = ip.add(0, 0.95 + Mth.sin(this.actTicks * 0.2F) * 0.12, 0);
+				stiff = 0.1F; maxSpeed = 0.5F;
+				faceYaw = yawTo(this.pos, ip);
+				lookAt = ip;
+				if (this.pos.distanceToSqr(goal) < 0.6 && this.actTicks % 5 == 0) fx.sparkle(this, ip);
+				this.happyLeft = 2;
+			}
 			case PETTED -> {
 				goal = owner.getEyePosition().add(owner.getViewVector(1F).scale(0.95)).add(0, -0.3, 0);
 				stiff = 0.12F; maxSpeed = 0.4F;
@@ -246,6 +307,14 @@ public final class Pet {
 			}
 			default -> { // HOVER
 				goal = hover;
+				// у хозяина мало здоровья — держится вплотную и подбадривает сердечками
+				if (owner.getHealth() > 0F && owner.getHealth() <= 6F) {
+					goal = base.add(left.scale(0.55)).add(fwd.scale(0.2)).add(0, 1.5, 0);
+					faceYaw = yawTo(this.pos, owner.getEyePosition());
+					this.head = 2;
+					if (((int) this.age) % 22 == 0) fx.hearts(this);
+					this.playIn = Math.max(this.playIn, 60);
+				}
 				// игрок отдыхает на земле — садимся рядом
 				if (this.idleFor > 70 && owner.onGround() && !owner.isInWater()) {
 					Vec3 spot = base.add(left.scale(0.85)).add(fwd.scale(0.55));
@@ -291,7 +360,7 @@ public final class Pet {
 		this.target[LIE] = grounded ? wantLie : 0F;
 		this.target[PERCH] = wantPerch;
 		this.target[FLAP_AMP] = grounded ? 0F : flapAmp * (0.75F + Math.min(speed * 1.5F, 0.6F));
-		if (this.act != Act.ROAR) this.target[JAW] = this.head == 3 ? 0F : this.target[JAW] * 0.5F;
+		if (this.act != Act.ROAR && this.act != Act.GUARD) this.target[JAW] = this.head == 3 ? 0F : this.target[JAW] * 0.5F;
 		if (this.happyLeft > 0) { this.happyLeft--; this.head = this.head == 0 ? 2 : this.head; }
 		this.target[WAG] = this.happyLeft > 0 || this.act == Act.PETTED ? 1F : grounded && this.head != 3 ? 0.25F : 0.4F;
 		this.target[CURL] = grounded ? 1F : 0F;

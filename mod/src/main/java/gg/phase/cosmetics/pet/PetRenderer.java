@@ -117,7 +117,8 @@ public final class PetRenderer {
 				}
 			}
 			if (at[i] == null) at[i] = pose.last().copy();
-			CosmeticsModels.get(model).submit(pose, out, light, OverlayTexture.NO_OVERLAY, 0);
+			String drawn = pet.color.isEmpty() ? model : model + "__" + pet.color;
+			CosmeticsModels.get(drawn).submit(pose, out, light, OverlayTexture.NO_OVERLAY, 0);
 			pose.popPose();
 		}
 		pose.popPose();

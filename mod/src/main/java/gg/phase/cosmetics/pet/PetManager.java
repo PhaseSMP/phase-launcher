@@ -59,6 +59,8 @@ public final class PetManager implements PetFx {
 				return new Pet(id, pl.position().add(Mth.cos(by) * 0.9, 1.6, Mth.sin(by) * 0.9));
 			});
 			String mode = own ? cfg.mode : w.mode() == null ? "follow" : w.mode();
+			String col = w.petColor();
+			pet.color = col == null || col.equals("default") ? "" : col;
 			pet.tick(pl, mode, this, own);
 		}
 		this.pets.keySet().retainAll(alive);
@@ -117,6 +119,16 @@ public final class PetManager implements PetFx {
 		if (mc.level == null) return;
 		Vec3 h = headOf(pet);
 		mc.level.addParticle(ParticleTypes.HEART, h.x + (this.rnd.nextDouble() - 0.5) * 0.3, h.y + 0.2, h.z + (this.rnd.nextDouble() - 0.5) * 0.3, 0, 0.02, 0);
+	}
+
+	@Override
+	public void sparkle(Pet pet, Vec3 at) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.level == null) return;
+		for (int i = 0; i < 3; i++) {
+			double a = this.rnd.nextDouble() * Mth.TWO_PI, r = 0.25 + this.rnd.nextDouble() * 0.2;
+			mc.level.addParticle(i == 0 ? ParticleTypes.END_ROD : ParticleTypes.WAX_ON, at.x + Math.cos(a) * r, at.y + 0.15 + this.rnd.nextDouble() * 0.4, at.z + Math.sin(a) * r, 0, 0.015, 0);
+		}
 	}
 
 	@Override

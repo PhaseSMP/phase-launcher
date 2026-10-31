@@ -2,6 +2,7 @@ package gg.phase.cosmetics.mixin;
 
 import gg.phase.cosmetics.Config;
 import gg.phase.cosmetics.CosmeticsData;
+import gg.phase.cosmetics.NameTags;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.world.entity.Avatar;
@@ -24,5 +25,14 @@ public abstract class AvatarRendererMixin {
 		state.headItem.clear();
 		state.wornHeadType = null;
 		state.wornHeadProfile = null;
+	}
+
+	/** Табличка над ником: тег клана и значок роли/подписки */
+	@Inject(method = "extractRenderState(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;F)V", at = @At("TAIL"))
+	private void phase$nameTag(Avatar entity, AvatarRenderState state, float partialTicks, CallbackInfo ci) {
+		if (state.nameTag == null || !(entity instanceof Player p) || !Config.get().nametags) return;
+		CosmeticsData.Worn w = CosmeticsData.get(p.getName().getString());
+		if (w == null || (w.clan() == null && w.badge() == null)) return;
+		state.nameTag = NameTags.decorate(state.nameTag, w);
 	}
 }

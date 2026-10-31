@@ -26,13 +26,13 @@ public final class AuraFx {
 		for (Player p : mc.level.players()) {
 			boolean own = p == mc.player;
 			if (!own && !cfg.others) continue;
-			if (own && !cfg.ownAura) continue;
 			if (p.isInvisible() || p.isSpectator() || p.position().distanceToSqr(cam) > 40 * 40) continue;
 			CosmeticsData.Worn w = CosmeticsData.get(p.getName().getString());
-			if (w == null || w.aura() == null) continue;
+			if (w == null) continue;
 			// от первого лица своя аура — реже и не перед глазами
 			boolean fp = own && mc.options.getCameraType() == CameraType.FIRST_PERSON;
-			spawn(mc, p, w.aura(), fp);
+			if (w.aura() != null && (!own || cfg.ownAura)) spawn(mc, p, w.aura(), fp);
+			if (w.trail() != null) trail(mc, p, w.trail(), fp);
 		}
 	}
 
@@ -81,4 +81,37 @@ public final class AuraFx {
 	}
 
 	private static boolean k(int a) { return (a / 3) % 2 == 0; }
+
+	/** Следы: частицы ложатся позади ног, только пока игрок движется */
+	private static void trail(Minecraft mc, Player p, String trail, boolean firstPerson) {
+		double dx = p.getX() - p.xo, dz = p.getZ() - p.zo;
+		double sp2 = dx * dx + dz * dz;
+		if (sp2 < 0.0025) return; // стоит на месте — следа нет
+		if (firstPerson && age % 2 != 0) return;
+		double sp = Math.sqrt(sp2);
+		double bx = p.xo - dx / sp * 0.3 + (RND.nextDouble() - 0.5) * 0.45;
+		double bz = p.zo - dz / sp * 0.3 + (RND.nextDouble() - 0.5) * 0.45;
+		double y = p.yo + 0.05;
+		boolean fast = sp > 0.2; // бег или элитры — след гуще
+		switch (trail) {
+			case "trail_sakura" -> {
+				mc.level.addParticle(ParticleTypes.CHERRY_LEAVES, bx, y + 0.25, bz, 0, 0, 0);
+				if (fast || age % 3 == 0) mc.level.addParticle(ParticleTypes.SPORE_BLOSSOM_AIR, bx, y + 0.1, bz, 0, 0.005, 0);
+			}
+			case "trail_ember" -> {
+				mc.level.addParticle(ParticleTypes.SMALL_FLAME, bx, y, bz, 0, 0.004, 0);
+				if (age % 2 == 0) mc.level.addParticle(ParticleTypes.ASH, bx, y + 0.1, bz, 0, 0, 0);
+				if (fast && age % 3 == 0) mc.level.addParticle(ParticleTypes.FLAME, bx, y + 0.05, bz, 0, 0.03, 0);
+			}
+			case "trail_frost" -> {
+				mc.level.addParticle(ParticleTypes.SNOWFLAKE, bx, y + 0.1, bz, (RND.nextDouble() - 0.5) * 0.02, 0.01, (RND.nextDouble() - 0.5) * 0.02);
+				if (age % 2 == 0) mc.level.addParticle(ParticleTypes.WHITE_ASH, bx, y + 0.2, bz, 0, 0, 0);
+			}
+			case "trail_stars" -> {
+				mc.level.addParticle(age % 2 == 0 ? ParticleTypes.END_ROD : ParticleTypes.ELECTRIC_SPARK, bx, y + 0.15 + RND.nextDouble() * 0.3, bz, 0, 0.01, 0);
+				if (fast || age % 4 == 0) mc.level.addParticle(ParticleTypes.GLOW, bx, y + 0.3, bz, 0, 0.005, 0);
+			}
+			default -> { }
+		}
+	}
 }

@@ -52,6 +52,29 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 			CosmeticsData.setTest("hat_kitsune_gold", "ender_dragon", "aura_limbo");
 			ctx.waitTicks(40);
 			ctx.takeScreenshot("01d-exclusive-pass");
+			// раскраски дракончика
+			CosmeticsData.setTestFull("kabuto", "ender_dragon", null, "gold", null);
+			ctx.waitTicks(30);
+			ctx.takeScreenshot("01e-dragon-gold");
+			CosmeticsData.setTestFull("kabuto", "ender_dragon", null, "void", null);
+			ctx.waitTicks(10);
+			ctx.takeScreenshot("01f-dragon-void");
+			CosmeticsData.setTestFull("kabuto", "ender_dragon", null, "crimson", null);
+			ctx.waitTicks(10);
+			ctx.takeScreenshot("01g-dragon-crimson");
+			// следы: игрок идёт вперёд, камера сзади
+			ctx.runOnClient(mc -> mc.options.setCameraType(CameraType.THIRD_PERSON_BACK));
+			for (String t : new String[] { "trail_sakura", "trail_ember", "trail_frost", "trail_stars" }) {
+				CosmeticsData.setTestFull(null, null, null, null, t);
+				for (int i = 0; i < 20; i++) {
+					sp.getServer().runCommand("tp @p ~ ~ ~0.25");
+					ctx.waitTicks(1);
+				}
+				ctx.takeScreenshot("01h-" + t);
+				sp.getServer().runCommand("tp @p ~ ~ ~-5");
+				ctx.waitTicks(20);
+			}
+			ctx.runOnClient(mc -> mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT));
 			CosmeticsData.setTest("kabuto", "ender_dragon", "aura_sakura");
 			sp.getServer().runCommand("item replace entity @p armor.head with minecraft:diamond_helmet");
 			ctx.waitTicks(5);

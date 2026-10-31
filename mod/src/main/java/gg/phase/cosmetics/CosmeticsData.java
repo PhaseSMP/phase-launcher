@@ -22,9 +22,9 @@ import net.minecraft.client.Minecraft;
  * Свою косметику игрок меняет прямо в игре (меню J) — изменения видны у него сразу, у остальных — в течение полуминуты.
  */
 public final class CosmeticsData {
-	public record Worn(String hat, String pet, String mode, String aura) {}
+	public record Worn(String hat, String pet, String mode, String aura, String petColor, String trail, String clan, String clanColor, String badge) {}
 	public record Item(String id, String slot, String name, int price) {}
-	public record Mine(List<Item> items, List<Item> shop, String hat, String pet, String mode, String aura) {}
+	public record Mine(List<Item> items, List<Item> shop, String hat, String pet, String mode, String aura, String petColor, String trail) {}
 
 	public static final String BASE = System.getProperty("phase.api", "https://phase.fujimc.workers.dev");
 	private static volatile Map<String, Worn> worn = Map.of();
@@ -38,7 +38,11 @@ public final class CosmeticsData {
 
 	/** Для автотеста: надеть всем игрокам (null — снять подмену) */
 	public static void setTest(String hat, String pet) { setTest(hat, pet, null); }
-	public static void setTest(String hat, String pet, String aura) { TEST = hat == null && pet == null && aura == null ? null : new Worn(hat, pet, "follow", aura); }
+	public static void setTest(String hat, String pet, String aura) { TEST = hat == null && pet == null && aura == null ? null : new Worn(hat, pet, "follow", aura, null, null, null, null, null); }
+	/** Для автотеста: полный набор — раскраска дракончика, след, клан и значок */
+	public static void setTestFull(String hat, String pet, String aura, String petColor, String trail) {
+		TEST = new Worn(hat, pet, "follow", aura, petColor, trail, "FUJI", "sakura", "max");
+	}
 	public static boolean isTest() { return TEST != null; }
 
 	public static Worn get(String name) {
@@ -51,9 +55,11 @@ public final class CosmeticsData {
 	}
 
 	/** Своё изменение — показываем сразу, не дожидаясь опроса сервера */
-	static void overrideOwn(String name, String hat, String pet, String aura) {
+	static void overrideOwn(String name, String hat, String pet, String aura, String petColor, String trail) {
 		String key = name.toLowerCase(Locale.ROOT);
-		OVERRIDE.put(key, new Worn(hat, pet, Config.get().mode, aura));
+		Worn polled = worn.get(key); // тег клана и значок берём из общего опроса — их меняют не в игре
+		OVERRIDE.put(key, new Worn(hat, pet, Config.get().mode, aura, petColor, trail,
+			polled == null ? null : polled.clan(), polled == null ? null : polled.clanColor(), polled == null ? null : polled.badge()));
 		OVERRIDE_AT.put(key, System.currentTimeMillis());
 	}
 
@@ -74,7 +80,8 @@ public final class CosmeticsData {
 					for (Map.Entry<String, JsonElement> e : players.entrySet()) {
 						JsonObject o = e.getValue().getAsJsonObject();
 						String mode = str(o, "mode");
-						next.put(e.getKey().toLowerCase(Locale.ROOT), new Worn(str(o, "hat"), str(o, "pet"), mode == null ? "follow" : mode, str(o, "aura")));
+						next.put(e.getKey().toLowerCase(Locale.ROOT), new Worn(str(o, "hat"), str(o, "pet"), mode == null ? "follow" : mode, str(o, "aura"), str(o, "petColor"),
+							str(o, "trail"), str(o, "clan"), str(o, "clanColor"), str(o, "role") != null ? str(o, "role") : str(o, "plan")));
 					}
 					worn = next;
 				}
@@ -115,7 +122,7 @@ public final class CosmeticsData {
 		if (TEST != null) {
 			Mine m = new Mine(List.of(new Item("kabuto", "hat", "Шлем кабуто", 0), new Item("straw_hat", "hat", "Соломенная каса", 0),
 				new Item("ender_dragon", "pet", "Эндер-дракончик", 0), new Item("aura_sakura", "aura", "Сакура", 0), new Item("aura_ender", "aura", "Эндер", 0), new Item("aura_oni", "aura", "Пламя они", 0)),
-				List.of(new Item("oni_horns", "hat", "Рога они", 199)), TEST.hat(), TEST.pet(), Config.get().mode, TEST.aura());
+				List.of(new Item("oni_horns", "hat", "Рога они", 199)), TEST.hat(), TEST.pet(), Config.get().mode, TEST.aura(), TEST.petColor(), TEST.trail());
 			mine = m;
 			return CompletableFuture.completedFuture(m);
 		}
@@ -127,17 +134,35 @@ public final class CosmeticsData {
 		Mine cur = mine;
 		if (cur != null) {
 			String hat = slot.equals("hat") ? item : cur.hat(), pet = slot.equals("pet") ? item : cur.pet(), aura = slot.equals("aura") ? item : cur.aura();
-			overrideOwn(name, hat, pet, aura);
-			mine = new Mine(cur.items(), cur.shop(), hat, pet, cur.mode(), aura);
+			String trail = slot.equals("trail") ? item : cur.trail();
+			overrideOwn(name, hat, pet, aura, cur.petColor(), trail);
+			mine = new Mine(cur.items(), cur.shop(), hat, pet, cur.mode(), aura, cur.petColor(), trail);
 		}
 		if (TEST != null) {
-			TEST = new Worn(mine.hat(), mine.pet(), "follow", mine.aura());
+			TEST = new Worn(mine.hat(), mine.pet(), "follow", mine.aura(), mine.petColor(), mine.trail(), null, null, null);
 			return CompletableFuture.completedFuture(mine);
 		}
 		JsonObject b = new JsonObject();
 		b.addProperty("slot", slot);
 		if (item != null) b.addProperty("item", item);
 		return call("POST", "/api/game/equip", b.toString()).thenApply(CosmeticsData::parseMine);
+	}
+
+	/** Раскраска дракончика из меню J: видна у себя сразу, у остальных — в течение полуминуты */
+	public static CompletableFuture<Mine> setPetColor(String color) {
+		Mine cur = mine;
+		String c = color == null || color.equals("default") ? null : color;
+		if (cur != null) {
+			mine = new Mine(cur.items(), cur.shop(), cur.hat(), cur.pet(), cur.mode(), cur.aura(), c == null ? "default" : c, cur.trail());
+			overrideOwn(Minecraft.getInstance().getUser().getName(), cur.hat(), cur.pet(), cur.aura(), c, cur.trail());
+		}
+		if (TEST != null) {
+			TEST = new Worn(TEST.hat(), TEST.pet(), TEST.mode(), TEST.aura(), c, TEST.trail(), TEST.clan(), TEST.clanColor(), TEST.badge());
+			return CompletableFuture.completedFuture(mine);
+		}
+		JsonObject b = new JsonObject();
+		b.addProperty("color", c == null ? "default" : c);
+		return call("POST", "/api/game/pet-color", b.toString()).thenApply(o -> mine);
 	}
 
 	public static void sendMode(String mode) {
@@ -151,9 +176,9 @@ public final class CosmeticsData {
 
 	private static Mine parseMine(JsonObject o) {
 		JsonObject eq = o.getAsJsonObject("equipped");
-		Mine m = new Mine(items(o.getAsJsonArray("items")), items(o.getAsJsonArray("shop")), str(eq, "hat"), str(eq, "pet"), str(o, "mode"), str(eq, "aura"));
+		Mine m = new Mine(items(o.getAsJsonArray("items")), items(o.getAsJsonArray("shop")), str(eq, "hat"), str(eq, "pet"), str(o, "mode"), str(eq, "aura"), str(o, "petColor"), str(eq, "trail"));
 		mine = m;
-		overrideOwn(Minecraft.getInstance().getUser().getName(), m.hat(), m.pet(), m.aura());
+		overrideOwn(Minecraft.getInstance().getUser().getName(), m.hat(), m.pet(), m.aura(), m.petColor(), m.trail());
 		return m;
 	}
 
@@ -182,6 +207,6 @@ public final class CosmeticsData {
 			if (kv[0].trim().equals("hat")) hat = kv[1].trim();
 			if (kv[0].trim().equals("pet")) pet = kv[1].trim();
 		}
-		return new Worn(hat, pet, "follow", null);
+		return new Worn(hat, pet, "follow", null, null, null, null, null, null);
 	}
 }
