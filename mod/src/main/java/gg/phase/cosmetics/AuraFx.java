@@ -265,11 +265,13 @@ public final class AuraFx {
 				x = Mth.lerp(pt, p.px, p.x); y = Mth.lerp(pt, p.py, p.y); z = Mth.lerp(pt, p.pz, p.z);
 			}
 			double ex = x - cam.x, ey = y - cam.y, ez = z - cam.z;
-			if (fp) {
-				// от первого лица: ничего вплотную к камере, своя аура — только ниже уровня глаз
-				if (ex * ex + ey * ey + ez * ez < 0.36) continue;
-				if (p.owner == me && ey > -0.5 && ex * ex + ez * ez < 1.1) continue;
-			}
+			if (fp && p.owner == me) {
+				// своя аура от первого лица: у головы не рисуем, остальное — кольцом впереди и ниже глаз, не вплотную
+				if (ey > -0.2) continue;
+				double hd = Math.sqrt(ex * ex + ez * ez);
+				if (hd < 1.35) { double kx = 1.35 / Math.max(hd, 0.05); ex *= kx; ez *= kx; }
+				ey = Math.min(ey, -0.75);
+			} else if (fp && ex * ex + ey * ey + ez * ez < 0.36) continue; // ничего вплотную к камере
 			float s = p.size;
 			if (!p.steady) {
 				float t = (p.age + pt) / p.life;
