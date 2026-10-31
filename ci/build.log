@@ -21,12 +21,12 @@ Fabric Loom: 1.19.3
 > Task :processResources
 > Task :classes
 > Task :processIncludeJars
-> Task :validateAccessWidener NO-SOURCE
-> Task :check
 > Task :jar
+> Task :validateAccessWidener NO-SOURCE
 > Task :assemble
+> Task :check
 > Task :build
 
-BUILD SUCCESSFUL in 35s
+BUILD SUCCESSFUL in 41s
 4 actionable tasks: 4 executed
 Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.2/userguide/configuration_cache_enabling.html
