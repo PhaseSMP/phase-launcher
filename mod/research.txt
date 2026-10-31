@@ -1,4 +1,9 @@
-S public void setScreen\(
-S public .*Screen screen\(\)|Screen getScreen\(\)
-S public .*Screen screen;
-G net/minecraft/client/gui/Gui.java (public|class )
+G net/minecraft/client/renderer/entity/state/EntityRenderState.java (public |nameTag|Component)
+G net/minecraft/client/renderer/entity/state/AvatarRenderState.java (public )
+G net/minecraft/client/renderer/entity/EntityRenderer.java (nameTag|protected .*\(|public .*\()
+G net/minecraft/world/entity/LivingEntity.java (public int hurtTime|public float getHealth|public float getMaxHealth|hurtTime)
+G net/minecraft/world/entity/item/ItemEntity.java (public class|public ItemStack getItem|getAge)
+S class ItemEntity
+G net/minecraft/network/chat/Component.java (static .*literal|static .*empty)
+G net/minecraft/network/chat/MutableComponent.java (public MutableComponent (append|withStyle|withColor))
+G net/minecraft/core/particles/ParticleTypes.java (SNOWFLAKE|CHERRY_LEAVES|FIREWORK|ELECTRIC_SPARK|GLOW|WAX_ON|SCRAPE|HEART|NOTE|SOUL_FIRE_FLAME|ASH|WHITE_ASH|SPORE_BLOSSOM_AIR|END_ROD|DUST_PLUME|TRIAL_SPAWNER)
