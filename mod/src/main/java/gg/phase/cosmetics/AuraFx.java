@@ -74,7 +74,7 @@ public final class AuraFx {
 				double sp = age * 0.3, h = (age * 0.04) % 2.0;
 				mc.level.addParticle(k(age) ? ParticleTypes.PORTAL : ParticleTypes.CRIMSON_SPORE, x + Math.cos(sp) * (0.6 - h * 0.1), y + 0.1 + h, z + Math.sin(sp) * (0.6 - h * 0.1), 0, 0.02, 0);
 				if (age % 8 == 0) mc.level.addParticle(ParticleTypes.END_ROD, x + (RND.nextDouble() - 0.5) * 0.9, y + 0.1 + RND.nextDouble() * 1.8, z + (RND.nextDouble() - 0.5) * 0.9, 0, 0.02, 0);
-				if (age % 20 == 0) mc.level.addParticle(ParticleTypes.DRAGON_BREATH, x + (RND.nextDouble() - 0.5) * 0.6, y + 0.05, z + (RND.nextDouble() - 0.5) * 0.6, 0, 0.0, 0);
+				if (age % 18 == 0) mc.level.addParticle(ParticleTypes.FLAME, x + (RND.nextDouble() - 0.5) * 0.7, y + 0.08, z + (RND.nextDouble() - 0.5) * 0.7, 0, 0.02, 0);
 			}
 			default -> { }
 		}
