@@ -121,7 +121,8 @@ public final class CosmeticsData {
 	public static CompletableFuture<Mine> loadMine() {
 		if (TEST != null) {
 			Mine m = new Mine(List.of(new Item("kabuto", "hat", "Шлем кабуто", 0), new Item("straw_hat", "hat", "Соломенная каса", 0),
-				new Item("ender_dragon", "pet", "Эндер-дракончик", 0), new Item("aura_sakura", "aura", "Сакура", 0), new Item("aura_ender", "aura", "Эндер", 0), new Item("aura_oni", "aura", "Пламя они", 0)),
+				new Item("ender_dragon", "pet", "Эндер-дракончик", 0), new Item("aura_sakura", "aura", "Сакура", 0), new Item("aura_ender", "aura", "Эндер", 0), new Item("aura_oni", "aura", "Пламя они", 0),
+				new Item("trail_sakura", "trail", "След «Лепестки»", 0), new Item("trail_ember", "trail", "След «Угли»", 0), new Item("trail_frost", "trail", "След «Иней»", 0), new Item("trail_stars", "trail", "След «Звёздная пыль»", 0)),
 				List.of(new Item("oni_horns", "hat", "Рога они", 199)), TEST.hat(), TEST.pet(), Config.get().mode, TEST.aura(), TEST.petColor(), TEST.trail());
 			mine = m;
 			return CompletableFuture.completedFuture(m);
