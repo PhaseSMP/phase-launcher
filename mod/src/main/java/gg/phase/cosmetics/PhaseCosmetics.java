@@ -27,6 +27,7 @@ public class PhaseCosmetics implements ClientModInitializer {
 	@Override
 	@SuppressWarnings("unchecked")
 	public void onInitializeClient() {
+		ModGuard.check();
 		CosmeticsData.start();
 		MENU = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.phase.menu", InputConstants.KEY_J, CATEGORY));
 		ClientTickEvents.END_CLIENT_TICK.register(mc -> {
@@ -34,6 +35,7 @@ public class PhaseCosmetics implements ClientModInitializer {
 				if (mc.gui.screen() == null && mc.player != null) mc.gui.setScreen(new PhaseMenuScreen());
 			}
 			PetManager.INSTANCE.tick(mc);
+			AuraFx.tick(mc);
 			SkinData.tick(mc);
 		});
 		InvalidateRenderStateCallback.EVENT.register(CosmeticsModels::invalidate);

@@ -22,9 +22,9 @@ import net.minecraft.client.Minecraft;
  * Свою косметику игрок меняет прямо в игре (меню J) — изменения видны у него сразу, у остальных — в течение полуминуты.
  */
 public final class CosmeticsData {
-	public record Worn(String hat, String pet, String mode) {}
+	public record Worn(String hat, String pet, String mode, String aura) {}
 	public record Item(String id, String slot, String name, int price) {}
-	public record Mine(List<Item> items, List<Item> shop, String hat, String pet, String mode) {}
+	public record Mine(List<Item> items, List<Item> shop, String hat, String pet, String mode, String aura) {}
 
 	public static final String BASE = System.getProperty("phase.api", "https://phase.fujimc.workers.dev");
 	private static volatile Map<String, Worn> worn = Map.of();
@@ -37,7 +37,8 @@ public final class CosmeticsData {
 	private CosmeticsData() {}
 
 	/** Для автотеста: надеть всем игрокам (null — снять подмену) */
-	public static void setTest(String hat, String pet) { TEST = hat == null && pet == null ? null : new Worn(hat, pet, "follow"); }
+	public static void setTest(String hat, String pet) { setTest(hat, pet, null); }
+	public static void setTest(String hat, String pet, String aura) { TEST = hat == null && pet == null && aura == null ? null : new Worn(hat, pet, "follow", aura); }
 	public static boolean isTest() { return TEST != null; }
 
 	public static Worn get(String name) {
@@ -50,9 +51,9 @@ public final class CosmeticsData {
 	}
 
 	/** Своё изменение — показываем сразу, не дожидаясь опроса сервера */
-	static void overrideOwn(String name, String hat, String pet) {
+	static void overrideOwn(String name, String hat, String pet, String aura) {
 		String key = name.toLowerCase(Locale.ROOT);
-		OVERRIDE.put(key, new Worn(hat, pet, Config.get().mode));
+		OVERRIDE.put(key, new Worn(hat, pet, Config.get().mode, aura));
 		OVERRIDE_AT.put(key, System.currentTimeMillis());
 	}
 
@@ -73,7 +74,7 @@ public final class CosmeticsData {
 					for (Map.Entry<String, JsonElement> e : players.entrySet()) {
 						JsonObject o = e.getValue().getAsJsonObject();
 						String mode = str(o, "mode");
-						next.put(e.getKey().toLowerCase(Locale.ROOT), new Worn(str(o, "hat"), str(o, "pet"), mode == null ? "follow" : mode));
+						next.put(e.getKey().toLowerCase(Locale.ROOT), new Worn(str(o, "hat"), str(o, "pet"), mode == null ? "follow" : mode, str(o, "aura")));
 					}
 					worn = next;
 				}
@@ -113,7 +114,8 @@ public final class CosmeticsData {
 	public static CompletableFuture<Mine> loadMine() {
 		if (TEST != null) {
 			Mine m = new Mine(List.of(new Item("kabuto", "hat", "Шлем кабуто", 0), new Item("straw_hat", "hat", "Соломенная каса", 0),
-				new Item("ender_dragon", "pet", "Эндер-дракончик", 0)), List.of(new Item("oni_horns", "hat", "Рога они", 199)), TEST.hat(), TEST.pet(), Config.get().mode);
+				new Item("ender_dragon", "pet", "Эндер-дракончик", 0), new Item("aura_sakura", "aura", "Сакура", 0), new Item("aura_ender", "aura", "Эндер", 0), new Item("aura_oni", "aura", "Пламя они", 0)),
+				List.of(new Item("oni_horns", "hat", "Рога они", 199)), TEST.hat(), TEST.pet(), Config.get().mode, TEST.aura());
 			mine = m;
 			return CompletableFuture.completedFuture(m);
 		}
@@ -124,12 +126,12 @@ public final class CosmeticsData {
 		String name = Minecraft.getInstance().getUser().getName();
 		Mine cur = mine;
 		if (cur != null) {
-			String hat = slot.equals("hat") ? item : cur.hat(), pet = slot.equals("pet") ? item : cur.pet();
-			overrideOwn(name, hat, pet);
-			mine = new Mine(cur.items(), cur.shop(), hat, pet, cur.mode());
+			String hat = slot.equals("hat") ? item : cur.hat(), pet = slot.equals("pet") ? item : cur.pet(), aura = slot.equals("aura") ? item : cur.aura();
+			overrideOwn(name, hat, pet, aura);
+			mine = new Mine(cur.items(), cur.shop(), hat, pet, cur.mode(), aura);
 		}
 		if (TEST != null) {
-			TEST = new Worn(mine.hat(), mine.pet(), "follow");
+			TEST = new Worn(mine.hat(), mine.pet(), "follow", mine.aura());
 			return CompletableFuture.completedFuture(mine);
 		}
 		JsonObject b = new JsonObject();
@@ -149,9 +151,9 @@ public final class CosmeticsData {
 
 	private static Mine parseMine(JsonObject o) {
 		JsonObject eq = o.getAsJsonObject("equipped");
-		Mine m = new Mine(items(o.getAsJsonArray("items")), items(o.getAsJsonArray("shop")), str(eq, "hat"), str(eq, "pet"), str(o, "mode"));
+		Mine m = new Mine(items(o.getAsJsonArray("items")), items(o.getAsJsonArray("shop")), str(eq, "hat"), str(eq, "pet"), str(o, "mode"), str(eq, "aura"));
 		mine = m;
-		overrideOwn(Minecraft.getInstance().getUser().getName(), m.hat(), m.pet());
+		overrideOwn(Minecraft.getInstance().getUser().getName(), m.hat(), m.pet(), m.aura());
 		return m;
 	}
 
@@ -180,6 +182,6 @@ public final class CosmeticsData {
 			if (kv[0].trim().equals("hat")) hat = kv[1].trim();
 			if (kv[0].trim().equals("pet")) pet = kv[1].trim();
 		}
-		return new Worn(hat, pet, "follow");
+		return new Worn(hat, pet, "follow", null);
 	}
 }

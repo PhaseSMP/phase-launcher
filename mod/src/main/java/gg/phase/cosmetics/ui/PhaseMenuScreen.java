@@ -21,7 +21,7 @@ public class PhaseMenuScreen extends Screen {
 	private int statusColor = Style.MUTED;
 	private boolean loading = true;
 	private int px, top, bottom;
-	private int hatLabelY = -1, petLabelY = -1, setLabelY = -1, shopY = -1;
+	private int hatLabelY = -1, petLabelY = -1, setLabelY = -1, shopY = -1, auraLabelY = -1;
 	private int headH = 40;
 	private boolean footer = true;
 
@@ -59,17 +59,19 @@ public class PhaseMenuScreen extends Screen {
 		int hatRows = 1;
 		if (m != null) hatRows = (int) (m.items().stream().filter(i -> i.slot().equals("hat")).count() / 2) + 1;
 		boolean pet = m != null && m.items().stream().anyMatch(i -> i.id().equals("ender_dragon"));
+		long auras = m == null ? 0 : m.items().stream().filter(i -> i.slot().equals("aura")).count();
+		int auraRows = auras == 0 ? 0 : (int) ((auras + 1 + 2) / 3);
 		int rh = 18, gap = 3, sec = 10;
 		this.headH = 40;
 		this.footer = true;
 		int[][] levels = { { 18, 3, 10, 40, 1 }, { 16, 3, 8, 40, 1 }, { 14, 2, 6, 38, 1 }, { 14, 2, 5, 30, 0 }, { 12, 2, 4, 30, 0 } };
 		for (int[] lv : levels) {
 			rh = lv[0]; gap = lv[1]; sec = lv[2]; this.headH = lv[3]; this.footer = lv[4] == 1;
-			int need = this.headH + 11 + hatRows * (rh + gap) + sec + 11 + (pet ? 4 * (rh + gap) : 30) + sec + 11 + 3 * (rh + gap) + (this.footer ? 30 : 14);
+			int need = this.headH + 11 + hatRows * (rh + gap) + sec + (auraRows > 0 ? 11 + auraRows * (rh + gap) + sec : 0) + 11 + (pet ? 4 * (rh + gap) : 30) + sec + 11 + 4 * (rh + gap) + (this.footer ? 30 : 14);
 			if (need <= avail) break;
 		}
 		int y = this.top + this.headH;
-		this.hatLabelY = this.petLabelY = this.setLabelY = this.shopY = -1;
+		this.hatLabelY = this.petLabelY = this.setLabelY = this.shopY = this.auraLabelY = -1;
 
 		if (m != null) {
 			// ── Шляпа ──
@@ -85,6 +87,23 @@ public class PhaseMenuScreen extends Screen {
 			this.addRenderableWidget(new PhaseButton(x + col * (half + gap), y, hats.isEmpty() ? w : half, rh, "Без шляпы", PhaseButton.Kind.CHIP,
 				() -> CosmeticsData.mine.hat() == null, () -> this.equip("hat", null)));
 			y += rh + sec;
+
+			// ── Аура ──
+			List<CosmeticsData.Item> auraItems = m.items().stream().filter(i -> i.slot().equals("aura")).toList();
+			if (!auraItems.isEmpty()) {
+				this.auraLabelY = y;
+				y += 11;
+				int third = (w - gap * 2) / 3, c3 = 0;
+				for (CosmeticsData.Item it : auraItems) {
+					String label = it.name().replace("Аура ", "").replace("«", "").replace("»", "");
+					this.addRenderableWidget(new PhaseButton(x + c3 * (third + gap), y, third, rh, label, PhaseButton.Kind.CHIP,
+						() -> Objects.equals(CosmeticsData.mine.aura(), it.id()), () -> this.equip("aura", it.id())));
+					if (++c3 == 3) { c3 = 0; y += rh + gap; }
+				}
+				this.addRenderableWidget(new PhaseButton(x + c3 * (third + gap), y, third, rh, "Без ауры", PhaseButton.Kind.CHIP,
+					() -> CosmeticsData.mine.aura() == null, () -> this.equip("aura", null)));
+				y += rh + sec;
+			}
 
 			// ── Питомец ──
 			this.petLabelY = y;
@@ -135,6 +154,8 @@ public class PhaseMenuScreen extends Screen {
 		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Питомцы других игроков", PhaseButton.Kind.TOGGLE, () -> c.others, () -> { c.others = !c.others; c.save(); }));
 		y += rh + gap;
 		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Шляпа поверх шлема", PhaseButton.Kind.TOGGLE, () -> c.hideHelmet, () -> { c.hideHelmet = !c.hideHelmet; c.save(); }));
+		y += rh + gap;
+		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Своя аура у меня на экране", PhaseButton.Kind.TOGGLE, () -> c.ownAura, () -> { c.ownAura = !c.ownAura; c.save(); }));
 	}
 
 	private void equip(String slot, String item) {
@@ -174,13 +195,14 @@ public class PhaseMenuScreen extends Screen {
 
 		if (this.loading && CosmeticsData.mine == null) g.text(this.font, "Загружаю вашу косметику…", x, this.top + 44, Style.MUTED, false);
 		this.label(g, "ШЛЯПА", x, this.hatLabelY);
+		this.label(g, "АУРА", x, this.auraLabelY);
 		this.label(g, "ПИТОМЕЦ", x, this.petLabelY);
 		this.label(g, "НАСТРОЙКИ", x, this.setLabelY);
 		if (this.shopY >= 0) {
 			g.fill(x, this.shopY, x + w, this.shopY + 28, Style.CARD);
 			g.outline(x, this.shopY, w, 28, Style.LINE);
 			g.fill(x, this.shopY, x + 2, this.shopY + 28, Style.GOLD);
-			g.text(this.font, "Эндер-дракончик · 499 ₽", x + 8, this.shopY + 5, Style.TEXT, false);
+			g.text(this.font, "Эндер-дракончик · 999 ₽ · премиум", x + 8, this.shopY + 5, Style.TEXT, false);
 			g.text(this.font, "Купить: лаунчер → «Донаты»", x + 8, this.shopY + 16, Style.MUTED, false);
 		}
 		super.extractRenderState(g, mouseX, mouseY, a);

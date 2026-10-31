@@ -12,6 +12,7 @@ public final class Config {
 	public boolean sounds = true;
 	public boolean others = true;
 	public boolean hideHelmet = true;
+	public boolean ownAura = true;
 	public String mode = "follow";
 
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();

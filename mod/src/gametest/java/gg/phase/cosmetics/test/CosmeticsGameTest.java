@@ -40,13 +40,20 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 					throw new java.io.UncheckedIOException(e);
 				}
 			});
-			CosmeticsData.setTest("kabuto", "ender_dragon");
+			CosmeticsData.setTest("kabuto", "ender_dragon", "aura_sakura");
 			ctx.waitTicks(40);
 			ctx.takeScreenshot("01-skin-hat-pet-fly");
+			CosmeticsData.setTest("kabuto", "ender_dragon", "aura_ender");
+			ctx.waitTicks(40);
+			ctx.takeScreenshot("01b-aura-ender");
+			CosmeticsData.setTest("kabuto", "ender_dragon", "aura_oni");
+			ctx.waitTicks(40);
+			ctx.takeScreenshot("01c-aura-oni");
+			CosmeticsData.setTest("kabuto", "ender_dragon", "aura_sakura");
 			sp.getServer().runCommand("item replace entity @p armor.head with minecraft:diamond_helmet");
 			ctx.waitTicks(5);
 			ctx.takeScreenshot("02-hat-over-helmet");
-			CosmeticsData.setTest("straw_hat", "ender_dragon");
+			CosmeticsData.setTest("straw_hat", "ender_dragon", "aura_sakura");
 			ctx.waitTicks(5);
 			ctx.takeScreenshot("03-straw-over-helmet");
 			ctx.runOnClient(mc -> mc.options.setCameraType(CameraType.THIRD_PERSON_BACK));
