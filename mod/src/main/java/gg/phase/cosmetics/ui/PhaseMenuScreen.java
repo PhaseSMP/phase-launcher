@@ -24,6 +24,7 @@ public class PhaseMenuScreen extends Screen {
 	private int hatLabelY = -1, petLabelY = -1, setLabelY = -1, shopY = -1, auraLabelY = -1;
 	private int headH = 40;
 	private boolean footer = true;
+	private boolean settingsPage, split;
 
 	public PhaseMenuScreen() {
 		super(Component.literal("Phase"));
@@ -65,14 +66,29 @@ public class PhaseMenuScreen extends Screen {
 		this.headH = 40;
 		this.footer = true;
 		int[][] levels = { { 18, 3, 10, 40, 1 }, { 16, 3, 8, 40, 1 }, { 14, 2, 6, 38, 1 }, { 14, 2, 5, 30, 0 }, { 12, 2, 4, 30, 0 } };
-		for (int[] lv : levels) {
-			rh = lv[0]; gap = lv[1]; sec = lv[2]; this.headH = lv[3]; this.footer = lv[4] == 1;
-			int need = this.headH + 11 + hatRows * (rh + gap) + sec + (auraRows > 0 ? 11 + auraRows * (rh + gap) + sec : 0) + 11 + (pet ? 4 * (rh + gap) : 30) + sec + 11 + 4 * (rh + gap) + (this.footer ? 30 : 14);
-			if (need <= avail) break;
+		// не помещается всё сразу — настройки уходят на отдельную страницу (кнопка «Настройки»)
+		this.split = false;
+		for (int pass = 0; pass < 2; pass++) {
+			boolean fits = false;
+			for (int[] lv : levels) {
+				rh = lv[0]; gap = lv[1]; sec = lv[2]; this.headH = lv[3]; this.footer = lv[4] == 1;
+				int settings = this.split ? rh + gap : 11 + 4 * (rh + gap);
+				int need = this.headH + 11 + hatRows * (rh + gap) + sec + (auraRows > 0 ? 11 + auraRows * (rh + gap) + sec : 0) + 11 + (pet ? 4 * (rh + gap) : 30) + sec + settings + (this.footer ? 30 : 14);
+				if (need <= avail) { fits = true; break; }
+			}
+			if (fits) break;
+			this.split = true;
 		}
+		if (!this.split) this.settingsPage = false;
 		int y = this.top + this.headH;
 		this.hatLabelY = this.petLabelY = this.setLabelY = this.shopY = this.auraLabelY = -1;
 
+		if (this.split && this.settingsPage) {
+			this.addRenderableWidget(new PhaseButton(x, y, w, rh, "‹ Назад к косметике", PhaseButton.Kind.ACTION, null, () -> { this.settingsPage = false; this.rebuildWidgets(); }));
+			y += rh + sec;
+			this.settingsRows(x, y, w, rh, gap);
+			return;
+		}
 		if (m != null) {
 			// ── Шляпа ──
 			this.hatLabelY = y;
@@ -146,6 +162,14 @@ public class PhaseMenuScreen extends Screen {
 		}
 
 		// ── Настройки ──
+		if (this.split) {
+			this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Настройки ›", PhaseButton.Kind.ACTION, null, () -> { this.settingsPage = true; this.rebuildWidgets(); }));
+			return;
+		}
+		this.settingsRows(x, y, w, rh, gap);
+	}
+
+	private void settingsRows(int x, int y, int w, int rh, int gap) {
 		this.setLabelY = y;
 		y += 11;
 		Config c = Config.get();
