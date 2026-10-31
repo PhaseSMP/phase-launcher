@@ -66,13 +66,15 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 			ctx.runOnClient(mc -> mc.options.setCameraType(CameraType.THIRD_PERSON_BACK));
 			for (String t : new String[] { "trail_sakura", "trail_ember", "trail_frost", "trail_stars" }) {
 				CosmeticsData.setTestFull(null, null, null, null, t);
-				for (int i = 0; i < 20; i++) {
-					sp.getServer().runCommand("tp @p ~ ~ ~0.25");
-					ctx.waitTicks(1);
-				}
+				// настоящая ходьба: телепорт не даёт движения, и след (верно) не рисуется
+				ctx.getInput().holdKey(o -> o.keyUp);
+				ctx.waitTicks(22);
 				ctx.takeScreenshot("01h-" + t);
-				sp.getServer().runCommand("tp @p ~ ~ ~-5");
-				ctx.waitTicks(20);
+				ctx.getInput().releaseKey(o -> o.keyUp);
+				ctx.getInput().holdKey(o -> o.keyDown);
+				ctx.waitTicks(22);
+				ctx.getInput().releaseKey(o -> o.keyDown);
+				ctx.waitTicks(30);
 			}
 			ctx.runOnClient(mc -> mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT));
 			CosmeticsData.setTest("kabuto", "ender_dragon", "aura_sakura");
