@@ -1,0 +1,24 @@
+Phase Launcher, Phase Cosmetics и сайт Phase
+Copyright (c) 2025–2026 Phase (godzillich). Все права защищены.
+
+Программа, её исходный код, интерфейс, графика, модели косметики, звуки и тексты принадлежат
+владельцу проекта Phase.
+
+Разрешено: скачивать лаунчер с официальных страниц Phase и пользоваться им для игры.
+
+Без письменного разрешения владельца запрещено:
+  - изменять программу или её файлы, делать на её основе свои версии;
+  - распространять, перепродавать и выкладывать лаунчер или его части (в том числе изменённые);
+  - декомпилировать и распаковывать программу, обходить её защиту;
+  - использовать код, графику и модели в других проектах.
+
+То, что исходный код можно посмотреть на GitHub, не даёт права его копировать и использовать.
+
+Сторонние компоненты (Electron, Chromium, Fabric и др.) распространяются по своим лицензиям —
+см. LICENSE.electron.txt и LICENSES.chromium.html. Эти лицензии касаются только самих компонентов,
+а не Phase.
+
+---
+Copyright (c) 2025–2026 Phase. All rights reserved. No permission is granted to modify,
+redistribute, sublicense or reuse this software or any part of it without the owner's written consent.
+Third-party components are licensed under their own terms (see LICENSE.electron.txt).
