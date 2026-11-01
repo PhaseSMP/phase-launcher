@@ -95,10 +95,11 @@ public final class AuraFx {
 			if (k == null) continue;
 			seen.add(pl.getId());
 			boolean fp = own && mc.options.getCameraType() == CameraType.FIRST_PERSON;
-			if ((!own || cfg.ownAura) && CosmeticsData.fxOn(w.fx(), 'a')) aura(pl, k, fp);
+			// от первого лица своя аура и след не создаются вовсе — видна только вспышка у ног при приземлении
+			if (!fp && (!own || cfg.ownAura) && CosmeticsData.fxOn(w.fx(), 'a')) aura(pl, k, false);
 			double dx = pl.getX() - pl.xo, dz = pl.getZ() - pl.zo;
 			double sp2 = dx * dx + dz * dz;
-			if (sp2 > 0.0025 && CosmeticsData.fxOn(w.fx(), 't')) trail(pl, k, dx, dz, sp2, fp);
+			if (!fp && sp2 > 0.0025 && CosmeticsData.fxOn(w.fx(), 't')) trail(pl, k, dx, dz, sp2, false);
 			// вспышка при приземлении после падения
 			double[] last = LAST.computeIfAbsent(pl.getId(), id -> new double[] { pl.getY(), 0, 1 });
 			double dy = pl.getY() - last[0];
@@ -265,13 +266,8 @@ public final class AuraFx {
 				x = Mth.lerp(pt, p.px, p.x); y = Mth.lerp(pt, p.py, p.y); z = Mth.lerp(pt, p.pz, p.z);
 			}
 			double ex = x - cam.x, ey = y - cam.y, ez = z - cam.z;
-			if (fp && p.owner == me) {
-				// своя аура от первого лица: у головы не рисуем, остальное — кольцом впереди и ниже глаз, не вплотную
-				if (ey > -0.2) continue;
-				double hd = Math.sqrt(ex * ex + ez * ez);
-				if (hd < 1.35) { double kx = 1.35 / Math.max(hd, 0.05); ex *= kx; ez *= kx; }
-				ey = Math.min(ey, -0.75);
-			} else if (fp && ex * ex + ey * ey + ez * ez < 0.36) continue; // ничего вплотную к камере
+			if (fp && p.owner == me) continue; // своя аура от первого лица не рисуется (остатки после переключения камеры)
+			if (fp && ex * ex + ey * ey + ez * ez < 0.36) continue; // ничего вплотную к камере
 			float s = p.size;
 			if (!p.steady) {
 				float t = (p.age + pt) / p.life;
