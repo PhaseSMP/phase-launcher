@@ -327,16 +327,16 @@ public final class AuraFx {
 				// вокруг — два наклонных кольца-«гироскопа» и искры на наклонных орбитах — видно со всех сторон
 				double h = head + 0.55;
 				if (age % 4 == 0) {
-					P sun = orb(pl, "glow", c("0b0b12"), 0, 0, h, 0, 0, 0.30F, 5);
+					P sun = orb(pl, "glow", c("0b0b12"), 0, 0, h, 0, 0, 0.26F, 5);
 					sun.steady = true; sun.bright = false; sun.spin = 0;
 					P core = orb(pl, "glow", c("0b0b12"), 0, 0, h, 0, 0, 0.22F, 5);
 					core.steady = true; core.bright = false; core.spin = 0;
-					P corona = orb(pl, "ring", c("ff2d4a"), 0, 0, h, 0, 0, 0.42F, 5);
+					P corona = orb(pl, "ring", c("ff2d4a"), 0, 0, h, 0, 0, 0.36F, 5);
 					corona.steady = true; corona.spin = 2.5F; corona.rot = corona.prot = age * 2.5F;
-					P flare = orb(pl, "ring", c("ffd36b"), 0, 0, h, 0, 0, 0.5F, 5);
+					P flare = orb(pl, "ring", c("ffd36b"), 0, 0, h, 0, 0, 0.43F, 5);
 					flare.steady = true; flare.spin = -1.5F; flare.rot = flare.prot = -age * 1.5F; flare.twinkle = 0.15F;
 					for (int i = 0; i < 2; i++) {
-						P g = orb(pl, "ring", c(i == 0 ? "ff2d4a" : "ff6a3d"), 0, 0, h, 0, 0, 0.78F, 5);
+						P g = orb(pl, "ring", c(i == 0 ? "ff2d4a" : "ff6a3d"), 0, 0, h, 0, 0, 0.66F, 5);
 						g.ground = true; g.steady = true; g.spin = 0;
 						g.tilt = i == 0 ? 58F : -58F;
 						g.yspin = i == 0 ? 3.2F : -2.4F;
