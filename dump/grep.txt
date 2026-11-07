@@ -1,128 +1,7 @@
-=== com/mojang/blaze3d/platform/InputConstants.java
-50:	public static final int KEY_J = 13;
-114:	public static final int KEY_GRAVE = 53;
-=== net/minecraft/world/item/ItemStack.java
-346:	public Item getItem() {
-355:	public boolean is(final Predicate<Holder<Item>> item) {
-981:	public boolean hasFoil() {
-986:	public Rarity getRarity() {
-1012:	public boolean isEnchanted() {
-=== net/minecraft/world/item/Rarity.java
-12:public enum Rarity implements StringRepresentable {
-13:	COMMON(0, "common", ChatFormatting.WHITE),
-14:	UNCOMMON(1, "uncommon", ChatFormatting.YELLOW),
-15:	RARE(2, "rare", ChatFormatting.AQUA),
-16:	EPIC(3, "epic", ChatFormatting.LIGHT_PURPLE);
-=== net/minecraft/world/item/Items.java
-246:	public static final Item ANCIENT_DEBRIS = registerBlock(BlockItemIds.ANCIENT_DEBRIS, Blocks.ANCIENT_DEBRIS, new Item.Properties().fireResistant());
-252:	public static final Item RAW_GOLD_BLOCK = registerBlock(BlockItemIds.RAW_GOLD_BLOCK, Blocks.RAW_GOLD_BLOCK);
-253:	public static final Item HEAVY_CORE = registerBlock(BlockItemIds.HEAVY_CORE, Blocks.HEAVY_CORE, new Item.Properties().rarity(Rarity.EPIC));
-260:	public static final Item GOLD_BLOCK = registerBlock(BlockItemIds.GOLD_BLOCK, Blocks.GOLD_BLOCK);
-261:	public static final Item DIAMOND_BLOCK = registerBlock(BlockItemIds.DIAMOND_BLOCK, Blocks.DIAMOND_BLOCK);
-925:	public static final Item DRAGON_EGG = registerBlock(BlockItemIds.DRAGON_EGG, Blocks.DRAGON_EGG, new Item.Properties().rarity(Rarity.EPIC));
-928:	public static final Item EMERALD_BLOCK = registerBlock(BlockItemIds.EMERALD_BLOCK, Blocks.EMERALD_BLOCK);
-970:	public static final Item BEACON = registerBlock(BlockItemIds.BEACON, Blocks.BEACON, new Item.Properties().rarity(Rarity.RARE));
-1458:	public static final Item ELYTRA = registerItem(
-1586:	public static final Item DIAMOND = registerItem(ItemIds.DIAMOND, new Item.Properties().trimMaterial(TrimMaterials.DIAMOND));
-1587:	public static final Item EMERALD = registerItem(ItemIds.EMERALD, new Item.Properties().trimMaterial(TrimMaterials.EMERALD));
-1595:	public static final Item RAW_GOLD = registerItem(ItemIds.RAW_GOLD);
-1596:	public static final Item GOLD_INGOT = registerItem(ItemIds.GOLD_INGOT, new Item.Properties().trimMaterial(TrimMaterials.GOLD));
-1597:	public static final Item NETHERITE_INGOT = registerItem(ItemIds.NETHERITE_INGOT, new Item.Properties().fireResistant().trimMaterial(TrimMaterials.NETHERITE));
-1598:	public static final Item NETHERITE_SCRAP = registerItem(ItemIds.NETHERITE_SCRAP, new Item.Properties().fireResistant());
-1727:	public static final Item ENCHANTED_GOLDEN_APPLE = registerItem(
-1728:		ItemIds.ENCHANTED_GOLDEN_APPLE,
-1731:			.food(Foods.ENCHANTED_GOLDEN_APPLE, Consumables.ENCHANTED_GOLDEN_APPLE)
-2185:	public static final Item MACE = registerItem(
-2263:	public static final Item NETHER_STAR = registerItem(
-2264:		ItemIds.NETHER_STAR,
-2277:	public static final Item ENCHANTED_BOOK = registerItem(
-2278:		ItemIds.ENCHANTED_BOOK,
-2406:	public static final Item TOTEM_OF_UNDYING = registerItem(
-2407:		ItemIds.TOTEM_OF_UNDYING,
-2408:		new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).component(DataComponents.DEATH_PROTECTION, DeathProtection.TOTEM_OF_UNDYING)
-2410:	public static final Item SHULKER_SHELL = registerItem(ItemIds.SHULKER_SHELL);
-2492:	public static final Item TRIDENT = registerItem(
-2503:	public static final Item NAUTILUS_SHELL = registerItem(ItemIds.NAUTILUS_SHELL, new Item.Properties().rarity(Rarity.UNCOMMON));
-2511:	public static final Item HEART_OF_THE_SEA = registerItem(ItemIds.HEART_OF_THE_SEA, new Item.Properties().rarity(Rarity.UNCOMMON));
-2704:	public static final Item ECHO_SHARD = registerItem(ItemIds.ECHO_SHARD, new Item.Properties().rarity(Rarity.UNCOMMON));
-=== net/minecraft/world/entity/LivingEntity.java
-=== net/minecraft/world/entity/Entity.java
-249:	public double fallDistance;
-733:	public boolean onGround() {
-2027:		double y = Mth.lerp(partialTickTime, this.yo, this.getY()) + this.getEyeHeight();
-2788:	public boolean isSprinting() {
-3572:	public final float getEyeHeight() {
-3792:		return this.getEyeHeight() < 0.4 ? 0.0 : 0.4;
-=== net/minecraft/sounds/SoundEvent.java
-32:		return range.<SoundEvent>map(r -> createFixedRangeEvent(location, r)).orElseGet(() -> createVariableRangeEvent(location));
-38:	public static SoundEvent createVariableRangeEvent(final Identifier location) {
-45:	public static SoundEvent createFixedRangeEvent(final Identifier location, final float range) {
-=== net/minecraft/world/entity/LivingEntity.java
-236:	public int hurtTime;
-238:	public int deathTime;
-248:	protected @Nullable EntityReference<Player> lastHurtByPlayer;
-249:	protected int lastHurtByPlayerMemoryTime;
-485:		if (this.lastHurtByPlayerMemoryTime > 0) {
-486:			this.lastHurtByPlayerMemoryTime--;
-488:			this.lastHurtByPlayer = null;
-625:		return EntityReference.getPlayer(this.lastHurtByPlayer, this.level());
-646:		this.lastHurtByPlayer = player;
-647:		this.lastHurtByPlayerMemoryTime = timeToRemember;
-758:		if (this.lastHurtByPlayer != null) {
-759:			this.lastHurtByPlayer.store(output, "last_hurt_by_player");
-760:			output.putInt("last_hurt_by_player_memory_time", this.lastHurtByPlayerMemoryTime);
-822:		this.lastHurtByPlayer = EntityReference.read(input, "last_hurt_by_player");
-823:		this.lastHurtByPlayerMemoryTime = input.getIntOr("last_hurt_by_player_memory_time", 0);
-1154:	public float getHealth() {
-1162:	public boolean isDeadOrDying() {
-1366:				this.lastHurtByPlayer = null;
-1367:				this.lastHurtByPlayerMemoryTime = 0;
-1371:		return EntityReference.getPlayer(this.lastHurtByPlayer, this.level());
-1505:		boolean playerKilled = this.lastHurtByPlayerMemoryTime > 0;
-1520:			&& (this.isAlwaysExperienceDropper() || this.lastHurtByPlayerMemoryTime > 0 && this.shouldDropExperience() && level.getGameRules().get(GameRules.MOB_DROPS))
-1977:		if (this.lastHurtByPlayer != null) {
-1978:			return this.lastHurtByPlayer.getEntity(this.level(), Player.class);
-4040:		return this.lastHurtByPlayerMemoryTime;
-=== net/minecraft/client/multiplayer/ClientLevel.java
-703:	public void playLocalSound(final Entity sourceEntity, final SoundEvent sound, final SoundSource source, final float volume, final float pitch) {
-715:	public void playLocalSound(
-=== net/minecraft/world/entity/projectile/Projectile.java
-94:	public @Nullable Entity getOwner() {
-=== net/minecraft/client/Camera.java
-361:	public Vec3 position() {
-369:	public float xRot() {
-373:	public float yRot() {
-382:	public Quaternionf rotation() {
-=== net/minecraft/client/renderer/item/ItemStackRenderState.java
-112:	public void submit(
-=== net/minecraft/client/gui/screens/inventory/InventoryScreen.java
-103:	public static void extractEntityInInventoryFollowsMouse(
-=== net/minecraft/client/gui/screens/Screen.java
-124:	public boolean keyPressed(final KeyEvent event) {
-204:	public void onClose() {
-383:	public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-398:	protected void extractBlurredBackground(final GuiGraphicsExtractor graphics) {
-=== net/minecraft/client/gui/components/events/ContainerEventHandler.java
-42:	default boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
-72:	default boolean mouseDragged(final MouseButtonEvent event, final double dx, final double dy) {
-81:	default boolean mouseScrolled(final double x, final double y, final double scrollX, final double scrollY) {
-86:	default boolean keyPressed(final KeyEvent event) {
-=== net/minecraft/client/KeyMapping.java
-138:	public InputConstants.Key getDefaultKey() {
-167:	public boolean matches(final KeyEvent event) {
-171:	public boolean matchesMouse(final MouseButtonEvent event) {
-175:	public boolean matches(final InputConstants.Key key) {
-=== net/minecraft/client/input/KeyEvent.java
-12:public record KeyEvent(@InputConstants.Value int key, int keycode, @InputWithModifiers.Modifiers int modifiers) implements InputWithModifiers {
-=== net/minecraft/client/input/MouseButtonEvent.java
-7:public record MouseButtonEvent(double x, double y, MouseButtonInfo buttonInfo) implements InputWithModifiers {
 === net/minecraft/client/gui/GuiGraphicsExtractor.java
-129:	public void requestCursor(final CursorType cursorType) {
-133:	public void applyCursor(final Window window) {
-149:	public void nextStratum() {
-153:	public void blurBeforeThisStratum() {
-157:	public void enableScissor(final int x0, final int y0, final int x1, final int y1) {
-162:	public void disableScissor() {
+137:	public int guiWidth() {
+141:	public int guiHeight() {
+145:	public Matrix3x2fStack pose() {
 170:	public void horizontalLine(int x0, int x1, final int y, final int col) {
 180:	public void verticalLine(final int x, int y0, int y1, final int col) {
 190:	public void fill(final int x0, final int y0, final int x1, final int y1, final int col) {
@@ -130,7 +9,6 @@
 210:	public void fillGradient(final int x0, final int y0, final int x1, final int y1, final int col1, final int col2) {
 214:	public void fill(final RenderPipeline renderPipeline, final TextureSetup textureSetup, final int x0, final int y0, final int x1, final int y1) {
 218:	public void outline(final int x, final int y, final int width, final int height, final int color) {
-243:	public void textHighlight(final int x0, final int y0, final int x1, final int y1, final boolean invertText) {
 251:	public void text(final Font font, final @Nullable String str, final int x, final int y, final int color) {
 255:	public void text(final Font font, final @Nullable String str, final int x, final int y, final int color, final boolean dropShadow) {
 261:	public void text(final Font font, final FormattedCharSequence str, final int x, final int y, final int color) {
@@ -140,7 +18,6 @@
 279:	public void centeredText(final Font font, final String str, final int x, final int y, final int color) {
 283:	public void centeredText(final Font font, final Component text, final int x, final int y, final int color) {
 288:	public void centeredText(final Font font, final FormattedCharSequence text, final int x, final int y, final int color) {
-305:	public void textWithBackdrop(final Font font, final Component str, final int textX, final int textY, final int textWidth, final int textColor) {
 315:	public void blit(
 331:	public void blit(
 346:	public void blit(
@@ -154,66 +31,18 @@
 458:	public void blitSprite(
 482:	public void blitSprite(final RenderPipeline renderPipeline, final TextureAtlasSprite sprite, final int x, final int y, final int width, final int height) {
 486:	public void blitSprite(
-876:	public void item(final ItemStack itemStack, final int x, final int y) {
-880:	public void item(final ItemStack itemStack, final int x, final int y, final int seed) {
-884:	public void item(final LivingEntity owner, final ItemStack itemStack, final int x, final int y, final int seed) {
-906:	public void fakeItem(final ItemStack itemStack, final int x, final int y) {
-910:	public void fakeItem(final ItemStack itemStack, final int x, final int y, final int seed) {
-914:	public void itemDecorations(final Font font, final ItemStack itemStack, final int x, final int y) {
-918:	public void itemDecorations(final Font font, final ItemStack itemStack, final int x, final int y, final @Nullable String countText) {
-956:	public void map(final MapRenderState mapRenderState) {
 1008:	public void entity(
-1026:	public void skin(
-1042:	public void book(
-1056:	public void bannerPattern(
-1063:	public void profilerChart(final List<ResultField> chartData, final int x0, final int y0, final int x1, final int y1) {
-1068:	public void setTooltipForNextFrame(final Component component, final int x, final int y) {
-1072:	public void setTooltipForNextFrame(final List<FormattedCharSequence> formattedCharSequences, final int x, final int y) {
-1076:	public void setTooltipForNextFrame(final Font font, final ItemStack itemStack, final int xo, final int yo) {
-1082:	public void setTooltipForNextFrame(final Font font, final List<Component> texts, final Optional<TooltipComponent> optionalImage, final int xo, final int yo) {
-1086:	public void setTooltipForNextFrame(
-1092:	public void setTooltipForNextFrame(
-1106:	public void setTooltipForNextFrame(
-1121:	public void setTooltipForNextFrame(final Font font, final Component text, final int xo, final int yo) {
-1125:	public void setTooltipForNextFrame(final Font font, final Component text, final int xo, final int yo, final @Nullable Identifier style) {
-1129:	public void setComponentTooltipForNextFrame(final Font font, final List<Component> lines, final int xo, final int yo) {
-1133:	public void setComponentTooltipForNextFrame(final Font font, final List<Component> lines, final int xo, final int yo, final @Nullable Identifier style) {
-1145:	public void setTooltipForNextFrame(final Font font, final List<? extends FormattedCharSequence> lines, final int xo, final int yo) {
-1149:	public void setTooltipForNextFrame(
-1157:	public void setTooltipForNextFrame(
-1199:	public void tooltip(
-1246:	public void setPreeditOverlay(final Renderable preeditOverlay) {
-1250:	public void extractDeferredElements(final int mouseX, final int mouseY, final float a) {
-1357:		public void defaultParameters(final ActiveTextCollector.Parameters newParameters) {
-1361:		public void accept(final Style style) {
-1376:		public void accept(
-1403:		public void acceptScrolling(
-1430:		public void push(final ScreenRectangle rectangle) {
-1436:		public void pop() {
-=== net/minecraft/world/entity/Entity.java
-1628:	public boolean isInWater() {
-1637:	public boolean isInWaterOrRain() {
-1649:	public boolean isUnderWater() {
-1767:	public boolean isEyeInFluid(final TagKey<Fluid> type) {
-1991:	public float getXRot(final float partialTicks) {
-2796:	public boolean isSwimming() {
-4002:	public void setYRot(final float yRot) {
-4010:	public float getXRot() {
-4014:	public void setXRot(final float xRot) {
-=== net/minecraft/world/entity/LivingEntity.java
-244:	public float yBodyRotO;
-245:	public float yHeadRot;
-246:	public float yHeadRotO;
-1417:	public @Nullable DamageSource getLastDamageSource() {
-1418:		return this.getLastDamageSource(40);
-1421:	public @Nullable DamageSource getLastDamageSource(final int damageSourceTimeout) {
-=== net/minecraft/world/entity/monster/Enemy.java
-3:public interface Enemy {
-=== net/minecraft/client/gui/components/AbstractSliderButton.java
-31:	protected double value;
-35:	public AbstractSliderButton(final int x, final int y, final int width, final int height, final Component message, final double initialValue) {
-70:	public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-139:			this.applyValue();
-142:		this.updateMessage();
-161:	protected abstract void updateMessage();
-163:	protected abstract void applyValue();
+=== net/minecraft/client/gui/screens/Screen.java
+117:	public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+371:	protected void init() {
+374:	public void tick() {
+377:	public void removed() {
+435:	public boolean isPauseScreen() {
+=== net/minecraft/client/gui/Font.java
+36:	public final int lineHeight = 9;
+124:	public int width(final String str) {
+128:	public int width(final FormattedText text) {
+132:	public int width(final FormattedCharSequence text) {
+136:	public String plainSubstrByWidth(final String str, final int width, final boolean reverse) {
+140:	public String plainSubstrByWidth(final String str, final int width) {
+152:	public List<FormattedCharSequence> split(final FormattedText input, final int maxWidth) {

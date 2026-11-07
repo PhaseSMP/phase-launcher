@@ -1,2 +1,0 @@
-=== search Sheets.translucentItemSheet|Sheets.cutoutItemSheet|itemEntityTranslucentCull 
-net/minecraft/client/resources/model/geometry/BakedQuad.java:90:				itemRenderType = transparency.hasTranslucent() ? Sheets.translucentItemSheet() : Sheets.cutoutItemSheet();
