@@ -183,7 +183,7 @@ public class PhaseMenuScreen extends Screen {
 		this.text("Видно всем игрокам. Сохраняется само.", x, y, Style.MUTED_D);
 		y += 13;
 		boolean moved = CosmeticsData.MY_ADJ.containsKey(hat);
-		PhaseButton reset = this.add(new PhaseButton(x, y, w, 18, moved ? "↺ Вернуть шляпу на место" : "Шляпа на своём месте", PhaseButton.Kind.ACTION, null, () -> this.resetAdj(hat)));
+		PhaseButton reset = this.add(new PhaseButton(x, y, w, 18, moved ? "Вернуть шляпу на место" : "Шляпа на своём месте", PhaseButton.Kind.ACTION, null, () -> this.resetAdj(hat)));
 		reset.active = moved;
 		y += 24;
 		Object[][] rows = {
@@ -372,9 +372,9 @@ public class PhaseMenuScreen extends Screen {
 		}
 		y += 6;
 		y = this.section("ДАННЫЕ", x, y);
-		this.add(new PhaseButton(x, y, w, rh, "↻ Перезагрузить косметику и скины", PhaseButton.Kind.ACTION, null, this::reload));
+		this.add(new PhaseButton(x, y, w, rh, "Перезагрузить косметику и скины", PhaseButton.Kind.ACTION, null, this::reload));
 		y += rh + gap;
-		PhaseButton all = this.add(new PhaseButton(x, y, w, rh, "↺ Вернуть все шляпы на место", PhaseButton.Kind.ACTION, null, () -> {
+		PhaseButton all = this.add(new PhaseButton(x, y, w, rh, "Вернуть все шляпы на место", PhaseButton.Kind.ACTION, null, () -> {
 			for (String h : new ArrayList<>(CosmeticsData.MY_ADJ.keySet())) CosmeticsData.saveAdj(h, CosmeticsData.NO_ADJ);
 			this.status = "Расположение всех шляп сброшено";
 			this.statusColor = Style.GOLD;
