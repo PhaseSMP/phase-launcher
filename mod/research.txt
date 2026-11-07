@@ -1,26 +1,8 @@
-G com/mojang/blaze3d/platform/InputConstants.java (KEY_GRAVE|KEY_J |public static final int KEY_[A-Z]+ = 96)
-G net/minecraft/world/item/ItemStack.java (public .*getRarity|public boolean isEnchanted|public boolean hasFoil|public Item getItem|public boolean is\()
-G net/minecraft/world/item/Rarity.java (COMMON|UNCOMMON|RARE|EPIC|enum)
-G net/minecraft/world/item/Items.java (DIAMOND =|EMERALD =|NETHERITE_INGOT|NETHERITE_SCRAP|ANCIENT_DEBRIS =|GOLD_INGOT =|RAW_GOLD =|TOTEM_OF_UNDYING|ELYTRA =|ENCHANTED_GOLDEN_APPLE|NETHER_STAR|HEART_OF_THE_SEA|TRIDENT =|DIAMOND_BLOCK|EMERALD_BLOCK|GOLD_BLOCK =|ECHO_SHARD|HEAVY_CORE|MACE =|SHULKER_SHELL|ENCHANTED_BOOK|NAUTILUS_SHELL|DRAGON_EGG|BEACON =)
-G net/minecraft/world/entity/LivingEntity.java (public boolean onGround|wasOnGround|public float fallDistance|public double fallDistance)
-G net/minecraft/world/entity/Entity.java (public boolean onGround\(|public double fallDistance|public float fallDistance|public boolean isSprinting|public float getBbHeight|getEyeHeight\(\))
-G net/minecraft/sounds/SoundEvent.java (public static SoundEvent create|createVariableRangeEvent|createFixedRangeEvent|public Identifier location)
-G net/minecraft/world/entity/LivingEntity.java (public int hurtTime|public int deathTime|public boolean swinging|public int swingTime|public boolean isDeadOrDying|public float getHealth|public float attackAnim|public float getAttackAnim|public int getArrowCount|public LivingEntity getLastHurtByMob|lastHurtByPlayer)
-G net/minecraft/client/multiplayer/ClientLevel.java (public void playLocalSound|public void playSound)
-G net/minecraft/world/entity/projectile/Projectile.java (public .*getOwner|public Entity getOwner)
-G net/minecraft/client/Camera.java (public .*rotation\(|public float yRot|public float xRot|public .*getYRot|public .*getXRot|public Vec3 position)
-G net/minecraft/client/renderer/item/ItemStackRenderState.java (public void submit|RenderType|translucent)
-S Sheets.translucentItemSheet|Sheets.cutoutItemSheet|itemEntityTranslucentCull
-G net/minecraft/client/renderer/item/BlockModelWrapper.java (RenderType|Sheets|translucent|cutout)
-G net/minecraft/client/renderer/block/model/BlockElement.java (shade|lightEmission|light_emission)
-G net/minecraft/client/gui/screens/inventory/InventoryScreen.java (public static void)
-G net/minecraft/client/gui/screens/Screen.java (public boolean keyPressed|public boolean mouseDragged|public boolean mouseScrolled|public boolean mouseClicked|public boolean mouseReleased|public void onClose|protected void extractBlurredBackground|public void extractBackground)
-G net/minecraft/client/gui/components/events/ContainerEventHandler.java (default boolean mouseDragged|default boolean mouseScrolled|default boolean keyPressed|default boolean mouseClicked)
-G net/minecraft/client/KeyMapping.java (public boolean matches|matchesMouse|public InputConstants.Key getKey|getDefaultKey)
-G net/minecraft/client/input/KeyEvent.java (record|public int key|int key)
-G net/minecraft/client/input/MouseButtonEvent.java (record|double x|public int button)
-G net/minecraft/client/gui/GuiGraphicsExtractor.java (public void [a-zA-Z]+\()
-G net/minecraft/world/entity/Entity.java (public boolean isUnderWater|public boolean isInWater|public boolean isSwimming|public boolean isEyeInFluid|public float getXRot|public void setYRot|public void setXRot)
-G net/minecraft/world/entity/LivingEntity.java (getLastDamageSource|public float yHeadRot|public float yHeadRotO|public float yBodyRotO)
-G net/minecraft/world/entity/monster/Enemy.java (interface)
-G net/minecraft/client/gui/components/AbstractSliderButton.java (public AbstractSliderButton|protected abstract void|protected double value|applyValue|updateMessage|extractWidget|extractContents)
+F net/minecraft/client/gui/screens/inventory/InventoryScreen.java
+F net/minecraft/client/gui/components/events/GuiEventListener.java
+F net/minecraft/client/input/MouseButtonEvent.java
+F net/minecraft/client/input/MouseButtonInfo.java
+F net/minecraft/world/damagesource/DamageSource.java
+G net/minecraft/client/gui/GuiGraphicsExtractor.java (public void entity|public void fill\(|public void text\(|public void fillGradient|public int guiWidth|public int guiHeight|public .*pose\(\)|public void blit|public void outline|public void submitOutline|public void centeredText|public void horizontalLine|public void verticalLine)
+G net/minecraft/client/gui/screens/Screen.java (public boolean isPauseScreen|protected void init|public void tick|public void removed|public void extractRenderState)
+G net/minecraft/client/gui/Font.java (public int width\(|public .*split\(|public String plainSubstrByWidth|lineHeight)
