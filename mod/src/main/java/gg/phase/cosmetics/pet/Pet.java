@@ -548,7 +548,7 @@ public final class Pet {
 		// источник неизвестен (бывает у чужих игроков) — смотрим, есть ли рядом враждебный моб или замахнувшийся игрок
 		for (Entity e : level.getEntities(owner, owner.getBoundingBox().inflate(4.5))) {
 			if (e instanceof Enemy) return true;
-			if (e instanceof Player pl && pl.swinging) return true;
+			if (e instanceof Player && e.distanceToSqr(owner) < 9.0) return true;
 		}
 		return false;
 	}
