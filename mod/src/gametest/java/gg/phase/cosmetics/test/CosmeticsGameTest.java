@@ -1,6 +1,7 @@
 package gg.phase.cosmetics.test;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import gg.phase.cosmetics.AuraFx;
 import gg.phase.cosmetics.Config;
 import gg.phase.cosmetics.CosmeticsData;
 import gg.phase.cosmetics.SkinData;
@@ -72,6 +73,21 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 				CosmeticsData.setTestFull(null, null, au, null, null);
 				ctx.waitTicks(30);
 				ctx.takeScreenshot("01h-" + au + "-front");
+			}
+			// паки 4.0: смерть, убийство и приземление — каждый пак по очереди (рядом с игроком, лицом к камере)
+			CosmeticsData.setTestFull(null, null, null, null, null);
+			for (String au : new String[] { "aura_sakura", "aura_ender", "aura_oni", "aura_foxfire", "aura_ash", "aura_limbo", "aura_eclipse" }) {
+				ctx.runOnClient(mc -> AuraFx.testDeath(mc.player.getX() + 1.4, mc.player.getY(), mc.player.getZ() + 0.6, au));
+				ctx.waitTicks(14);
+				ctx.takeScreenshot("01l-death-" + au);
+				ctx.waitTicks(40);
+				ctx.runOnClient(mc -> AuraFx.testKill(mc.player.getX() - 1.4, mc.player.getY(), mc.player.getZ() + 0.6, au));
+				ctx.waitTicks(8);
+				ctx.takeScreenshot("01m-kill-" + au);
+				ctx.runOnClient(mc -> AuraFx.testLand(mc.player.getX(), mc.player.getY(), mc.player.getZ() + 1.0, au));
+				ctx.waitTicks(5);
+				ctx.takeScreenshot("01n-land-" + au);
+				ctx.waitTicks(50);
 			}
 			ctx.runOnClient(mc -> mc.options.setCameraType(CameraType.THIRD_PERSON_BACK));
 			for (String au : new String[] { "aura_eclipse", "aura_foxfire", "aura_sakura" }) {

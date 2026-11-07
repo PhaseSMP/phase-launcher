@@ -23,10 +23,15 @@ public final class CosmeticsModels {
 
 	public static boolean ready() { return resolver != null; }
 
-	public static ItemStackRenderState get(String name) {
-		return CACHE.computeIfAbsent(name, n -> {
+	public static ItemStackRenderState get(String name) { return model("cosm/" + name); }
+
+	/** Спрайт частицы пака (assets/phase/items/fx): плоская картинка, светится сама */
+	public static ItemStackRenderState fx(String name) { return model("fx/" + name); }
+
+	private static ItemStackRenderState model(String path) {
+		return CACHE.computeIfAbsent(path, n -> {
 			ItemStack stack = new ItemStack(Items.PAPER);
-			stack.set(DataComponents.ITEM_MODEL, Identifier.fromNamespaceAndPath("phase", "cosm/" + n));
+			stack.set(DataComponents.ITEM_MODEL, Identifier.fromNamespaceAndPath("phase", n));
 			ItemStackRenderState st = new ItemStackRenderState();
 			resolver.updateForTopItem(st, stack, ItemDisplayContext.NONE, null, null, 0);
 			return st;

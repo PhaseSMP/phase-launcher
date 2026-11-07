@@ -1,5 +1,8 @@
 {
  "key.category.phase.cosmetics": "Phase",
  "key.phase.menu": "Cosmetics & pet menu",
- "key.phase.menu2": "Cosmetics & pet menu"
+ "key.phase.menu2": "Cosmetics & pet menu",
+ "subtitles.phase.pack.land": "Pack: landing",
+ "subtitles.phase.pack.death": "Pack: death",
+ "subtitles.phase.pack.kill": "Pack: kill"
 }

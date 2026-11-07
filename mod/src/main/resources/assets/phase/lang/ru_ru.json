@@ -1,5 +1,8 @@
 {
  "key.category.phase.cosmetics": "Phase",
  "key.phase.menu": "Меню косметики и питомца",
- "key.phase.menu2": "Меню косметики и питомца"
+ "key.phase.menu2": "Меню косметики и питомца",
+ "subtitles.phase.pack.land": "Пак: приземление",
+ "subtitles.phase.pack.death": "Пак: смерть",
+ "subtitles.phase.pack.kill": "Пак: убийство"
 }

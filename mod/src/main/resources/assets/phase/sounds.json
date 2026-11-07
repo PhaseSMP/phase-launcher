@@ -1,0 +1,191 @@
+{
+ "pack.sakura_land": {
+  "sounds": [
+   {
+    "name": "phase:pack/sakura_land",
+    "volume": 0.6
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.land"
+ },
+ "pack.sakura_death": {
+  "sounds": [
+   {
+    "name": "phase:pack/sakura_death",
+    "volume": 0.9
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.death"
+ },
+ "pack.sakura_kill": {
+  "sounds": [
+   {
+    "name": "phase:pack/sakura_kill",
+    "volume": 0.85
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.kill"
+ },
+ "pack.ender_land": {
+  "sounds": [
+   {
+    "name": "phase:pack/ender_land",
+    "volume": 0.6
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.land"
+ },
+ "pack.ender_death": {
+  "sounds": [
+   {
+    "name": "phase:pack/ender_death",
+    "volume": 0.9
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.death"
+ },
+ "pack.ender_kill": {
+  "sounds": [
+   {
+    "name": "phase:pack/ender_kill",
+    "volume": 0.85
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.kill"
+ },
+ "pack.oni_land": {
+  "sounds": [
+   {
+    "name": "phase:pack/oni_land",
+    "volume": 0.6
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.land"
+ },
+ "pack.oni_death": {
+  "sounds": [
+   {
+    "name": "phase:pack/oni_death",
+    "volume": 0.9
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.death"
+ },
+ "pack.oni_kill": {
+  "sounds": [
+   {
+    "name": "phase:pack/oni_kill",
+    "volume": 0.85
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.kill"
+ },
+ "pack.foxfire_land": {
+  "sounds": [
+   {
+    "name": "phase:pack/foxfire_land",
+    "volume": 0.6
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.land"
+ },
+ "pack.foxfire_death": {
+  "sounds": [
+   {
+    "name": "phase:pack/foxfire_death",
+    "volume": 0.9
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.death"
+ },
+ "pack.foxfire_kill": {
+  "sounds": [
+   {
+    "name": "phase:pack/foxfire_kill",
+    "volume": 0.85
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.kill"
+ },
+ "pack.ash_land": {
+  "sounds": [
+   {
+    "name": "phase:pack/ash_land",
+    "volume": 0.6
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.land"
+ },
+ "pack.ash_death": {
+  "sounds": [
+   {
+    "name": "phase:pack/ash_death",
+    "volume": 0.9
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.death"
+ },
+ "pack.ash_kill": {
+  "sounds": [
+   {
+    "name": "phase:pack/ash_kill",
+    "volume": 0.85
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.kill"
+ },
+ "pack.limbo_land": {
+  "sounds": [
+   {
+    "name": "phase:pack/limbo_land",
+    "volume": 0.6
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.land"
+ },
+ "pack.limbo_death": {
+  "sounds": [
+   {
+    "name": "phase:pack/limbo_death",
+    "volume": 0.9
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.death"
+ },
+ "pack.limbo_kill": {
+  "sounds": [
+   {
+    "name": "phase:pack/limbo_kill",
+    "volume": 0.85
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.kill"
+ },
+ "pack.eclipse_land": {
+  "sounds": [
+   {
+    "name": "phase:pack/eclipse_land",
+    "volume": 0.6
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.land"
+ },
+ "pack.eclipse_death": {
+  "sounds": [
+   {
+    "name": "phase:pack/eclipse_death",
+    "volume": 0.9
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.death"
+ },
+ "pack.eclipse_kill": {
+  "sounds": [
+   {
+    "name": "phase:pack/eclipse_kill",
+    "volume": 0.85
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.kill"
+ }
+}

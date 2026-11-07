@@ -1,0 +1,1 @@
+{"textures": {"t": "phase:item/fx/star_e36bff", "particle": "phase:item/fx/star_e36bff"}, "elements": [{"from": [0, 0, 8], "to": [16, 16, 8], "shade": false, "light_emission": 15, "faces": {"north": {"uv": [0, 0, 16, 16], "texture": "#t"}, "south": {"uv": [0, 0, 16, 16], "texture": "#t"}}}]}

@@ -13,7 +13,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 /**
- * Меню Phase в игре (клавиша Ё): шляпа, питомец, его команды и настройки.
+ * Меню Phase в игре (клавиша Ё): шляпа, пак эффектов (части и звуки), питомец, его команды и настройки.
  * Панель справа, мир слева не размыт и не на паузе — видно, как питомец выполняет команду.
  */
 public class PhaseMenuScreen extends Screen {
@@ -74,8 +74,8 @@ public class PhaseMenuScreen extends Screen {
 			boolean fits = false;
 			for (int[] lv : levels) {
 				rh = lv[0]; gap = lv[1]; sec = lv[2]; this.headH = lv[3]; this.footer = lv[4] == 1;
-				int settings = this.split ? rh + gap : 11 + 6 * (rh + gap);
-				int need = this.headH + 11 + hatRows * (rh + gap) + sec + (auraRows > 0 ? 11 + (auraRows + 1) * (rh + gap) + sec : 0)
+				int settings = this.split ? rh + gap : 11 + 7 * (rh + gap);
+				int need = this.headH + 11 + hatRows * (rh + gap) + sec + (auraRows > 0 ? 11 + (auraRows + 3) * (rh + gap) + sec : 0)
 					+ 11 + (pet ? 5 * (rh + gap) : 30) + sec + settings + (this.footer ? 18 : 4);
 				if (need <= avail) { fits = true; break; }
 			}
@@ -107,31 +107,41 @@ public class PhaseMenuScreen extends Screen {
 				() -> CosmeticsData.mine.hat() == null, () -> this.equip("hat", null)));
 			y += rh + sec;
 
-			// ── Аура ──
+			// ── Пак эффектов ──
 			List<CosmeticsData.Item> auraItems = m.items().stream().filter(i -> i.slot().equals("aura")).toList();
 			if (!auraItems.isEmpty()) {
 				this.auraLabelY = y;
 				y += 11;
 				int third = (w - gap * 2) / 3, c3 = 0;
 				for (CosmeticsData.Item it : auraItems) {
-					String label = it.name().replace("Аура ", "").replace("«", "").replace("»", "");
+					String label = it.name().replace("Аура ", "").replace("Пак ", "").replace("«", "").replace("»", "");
 					this.addRenderableWidget(new PhaseButton(x + c3 * (third + gap), y, third, rh, label, PhaseButton.Kind.CHIP,
 						() -> Objects.equals(CosmeticsData.mine.aura(), it.id()), () -> this.equip("aura", it.id())));
 					if (++c3 == 3) { c3 = 0; y += rh + gap; }
 				}
-				this.addRenderableWidget(new PhaseButton(x + c3 * (third + gap), y, third, rh, "Без ауры", PhaseButton.Kind.CHIP,
+				this.addRenderableWidget(new PhaseButton(x + c3 * (third + gap), y, third, rh, "Без пака", PhaseButton.Kind.CHIP,
 					() -> CosmeticsData.mine.aura() == null, () -> this.equip("aura", null)));
 				y += rh + gap;
-				// части пака: аура, след, вспышка при приземлении — каждую можно выключить
-				char[] parts = { 'a', 't', 'b' };
-				String[] names = { "Аура", "След", "Вспышка" };
-				for (int i = 0; i < 3; i++) {
+				// части пака: аура, след, приземление, смерть, убийство игрока и звуки — каждую можно выключить
+				char[] parts = { 'a', 't', 'b', 'd', 'k', 's' };
+				String[] names = { "Аура", "След", "Приземл.", "Смерть", "Убийство", "Звуки" };
+				for (int i = 0; i < parts.length; i++) {
 					char part = parts[i];
-					PhaseButton b = new PhaseButton(x + i * (third + gap), y, third, rh, names[i], PhaseButton.Kind.CHIP,
+					PhaseButton b = new PhaseButton(x + (i % 3) * (third + gap), y + (i / 3) * (rh + gap), third, rh, names[i], PhaseButton.Kind.CHIP,
 						() -> CosmeticsData.mine != null && CosmeticsData.fxOn(CosmeticsData.mine.fx(), part), () -> this.toggleFx(part));
-					b.active = m.aura() != null;
+					b.active = m.aura() != null || part == 's';
 					this.addRenderableWidget(b);
 				}
+				y += 2 * (rh + gap);
+				// громкость звуков паков
+				int vol = m.vol();
+				int small = 26;
+				PhaseButton minus = new PhaseButton(x, y, small, rh, "−", PhaseButton.Kind.ACTION, null, () -> this.volume(vol - 10));
+				PhaseButton mid = new PhaseButton(x + small + gap, y, w - 2 * (small + gap), rh, "Громкость звуков: " + vol + "%", PhaseButton.Kind.CHIP, () -> false, () -> {});
+				PhaseButton plus = new PhaseButton(x + w - small, y, small, rh, "+", PhaseButton.Kind.ACTION, null, () -> this.volume(vol + 10));
+				boolean snd = CosmeticsData.fxOn(m.fx(), 's');
+				minus.active = snd && vol > 0; plus.active = snd && vol < 100; mid.active = false;
+				this.addRenderableWidget(minus); this.addRenderableWidget(mid); this.addRenderableWidget(plus);
 				y += rh + sec;
 			}
 
@@ -207,6 +217,8 @@ public class PhaseMenuScreen extends Screen {
 		y += rh + gap;
 		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Своя аура у меня на экране", PhaseButton.Kind.TOGGLE, () -> c.ownAura, () -> { c.ownAura = !c.ownAura; c.save(); }));
 		y += rh + gap;
+		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Звуки паков (свои и чужие)", PhaseButton.Kind.TOGGLE, () -> c.packSounds, () -> { c.packSounds = !c.packSounds; c.save(); }));
+		y += rh + gap;
 		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Клан и значки над никами", PhaseButton.Kind.TOGGLE, () -> c.nametags, () -> { c.nametags = !c.nametags; c.save(); }));
 		y += rh + gap;
 		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "↻ Перезагрузить косметику", PhaseButton.Kind.ACTION, null, this::reload));
@@ -228,6 +240,17 @@ public class PhaseMenuScreen extends Screen {
 		CosmeticsData.toggleFx(part).whenComplete((m, err) -> this.minecraft.execute(() -> {
 			if (err != null) this.fail(err);
 			else { this.status = "Сохранено"; this.statusColor = Style.GOLD; }
+			this.rebuildWidgets();
+		}));
+		this.rebuildWidgets();
+	}
+
+	private void volume(int v) {
+		this.status = "Сохраняю…";
+		this.statusColor = Style.MUTED;
+		CosmeticsData.setVol(v).whenComplete((m, err) -> this.minecraft.execute(() -> {
+			if (err != null) this.fail(err);
+			else { this.status = "Громкость сохранена"; this.statusColor = Style.GOLD; }
 			this.rebuildWidgets();
 		}));
 		this.rebuildWidgets();
@@ -285,7 +308,7 @@ public class PhaseMenuScreen extends Screen {
 
 		if (this.loading && CosmeticsData.mine == null) g.text(this.font, "Загружаю вашу косметику…", x, this.top + 44, Style.MUTED, false);
 		this.label(g, "ШЛЯПА", x, this.hatLabelY);
-		this.label(g, "АУРА", x, this.auraLabelY);
+		this.label(g, "ПАК ЭФФЕКТОВ", x, this.auraLabelY);
 		this.label(g, "ПИТОМЕЦ", x, this.petLabelY);
 		this.label(g, "НАСТРОЙКИ", x, this.setLabelY);
 		if (this.shopY >= 0) {

@@ -14,6 +14,7 @@ public final class Config {
 	public boolean hideHelmet = true;
 	public boolean ownAura = true;
 	public boolean nametags = true;
+	public boolean packSounds = true;   // звуки паков (свои и чужие) — общий выключатель на этом компьютере
 	public String mode = "follow";
 
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
