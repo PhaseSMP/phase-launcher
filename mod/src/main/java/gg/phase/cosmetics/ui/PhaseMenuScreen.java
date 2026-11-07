@@ -110,7 +110,7 @@ public class PhaseMenuScreen extends Screen {
 		// закрыть
 		this.addRenderableWidget(new PhaseButton(this.width - M - 20, 6, 20, 18, "✕", PhaseButton.Kind.ACTION, null, this::onClose));
 
-		this.listTop = this.top + 30;
+		this.listTop = this.top + 34;
 		this.listBottom = this.bottom - 6;
 		int x = this.conX + 10, w = this.conW - 20;
 		int y0 = this.listTop - SCROLL[tab];

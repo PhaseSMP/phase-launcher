@@ -205,6 +205,14 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 			sp.getServer().runCommand("execute at @p run fill ~-3 ~ ~-3 ~3 ~2 ~3 water");
 			ctx.waitTicks(60);
 			ctx.takeScreenshot("19-water-shoulder");
+			ctx.runOnClient(mc -> {
+				Pet p = PetManager.INSTANCE.own();
+				System.out.println("PHASE-WATER owner=" + mc.player.position() + " underwater=" + mc.player.isUnderWater() + " pet=" + (p == null ? null : p.pos));
+				mc.player.setXRot(-35F);
+			});
+			ctx.waitTicks(3);
+			ctx.takeScreenshot("19b-water-look-up");
+			ctx.runOnClient(mc -> mc.player.setXRot(0F));
 			sp.getServer().runCommand("execute at @p run fill ~-3 ~ ~-3 ~3 ~2 ~3 air");
 			Config.get().mode = "follow";
 		}
