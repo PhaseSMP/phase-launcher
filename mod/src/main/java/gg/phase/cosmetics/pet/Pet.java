@@ -162,7 +162,7 @@ public final class Pet {
 			} else this.lootCd = 20;
 		}
 
-		Vec3 goal;               // куда лететь (точка «под брюшком»)
+		Vec3 goal = this.pos;              // куда лететь (точка «под брюшком»)
 		float stiff = 0.05F, maxSpeed = 0.55F;
 		boolean grounded = false; // стоит/сидит/лежит на чём-то
 		float wantSit = 0, wantLie = 0, wantPerch = 0;
