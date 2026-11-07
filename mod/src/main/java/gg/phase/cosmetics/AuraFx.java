@@ -328,7 +328,8 @@ public final class AuraFx {
 					glow.steady = true; glow.ground = true; glow.spin = 0;
 				}
 				if (age % 2 == 0) { P s = orb(pl, "spark", c("ffd36b", "ff6a3d", "ff2d4a"), rnd(0, Mth.TWO_PI), 0.42, h, 0.015, -0.002, 0.06F, 22); s.vr = 0.016; s.stretch = 1.6F; s.spin = 0; }
-				if (age % 6 == 0) { P g = orb(pl, "star", c("ffd36b"), rnd(0, Mth.TWO_PI), rnd(0.4, 0.8), rnd(0.2, head), 0.02, 0.006, 0.05F, 30); g.twinkle = 1F; g.spin = 0; }
+				// звёздочки только у короны — внизу у ног они выглядели как крутящиеся «пиксели»
+				if (age % 6 == 0) { P g = orb(pl, "star", c("ffd36b"), rnd(0, Mth.TWO_PI), rnd(0.5, 0.85), rnd(h - 0.35, h + 0.15), 0.02, 0.004, 0.05F, 30); g.twinkle = 1F; g.spin = 0; }
 			}
 		}
 	}

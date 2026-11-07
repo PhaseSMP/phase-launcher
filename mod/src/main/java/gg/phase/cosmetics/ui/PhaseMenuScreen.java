@@ -182,6 +182,10 @@ public class PhaseMenuScreen extends Screen {
 		y = this.section("НАСТРОЙКА · " + hatName.toUpperCase(), x, y);
 		this.text("Видно всем игрокам. Сохраняется само.", x, y, Style.MUTED_D);
 		y += 13;
+		boolean moved = CosmeticsData.MY_ADJ.containsKey(hat);
+		PhaseButton reset = this.add(new PhaseButton(x, y, w, 18, moved ? "↺ Вернуть шляпу на место" : "Шляпа на своём месте", PhaseButton.Kind.ACTION, null, () -> this.resetAdj(hat)));
+		reset.active = moved;
+		y += 24;
 		Object[][] rows = {
 			{ "Влево / вправо", 0, 0.5F, "px" }, { "Вниз / вверх", 1, 0.5F, "px" }, { "Назад / вперёд", 2, 0.5F, "px" },
 			{ "Наклон", 3, 5F, "°" }, { "Поворот", 4, 5F, "°" }, { "Крен", 5, 5F, "°" }, { "Размер", 6, 0.05F, "%" } };
@@ -196,18 +200,22 @@ public class PhaseMenuScreen extends Screen {
 			this.add(new PhaseButton(bx, y, bw, 18, "−", PhaseButton.Kind.ACTION, null, () -> this.nudge(hat, i, -step)));
 			float v = this.adjOf(hat)[i];
 			String vs = unit.equals("%") ? Math.round(v * 100F) + "%" : (v > 0 ? "+" : "") + (v == (int) v ? Integer.toString((int) v) : String.format(java.util.Locale.ROOT, "%.1f", v)) + unit;
-			this.texts.add(new Text(vs, bx + bw + valW / 2, y + 6, v == (i == 6 ? 1F : 0F) ? Style.MUTED : Style.GOLD, 2, 0));
+			float def = i == 6 ? 1F : 0F;
+			// значение — тоже кнопка: клик возвращает эту строку к нулю
+			PhaseButton val = this.add(new PhaseButton(bx + bw + 2, y, valW - 4, 18, vs, PhaseButton.Kind.CHIP, () -> false, () -> this.nudge(hat, i, def - this.adjOf(hat)[i])));
+			val.active = v != def;
 			this.add(new PhaseButton(bx + bw + valW, y, bw, 18, "+", PhaseButton.Kind.ACTION, null, () -> this.nudge(hat, i, step)));
 			y += 21;
 		}
-		y += 3;
-		this.add(new PhaseButton(x, y, w, 18, "↺ Сбросить настройку шляпы", PhaseButton.Kind.ACTION, null, () -> {
-			CosmeticsData.MY_ADJ.remove(hat);
-			this.adjHat = hat;
-			this.adjEditAt = System.currentTimeMillis();
-			this.rebuildWidgets();
-		}));
-		return y + 26;
+		this.text("Клик по значению — сбросить только его", x, y + 2, Style.MUTED_D);
+		return y + 16;
+	}
+
+	private void resetAdj(String hat) {
+		CosmeticsData.MY_ADJ.remove(hat);
+		this.adjHat = hat;
+		this.adjEditAt = 0; // сохранить сразу
+		this.rebuildWidgets();
 	}
 
 	private float[] adjOf(String hat) {
@@ -365,6 +373,14 @@ public class PhaseMenuScreen extends Screen {
 		y += 6;
 		y = this.section("ДАННЫЕ", x, y);
 		this.add(new PhaseButton(x, y, w, rh, "↻ Перезагрузить косметику и скины", PhaseButton.Kind.ACTION, null, this::reload));
+		y += rh + gap;
+		PhaseButton all = this.add(new PhaseButton(x, y, w, rh, "↺ Вернуть все шляпы на место", PhaseButton.Kind.ACTION, null, () -> {
+			for (String h : new ArrayList<>(CosmeticsData.MY_ADJ.keySet())) CosmeticsData.saveAdj(h, CosmeticsData.NO_ADJ);
+			this.status = "Расположение всех шляп сброшено";
+			this.statusColor = Style.GOLD;
+			this.rebuildWidgets();
+		}));
+		all.active = !CosmeticsData.MY_ADJ.isEmpty();
 		y += rh + 6;
 		this.text("Изменили что-то в лаунчере — в игре обновится само", x, y, Style.MUTED_D);
 		return y + 14;
