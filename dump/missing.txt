@@ -1,0 +1,2 @@
+MISSING net/minecraft/client/renderer/item/BlockModelWrapper.java
+MISSING net/minecraft/client/renderer/block/model/BlockElement.java

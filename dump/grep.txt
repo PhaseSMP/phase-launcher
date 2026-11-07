@@ -53,3 +53,45 @@
 2788:	public boolean isSprinting() {
 3572:	public final float getEyeHeight() {
 3792:		return this.getEyeHeight() < 0.4 ? 0.0 : 0.4;
+=== net/minecraft/sounds/SoundEvent.java
+32:		return range.<SoundEvent>map(r -> createFixedRangeEvent(location, r)).orElseGet(() -> createVariableRangeEvent(location));
+38:	public static SoundEvent createVariableRangeEvent(final Identifier location) {
+45:	public static SoundEvent createFixedRangeEvent(final Identifier location, final float range) {
+=== net/minecraft/world/entity/LivingEntity.java
+236:	public int hurtTime;
+238:	public int deathTime;
+248:	protected @Nullable EntityReference<Player> lastHurtByPlayer;
+249:	protected int lastHurtByPlayerMemoryTime;
+485:		if (this.lastHurtByPlayerMemoryTime > 0) {
+486:			this.lastHurtByPlayerMemoryTime--;
+488:			this.lastHurtByPlayer = null;
+625:		return EntityReference.getPlayer(this.lastHurtByPlayer, this.level());
+646:		this.lastHurtByPlayer = player;
+647:		this.lastHurtByPlayerMemoryTime = timeToRemember;
+758:		if (this.lastHurtByPlayer != null) {
+759:			this.lastHurtByPlayer.store(output, "last_hurt_by_player");
+760:			output.putInt("last_hurt_by_player_memory_time", this.lastHurtByPlayerMemoryTime);
+822:		this.lastHurtByPlayer = EntityReference.read(input, "last_hurt_by_player");
+823:		this.lastHurtByPlayerMemoryTime = input.getIntOr("last_hurt_by_player_memory_time", 0);
+1154:	public float getHealth() {
+1162:	public boolean isDeadOrDying() {
+1366:				this.lastHurtByPlayer = null;
+1367:				this.lastHurtByPlayerMemoryTime = 0;
+1371:		return EntityReference.getPlayer(this.lastHurtByPlayer, this.level());
+1505:		boolean playerKilled = this.lastHurtByPlayerMemoryTime > 0;
+1520:			&& (this.isAlwaysExperienceDropper() || this.lastHurtByPlayerMemoryTime > 0 && this.shouldDropExperience() && level.getGameRules().get(GameRules.MOB_DROPS))
+1977:		if (this.lastHurtByPlayer != null) {
+1978:			return this.lastHurtByPlayer.getEntity(this.level(), Player.class);
+4040:		return this.lastHurtByPlayerMemoryTime;
+=== net/minecraft/client/multiplayer/ClientLevel.java
+703:	public void playLocalSound(final Entity sourceEntity, final SoundEvent sound, final SoundSource source, final float volume, final float pitch) {
+715:	public void playLocalSound(
+=== net/minecraft/world/entity/projectile/Projectile.java
+94:	public @Nullable Entity getOwner() {
+=== net/minecraft/client/Camera.java
+361:	public Vec3 position() {
+369:	public float xRot() {
+373:	public float yRot() {
+382:	public Quaternionf rotation() {
+=== net/minecraft/client/renderer/item/ItemStackRenderState.java
+112:	public void submit(
