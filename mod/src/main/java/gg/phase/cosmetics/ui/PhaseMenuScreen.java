@@ -74,8 +74,8 @@ public class PhaseMenuScreen extends Screen {
 			boolean fits = false;
 			for (int[] lv : levels) {
 				rh = lv[0]; gap = lv[1]; sec = lv[2]; this.headH = lv[3]; this.footer = lv[4] == 1;
-				int settings = this.split ? rh + gap : 11 + 7 * (rh + gap);
-				int need = this.headH + 11 + hatRows * (rh + gap) + sec + (auraRows > 0 ? 11 + (auraRows + 3) * (rh + gap) + sec : 0)
+				int settings = this.split ? rh + gap : 11 + 8 * (rh + gap);
+				int need = this.headH + 11 + hatRows * (rh + gap) + sec + (auraRows > 0 ? 11 + (auraRows + 2) * (rh + gap) + sec : 0)
 					+ 11 + (pet ? 5 * (rh + gap) : 30) + sec + settings + (this.footer ? 18 : 4);
 				if (need <= avail) { fits = true; break; }
 			}
@@ -132,17 +132,7 @@ public class PhaseMenuScreen extends Screen {
 					b.active = m.aura() != null || part == 's';
 					this.addRenderableWidget(b);
 				}
-				y += 2 * (rh + gap);
-				// громкость звуков паков
-				int vol = m.vol();
-				int small = 26;
-				PhaseButton minus = new PhaseButton(x, y, small, rh, "−", PhaseButton.Kind.ACTION, null, () -> this.volume(vol - 10));
-				PhaseButton mid = new PhaseButton(x + small + gap, y, w - 2 * (small + gap), rh, "Громкость звуков: " + vol + "%", PhaseButton.Kind.CHIP, () -> false, () -> {});
-				PhaseButton plus = new PhaseButton(x + w - small, y, small, rh, "+", PhaseButton.Kind.ACTION, null, () -> this.volume(vol + 10));
-				boolean snd = CosmeticsData.fxOn(m.fx(), 's');
-				minus.active = snd && vol > 0; plus.active = snd && vol < 100; mid.active = false;
-				this.addRenderableWidget(minus); this.addRenderableWidget(mid); this.addRenderableWidget(plus);
-				y += rh + sec;
+				y += 2 * (rh + gap) - gap + sec;
 			}
 
 			// ── Питомец ──
@@ -218,6 +208,17 @@ public class PhaseMenuScreen extends Screen {
 		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Своя аура у меня на экране", PhaseButton.Kind.TOGGLE, () -> c.ownAura, () -> { c.ownAura = !c.ownAura; c.save(); }));
 		y += rh + gap;
 		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Звуки паков (свои и чужие)", PhaseButton.Kind.TOGGLE, () -> c.packSounds, () -> { c.packSounds = !c.packSounds; c.save(); }));
+		y += rh + gap;
+		// громкость звуков паков (общая с лаунчером)
+		CosmeticsData.Mine m = CosmeticsData.mine;
+		int vol = m == null ? 80 : m.vol();
+		int small = 26;
+		PhaseButton minus = new PhaseButton(x, y, small, rh, "−", PhaseButton.Kind.ACTION, null, () -> this.volume(vol - 10));
+		PhaseButton mid = new PhaseButton(x + small + gap, y, w - 2 * (small + gap), rh, "Громкость паков: " + vol + "%", PhaseButton.Kind.CHIP, () -> false, () -> {});
+		PhaseButton plus = new PhaseButton(x + w - small, y, small, rh, "+", PhaseButton.Kind.ACTION, null, () -> this.volume(vol + 10));
+		boolean snd = m != null && CosmeticsData.fxOn(m.fx(), 's') && c.packSounds;
+		minus.active = snd && vol > 0; plus.active = snd && vol < 100; mid.active = false;
+		this.addRenderableWidget(minus); this.addRenderableWidget(mid); this.addRenderableWidget(plus);
 		y += rh + gap;
 		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Клан и значки над никами", PhaseButton.Kind.TOGGLE, () -> c.nametags, () -> { c.nametags = !c.nametags; c.save(); }));
 		y += rh + gap;

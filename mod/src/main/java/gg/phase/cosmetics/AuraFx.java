@@ -220,7 +220,10 @@ public final class AuraFx {
 	private static P make(String shape, String[] cols, float size, int life) {
 		P p = new P();
 		p.shape = shape; p.cols = cols; p.size = size; p.life = life;
-		p.rot = p.prot = RND.nextFloat() * 360F; p.spin = rndf(-6F, 6F);
+		// пламя, огоньки и искры всегда стоят вертикально — крутятся только лепестки, пепел, осколки
+		boolean upright = shape.equals("flame") || shape.equals("fire") || shape.equals("spark");
+		p.rot = p.prot = upright ? 0F : RND.nextFloat() * 360F;
+		p.spin = upright ? 0F : rndf(-6F, 6F);
 		p.phase = RND.nextFloat() * Mth.TWO_PI;
 		LIVE.add(p);
 		return p;
@@ -525,7 +528,8 @@ public final class AuraFx {
 			double ex = x - cam.x, ey = y - cam.y, ez = z - cam.z;
 			if (fp && ex * ex + ey * ey + ez * ez < 0.36) continue; // ничего вплотную к камере
 			float t = Math.min(1F, (p.age + pt) / p.life);
-			float s = p.size * (1F + p.grow * t);
+			// у спрайтов прозрачные края — видимая часть меньше кубика того же размера, поэтому чуть крупнее
+			float s = p.size * (p.ground ? 1F : 1.4F) * (1F + p.grow * t);
 			if (!p.steady) s *= t < 0.12F ? t / 0.12F : t > 0.65F ? Math.max(0F, (1F - t) / 0.35F) : 1F;
 			if (p.twinkle > 0) s *= 1F - p.twinkle * 0.5F * (1F + Mth.sin((p.age + pt) * 0.9F + p.phase));
 			if (s < 0.004F) continue;
