@@ -74,6 +74,15 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 				ctx.waitTicks(30);
 				ctx.takeScreenshot("01h-" + au + "-front");
 			}
+			// затмение: объёмный нимб — сбоку и сверху-сзади
+			CosmeticsData.setTestFull(null, null, "aura_eclipse", null, null);
+			ctx.runOnClient(mc -> mc.player.setYRot(70F));
+			ctx.waitTicks(20);
+			ctx.takeScreenshot("01h2-eclipse-side");
+			ctx.runOnClient(mc -> { mc.player.setYRot(0F); mc.player.setXRot(35F); mc.options.setCameraType(CameraType.THIRD_PERSON_BACK); });
+			ctx.waitTicks(20);
+			ctx.takeScreenshot("01h3-eclipse-above");
+			ctx.runOnClient(mc -> { mc.player.setXRot(0F); mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT); });
 			// паки 4.0: смерть, убийство и приземление — каждый пак по очереди (рядом с игроком, лицом к камере)
 			CosmeticsData.setTestFull(null, null, null, null, null);
 			for (String au : new String[] { "aura_sakura", "aura_ender", "aura_oni", "aura_foxfire", "aura_ash", "aura_limbo", "aura_eclipse" }) {

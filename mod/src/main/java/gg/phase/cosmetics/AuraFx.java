@@ -72,6 +72,8 @@ public final class AuraFx {
 		float size, grow, stretch = 1F;      // размер, рост к концу жизни (×), вытянутость по вертикали
 		float rot, prot, spin, gravity, drag = 0.95F;
 		float sway, swayF = 0.25F, phase, twinkle;
+		float tilt, yrot, pyrot, yspin;      // кольцо «гироскопом»: наклон и вращение вокруг вертикали
+		double tiltY;                        // наклонная орбита: подъём по синусу угла
 		int age, life;
 		net.minecraft.client.renderer.item.ItemStackRenderState[] mdl; // модели по стадиям цвета (без поиска по строке каждый кадр)
 		int gen = -1;
@@ -99,6 +101,8 @@ public final class AuraFx {
 			if (p.age >= p.life) { it.remove(); continue; }
 			p.prot = p.rot;
 			p.rot += p.spin;
+			p.pyrot = p.yrot;
+			p.yrot += p.yspin;
 			if (p.owner >= 0) {
 				p.a += p.w; p.oy += p.vy; p.r = Math.max(0.05, p.r + p.vr);
 			} else if (p.spiral) {
@@ -319,17 +323,32 @@ public final class AuraFx {
 				if (age % 5 == 0) { P e = orb(pl, "ember", c("ffb13c", "ff6a3d"), rnd(0, Mth.TWO_PI), rnd(0.3, 0.75), rnd(0.05, 0.7), 0.025, 0.025, 0.045F, 32); e.twinkle = 0.8F; }
 			}
 			case ECLIPSE -> {
-				// чёрное солнце — кольцо над головой, вокруг — алая корона
-				double h = head + 0.45;
+				// Затмение: объёмное чёрное солнце над головой. Тёмный шар и алая корона всегда повёрнуты к камере,
+				// вокруг — два наклонных кольца-«гироскопа» и искры на наклонных орбитах — видно со всех сторон
+				double h = head + 0.55;
 				if (age % 4 == 0) {
-					P halo = orb(pl, "ring", c("0b0b12"), 0, 0, h, 0, 0, 0.9F, 5);
-					halo.steady = true; halo.ground = true; halo.spin = 0; halo.rot = halo.prot = age * 2F;
-					P glow = orb(pl, "ring", c("ff2d4a"), 0, 0, h + 0.01, 0, 0, 1.02F, 5);
-					glow.steady = true; glow.ground = true; glow.spin = 0;
+					P sun = orb(pl, "glow", c("0b0b12"), 0, 0, h, 0, 0, 0.30F, 5);
+					sun.steady = true; sun.bright = false; sun.spin = 0;
+					P core = orb(pl, "glow", c("0b0b12"), 0, 0, h, 0, 0, 0.22F, 5);
+					core.steady = true; core.bright = false; core.spin = 0;
+					P corona = orb(pl, "ring", c("ff2d4a"), 0, 0, h, 0, 0, 0.42F, 5);
+					corona.steady = true; corona.spin = 2.5F; corona.rot = corona.prot = age * 2.5F;
+					P flare = orb(pl, "ring", c("ffd36b"), 0, 0, h, 0, 0, 0.5F, 5);
+					flare.steady = true; flare.spin = -1.5F; flare.rot = flare.prot = -age * 1.5F; flare.twinkle = 0.15F;
+					for (int i = 0; i < 2; i++) {
+						P g = orb(pl, "ring", c(i == 0 ? "ff2d4a" : "ff6a3d"), 0, 0, h, 0, 0, 0.78F, 5);
+						g.ground = true; g.steady = true; g.spin = 0;
+						g.tilt = i == 0 ? 58F : -58F;
+						g.yspin = i == 0 ? 3.2F : -2.4F;
+						g.yrot = g.pyrot = age * g.yspin + i * 90F;
+					}
 				}
-				if (age % 2 == 0) { P s = orb(pl, "spark", c("ffd36b", "ff6a3d", "ff2d4a"), rnd(0, Mth.TWO_PI), 0.42, h, 0.015, -0.002, 0.06F, 22); s.vr = 0.016; s.stretch = 1.6F; s.spin = 0; }
-				// звёздочки только у короны — внизу у ног они выглядели как крутящиеся «пиксели»
-				if (age % 6 == 0) { P g = orb(pl, "star", c("ffd36b"), rnd(0, Mth.TWO_PI), rnd(0.5, 0.85), rnd(h - 0.35, h + 0.15), 0.02, 0.004, 0.05F, 30); g.twinkle = 1F; g.spin = 0; }
+				// искры бегут по двум наклонным орбитам, как электроны вокруг ядра
+				if (age % 2 == 0) for (int i = 0; i < 2; i++) {
+					P s = orb(pl, "spark", c("ffd36b", "ff6a3d", "ff2d4a"), age * 0.21 + i * Math.PI, 0.5, h, 0.21, 0, 0.055F, 14);
+					s.tiltY = i == 0 ? 0.9 : -0.9; s.spin = 0; s.stretch = 1.3F;
+				}
+				if (age % 6 == 0) { P g = orb(pl, "star", c("ffd36b"), rnd(0, Mth.TWO_PI), rnd(0.55, 0.9), rnd(h - 0.35, h + 0.3), 0.02, 0.004, 0.05F, 30); g.twinkle = 1F; g.spin = 0; }
 			}
 		}
 	}
@@ -530,7 +549,7 @@ public final class AuraFx {
 					base.put(p.owner, b);
 				}
 				double a = p.a + p.w * pt, r = Math.max(0.05, p.r + p.vr * pt);
-				x = b.x + Math.cos(a) * r; y = b.y + p.oy + p.vy * pt; z = b.z + Math.sin(a) * r;
+				x = b.x + Math.cos(a) * r; y = b.y + p.oy + p.vy * pt + (p.tiltY != 0 ? Math.sin(a) * r * p.tiltY : 0); z = b.z + Math.sin(a) * r;
 			} else {
 				x = Mth.lerp(pt, p.px, p.x); y = Mth.lerp(pt, p.py, p.y); z = Mth.lerp(pt, p.pz, p.z);
 			}
@@ -550,7 +569,8 @@ public final class AuraFx {
 			pose.pushPose();
 			pose.translate(ex, ey, ez);
 			if (p.ground) {
-				pose.rotateDegrees(Axis.XP, 90F);             // кольцо лежит на земле
+				if (p.tilt != 0) pose.rotateDegrees(Axis.YP, p.pyrot + (p.yrot - p.pyrot) * pt); // наклонное кольцо кружит вокруг вертикали
+				pose.rotateDegrees(Axis.XP, 90F + p.tilt);    // кольцо лежит на земле (или наклонено)
 				pose.rotateDegrees(Axis.ZP, rot);
 				pose.scale(s, s, s);
 			} else {
