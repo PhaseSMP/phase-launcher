@@ -42,8 +42,9 @@ public class PhaseButton extends AbstractButton {
 		int color = !this.active ? Style.MUTED_D : sel || hov ? Style.TEXT : Style.TEXT_D;
 		var font = Minecraft.getInstance().font;
 		int ty = y + (h - 8) / 2;
+		String label = this.getMessage().getString();
 		if (this.kind == Kind.TOGGLE) {
-			g.text(font, this.getMessage(), x + 8, ty, color, false);
+			g.text(font, fit(font, label, w - 44), x + 8, ty, color, false);
 			boolean v = this.on.getAsBoolean();
 			int sx = x + w - 30, sy = y + (h - 10) / 2;
 			g.fill(sx, sy, sx + 22, sy + 10, v ? 0xFF5A1219 : 0xFF100D14);
@@ -51,8 +52,15 @@ public class PhaseButton extends AbstractButton {
 			int kx = v ? sx + 13 : sx + 2;
 			g.fill(kx, sy + 2, kx + 7, sy + 8, v ? Style.GOLD : 0xFF5C5466);
 		} else {
-			g.centeredText(font, this.getMessage(), x + w / 2 + (sel ? 1 : 0), ty, color);
+			g.centeredText(font, fit(font, label, w - 8), x + w / 2 + (sel ? 1 : 0), ty, color);
 		}
+	}
+
+	/** Текст не вылезает за кнопку: обрезаем с многоточием */
+	static String fit(net.minecraft.client.gui.Font font, String s, int w) {
+		if (w <= 0) return "";
+		if (font.width(s) <= w) return s;
+		return font.plainSubstrByWidth(s, Math.max(0, w - font.width("…"))) + "…";
 	}
 
 	@Override

@@ -18,8 +18,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.client.Minecraft;
 
 /**
- * Кто что надел: раз в 30 секунд спрашивает сервер аккаунтов Phase (то же самое видно в лаунчере).
- * Свою косметику игрок меняет прямо в игре (меню J) — изменения видны у него сразу, у остальных — в течение полуминуты.
+ * Кто что надел: раз в 15 секунд спрашивает сервер аккаунтов Phase (то же самое видно в лаунчере).
+ * Свою косметику игрок меняет прямо в игре (меню J) — изменения видны у него сразу, у остальных — в течение 15–20 секунд.
  */
 public final class CosmeticsData {
 	/** fx — включённые части пака: a — аура, t — след, b — приземление (null — всё включено);
@@ -37,6 +37,11 @@ public final class CosmeticsData {
 	static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
 	public static volatile Mine mine;
 	private static volatile Thread poller;
+	/** Настройка шляпы (сдвиг и поворот) у других игроков: имя → "x,y,z,rx,ry,rz,s" */
+	private static volatile Map<String, String> adjOf = Map.of();
+	/** Мои настройки шляп: шляпа → {x, y, z, rx, ry, rz, s} */
+	public static final Map<String, float[]> MY_ADJ = new ConcurrentHashMap<>();
+	private static volatile long localChangeAt;
 
 	private CosmeticsData() {}
 
@@ -60,6 +65,7 @@ public final class CosmeticsData {
 
 	/** Своё изменение — показываем сразу, не дожидаясь опроса сервера */
 	static void overrideOwn(String name, String hat, String pet, String aura, String petColor, String fx) {
+		localChangeAt = System.currentTimeMillis();
 		String key = name.toLowerCase(Locale.ROOT);
 		Worn polled = worn.get(key); // тег клана и значок берём из общего опроса — их меняют не в игре
 		OVERRIDE.put(key, new Worn(hat, pet, Config.get().mode, aura, petColor, atb(fx),
@@ -82,18 +88,26 @@ public final class CosmeticsData {
 				if (res.statusCode() == 200) {
 					JsonObject players = JsonParser.parseString(res.body()).getAsJsonObject().getAsJsonObject("players");
 					Map<String, Worn> next = new ConcurrentHashMap<>();
+					Map<String, String> adj = new ConcurrentHashMap<>();
 					for (Map.Entry<String, JsonElement> e : players.entrySet()) {
 						JsonObject o = e.getValue().getAsJsonObject();
 						String mode = str(o, "mode");
 						next.put(e.getKey().toLowerCase(Locale.ROOT), new Worn(str(o, "hat"), str(o, "pet"), mode == null ? "follow" : mode, str(o, "aura"), str(o, "petColor"),
 							str(o, "fx"), str(o, "clan"), str(o, "clanColor"), str(o, "role") != null ? str(o, "role") : str(o, "plan"), str(o, "fx2")));
+						String a = str(o, "adj");
+						if (a != null) adj.put(e.getKey().toLowerCase(Locale.ROOT), a);
 					}
 					worn = next;
+					adjOf = adj;
 				}
 			} catch (Exception ignored) {
 				// нет сети — показываем то, что было
 			}
-			try { Thread.sleep(30_000); } catch (InterruptedException e) { /* «Перезагрузить» — опрашиваем сразу */ }
+			// своё (раскраска, шляпа, пак) могли поменять в лаунчере — перечитываем, если в игре ничего не меняли только что
+			if (TEST == null && System.currentTimeMillis() - localChangeAt > 8_000 && !token().isEmpty()) {
+				try { loadMine().get(15, java.util.concurrent.TimeUnit.SECONDS); } catch (Exception ignored) { /* нет сети */ }
+			}
+			try { Thread.sleep(15_000); } catch (InterruptedException e) { /* «Перезагрузить» — опрашиваем сразу */ }
 		}
 	}
 
@@ -265,8 +279,18 @@ public final class CosmeticsData {
 		JsonObject fx = o.getAsJsonObject("fx");
 		int vol = fx != null && fx.has("vol") ? fx.get("vol").getAsInt() : 80;
 		Mine m = new Mine(items(o.getAsJsonArray("items")), items(o.getAsJsonArray("shop")), str(eq, "hat"), str(eq, "pet"), str(o, "mode"), str(eq, "aura"), str(o, "petColor"), fxLetters(fx), vol);
+		JsonObject adj = o.getAsJsonObject("hatAdj");
+		if (adj != null && System.currentTimeMillis() - localChangeAt > 8_000) {
+			MY_ADJ.clear();
+			for (Map.Entry<String, JsonElement> e : adj.entrySet()) {
+				float[] v = parseAdj(e.getValue().getAsString());
+				if (v != null) MY_ADJ.put(e.getKey(), v);
+			}
+		}
+		long keep = localChangeAt;
 		mine = m;
 		overrideOwn(Minecraft.getInstance().getUser().getName(), m.hat(), m.pet(), m.aura(), m.petColor(), m.fx());
+		localChangeAt = keep;
 		return m;
 	}
 
@@ -284,6 +308,55 @@ public final class CosmeticsData {
 		if (o == null) return null;
 		JsonElement v = o.get(k);
 		return v == null || v.isJsonNull() ? null : v.getAsString();
+	}
+
+	// ───────── Настройка шляпы ─────────
+	public static final float[] NO_ADJ = { 0, 0, 0, 0, 0, 0, 1 };
+
+	static float[] parseAdj(String s) {
+		if (s == null) return null;
+		String[] a = s.split(",");
+		if (a.length != 7) return null;
+		float[] v = new float[7];
+		try { for (int i = 0; i < 7; i++) v[i] = Float.parseFloat(a[i]); } catch (NumberFormatException e) { return null; }
+		return v;
+	}
+
+	static String adjStr(float[] v) {
+		StringBuilder b = new StringBuilder();
+		for (int i = 0; i < 7; i++) {
+			if (i > 0) b.append(',');
+			float x = Math.round(v[i] * 100F) / 100F;
+			b.append(x == (int) x ? Integer.toString((int) x) : Float.toString(x));
+		}
+		return b.toString();
+	}
+
+	private static final Map<String, float[]> ADJ_CACHE = new ConcurrentHashMap<>();
+
+	/** Сдвиг/поворот/размер шляпы у игрока (своя — из меню сразу, чужие — из общего опроса) */
+	public static float[] adj(String name, String hat) {
+		if (hat == null) return NO_ADJ;
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.getUser() != null && name.equalsIgnoreCase(mc.getUser().getName())) {
+			float[] v = MY_ADJ.get(hat);
+			return v == null ? NO_ADJ : v;
+		}
+		String s = adjOf.get(name.toLowerCase(Locale.ROOT));
+		if (s == null) return NO_ADJ;
+		return ADJ_CACHE.computeIfAbsent(s, k -> { float[] v = parseAdj(k); return v == null ? NO_ADJ : v; });
+	}
+
+	/** Сохранить настройку шляпы на сервере (у себя видно сразу) */
+	public static CompletableFuture<Void> saveAdj(String hat, float[] v) {
+		localChangeAt = System.currentTimeMillis();
+		boolean zero = java.util.Arrays.equals(v, NO_ADJ);
+		if (zero) MY_ADJ.remove(hat); else MY_ADJ.put(hat, v.clone());
+		if (TEST != null) return CompletableFuture.completedFuture(null);
+		JsonObject b = new JsonObject();
+		b.addProperty("hat", hat);
+		b.addProperty("adj", zero ? "" : adjStr(v));
+		return call("POST", "/api/game/hat-adj", b.toString()).thenApply(o -> null);
 	}
 
 	private static Worn parseTest(String s) {

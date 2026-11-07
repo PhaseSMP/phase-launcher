@@ -2,40 +2,86 @@ package gg.phase.cosmetics.ui;
 
 import gg.phase.cosmetics.Config;
 import gg.phase.cosmetics.CosmeticsData;
+import gg.phase.cosmetics.CosmeticsLayer;
 import gg.phase.cosmetics.PhaseCosmetics;
 import gg.phase.cosmetics.pet.Pet;
 import gg.phase.cosmetics.pet.PetManager;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Pose;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 /**
- * Меню Phase в игре (клавиша Ё): шляпа, пак эффектов (части и звуки), питомец, его команды и настройки.
- * Панель справа, мир слева не размыт и не на паузе — видно, как питомец выполняет команду.
+ * Меню Phase в игре (клавиша Ё) — на весь экран, в стиле лаунчера.
+ * Слева разделы, в центре — ваш персонаж (его можно крутить мышью и приближать колесом),
+ * справа — настройки раздела. Шляпу можно сдвинуть, повернуть и изменить размер — видно сразу на персонаже.
  */
 public class PhaseMenuScreen extends Screen {
-	private static final int PANEL_W = 232;
+	private static final int M = 8, HEAD = 30, FOOT = 18;
+	private static final String[] TABS = { "Шляпы", "Паки", "Питомец", "Настройки" };
+	private static final String[] TAB_TITLES = { "ШЛЯПЫ", "ПАКИ ЭФФЕКТОВ", "ЭНДЕР-ДРАКОНЧИК", "НАСТРОЙКИ" };
+	private static final String[] TAB_SUB = { "Наведите на шляпу — примерка на персонаже", "Аура, след, приземление, смерть и звуки",
+		"Раскраска, команды и трюки", "Только на этом компьютере" };
+	private static int tab;
+	private static final int[] SCROLL = new int[TABS.length];
+	private static float yaw = 22F, tilt = -6F, zoom = 1F;
+
 	private String status = "";
 	private int statusColor = Style.MUTED;
 	private boolean loading = true;
-	private int px, top, bottom;
-	private int hatLabelY = -1, petLabelY = -1, setLabelY = -1, shopY = -1, auraLabelY = -1;
-	private int headH = 40;
-	private boolean footer = true;
-	private boolean settingsPage, split;
+	private final long openedAt = System.currentTimeMillis();
+
+	// раскладка
+	private int sideX, sideW, prevX, prevW, conX, conW, top, bottom, listTop, listBottom, contentH;
+	private boolean dragging;
+	private final List<Text> texts = new ArrayList<>();
+	private final List<Object[]> hatButtons = new ArrayList<>();
+	private final List<AbstractWidget> listWidgets = new ArrayList<>();
+
+	// настройка шляпы: изменения сохраняются на сервере через полсекунды после последнего нажатия
+	private String adjHat;
+	private long adjEditAt;
+
+	private record Text(String s, int x, int y, int color, int kind, int w) {}  // kind: 0 текст, 1 заголовок раздела, 2 по центру
+
+	/** Для автотеста: открыть раздел */
+	public static void testTab(int t) { tab = t; }
 
 	public PhaseMenuScreen() {
 		super(Component.literal("Phase"));
 	}
 
+	// ───────── Раскладка ─────────
 	@Override
 	protected void init() {
-		this.px = this.width - PANEL_W - 10;
-		this.top = 10;
-		this.bottom = this.height - 10;
+		this.top = HEAD + M;
+		this.bottom = this.height - FOOT - M;
+		this.sideX = M;
+		this.sideW = Mth.clamp(this.width / 7, 78, 116);
+		this.conW = Mth.clamp((int) (this.width * 0.4F), 196, 300);
+		this.conX = this.width - M - this.conW;
+		this.prevX = this.sideX + this.sideW + M;
+		this.prevW = this.conX - M - this.prevX;
+		if (this.prevW < 84) {
+			// узкое окно: справа берём меньше места, персонажа — сколько останется
+			this.conW = Math.max(170, this.conX + this.conW - this.prevX - 84 - M);
+			this.conX = this.width - M - this.conW;
+			this.prevW = this.conX - M - this.prevX;
+		}
 		if (CosmeticsData.mine != null) this.loading = false;
 		if (this.loading) {
 			CosmeticsData.loadMine().whenComplete((m, err) -> this.minecraft.execute(() -> {
@@ -47,291 +93,551 @@ public class PhaseMenuScreen extends Screen {
 		this.layout();
 	}
 
+	private void layout() {
+		this.texts.clear();
+		this.hatButtons.clear();
+		this.listWidgets.clear();
+		// разделы слева
+		int ty = this.top + 22;
+		for (int i = 0; i < TABS.length; i++) {
+			int idx = i;
+			this.addRenderableWidget(new PhaseButton(this.sideX + 6, ty, this.sideW - 12, 20, TABS[i], PhaseButton.Kind.CHIP, () -> tab == idx, () -> {
+				tab = idx;
+				this.rebuildWidgets();
+			}));
+			ty += 24;
+		}
+		// закрыть
+		this.addRenderableWidget(new PhaseButton(this.width - M - 20, 6, 20, 18, "✕", PhaseButton.Kind.ACTION, null, this::onClose));
+
+		this.listTop = this.top + 30;
+		this.listBottom = this.bottom - 6;
+		int x = this.conX + 10, w = this.conW - 20;
+		int y0 = this.listTop - SCROLL[tab];
+		int y = y0;
+		CosmeticsData.Mine m = CosmeticsData.mine;
+		if (m == null && tab != 3) {
+			this.text(this.loading ? "Загружаю вашу косметику…" : "Нет данных — нажмите «Перезагрузить» в настройках", x, y + 4, Style.MUTED);
+			y += 20;
+		} else {
+			switch (tab) {
+				case 0 -> y = this.hats(m, x, y, w);
+				case 1 -> y = this.packs(m, x, y, w);
+				case 2 -> y = this.pet(m, x, y, w);
+				default -> y = this.settings(x, y, w);
+			}
+		}
+		this.contentH = y - y0;
+		int max = Math.max(0, this.contentH - (this.listBottom - this.listTop));
+		if (SCROLL[tab] > max) {
+			SCROLL[tab] = max;
+			this.clearWidgets();
+			this.layout();
+			return;
+		}
+		// за краем списка кнопки не показываем (и не нажимаем)
+		for (AbstractWidget wd : this.listWidgets) wd.visible = wd.getY() >= this.listTop - 1 && wd.getY() + wd.getHeight() <= this.listBottom + 1;
+	}
+
+	private int section(String s, int x, int y) {
+		this.texts.add(new Text(s, x, y, Style.MUTED, 1, 0));
+		return y + 13;
+	}
+
+	private void text(String s, int x, int y, int color) {
+		this.texts.add(new Text(s, x, y, color, 0, 0));
+	}
+
+	private PhaseButton add(PhaseButton b) {
+		this.addRenderableWidget(b);
+		this.listWidgets.add(b);
+		return b;
+	}
+
+	// ── Шляпы ──
+	private int hats(CosmeticsData.Mine m, int x, int y, int w) {
+		int gap = 4, half = (w - gap) / 2, rh = 20;
+		List<CosmeticsData.Item> hats = m.items().stream().filter(i -> i.slot().equals("hat")).toList();
+		y = this.section("МОИ ШЛЯПЫ", x, y);
+		int col = 0;
+		for (CosmeticsData.Item it : hats) {
+			PhaseButton b = this.add(new PhaseButton(x + col * (half + gap), y, half, rh, it.name(), PhaseButton.Kind.CHIP,
+				() -> CosmeticsData.mine != null && Objects.equals(CosmeticsData.mine.hat(), it.id()), () -> this.equip("hat", it.id())));
+			this.hatButtons.add(new Object[] { b, it.id() });
+			if (++col == 2) { col = 0; y += rh + gap; }
+		}
+		PhaseButton none = this.add(new PhaseButton(x + col * (half + gap), y, col == 0 ? w : half, rh, "Без шляпы", PhaseButton.Kind.CHIP,
+			() -> CosmeticsData.mine != null && CosmeticsData.mine.hat() == null, () -> this.equip("hat", null)));
+		this.hatButtons.add(new Object[] { none, "" });
+		y += rh + 10;
+		if (hats.isEmpty()) {
+			this.text("Шляпы покупаются в лаунчере → «Донаты»", x, y, Style.MUTED);
+			y += 14;
+		}
+		if (m.hat() == null) return y;
+
+		// настройка надетой шляпы
+		String hat = m.hat();
+		String hatName = hats.stream().filter(i -> i.id().equals(hat)).map(CosmeticsData.Item::name).findFirst().orElse(hat);
+		y = this.section("НАСТРОЙКА · " + hatName.toUpperCase(), x, y);
+		this.text("Видно всем игрокам. Сохраняется само.", x, y, Style.MUTED_D);
+		y += 13;
+		Object[][] rows = {
+			{ "Влево / вправо", 0, 0.5F, "px" }, { "Вниз / вверх", 1, 0.5F, "px" }, { "Назад / вперёд", 2, 0.5F, "px" },
+			{ "Наклон", 3, 5F, "°" }, { "Поворот", 4, 5F, "°" }, { "Крен", 5, 5F, "°" }, { "Размер", 6, 0.05F, "%" } };
+		int bw = 20, valW = 46;
+		int labelW = w - 2 * bw - valW - 8;
+		for (Object[] r : rows) {
+			int i = (int) r[1];
+			float step = (float) r[2];
+			String unit = (String) r[3];
+			this.text((String) r[0], x, y + 6, Style.TEXT_D);
+			int bx = x + labelW + 4;
+			this.add(new PhaseButton(bx, y, bw, 18, "−", PhaseButton.Kind.ACTION, null, () -> this.nudge(hat, i, -step)));
+			float v = this.adjOf(hat)[i];
+			String vs = unit.equals("%") ? Math.round(v * 100F) + "%" : (v > 0 ? "+" : "") + (v == (int) v ? Integer.toString((int) v) : String.format(java.util.Locale.ROOT, "%.1f", v)) + unit;
+			this.texts.add(new Text(vs, bx + bw + valW / 2, y + 6, v == (i == 6 ? 1F : 0F) ? Style.MUTED : Style.GOLD, 2, 0));
+			this.add(new PhaseButton(bx + bw + valW, y, bw, 18, "+", PhaseButton.Kind.ACTION, null, () -> this.nudge(hat, i, step)));
+			y += 21;
+		}
+		y += 3;
+		this.add(new PhaseButton(x, y, w, 18, "↺ Сбросить настройку шляпы", PhaseButton.Kind.ACTION, null, () -> {
+			CosmeticsData.MY_ADJ.remove(hat);
+			this.adjHat = hat;
+			this.adjEditAt = System.currentTimeMillis();
+			this.rebuildWidgets();
+		}));
+		return y + 26;
+	}
+
+	private float[] adjOf(String hat) {
+		float[] v = CosmeticsData.MY_ADJ.get(hat);
+		return v == null ? CosmeticsData.NO_ADJ : v;
+	}
+
+	private void nudge(String hat, int i, float d) {
+		float[] v = this.adjOf(hat).clone();
+		float[][] lim = { { -6, 6 }, { -6, 6 }, { -6, 6 }, { -45, 45 }, { -45, 45 }, { -45, 45 }, { 0.7F, 1.3F } };
+		v[i] = Mth.clamp(Math.round((v[i] + d) * 100F) / 100F, lim[i][0], lim[i][1]);
+		if (java.util.Arrays.equals(v, CosmeticsData.NO_ADJ)) CosmeticsData.MY_ADJ.remove(hat);
+		else CosmeticsData.MY_ADJ.put(hat, v);
+		this.adjHat = hat;
+		this.adjEditAt = System.currentTimeMillis();
+		this.rebuildWidgets();
+	}
+
+	private void flushAdj() {
+		if (this.adjHat == null) return;
+		String hat = this.adjHat;
+		this.adjHat = null;
+		float[] v = this.adjOf(hat);
+		this.status = "Сохраняю шляпу…";
+		this.statusColor = Style.MUTED;
+		CosmeticsData.saveAdj(hat, v).whenComplete((r, err) -> this.minecraft.execute(() -> {
+			if (err != null) this.fail(err);
+			else { this.status = "Шляпа настроена — другие увидят через 15 секунд"; this.statusColor = Style.GOLD; }
+		}));
+	}
+
+	@Override
+	public void tick() {
+		if (this.adjHat != null && System.currentTimeMillis() - this.adjEditAt > 600) this.flushAdj();
+	}
+
+	// ── Паки ──
+	private int packs(CosmeticsData.Mine m, int x, int y, int w) {
+		int gap = 4, half = (w - gap) / 2, rh = 20;
+		List<CosmeticsData.Item> auraItems = m.items().stream().filter(i -> i.slot().equals("aura")).toList();
+		y = this.section("МОИ ПАКИ", x, y);
+		int col = 0;
+		for (CosmeticsData.Item it : auraItems) {
+			String label = it.name().replace("Аура ", "").replace("Пак ", "").replace("«", "").replace("»", "");
+			this.add(new PhaseButton(x + col * (half + gap), y, half, rh, label, PhaseButton.Kind.CHIP,
+				() -> CosmeticsData.mine != null && Objects.equals(CosmeticsData.mine.aura(), it.id()), () -> this.equip("aura", it.id())));
+			if (++col == 2) { col = 0; y += rh + gap; }
+		}
+		this.add(new PhaseButton(x + col * (half + gap), y, col == 0 ? w : half, rh, "Без пака", PhaseButton.Kind.CHIP,
+			() -> CosmeticsData.mine != null && CosmeticsData.mine.aura() == null, () -> this.equip("aura", null)));
+		y += rh + 10;
+		if (auraItems.isEmpty()) {
+			this.text("Паки покупаются в лаунчере → «Донаты»", x, y, Style.MUTED);
+			y += 14;
+		}
+		// части пака: каждую можно выключить
+		y = this.section("ЧАСТИ ПАКА", x, y);
+		char[] parts = { 'a', 't', 'b', 'd', 'k', 's' };
+		String[] names = { "Аура", "След", "Приземление", "Смерть", "Убийство", "Звуки" };
+		for (int i = 0; i < parts.length; i++) {
+			char part = parts[i];
+			PhaseButton b = this.add(new PhaseButton(x + (i % 2) * (half + gap), y + (i / 2) * (rh + gap), half, rh, names[i], PhaseButton.Kind.TOGGLE,
+				() -> CosmeticsData.mine != null && CosmeticsData.fxOn(CosmeticsData.mine.fx(), part), () -> this.toggleFx(part)));
+			b.active = m.aura() != null || part == 's';
+		}
+		y += 3 * (rh + gap) + 6;
+		// громкость звуков паков (общая с лаунчером)
+		y = this.section("ГРОМКОСТЬ ЗВУКОВ ПАКОВ", x, y);
+		int vol = m.vol();
+		boolean snd = CosmeticsData.fxOn(m.fx(), 's') && Config.get().packSounds;
+		PhaseButton minus = this.add(new PhaseButton(x, y, 26, rh, "−", PhaseButton.Kind.ACTION, null, () -> this.volume(vol - 10)));
+		PhaseButton plus = this.add(new PhaseButton(x + w - 26, y, 26, rh, "+", PhaseButton.Kind.ACTION, null, () -> this.volume(vol + 10)));
+		minus.active = snd && vol > 0;
+		plus.active = snd && vol < 100;
+		// полоска громкости
+		this.texts.add(new Text("", x + 32, y + 7, snd ? Style.RED : Style.MUTED_D, 3, (w - 64) * vol / 100));
+		this.texts.add(new Text(snd ? vol + "%" : "выкл", x + w / 2, y + 6, Style.TEXT, 2, 0));
+		y += rh + 8;
+		if (!Config.get().packSounds) {
+			this.text("Звуки паков выключены в «Настройках»", x, y, Style.MUTED_D);
+			y += 12;
+		}
+		return y;
+	}
+
+	// ── Питомец ──
+	private int pet(CosmeticsData.Mine m, int x, int y, int w) {
+		int gap = 4, rh = 20, third = (w - gap * 2) / 3;
+		boolean hasPet = m.items().stream().anyMatch(i -> i.id().equals("ender_dragon"));
+		if (!hasPet) {
+			this.texts.add(new Text("", x, y, Style.GOLD, 4, w));
+			this.text("Эндер-дракончик · премиум", x + 8, y + 6, Style.TEXT);
+			this.text("Купить: лаунчер → «Донаты»", x + 8, y + 18, Style.MUTED);
+			return y + 36;
+		}
+		this.add(new PhaseButton(x, y, w, rh, "Дракончик рядом со мной", PhaseButton.Kind.TOGGLE,
+			() -> CosmeticsData.mine != null && CosmeticsData.mine.pet() != null,
+			() -> this.equip("pet", CosmeticsData.mine.pet() == null ? "ender_dragon" : null)));
+		y += rh + 10;
+		boolean shown = m.pet() != null;
+		y = this.section("РАСКРАСКА", x, y);
+		String[][] colors = { { "default", "Эндер" }, { "crimson", "Пламя" }, { "frost", "Иней" }, { "gold", "Злато" }, { "void", "Бездна" } };
+		for (int i = 0; i < colors.length; i++) {
+			String id = colors[i][0];
+			PhaseButton b = this.add(new PhaseButton(x + (i % 3) * (third + gap), y + (i / 3) * (rh + gap), third, rh, colors[i][1], PhaseButton.Kind.CHIP,
+				() -> id.equals(CosmeticsData.mine == null || CosmeticsData.mine.petColor() == null ? "default" : CosmeticsData.mine.petColor()),
+				() -> this.petColor(id)));
+			b.active = shown;
+		}
+		y += 2 * (rh + gap) + 6;
+		y = this.section("КОМАНДА", x, y);
+		String[][] modes = { { "follow", "Рядом" }, { "shoulder", "На плечо" }, { "stay", "Ждать тут" } };
+		for (int i = 0; i < 3; i++) {
+			String id = modes[i][0];
+			PhaseButton b = this.add(new PhaseButton(x + i * (third + gap), y, third, rh, modes[i][1], PhaseButton.Kind.CHIP,
+				() -> Config.get().mode.equals(id), () -> CosmeticsData.sendMode(id)));
+			b.active = shown;
+		}
+		y += rh + 10;
+		y = this.section("ТРЮКИ", x, y);
+		Object[][] tricks = { { "Погладить", Pet.Act.PETTED }, { "Сальто", Pet.Act.LOOP }, { "Рык", Pet.Act.ROAR },
+			{ "Кружить", Pet.Act.SPIN }, { "Бочка", Pet.Act.ROLL }, { "Ко мне", Pet.Act.VISIT } };
+		for (int i = 0; i < tricks.length; i++) {
+			Pet.Act act = (Pet.Act) tricks[i][1];
+			PhaseButton b = this.add(new PhaseButton(x + (i % 3) * (third + gap), y + (i / 3) * (rh + gap), third, rh, (String) tricks[i][0], PhaseButton.Kind.ACTION,
+				null, () -> {
+					if (!Config.get().mode.equals("follow")) CosmeticsData.sendMode("follow");
+					PetManager.INSTANCE.command(act);
+					this.onClose(); // закрываем меню, чтобы увидеть трюк
+				}));
+			b.active = shown;
+		}
+		y += 2 * (rh + gap) + 4;
+		this.text("Трюк закрывает меню, чтобы его было видно", x, y, Style.MUTED_D);
+		return y + 14;
+	}
+
+	// ── Настройки ──
+	private int settings(int x, int y, int w) {
+		Config c = Config.get();
+		int rh = 20, gap = 4;
+		Object[][] rows = {
+			{ "Звуки питомца", (Runnable) () -> c.sounds = !c.sounds, (java.util.function.BooleanSupplier) () -> c.sounds },
+			{ "Питомцы и паки других игроков", (Runnable) () -> c.others = !c.others, (java.util.function.BooleanSupplier) () -> c.others },
+			{ "Шляпа поверх шлема", (Runnable) () -> c.hideHelmet = !c.hideHelmet, (java.util.function.BooleanSupplier) () -> c.hideHelmet },
+			{ "Своя аура у меня на экране", (Runnable) () -> c.ownAura = !c.ownAura, (java.util.function.BooleanSupplier) () -> c.ownAura },
+			{ "Звуки паков (свои и чужие)", (Runnable) () -> c.packSounds = !c.packSounds, (java.util.function.BooleanSupplier) () -> c.packSounds },
+			{ "Клан и значки над никами", (Runnable) () -> c.nametags = !c.nametags, (java.util.function.BooleanSupplier) () -> c.nametags } };
+		y = this.section("ИГРА", x, y);
+		for (Object[] r : rows) {
+			Runnable flip = (Runnable) r[1];
+			this.add(new PhaseButton(x, y, w, rh, (String) r[0], PhaseButton.Kind.TOGGLE, (java.util.function.BooleanSupplier) r[2], () -> { flip.run(); c.save(); }));
+			y += rh + gap;
+		}
+		y += 6;
+		y = this.section("ДАННЫЕ", x, y);
+		this.add(new PhaseButton(x, y, w, rh, "↻ Перезагрузить косметику и скины", PhaseButton.Kind.ACTION, null, this::reload));
+		y += rh + 6;
+		this.text("Изменили что-то в лаунчере — в игре обновится само", x, y, Style.MUTED_D);
+		return y + 14;
+	}
+
+	// ───────── Действия ─────────
 	private void fail(Throwable err) {
 		Throwable t = err.getCause() != null ? err.getCause() : err;
 		this.status = t.getMessage() == null ? "Нет связи с сервером Phase" : t.getMessage();
 		this.statusColor = Style.RED_L;
 	}
 
-	private void layout() {
-		CosmeticsData.Mine m = CosmeticsData.mine;
-		int x = this.px + 12, w = PANEL_W - 24;
-		int avail = this.bottom - this.top;
-		// подбираем плотность под высоту окна: сколько строк кнопок нужно
-		int hatRows = 1;
-		if (m != null) hatRows = (int) (m.items().stream().filter(i -> i.slot().equals("hat")).count() / 2) + 1;
-		boolean pet = m != null && m.items().stream().anyMatch(i -> i.id().equals("ender_dragon"));
-		long auras = m == null ? 0 : m.items().stream().filter(i -> i.slot().equals("aura")).count();
-		int auraRows = auras == 0 ? 0 : (int) ((auras + 1 + 2) / 3);
-
-		int rh = 18, gap = 3, sec = 10;
-		this.headH = 40;
-		this.footer = true;
-		int[][] levels = { { 18, 3, 10, 40, 1 }, { 16, 3, 8, 40, 1 }, { 14, 2, 6, 38, 1 }, { 14, 2, 5, 30, 0 }, { 12, 2, 4, 30, 0 } };
-		// не помещается всё сразу — настройки уходят на отдельную страницу (кнопка «Настройки»)
-		this.split = false;
-		for (int pass = 0; pass < 2; pass++) {
-			boolean fits = false;
-			for (int[] lv : levels) {
-				rh = lv[0]; gap = lv[1]; sec = lv[2]; this.headH = lv[3]; this.footer = lv[4] == 1;
-				int settings = this.split ? rh + gap : 11 + 8 * (rh + gap);
-				int need = this.headH + 11 + hatRows * (rh + gap) + sec + (auraRows > 0 ? 11 + (auraRows + 2) * (rh + gap) + sec : 0)
-					+ 11 + (pet ? 5 * (rh + gap) : 30) + sec + settings + (this.footer ? 18 : 4);
-				if (need <= avail) { fits = true; break; }
-			}
-			if (fits) break;
-			this.split = true;
-		}
-		if (!this.split) this.settingsPage = false;
-		int y = this.top + this.headH;
-		this.hatLabelY = this.petLabelY = this.setLabelY = this.shopY = this.auraLabelY = -1;
-
-		if (this.split && this.settingsPage) {
-			this.addRenderableWidget(new PhaseButton(x, y, w, rh, "‹ Назад к косметике", PhaseButton.Kind.ACTION, null, () -> { this.settingsPage = false; this.rebuildWidgets(); }));
-			y += rh + sec;
-			this.settingsRows(x, y, w, rh, gap);
-			return;
-		}
-		if (m != null) {
-			// ── Шляпа ──
-			this.hatLabelY = y;
-			y += 11;
-			List<CosmeticsData.Item> hats = m.items().stream().filter(i -> i.slot().equals("hat")).toList();
-			int col = 0, half = (w - gap) / 2;
-			for (CosmeticsData.Item it : hats) {
-				this.addRenderableWidget(new PhaseButton(x + col * (half + gap), y, half, rh, it.name(), PhaseButton.Kind.CHIP,
-					() -> Objects.equals(CosmeticsData.mine.hat(), it.id()), () -> this.equip("hat", it.id())));
-				if (++col == 2) { col = 0; y += rh + gap; }
-			}
-			this.addRenderableWidget(new PhaseButton(x + col * (half + gap), y, hats.isEmpty() ? w : half, rh, "Без шляпы", PhaseButton.Kind.CHIP,
-				() -> CosmeticsData.mine.hat() == null, () -> this.equip("hat", null)));
-			y += rh + sec;
-
-			// ── Пак эффектов ──
-			List<CosmeticsData.Item> auraItems = m.items().stream().filter(i -> i.slot().equals("aura")).toList();
-			if (!auraItems.isEmpty()) {
-				this.auraLabelY = y;
-				y += 11;
-				int third = (w - gap * 2) / 3, c3 = 0;
-				for (CosmeticsData.Item it : auraItems) {
-					String label = it.name().replace("Аура ", "").replace("Пак ", "").replace("«", "").replace("»", "");
-					this.addRenderableWidget(new PhaseButton(x + c3 * (third + gap), y, third, rh, label, PhaseButton.Kind.CHIP,
-						() -> Objects.equals(CosmeticsData.mine.aura(), it.id()), () -> this.equip("aura", it.id())));
-					if (++c3 == 3) { c3 = 0; y += rh + gap; }
-				}
-				this.addRenderableWidget(new PhaseButton(x + c3 * (third + gap), y, third, rh, "Без пака", PhaseButton.Kind.CHIP,
-					() -> CosmeticsData.mine.aura() == null, () -> this.equip("aura", null)));
-				y += rh + gap;
-				// части пака: аура, след, приземление, смерть, убийство игрока и звуки — каждую можно выключить
-				char[] parts = { 'a', 't', 'b', 'd', 'k', 's' };
-				String[] names = { "Аура", "След", "Приземл.", "Смерть", "Убийство", "Звуки" };
-				for (int i = 0; i < parts.length; i++) {
-					char part = parts[i];
-					PhaseButton b = new PhaseButton(x + (i % 3) * (third + gap), y + (i / 3) * (rh + gap), third, rh, names[i], PhaseButton.Kind.CHIP,
-						() -> CosmeticsData.mine != null && CosmeticsData.fxOn(CosmeticsData.mine.fx(), part), () -> this.toggleFx(part));
-					b.active = m.aura() != null || part == 's';
-					this.addRenderableWidget(b);
-				}
-				y += 2 * (rh + gap) - gap + sec;
-			}
-
-			// ── Питомец ──
-			this.petLabelY = y;
-			y += 11;
-			boolean hasPet = m.items().stream().anyMatch(i -> i.id().equals("ender_dragon"));
-			if (hasPet) {
-				this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Эндер-дракончик рядом", PhaseButton.Kind.TOGGLE,
-					() -> CosmeticsData.mine.pet() != null, () -> this.equip("pet", CosmeticsData.mine.pet() == null ? "ender_dragon" : null)));
-				y += rh + gap;
-				boolean shown = m.pet() != null;
-				// раскраска дракончика
-				String[][] colors = { { "default", "Эндер" }, { "crimson", "Пламя" }, { "frost", "Иней" }, { "gold", "Злато" }, { "void", "Бездна" } };
-				int fifth = (w - gap * 4) / 5;
-				for (int i = 0; i < colors.length; i++) {
-					String id = colors[i][0];
-					PhaseButton b = new PhaseButton(x + i * (fifth + gap), y, fifth, rh, colors[i][1], PhaseButton.Kind.CHIP,
-						() -> id.equals(CosmeticsData.mine == null || CosmeticsData.mine.petColor() == null ? "default" : CosmeticsData.mine.petColor()),
-						() -> this.petColor(id));
-					b.active = shown;
-					this.addRenderableWidget(b);
-				}
-				y += rh + gap;
-				int third = (w - gap * 2) / 3;
-				String[][] modes = { { "follow", "Рядом" }, { "shoulder", "На плечо" }, { "stay", "Ждать тут" } };
-				for (int i = 0; i < 3; i++) {
-					String id = modes[i][0];
-					PhaseButton b = new PhaseButton(x + i * (third + gap), y, third, rh, modes[i][1], PhaseButton.Kind.CHIP,
-						() -> Config.get().mode.equals(id), () -> CosmeticsData.sendMode(id));
-					b.active = shown;
-					this.addRenderableWidget(b);
-				}
-				y += rh + gap;
-				Object[][] tricks = { { "Погладить", Pet.Act.PETTED }, { "Сальто", Pet.Act.LOOP }, { "Рык", Pet.Act.ROAR },
-					{ "Кружить", Pet.Act.SPIN }, { "Бочка", Pet.Act.ROLL }, { "Ко мне", Pet.Act.VISIT } };
-				for (int i = 0; i < tricks.length; i++) {
-					Pet.Act act = (Pet.Act) tricks[i][1];
-					PhaseButton b = new PhaseButton(x + (i % 3) * (third + gap), y + (i / 3) * (rh + gap), third, rh, (String) tricks[i][0], PhaseButton.Kind.ACTION,
-						null, () -> {
-							if (!Config.get().mode.equals("follow")) CosmeticsData.sendMode("follow");
-							PetManager.INSTANCE.command(act);
-						});
-					b.active = shown;
-					this.addRenderableWidget(b);
-				}
-				y += 2 * (rh + gap) + sec - gap;
-			} else {
-				this.shopY = y;
-				y += 30 + sec;
-			}
-		} else {
-			y += 24;
-		}
-
-		// ── Настройки ──
-		if (this.split) {
-			this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Настройки ›", PhaseButton.Kind.ACTION, null, () -> { this.settingsPage = true; this.rebuildWidgets(); }));
-			return;
-		}
-		this.settingsRows(x, y, w, rh, gap);
+	private void saving() {
+		this.status = "Сохраняю…";
+		this.statusColor = Style.MUTED;
 	}
 
-	private void settingsRows(int x, int y, int w, int rh, int gap) {
-		this.setLabelY = y;
-		y += 11;
-		Config c = Config.get();
-		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Звуки питомца", PhaseButton.Kind.TOGGLE, () -> c.sounds, () -> { c.sounds = !c.sounds; c.save(); }));
-		y += rh + gap;
-		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Питомцы других игроков", PhaseButton.Kind.TOGGLE, () -> c.others, () -> { c.others = !c.others; c.save(); }));
-		y += rh + gap;
-		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Шляпа поверх шлема", PhaseButton.Kind.TOGGLE, () -> c.hideHelmet, () -> { c.hideHelmet = !c.hideHelmet; c.save(); }));
-		y += rh + gap;
-		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Своя аура у меня на экране", PhaseButton.Kind.TOGGLE, () -> c.ownAura, () -> { c.ownAura = !c.ownAura; c.save(); }));
-		y += rh + gap;
-		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Звуки паков (свои и чужие)", PhaseButton.Kind.TOGGLE, () -> c.packSounds, () -> { c.packSounds = !c.packSounds; c.save(); }));
-		y += rh + gap;
-		// громкость звуков паков (общая с лаунчером)
-		CosmeticsData.Mine m = CosmeticsData.mine;
-		int vol = m == null ? 80 : m.vol();
-		int small = 26;
-		PhaseButton minus = new PhaseButton(x, y, small, rh, "−", PhaseButton.Kind.ACTION, null, () -> this.volume(vol - 10));
-		PhaseButton mid = new PhaseButton(x + small + gap, y, w - 2 * (small + gap), rh, "Громкость паков: " + vol + "%", PhaseButton.Kind.CHIP, () -> false, () -> {});
-		PhaseButton plus = new PhaseButton(x + w - small, y, small, rh, "+", PhaseButton.Kind.ACTION, null, () -> this.volume(vol + 10));
-		boolean snd = m != null && CosmeticsData.fxOn(m.fx(), 's') && c.packSounds;
-		minus.active = snd && vol > 0; plus.active = snd && vol < 100; mid.active = false;
-		this.addRenderableWidget(minus); this.addRenderableWidget(mid); this.addRenderableWidget(plus);
-		y += rh + gap;
-		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "Клан и значки над никами", PhaseButton.Kind.TOGGLE, () -> c.nametags, () -> { c.nametags = !c.nametags; c.save(); }));
-		y += rh + gap;
-		this.addRenderableWidget(new PhaseButton(x, y, w, rh, "↻ Перезагрузить косметику", PhaseButton.Kind.ACTION, null, this::reload));
+	private void done(Throwable err, String ok) {
+		this.minecraft.execute(() -> {
+			if (err != null) this.fail(err);
+			else { this.status = ok; this.statusColor = Style.GOLD; }
+			this.rebuildWidgets();
+		});
 	}
 
 	private void reload() {
 		this.status = "Перезагружаю…";
 		this.statusColor = Style.MUTED;
-		CosmeticsData.reload().whenComplete((m, err) -> this.minecraft.execute(() -> {
-			if (err != null) this.fail(err);
-			else { this.status = "Косметика и скины обновлены"; this.statusColor = Style.GOLD; }
-			this.rebuildWidgets();
-		}));
+		CosmeticsData.reload().whenComplete((m, err) -> this.done(err, "Косметика и скины обновлены"));
 	}
 
 	private void toggleFx(char part) {
-		this.status = "Сохраняю…";
-		this.statusColor = Style.MUTED;
-		CosmeticsData.toggleFx(part).whenComplete((m, err) -> this.minecraft.execute(() -> {
-			if (err != null) this.fail(err);
-			else { this.status = "Сохранено"; this.statusColor = Style.GOLD; }
-			this.rebuildWidgets();
-		}));
+		this.saving();
+		CosmeticsData.toggleFx(part).whenComplete((m, err) -> this.done(err, "Сохранено"));
 		this.rebuildWidgets();
 	}
 
 	private void volume(int v) {
-		this.status = "Сохраняю…";
-		this.statusColor = Style.MUTED;
-		CosmeticsData.setVol(v).whenComplete((m, err) -> this.minecraft.execute(() -> {
-			if (err != null) this.fail(err);
-			else { this.status = "Громкость сохранена"; this.statusColor = Style.GOLD; }
-			this.rebuildWidgets();
-		}));
+		this.saving();
+		CosmeticsData.setVol(v).whenComplete((m, err) -> this.done(err, "Громкость сохранена"));
 		this.rebuildWidgets();
 	}
 
 	private void petColor(String id) {
-		this.status = "Сохраняю…";
-		this.statusColor = Style.MUTED;
-		CosmeticsData.setPetColor(id).whenComplete((m, err) -> this.minecraft.execute(() -> {
-			if (err != null) this.fail(err);
-			else { this.status = "Раскраска сохранена"; this.statusColor = Style.GOLD; }
-			this.rebuildWidgets();
-		}));
+		this.saving();
+		CosmeticsData.setPetColor(id).whenComplete((m, err) -> this.done(err, "Раскраска сохранена"));
 		this.rebuildWidgets();
 	}
 
 	private void equip(String slot, String item) {
-		this.status = "Сохраняю…";
-		this.statusColor = Style.MUTED;
-		CosmeticsData.equip(slot, item).whenComplete((m, err) -> this.minecraft.execute(() -> {
-			if (err != null) this.fail(err);
-			else { this.status = "Сохранено — другие увидят в течение минуты"; this.statusColor = Style.GOLD; }
-			this.rebuildWidgets();
-		}));
+		this.saving();
+		CosmeticsData.equip(slot, item).whenComplete((m, err) -> this.done(err, "Сохранено — другие увидят через 15 секунд"));
 		this.rebuildWidgets();
 	}
 
+	// ───────── Мышь и клавиши ─────────
+	private boolean inPreview(double x, double y) {
+		return this.prevW > 0 && x >= this.prevX && x < this.prevX + this.prevW && y >= this.top && y < this.bottom;
+	}
+
+	private boolean inList(double x, double y) {
+		return x >= this.conX && x < this.conX + this.conW && y >= this.top && y < this.bottom;
+	}
+
+	@Override
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+		if (this.inPreview(event.x(), event.y())) {
+			if (doubleClick) { yaw = 22F; tilt = -6F; zoom = 1F; }
+			this.dragging = true;
+			return true;
+		}
+		return super.mouseClicked(event, doubleClick);
+	}
+
+	@Override
+	public boolean mouseDragged(MouseButtonEvent event, double dx, double dy) {
+		if (this.dragging) {
+			yaw = Mth.wrapDegrees(yaw - (float) dx * 1.4F);
+			tilt = Mth.clamp(tilt - (float) dy * 0.6F, -25F, 25F);
+			return true;
+		}
+		return super.mouseDragged(event, dx, dy);
+	}
+
+	@Override
+	public boolean mouseReleased(MouseButtonEvent event) {
+		this.dragging = false;
+		return super.mouseReleased(event);
+	}
+
+	@Override
+	public boolean mouseScrolled(double x, double y, double sx, double sy) {
+		if (this.inPreview(x, y)) {
+			zoom = Mth.clamp(zoom + (float) sy * 0.1F, 0.7F, 1.8F);
+			return true;
+		}
+		if (this.inList(x, y) && this.contentH > this.listBottom - this.listTop) {
+			int max = this.contentH - (this.listBottom - this.listTop);
+			SCROLL[tab] = Mth.clamp(SCROLL[tab] - (int) (sy * 18), 0, max);
+			this.rebuildWidgets();
+			return true;
+		}
+		return super.mouseScrolled(x, y, sx, sy);
+	}
+
+	@Override
+	public boolean keyPressed(KeyEvent event) {
+		// Ё закрывает меню так же, как открывает (повтор зажатой клавиши сразу после открытия не считаем)
+		if (PhaseCosmetics.MENU != null && PhaseCosmetics.MENU.matches(event) && System.currentTimeMillis() - this.openedAt > 250) {
+			this.onClose();
+			return true;
+		}
+		return super.keyPressed(event);
+	}
+
+	@Override
+	public void onClose() {
+		this.flushAdj();
+		CosmeticsLayer.PREVIEW_STATE = null;
+		super.onClose();
+	}
+
+	@Override
+	public void removed() {
+		this.flushAdj();
+		CosmeticsLayer.PREVIEW_STATE = null;
+	}
+
+	// ───────── Отрисовка ─────────
 	@Override
 	public void extractBackground(GuiGraphicsExtractor g, int mouseX, int mouseY, float a) {
-		// мир не размываем: слева видно питомца. Лёгкая тень к панели
-		g.fillGradient(this.px - 40, 0, this.px, this.height, 0x00000000, 0x00000000);
-		g.fill(this.px - 2, this.top + 2, this.px + PANEL_W + 2, this.bottom + 2, 0x60000000);
-		g.fill(this.px, this.top, this.px + PANEL_W, this.bottom, Style.INK);
-		g.outline(this.px, this.top, PANEL_W, this.bottom - this.top, Style.LINE);
-		g.fill(this.px, this.top, this.px + PANEL_W, this.top + 2, Style.RED);
+		// затемняем мир целиком, сверху — шапка с алой линией
+		g.fill(0, 0, this.width, this.height, 0xC8070509);
+		g.fill(0, 0, this.width, HEAD, 0xF00D0A11);
+		g.fill(0, HEAD - 1, this.width, HEAD, Style.LINE);
+		g.fill(0, 0, this.width, 2, Style.RED);
+		g.fill(0, this.height - FOOT, this.width, this.height, 0xF00D0A11);
+		g.fill(0, this.height - FOOT, this.width, this.height - FOOT + 1, Style.LINE);
+		// панели: разделы, персонаж, настройки
+		this.panel(g, this.sideX, this.top, this.sideW, this.bottom - this.top, false);
+		if (this.prevW > 0) {
+			this.panel(g, this.prevX, this.top, this.prevW, this.bottom - this.top, false);
+			g.fillGradient(this.prevX + 1, this.top + 1, this.prevX + this.prevW - 1, this.bottom - 1, 0x40461019, 0x10000000);
+		}
+		this.panel(g, this.conX, this.top, this.conW, this.bottom - this.top, true);
+	}
+
+	private void panel(GuiGraphicsExtractor g, int x, int y, int w, int h, boolean accent) {
+		g.fill(x + 2, y + 2, x + w + 2, y + h + 2, 0x60000000);
+		g.fill(x, y, x + w, y + h, Style.INK);
+		g.outline(x, y, w, h, Style.LINE);
+		if (accent) g.fill(x, y, x + w, y + 2, Style.RED);
+		else {
+			// уголки в стиле Phase
+			g.fill(x, y, x + 8, y + 1, Style.RED);
+			g.fill(x, y, x + 1, y + 8, Style.RED);
+		}
 	}
 
 	@Override
 	public void extractRenderState(GuiGraphicsExtractor g, int mouseX, int mouseY, float a) {
-		int x = this.px + 12, w = PANEL_W - 24;
-		// заголовок
+		// шапка
 		g.pose().pushMatrix();
-		g.pose().translate(x, this.top + 10);
+		g.pose().translate(M + 2, 9);
 		g.pose().scale(1.5F, 1.5F);
 		g.text(this.font, Component.literal("PHASE").withStyle(ChatFormatting.BOLD), 0, 0, Style.RED, false);
 		g.pose().popMatrix();
-		g.text(this.font, "相", x + 54, this.top + 13, Style.GOLD, false);
+		g.text(this.font, "相", M + 56, 12, Style.GOLD, false);
 		String who = this.minecraft.getUser().getName();
-		// статус сохранения — в шапке, чтобы никогда не наезжать на кнопки
-		if (!this.status.isEmpty()) {
-			if (this.headH >= 38) g.text(this.font, this.font.plainSubstrByWidth(this.status, w), x, this.top + 25, this.statusColor, false);
-			else g.text(this.font, this.font.plainSubstrByWidth(this.status, w - 74), x + 74, this.top + 13, this.statusColor, false);
-		} else if (this.headH >= 38) g.text(this.font, "Косметика · " + who, x, this.top + 25, Style.MUTED, false);
-		g.fill(x, this.top + this.headH - 5, x + w, this.top + this.headH - 4, Style.LINE);
+		g.text(this.font, PhaseButton.fit(this.font, "Косметика · " + who, this.width - M - 30 - (M + 72)), M + 72, 12, Style.MUTED, false);
 
-		if (this.loading && CosmeticsData.mine == null) g.text(this.font, "Загружаю вашу косметику…", x, this.top + 44, Style.MUTED, false);
-		this.label(g, "ШЛЯПА", x, this.hatLabelY);
-		this.label(g, "ПАК ЭФФЕКТОВ", x, this.auraLabelY);
-		this.label(g, "ПИТОМЕЦ", x, this.petLabelY);
-		this.label(g, "НАСТРОЙКИ", x, this.setLabelY);
-		if (this.shopY >= 0) {
-			g.fill(x, this.shopY, x + w, this.shopY + 28, Style.CARD);
-			g.outline(x, this.shopY, w, 28, Style.LINE);
-			g.fill(x, this.shopY, x + 2, this.shopY + 28, Style.GOLD);
-			g.text(this.font, "Эндер-дракончик · 999 ₽ · премиум", x + 8, this.shopY + 5, Style.TEXT, false);
-			g.text(this.font, "Купить: лаунчер → «Донаты»", x + 8, this.shopY + 16, Style.MUTED, false);
+		// разделы
+		g.text(this.font, "РАЗДЕЛЫ", this.sideX + 8, this.top + 8, Style.MUTED_D, false);
+
+		// персонаж
+		if (this.prevW > 0) this.preview(g, mouseX, mouseY);
+
+		// заголовок раздела
+		int x = this.conX + 10, w = this.conW - 20;
+		g.text(this.font, TAB_TITLES[tab], x, this.top + 8, Style.TEXT, false);
+		g.text(this.font, PhaseButton.fit(this.font, TAB_SUB[tab], w), x, this.top + 19, Style.MUTED_D, false);
+
+		// подписи и значения внутри списка (обрезаются по краю списка)
+		g.enableScissor(this.conX + 1, this.listTop - 1, this.conX + this.conW - 1, this.listBottom + 1);
+		for (Text t : this.texts) {
+			switch (t.kind) {
+				case 1 -> {
+					g.fill(t.x, t.y + 2, t.x + 3, t.y + 7, Style.RED);
+					g.text(this.font, PhaseButton.fit(this.font, t.s, w - 8), t.x + 7, t.y, t.color, false);
+				}
+				case 2 -> g.centeredText(this.font, t.s, t.x, t.y, t.color);
+				case 3 -> {
+					int bw = this.conW - 20 - 64;
+					g.fill(t.x, t.y, t.x + bw, t.y + 6, 0xFF100D14);
+					g.outline(t.x, t.y, bw, 6, Style.LINE);
+					g.fill(t.x + 1, t.y + 1, t.x + 1 + Math.max(0, t.w - 2), t.y + 5, t.color);
+				}
+				case 4 -> {
+					g.fill(t.x, t.y, t.x + t.w, t.y + 30, Style.CARD);
+					g.outline(t.x, t.y, t.w, 30, Style.LINE);
+					g.fill(t.x, t.y, t.x + 2, t.y + 30, t.color);
+				}
+				default -> g.text(this.font, PhaseButton.fit(this.font, t.s, this.conX + this.conW - 10 - t.x), t.x, t.y, t.color, false);
+			}
 		}
+		g.disableScissor();
+
 		super.extractRenderState(g, mouseX, mouseY, a);
-		// подвал
-		int fy = this.bottom - 16;
-		if (this.footer) {
-			g.fill(x, fy - 2, x + w, fy - 1, Style.LINE);
-			g.text(this.font, PhaseCosmetics.MENU.getTranslatedKeyMessage().getString() + " — меню  ·  Esc — закрыть", x, fy + 4, Style.MUTED_D, false);
+
+		// полоса прокрутки
+		int view = this.listBottom - this.listTop;
+		if (this.contentH > view) {
+			int sx = this.conX + this.conW - 4;
+			int bar = Math.max(16, view * view / this.contentH);
+			int by = this.listTop + (view - bar) * SCROLL[tab] / Math.max(1, this.contentH - view);
+			g.fill(sx, this.listTop, sx + 2, this.listBottom, 0xFF1A1620);
+			g.fill(sx, by, sx + 2, by + bar, Style.RED);
 		}
+
+		// подвал: статус слева (всегда в одну строку), подсказка справа
+		String hint = PhaseCosmetics.MENU.getTranslatedKeyMessage().getString() + " / Esc — закрыть";
+		int hw = this.font.width(hint);
+		int fy = this.height - FOOT + 5;
+		g.text(this.font, hint, this.width - M - hw, fy, Style.MUTED_D, false);
+		if (!this.status.isEmpty()) g.text(this.font, PhaseButton.fit(this.font, this.status, this.width - 3 * M - hw), M, fy, this.statusColor, false);
 	}
 
-	private void label(GuiGraphicsExtractor g, String s, int x, int y) {
-		if (y < 0) return;
-		g.fill(x, y + 2, x + 3, y + 7, Style.RED);
-		g.text(this.font, s, x + 7, y, Style.MUTED, false);
+	/** Свой персонаж в центре: крутится мышью, колесо — ближе/дальше, двойной клик — как было */
+	private void preview(GuiGraphicsExtractor g, int mouseX, int mouseY) {
+		LocalPlayer pl = this.minecraft.player;
+		int x0 = this.prevX + 1, y0 = this.top + 1, x1 = this.prevX + this.prevW - 1, y1 = this.bottom - 1;
+		int cx = (x0 + x1) / 2;
+		// «пол» под персонажем
+		int floorY = y1 - 22;
+		g.fill(cx - this.prevW / 3, floorY, cx + this.prevW / 3, floorY + 1, 0x80D21F2A);
+		g.fill(cx - this.prevW / 5, floorY + 1, cx + this.prevW / 5, floorY + 3, 0x40D21F2A);
+		g.centeredText(this.font, PhaseButton.fit(this.font, "Тяните — повернуть · колесо — ближе", this.prevW - 8), cx, y1 - 13, Style.MUTED_D);
+		if (pl == null) return;
+
+		// шляпа под курсором — примерка
+		String hat = CosmeticsData.mine == null ? null : CosmeticsData.mine.hat();
+		if (tab == 0) {
+			for (Object[] hb : this.hatButtons) {
+				PhaseButton b = (PhaseButton) hb[0];
+				if (b.visible && b.isHovered()) { String id = (String) hb[1]; hat = id.isEmpty() ? null : id; }
+			}
+		}
+		EntityRenderer<? super LocalPlayer, ?> renderer = this.minecraft.getEntityRenderDispatcher().getRenderer(pl);
+		EntityRenderState st = renderer.createRenderState(pl, 1.0F);
+		st.shadowPieces.clear();
+		st.outlineColor = 0;
+		if (st instanceof LivingEntityRenderState ls) {
+			ls.bodyRot = 180F + yaw;
+			ls.yRot = 0F;
+			ls.xRot = ls.pose == Pose.FALL_FLYING ? 0F : tilt * 0.5F;
+			ls.boundingBoxWidth = ls.boundingBoxWidth / ls.scale;
+			ls.boundingBoxHeight = ls.boundingBoxHeight / ls.scale;
+			ls.scale = 1.0F;
+		}
+		CosmeticsLayer.PREVIEW_HAT = hat;
+		CosmeticsLayer.PREVIEW_STATE = st;
+		int areaH = floorY - y0 - 6;
+		int size = (int) (Math.min(areaH / 2.3F, this.prevW / 1.3F) * zoom);
+		Quaternionf rot = new Quaternionf().rotateZ((float) Math.PI);
+		Quaternionf xr = new Quaternionf().rotateX(tilt * Mth.DEG_TO_RAD);
+		rot.mul(xr);
+		// персонаж стоит на «полу»; если при приближении голова не влезает — опускаем его, голова важнее ног
+		float feet = floorY;
+		float head = feet - size * st.boundingBoxHeight;
+		if (head < y0 + 14) feet += y0 + 14 - head;
+		float boxCy = (y0 + y1) / 2F;
+		Vector3f tr = new Vector3f(0F, (feet - boxCy) / Math.max(1, size), 0F);
+		g.entity(st, size, tr, rot, xr, x0, y0, x1, y1);
 	}
 
 	@Override

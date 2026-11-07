@@ -22,7 +22,21 @@ public final class NameTags {
 		};
 	}
 
+	private static final java.util.Map<String, Component> CACHE = new java.util.HashMap<>();
+
+	/** Табличка строится заново только когда меняется ник, клан или значок (а не каждый кадр) */
 	public static Component decorate(Component name, CosmeticsData.Worn w) {
+		String key = name.getString() + '|' + w.clan() + '|' + w.clanColor() + '|' + w.badge();
+		Component c = CACHE.get(key);
+		if (c == null) {
+			if (CACHE.size() > 512) CACHE.clear();
+			c = build(name, w);
+			CACHE.put(key, c);
+		}
+		return c;
+	}
+
+	private static Component build(Component name, CosmeticsData.Worn w) {
 		MutableComponent out = Component.empty();
 		if (w.clan() != null && !w.clan().isBlank()) {
 			out.append(Component.literal("[" + w.clan() + "] ").withColor(clanColor(w.clanColor())));

@@ -40,7 +40,7 @@ import net.minecraft.world.phys.Vec3;
 public final class AuraFx {
 	private static final RandomSource RND = RandomSource.create();
 	private static final int BRIGHT = 0xF000F0;
-	private static final int MAX = 3200;
+	private static final int MAX = 2000;
 	private static int age;
 
 	private enum Pack {
@@ -73,6 +73,8 @@ public final class AuraFx {
 		float rot, prot, spin, gravity, drag = 0.95F;
 		float sway, swayF = 0.25F, phase, twinkle;
 		int age, life;
+		net.minecraft.client.renderer.item.ItemStackRenderState[] mdl; // модели по стадиям цвета (без поиска по строке каждый кадр)
+		int gen = -1;
 	}
 
 	private static final List<P> LIVE = new ArrayList<>();
@@ -81,6 +83,7 @@ public final class AuraFx {
 	private static final Map<Integer, Integer> HURT = new HashMap<>();    // игрок → прошлый hurtTime
 	private static final Map<Integer, int[]> HIT_BY = new HashMap<>();    // жертва → {убийца, тик удара}
 	private static final Map<String, SoundEvent> SOUNDS = new HashMap<>();
+	private static final Map<Integer, Vec3> BASE = new HashMap<>();
 
 	private AuraFx() {}
 
@@ -507,7 +510,12 @@ public final class AuraFx {
 		float camY = camera.yRot(), camX = camera.xRot();
 		boolean fp = mc.options.getCameraType() == CameraType.FIRST_PERSON;
 		int me = mc.player == null ? -1 : mc.player.getId();
-		Map<Integer, Vec3> base = new HashMap<>();
+		Map<Integer, Vec3> base = BASE;
+		base.clear();
+		// направление взгляда: частицы за спиной камеры не отправляем на отрисовку
+		float yr = camY * Mth.DEG_TO_RAD, xr = camX * Mth.DEG_TO_RAD;
+		double fx = -Mth.sin(yr) * Mth.cos(xr), fy = -Mth.sin(xr), fz = Mth.cos(yr) * Mth.cos(xr);
+		int gen = CosmeticsModels.gen();
 		for (P p : LIVE) {
 			if (p.delay > 0) continue;
 			double x, y, z;
@@ -526,7 +534,9 @@ public final class AuraFx {
 				x = Mth.lerp(pt, p.px, p.x); y = Mth.lerp(pt, p.py, p.y); z = Mth.lerp(pt, p.pz, p.z);
 			}
 			double ex = x - cam.x, ey = y - cam.y, ez = z - cam.z;
-			if (fp && ex * ex + ey * ey + ez * ez < 0.36) continue; // ничего вплотную к камере
+			double d2 = ex * ex + ey * ey + ez * ez;
+			if (fp && d2 < 0.36) continue; // ничего вплотную к камере
+			if (d2 > 56 * 56 || ex * fx + ey * fy + ez * fz < -1.5) continue; // далеко или за спиной
 			float t = Math.min(1F, (p.age + pt) / p.life);
 			// у спрайтов прозрачные края — видимая часть меньше кубика того же размера, поэтому чуть крупнее
 			float s = p.size * (p.ground ? 1F : 1.4F) * (1F + p.grow * t);
@@ -548,7 +558,10 @@ public final class AuraFx {
 				pose.rotateDegrees(Axis.ZP, rot);
 				pose.scale(s, s * p.stretch, s);
 			}
-			CosmeticsModels.fx(p.shape + "_" + p.cols[ci]).submit(pose, out, light, OverlayTexture.NO_OVERLAY, 0);
+			if (p.gen != gen || p.mdl == null) { p.mdl = new net.minecraft.client.renderer.item.ItemStackRenderState[p.cols.length]; p.gen = gen; }
+			var mdl = p.mdl[ci];
+			if (mdl == null) mdl = p.mdl[ci] = CosmeticsModels.fx(p.shape + "_" + p.cols[ci]);
+			mdl.submit(pose, out, light, OverlayTexture.NO_OVERLAY, 0);
 			pose.popPose();
 		}
 	}

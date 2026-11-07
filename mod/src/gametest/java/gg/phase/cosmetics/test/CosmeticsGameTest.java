@@ -163,10 +163,50 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 			ctx.waitTicks(20);
 			ctx.takeScreenshot("16-first-person");
 			ctx.runOnClient(mc -> mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT));
-			ctx.setScreen(PhaseMenuScreen::new);
-			ctx.waitTicks(20);
-			ctx.takeScreenshot("17-menu");
+			// полноэкранное меню: все разделы; шляпа сдвинута и повёрнута — видно и в меню, и в мире
+			CosmeticsData.setTestFull("kabuto", "ender_dragon", "aura_sakura", "gold", null);
+			CosmeticsData.MY_ADJ.put("kabuto", new float[] { 2F, 1.5F, 0F, 10F, 30F, 0F, 1.2F });
+			for (int t = 0; t < 4; t++) {
+				int tt = t;
+				ctx.runOnClient(mc -> PhaseMenuScreen.testTab(tt));
+				ctx.setScreen(PhaseMenuScreen::new);
+				ctx.waitTicks(10);
+				ctx.takeScreenshot("17-menu-" + t);
+			}
 			ctx.setScreen(() -> null);
+			ctx.waitTicks(5);
+			ctx.takeScreenshot("17e-hat-adjusted-world");
+			CosmeticsData.MY_ADJ.clear();
+			// «Ждать тут»: садится на землю и не телепортируется к хозяину
+			Config.get().mode = "follow";
+			ctx.waitTicks(40);
+			Config.get().mode = "stay";
+			ctx.waitTicks(100);
+			ctx.takeScreenshot("18-stay-landed");
+			sp.getServer().runCommand("execute as @p at @s run tp @s ~ ~ ~-30");
+			ctx.waitTicks(40);
+			sp.getServer().runCommand("execute as @p at @s run tp @s ~ ~ ~30");
+			ctx.waitTicks(20);
+			ctx.takeScreenshot("18b-stay-still-there");
+			// блок под сидящим дракончиком сломали — падает
+			int[] at = new int[3];
+			ctx.runOnClient(mc -> {
+				Pet p = PetManager.INSTANCE.own();
+				if (p != null) { at[0] = (int) Math.floor(p.pos.x); at[1] = (int) Math.floor(p.pos.y - 0.5); at[2] = (int) Math.floor(p.pos.z); }
+			});
+			sp.getServer().runCommand("fill " + at[0] + " " + (at[1] - 2) + " " + at[2] + " " + at[0] + " " + at[1] + " " + at[2] + " air");
+			ctx.waitTicks(4);
+			ctx.takeScreenshot("18c-falling");
+			ctx.waitTicks(30);
+			ctx.takeScreenshot("18d-fell");
+			// хозяин в воде: дракончик (даже «на плече») держится над водой
+			Config.get().mode = "shoulder";
+			ctx.waitTicks(40);
+			sp.getServer().runCommand("execute at @p run fill ~-3 ~ ~-3 ~3 ~2 ~3 water");
+			ctx.waitTicks(60);
+			ctx.takeScreenshot("19-water-shoulder");
+			sp.getServer().runCommand("execute at @p run fill ~-3 ~ ~-3 ~3 ~2 ~3 air");
+			Config.get().mode = "follow";
 		}
 	}
 }

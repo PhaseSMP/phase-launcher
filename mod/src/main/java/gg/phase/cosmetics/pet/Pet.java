@@ -4,7 +4,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -47,6 +50,10 @@ public final class Pet {
 	private boolean wasHurt;
 	private int lootId = -1, lootCd = 100;
 	private Vec3 stayPos, landAt;
+	// падение: опору под сидящим дракончиком сломали
+	private boolean falling;
+	private double fallVy;
+	private boolean stayLanded;
 	private float lookYaw, lookPitch, lookIn;
 	private final RandomSource rnd = RandomSource.create();
 	private String lastMode = "follow";
@@ -70,6 +77,7 @@ public final class Pet {
 	}
 
 	private void begin(Act a, int len) {
+		if (a != Act.STAY && a != Act.GROUND) this.falling = false;
 		if (this.act == Act.LOOP && a != Act.LOOP) this.finishLoop();
 		this.act = a;
 		this.actTicks = 0;
@@ -101,7 +109,8 @@ public final class Pet {
 		this.idleFor = ownerMoving || owner.isSprinting() ? 0 : this.idleFor + 1;
 
 		// далеко отстал (телепорт игрока, смена мира, полёт на элитрах) — появляется рядом
-		if (this.pos.distanceToSqr(base) > 24 * 24) {
+		boolean staying = mode.equals("stay");
+		if (!staying && this.pos.distanceToSqr(base) > 24 * 24) {
 			fx.teleport(this, this.pos);
 			this.pos = this.prevPos = base.add(left.scale(0.9)).add(0, 1.6, 0);
 			this.vel = Vec3.ZERO;
@@ -112,19 +121,25 @@ public final class Pet {
 		// смена режима
 		if (!mode.equals(this.lastMode)) {
 			this.lastMode = mode;
-			if (mode.equals("stay")) { this.stayPos = this.pos; begin(Act.STAY, 0); }
+			if (mode.equals("stay")) { this.stayPos = this.pos; this.stayLanded = false; begin(Act.STAY, 0); }
 			else if (mode.equals("shoulder")) begin(Act.PERCH, 0);
 			else if (this.act == Act.PERCH || this.act == Act.STAY) begin(Act.TAKEOFF, 12);
 		}
+		// хозяин в воде — дракончик не ныряет за ним и не сидит на плече, а держится над водой
+		boolean wet = !staying && (owner.isInWater() || owner.isUnderWater() || owner.isSwimming());
+		if (wet && (this.act == Act.PERCH || this.act == Act.GROUND || this.act == Act.LAND || this.act == Act.VISIT || this.act == Act.PETTED || this.act == Act.LOOT)) {
+			if (this.act == Act.PERCH || this.act == Act.GROUND) this.falling = false;
+			begin(this.act == Act.GROUND ? Act.TAKEOFF : Act.HOVER, 12);
+		}
 		boolean special = this.act == Act.PETTED || this.act == Act.LOOP || this.act == Act.ROAR || this.act == Act.SPIN || this.act == Act.ROLL;
 		if (!special) {
-			if (mode.equals("shoulder") && this.act != Act.PERCH) begin(Act.PERCH, 0);
-			if (mode.equals("stay") && this.act != Act.STAY) { if (this.stayPos == null) this.stayPos = this.pos; begin(Act.STAY, 0); }
+			if (mode.equals("shoulder") && this.act != Act.PERCH && !wet && this.act != Act.TAKEOFF) begin(Act.PERCH, 0);
+			if (staying && this.act != Act.STAY) { if (this.stayPos == null) { this.stayPos = this.pos; this.stayLanded = false; } begin(Act.STAY, 0); }
 		}
 		// хозяина ударили — вылетает вперёд и рычит (только в режиме «Рядом»)
 		boolean hurtNow = owner.hurtTime > 0;
 		boolean follow = mode.equals("follow");
-		if (hurtNow && !this.wasHurt && follow && this.act != Act.GUARD && owner.getHealth() > 0F) {
+		if (hurtNow && !this.wasHurt && follow && this.act != Act.GUARD && owner.getHealth() > 0F && hitByCreature(owner, level)) {
 			if (this.act == Act.LOOT) this.lootId = -1;
 			begin(Act.GUARD, 44);
 		}
@@ -161,6 +176,10 @@ public final class Pet {
 			.add(Mth.sin(this.age * 0.031F) * 0.3, Mth.sin(this.age * 0.047F) * 0.18, Mth.cos(this.age * 0.027F) * 0.3);
 		if (owner.isSprinting() || owner.isFallFlying()) hover = base.add(fwd.scale(-1.0)).add(left.scale(0.7)).add(0, 1.4, 0);
 		if (owner.isFallFlying()) { maxSpeed = 3.5F; stiff = 0.2F; }
+		if (wet) {
+			double top = waterTop(level, base.add(0, 0.2, 0));
+			hover = new Vec3(hover.x, Math.max(top + 0.9 + Mth.sin(this.age * 0.047F) * 0.12, base.y + 1.2), hover.z);
+		}
 
 		switch (this.act) {
 			case PERCH -> {
@@ -178,17 +197,35 @@ public final class Pet {
 				} else { stiff = 0.12F; maxSpeed = 0.7F; }
 			}
 			case STAY -> {
-				if (this.stayPos == null) this.stayPos = this.pos;
-				double gy = groundBelow(level, this.stayPos, 3.0);
-				goal = new Vec3(this.stayPos.x, Double.isNaN(gy) ? this.stayPos.y : gy, this.stayPos.z);
-				if (this.pos.distanceToSqr(goal) < 0.04) {
-					grounded = true; this.pos = goal; this.vel = Vec3.ZERO;
-					wantSit = this.idleFor > 400 || this.actTicks > 600 ? 0.4F : 1F;
-					wantLie = this.actTicks > 600 ? 1F : 0F;
+				// «Ждать тут»: опускается на землю под собой, садится и ждёт, сколько бы хозяин ни ушёл
+				if (this.stayPos == null) { this.stayPos = this.pos; this.stayLanded = false; }
+				if (!this.stayLanded) {
+					double gy = groundBelow(level, this.stayPos.add(0, 0.5, 0), 64.0);
+					if (Double.isNaN(gy)) goal = this.stayPos; // под ним пустота — висит на месте
+					else {
+						BlockPos wp = BlockPos.containing(this.stayPos.x, gy + 0.05, this.stayPos.z);
+						if (!level.getFluidState(wp).isEmpty()) goal = new Vec3(this.stayPos.x, waterTop(level, Vec3.atCenterOf(wp)) + 0.6, this.stayPos.z); // вода — над водой
+						else goal = new Vec3(this.stayPos.x, gy, this.stayPos.z);
+					}
+					boolean ground = !Double.isNaN(gy) && Math.abs(goal.y - gy) < 0.01;
+					if (ground && this.pos.distanceToSqr(goal) < 0.03) {
+						this.stayLanded = true; this.stayPos = goal; fx.land(this);
+					} else {
+						stiff = 0.07F; maxSpeed = 0.3F;
+						if (ground && this.pos.distanceToSqr(goal) < 1.0) { flapAmp = 0.8F; flapSpeed = 0.7F; }
+						faceYaw = yawTo(this.pos, base);
+					}
+				}
+				if (this.stayLanded) {
+					goal = this.stayPos;
+					grounded = true; this.pos = this.falling ? this.pos : goal; this.vel = Vec3.ZERO;
+					wantSit = this.actTicks > 900 ? 0.4F : 1F;
+					wantLie = this.actTicks > 900 ? 1F : 0F;
 					if (wantLie > 0) this.head = 3;
-					faceYaw = yawTo(this.pos, base);
-				} else { stiff = 0.08F; maxSpeed = 0.35F; }
-				if (base.distanceToSqr(this.pos) > 20 * 20) { this.stayPos = null; begin(Act.HOVER, 0); this.lastMode = "follow"; }
+					faceYaw = this.actTicks > 900 ? this.yaw : yawTo(this.pos, base);
+					if (!this.falling) this.checkSupport(level);
+					if (this.falling && this.fall(level, fx)) this.stayPos = this.pos;
+				}
 			}
 			case LAND -> {
 				if (this.landAt == null || ownerMoving) { begin(Act.HOVER, 0); goal = hover; break; }
@@ -199,12 +236,14 @@ public final class Pet {
 			}
 			case GROUND -> {
 				goal = this.landAt == null ? this.pos : this.landAt;
-				grounded = true; this.pos = goal; this.vel = Vec3.ZERO;
+				grounded = true; this.vel = Vec3.ZERO;
+				if (!this.falling) { this.pos = goal; this.checkSupport(level); }
+				if (this.falling && this.fall(level, fx)) this.landAt = this.pos;
 				wantSit = 1F;
 				if (this.idleFor > 600) { wantLie = 1F; this.head = 3; }
 				faceYaw = this.idleFor > 600 ? this.yaw : yawTo(this.pos, base) + 25F;
 				// игрок ушёл или прыгнул — взлетаем
-				if (ownerMoving && (this.pos.distanceToSqr(base) > 2.0 || !owner.onGround() || owner.isSprinting())) {
+				if (!this.falling && ownerMoving && (this.pos.distanceToSqr(base) > 2.0 || !owner.onGround() || owner.isSprinting())) {
 					begin(Act.TAKEOFF, 12);
 					fx.takeoff(this);
 				}
@@ -459,6 +498,59 @@ public final class Pet {
 			if (gy <= v.y + 0.01) return gy;
 		}
 		return Double.NaN;
+	}
+
+	/** Опора под сидящим дракончиком пропала (блок сломали) — начинает падать */
+	private void checkSupport(Level level) {
+		if (((int) this.age & 3) != 0) return; // раз в 4 тика достаточно
+		double gy = groundBelow(level, this.pos.add(0, 0.05, 0), 1.0);
+		if (Double.isNaN(gy) || gy < this.pos.y - 0.05) { this.falling = true; this.fallVy = 0; }
+	}
+
+	/** Шаг падения; true — приземлился */
+	private boolean fall(Level level, PetFx fx) {
+		this.fallVy = Math.max(this.fallVy - 0.08, -1.6);
+		double ny = this.pos.y + this.fallVy;
+		double gy = groundBelow(level, this.pos.add(0, 0.05, 0), 2.0 - this.fallVy);
+		if (!Double.isNaN(gy) && ny <= gy) {
+			this.pos = new Vec3(this.pos.x, gy, this.pos.z);
+			this.falling = false;
+			this.fallVy = 0;
+			fx.land(this);
+			return true;
+		}
+		// упал в воду или в пустоту — дальше не падает, а взлетает
+		if (ny < level.getMinY() || !level.getFluidState(BlockPos.containing(this.pos.x, ny, this.pos.z)).isEmpty()) {
+			this.falling = false;
+			this.stayLanded = false;
+			this.stayPos = this.pos;
+			if (this.act == Act.GROUND) begin(Act.TAKEOFF, 12);
+			return false;
+		}
+		this.pos = new Vec3(this.pos.x, ny, this.pos.z);
+		return false;
+	}
+
+	/** Верх воды над точкой (или сама точка, если воды нет) */
+	static double waterTop(Level level, Vec3 v) {
+		BlockPos.MutableBlockPos bp = new BlockPos.MutableBlockPos(Mth.floor(v.x), Mth.floor(v.y), Mth.floor(v.z));
+		int n = 0;
+		while (n++ < 24 && !level.getFluidState(bp).isEmpty()) bp.move(Direction.UP);
+		return n <= 1 ? v.y : bp.getY();
+	}
+
+	/** Урон нанёс моб или другой игрок (а не падение, огонь, утопление и т. п.) */
+	private static boolean hitByCreature(Player owner, Level level) {
+		DamageSource src = owner.getLastDamageSource();
+		Entity by = src == null ? null : src.getEntity();
+		if (by != null) return by != owner && (by instanceof Mob || by instanceof Enemy || by instanceof Player);
+		if (src != null) return false; // источник известен и это не существо
+		// источник неизвестен (бывает у чужих игроков) — смотрим, есть ли рядом враждебный моб или замахнувшийся игрок
+		for (Entity e : level.getEntities(owner, owner.getBoundingBox().inflate(4.5))) {
+			if (e instanceof Enemy) return true;
+			if (e instanceof Player pl && pl.swinging) return true;
+		}
+		return false;
 	}
 
 	/** Ценное: редкое, зачарованное или из списка (алмазы, незерит, золото, элитры…) — остальное дракон не ищет */
