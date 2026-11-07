@@ -95,3 +95,125 @@
 382:	public Quaternionf rotation() {
 === net/minecraft/client/renderer/item/ItemStackRenderState.java
 112:	public void submit(
+=== net/minecraft/client/gui/screens/inventory/InventoryScreen.java
+103:	public static void extractEntityInInventoryFollowsMouse(
+=== net/minecraft/client/gui/screens/Screen.java
+124:	public boolean keyPressed(final KeyEvent event) {
+204:	public void onClose() {
+383:	public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+398:	protected void extractBlurredBackground(final GuiGraphicsExtractor graphics) {
+=== net/minecraft/client/gui/components/events/ContainerEventHandler.java
+42:	default boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
+72:	default boolean mouseDragged(final MouseButtonEvent event, final double dx, final double dy) {
+81:	default boolean mouseScrolled(final double x, final double y, final double scrollX, final double scrollY) {
+86:	default boolean keyPressed(final KeyEvent event) {
+=== net/minecraft/client/KeyMapping.java
+138:	public InputConstants.Key getDefaultKey() {
+167:	public boolean matches(final KeyEvent event) {
+171:	public boolean matchesMouse(final MouseButtonEvent event) {
+175:	public boolean matches(final InputConstants.Key key) {
+=== net/minecraft/client/input/KeyEvent.java
+12:public record KeyEvent(@InputConstants.Value int key, int keycode, @InputWithModifiers.Modifiers int modifiers) implements InputWithModifiers {
+=== net/minecraft/client/input/MouseButtonEvent.java
+7:public record MouseButtonEvent(double x, double y, MouseButtonInfo buttonInfo) implements InputWithModifiers {
+=== net/minecraft/client/gui/GuiGraphicsExtractor.java
+129:	public void requestCursor(final CursorType cursorType) {
+133:	public void applyCursor(final Window window) {
+149:	public void nextStratum() {
+153:	public void blurBeforeThisStratum() {
+157:	public void enableScissor(final int x0, final int y0, final int x1, final int y1) {
+162:	public void disableScissor() {
+170:	public void horizontalLine(int x0, int x1, final int y, final int col) {
+180:	public void verticalLine(final int x, int y0, int y1, final int col) {
+190:	public void fill(final int x0, final int y0, final int x1, final int y1, final int col) {
+194:	public void fill(final RenderPipeline pipeline, int x0, int y0, int x1, int y1, final int col) {
+210:	public void fillGradient(final int x0, final int y0, final int x1, final int y1, final int col1, final int col2) {
+214:	public void fill(final RenderPipeline renderPipeline, final TextureSetup textureSetup, final int x0, final int y0, final int x1, final int y1) {
+218:	public void outline(final int x, final int y, final int width, final int height, final int color) {
+243:	public void textHighlight(final int x0, final int y0, final int x1, final int y1, final boolean invertText) {
+251:	public void text(final Font font, final @Nullable String str, final int x, final int y, final int color) {
+255:	public void text(final Font font, final @Nullable String str, final int x, final int y, final int color, final boolean dropShadow) {
+261:	public void text(final Font font, final FormattedCharSequence str, final int x, final int y, final int color) {
+265:	public void text(final Font font, final FormattedCharSequence str, final int x, final int y, final int color, final boolean dropShadow) {
+271:	public void text(final Font font, final Component str, final int x, final int y, final int color) {
+275:	public void text(final Font font, final Component str, final int x, final int y, final int color, final boolean dropShadow) {
+279:	public void centeredText(final Font font, final String str, final int x, final int y, final int color) {
+283:	public void centeredText(final Font font, final Component text, final int x, final int y, final int color) {
+288:	public void centeredText(final Font font, final FormattedCharSequence text, final int x, final int y, final int color) {
+305:	public void textWithBackdrop(final Font font, final Component str, final int textX, final int textY, final int textWidth, final int textColor) {
+315:	public void blit(
+331:	public void blit(
+346:	public void blit(
+363:	public void blit(
+393:	public void blit(
+399:	public void blit(
+414:	public void blitSprite(final RenderPipeline renderPipeline, final Identifier location, final int x, final int y, final int width, final int height) {
+418:	public void blitSprite(
+424:	public void blitSprite(
+443:	public void blitSprite(
+458:	public void blitSprite(
+482:	public void blitSprite(final RenderPipeline renderPipeline, final TextureAtlasSprite sprite, final int x, final int y, final int width, final int height) {
+486:	public void blitSprite(
+876:	public void item(final ItemStack itemStack, final int x, final int y) {
+880:	public void item(final ItemStack itemStack, final int x, final int y, final int seed) {
+884:	public void item(final LivingEntity owner, final ItemStack itemStack, final int x, final int y, final int seed) {
+906:	public void fakeItem(final ItemStack itemStack, final int x, final int y) {
+910:	public void fakeItem(final ItemStack itemStack, final int x, final int y, final int seed) {
+914:	public void itemDecorations(final Font font, final ItemStack itemStack, final int x, final int y) {
+918:	public void itemDecorations(final Font font, final ItemStack itemStack, final int x, final int y, final @Nullable String countText) {
+956:	public void map(final MapRenderState mapRenderState) {
+1008:	public void entity(
+1026:	public void skin(
+1042:	public void book(
+1056:	public void bannerPattern(
+1063:	public void profilerChart(final List<ResultField> chartData, final int x0, final int y0, final int x1, final int y1) {
+1068:	public void setTooltipForNextFrame(final Component component, final int x, final int y) {
+1072:	public void setTooltipForNextFrame(final List<FormattedCharSequence> formattedCharSequences, final int x, final int y) {
+1076:	public void setTooltipForNextFrame(final Font font, final ItemStack itemStack, final int xo, final int yo) {
+1082:	public void setTooltipForNextFrame(final Font font, final List<Component> texts, final Optional<TooltipComponent> optionalImage, final int xo, final int yo) {
+1086:	public void setTooltipForNextFrame(
+1092:	public void setTooltipForNextFrame(
+1106:	public void setTooltipForNextFrame(
+1121:	public void setTooltipForNextFrame(final Font font, final Component text, final int xo, final int yo) {
+1125:	public void setTooltipForNextFrame(final Font font, final Component text, final int xo, final int yo, final @Nullable Identifier style) {
+1129:	public void setComponentTooltipForNextFrame(final Font font, final List<Component> lines, final int xo, final int yo) {
+1133:	public void setComponentTooltipForNextFrame(final Font font, final List<Component> lines, final int xo, final int yo, final @Nullable Identifier style) {
+1145:	public void setTooltipForNextFrame(final Font font, final List<? extends FormattedCharSequence> lines, final int xo, final int yo) {
+1149:	public void setTooltipForNextFrame(
+1157:	public void setTooltipForNextFrame(
+1199:	public void tooltip(
+1246:	public void setPreeditOverlay(final Renderable preeditOverlay) {
+1250:	public void extractDeferredElements(final int mouseX, final int mouseY, final float a) {
+1357:		public void defaultParameters(final ActiveTextCollector.Parameters newParameters) {
+1361:		public void accept(final Style style) {
+1376:		public void accept(
+1403:		public void acceptScrolling(
+1430:		public void push(final ScreenRectangle rectangle) {
+1436:		public void pop() {
+=== net/minecraft/world/entity/Entity.java
+1628:	public boolean isInWater() {
+1637:	public boolean isInWaterOrRain() {
+1649:	public boolean isUnderWater() {
+1767:	public boolean isEyeInFluid(final TagKey<Fluid> type) {
+1991:	public float getXRot(final float partialTicks) {
+2796:	public boolean isSwimming() {
+4002:	public void setYRot(final float yRot) {
+4010:	public float getXRot() {
+4014:	public void setXRot(final float xRot) {
+=== net/minecraft/world/entity/LivingEntity.java
+244:	public float yBodyRotO;
+245:	public float yHeadRot;
+246:	public float yHeadRotO;
+1417:	public @Nullable DamageSource getLastDamageSource() {
+1418:		return this.getLastDamageSource(40);
+1421:	public @Nullable DamageSource getLastDamageSource(final int damageSourceTimeout) {
+=== net/minecraft/world/entity/monster/Enemy.java
+3:public interface Enemy {
+=== net/minecraft/client/gui/components/AbstractSliderButton.java
+31:	protected double value;
+35:	public AbstractSliderButton(final int x, final int y, final int width, final int height, final Component message, final double initialValue) {
+70:	public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+139:			this.applyValue();
+142:		this.updateMessage();
+161:	protected abstract void updateMessage();
+163:	protected abstract void applyValue();
