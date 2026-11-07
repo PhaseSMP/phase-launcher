@@ -15,7 +15,7 @@ To honour the JVM settings for this build a single-use Daemon process will be fo
 Daemon will be stopped at the end of the build 
 
 > Configure project :
-Fabric Loom: 1.19.3
+Fabric Loom: 1.19.4
 
 > Task :compileJava
 > Task :processResources
@@ -27,6 +27,6 @@ Fabric Loom: 1.19.3
 > Task :assemble
 > Task :build
 
-BUILD SUCCESSFUL in 41s
+BUILD SUCCESSFUL in 28s
 4 actionable tasks: 4 executed
 Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.2/userguide/configuration_cache_enabling.html
