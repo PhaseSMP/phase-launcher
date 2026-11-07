@@ -4,15 +4,14 @@ Daemon will be stopped at the end of the build
 > Configure project :
 Fabric Loom: 1.19.4
 
-> Task :compileJava
-/home/runner/work/phase-launcher/phase-launcher/mod/src/main/java/gg/phase/cosmetics/pet/Pet.java:551: error: cannot find symbol
-			if (e instanceof Player pl && pl.swinging) return true;
-			                                ^
-  symbol:   variable swinging
-  location: variable pl of type Player
-1 error
-
 > Task :compileJava FAILED
+/home/runner/work/phase-launcher/phase-launcher/mod/src/main/java/gg/phase/cosmetics/pet/Pet.java:383: error: variable goal might not have been initialized
+			Vec3 to = goal.subtract(this.pos);
+			          ^
+/home/runner/work/phase-launcher/phase-launcher/mod/src/main/java/gg/phase/cosmetics/pet/Pet.java:400: error: variable goal might not have been initialized
+		boolean landing = this.act == Act.LAND && this.pos.distanceToSqr(goal) < 0.09;
+		                                                                 ^
+2 errors
 
 [Incubating] Problems report is available at: file:///home/runner/work/phase-launcher/phase-launcher/mod/build/reports/problems/problems-report.html
 
@@ -21,16 +20,17 @@ FAILURE: Build failed with an exception.
 * What went wrong:
 Execution failed for task ':compileJava' (registered by plugin class 'org.gradle.api.plugins.JavaBasePlugin').
 > Compilation failed; see the compiler output below.
-  /home/runner/work/phase-launcher/phase-launcher/mod/src/main/java/gg/phase/cosmetics/pet/Pet.java:551: error: cannot find symbol
-  			if (e instanceof Player pl && pl.swinging) return true;
-  			                                ^
-    symbol:   variable swinging
-    location: variable pl of type Player
-  1 error
+  /home/runner/work/phase-launcher/phase-launcher/mod/src/main/java/gg/phase/cosmetics/pet/Pet.java:383: error: variable goal might not have been initialized
+  			Vec3 to = goal.subtract(this.pos);
+  			          ^
+  /home/runner/work/phase-launcher/phase-launcher/mod/src/main/java/gg/phase/cosmetics/pet/Pet.java:400: error: variable goal might not have been initialized
+  		boolean landing = this.act == Act.LAND && this.pos.distanceToSqr(goal) < 0.09;
+  		                                                                 ^
+  2 errors
 
 * Try:
 > Check your code and dependencies to fix the compilation error(s)
 > Run with --scan to get full insights from a Build Scan (powered by Develocity).
 
-BUILD FAILED in 8s
+BUILD FAILED in 7s
 1 actionable task: 1 executed
