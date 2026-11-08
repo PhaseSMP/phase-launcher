@@ -1,12 +1,19 @@
-Fetching distribution.
-Downloading https://services.gradle.org/distributions/gradle-9.8.2-bin.zip
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.8.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
 
-Attempt 1/1 failed. Reason: Server returned HTTP response code: 504 for URL: https://services.gradle.org/distributions/gradle-9.8.2-bin.zip
-Exception in thread "main" java.io.IOException: Server returned HTTP response code: 504 for URL: https://services.gradle.org/distributions/gradle-9.8.2-bin.zip
-	at org.gradle.wrapper.Download.download(SourceFile:1)
-	at org.gradle.wrapper.Install.forceFetch(SourceFile)
-	at org.gradle.wrapper.Install.lambda$createDist$0(SourceFile:9)
-	at org.gradle.wrapper.Install.createDist(SourceFile:24)
-	at org.gradle.wrapper.GradleWrapperMain.lambda$prepareWrapper$0(SourceFile:2)
-	at org.gradle.wrapper.GradleWrapperMain.main(SourceFile:2)
-BUILD_FAILED
+> Configure project :
+Fabric Loom: 1.19.4
+
+> Task :compileJava
+> Task :processResources
+> Task :classes
+> Task :processIncludeJars
+> Task :validateAccessWidener NO-SOURCE
+> Task :check
+> Task :jar
+> Task :assemble
+> Task :build
+
+BUILD SUCCESSFUL in 24s
+4 actionable tasks: 4 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.2/userguide/configuration_cache_enabling.html
