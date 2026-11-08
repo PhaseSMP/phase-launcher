@@ -35,6 +35,13 @@ public final class PetRenderer {
 		double y = Mth.lerp(pt, pet.prevPos.y, pet.pos.y) - cam.y;
 		double z = Mth.lerp(pt, pet.prevPos.z, pet.pos.z) - cam.z;
 		float yaw = Mth.rotLerp(pt, pet.yawO, pet.yaw);
+		// на плече: позиция считается от хозяина в этом же кадре — дракончик не отстаёт при прыжке и беге
+		if (pet.perched && net.minecraft.client.Minecraft.getInstance().level != null
+			&& net.minecraft.client.Minecraft.getInstance().level.getEntity(pet.ownerId) instanceof net.minecraft.world.entity.player.Player owner) {
+			Vec3 sh = Pet.shoulder(owner, pt, Mth.lerp(pt, pet.perchYO, pet.perchY));
+			x = sh.x - cam.x; y = sh.y - cam.y; z = sh.z - cam.z;
+			yaw = Mth.rotLerp(pt, owner.yBodyRotO, owner.yBodyRot);
+		}
 		float pitch = Mth.lerp(pt, pet.pitchO, pet.pitch);
 		float roll = Mth.lerp(pt, pet.rollO, pet.roll);
 

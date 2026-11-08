@@ -335,6 +335,17 @@ public class PhaseMenuScreen extends Screen {
 			b.active = shown;
 		}
 		y += rh + 10;
+		// громкость дракончика — только на этом компьютере
+		y = this.section("ГРОМКОСТЬ ДРАКОНЧИКА", x, y);
+		Config cfg = Config.get();
+		int pv = cfg.sounds ? cfg.petVolume : 0;
+		PhaseButton pMinus = this.add(new PhaseButton(x, y, 26, rh, "−", PhaseButton.Kind.ACTION, null, () -> { cfg.petVolume = Math.max(0, cfg.petVolume - 10); cfg.sounds = true; cfg.save(); this.rebuildWidgets(); }));
+		PhaseButton pPlus = this.add(new PhaseButton(x + w - 26, y, 26, rh, "+", PhaseButton.Kind.ACTION, null, () -> { cfg.petVolume = Math.min(100, cfg.petVolume + 10); cfg.sounds = true; cfg.save(); this.rebuildWidgets(); }));
+		pMinus.active = pv > 0;
+		pPlus.active = pv < 100;
+		this.texts.add(new Text("", x + 32, y + 7, pv > 0 ? Style.RED : Style.MUTED_D, 3, (w - 64) * pv / 100));
+		this.texts.add(new Text(pv > 0 ? pv + "%" : "выкл", x + w / 2, y + 6, Style.TEXT, 2, 0));
+		y += rh + 10;
 		y = this.section("ТРЮКИ", x, y);
 		Object[][] tricks = { { "Погладить", Pet.Act.PETTED }, { "Сальто", Pet.Act.LOOP }, { "Рык", Pet.Act.ROAR },
 			{ "Кружить", Pet.Act.SPIN }, { "Бочка", Pet.Act.ROLL }, { "Ко мне", Pet.Act.VISIT } };

@@ -89,7 +89,9 @@ public final class PetManager implements PetFx {
 
 	private void sound(Pet pet, SoundEvent ev, float vol, float pitch) {
 		Minecraft mc = Minecraft.getInstance();
-		if (mc.level == null || !Config.get().sounds) return;
+		int pv = Config.get().petVolume;
+		if (mc.level == null || !Config.get().sounds || pv <= 0) return;
+		vol *= Math.min(100, pv) / 100F;
 		if (pet.pos.distanceToSqr(mc.gameRenderer.mainCamera().position()) > 20 * 20) return;
 		mc.level.playLocalSound(pet.pos.x, pet.pos.y, pet.pos.z, ev, SoundSource.NEUTRAL, vol, pitch + (this.rnd.nextFloat() - 0.5F) * 0.12F, false);
 	}

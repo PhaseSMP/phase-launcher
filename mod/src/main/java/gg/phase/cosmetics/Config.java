@@ -10,6 +10,7 @@ import net.fabricmc.loader.api.FabricLoader;
 /** Настройки игрока (config/phase-cosmetics.json). Команда питомцу хранится и на сервере — её видят все. */
 public final class Config {
 	public boolean sounds = true;
+	public int petVolume = 60;          // громкость дракончика, 0–100 (по умолчанию тише прежнего)
 	public boolean others = true;
 	public boolean hideHelmet = true;
 	public boolean ownAura = true;

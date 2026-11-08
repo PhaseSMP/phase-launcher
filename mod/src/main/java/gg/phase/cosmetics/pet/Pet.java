@@ -34,6 +34,9 @@ public final class Pet {
 
 	public final int ownerId;
 	public Vec3 pos, prevPos;
+	// на плече: дракончик «пристёгнут» к плечу и рисуется вместе с хозяином (прыжки, бег, присед)
+	public boolean perched;
+	public double perchY = 1.42, perchYO = 1.42;
 	private Vec3 vel = Vec3.ZERO;
 	public float yaw, yawO, pitch, pitchO, roll, rollO;
 	public final float[] p = new float[N], o = new float[N];
@@ -76,7 +79,20 @@ public final class Pet {
 		}
 	}
 
+	static final double PERCH_STAND = 1.42, PERCH_CROUCH = 1.17;
+
+	/** Точка на левом плече хозяина (pt — доля тика для плавной отрисовки) */
+	public static Vec3 shoulder(Player owner, float pt, double height) {
+		float by = Mth.rotLerp(pt, owner.yBodyRotO, owner.yBodyRot) * Mth.DEG_TO_RAD;
+		double crouch = Mth.clamp((PERCH_STAND - height) / (PERCH_STAND - PERCH_CROUCH), 0, 1);
+		double fwdK = 0.02 + crouch * 0.13;
+		double x = Mth.lerp(pt, owner.xo, owner.getX()) + Mth.cos(by) * 0.37 - Mth.sin(by) * fwdK;
+		double z = Mth.lerp(pt, owner.zo, owner.getZ()) + Mth.sin(by) * 0.37 + Mth.cos(by) * fwdK;
+		return new Vec3(x, Mth.lerp(pt, owner.yo, owner.getY()) + height, z);
+	}
+
 	private void begin(Act a, int len) {
+		if (a != Act.PERCH) this.perched = false;
 		if (a != Act.STAY && a != Act.GROUND) this.falling = false;
 		if (this.act == Act.LOOP && a != Act.LOOP) this.finishLoop();
 		this.act = a;
@@ -183,12 +199,16 @@ public final class Pet {
 
 		switch (this.act) {
 			case PERCH -> {
-				// левое плечо
-				Vec3 sh = base.add(left.scale(0.37)).add(fwd.scale(0.02)).add(0, owner.isShiftKeyDown() ? 1.2 : 1.42, 0);
-				if (owner.isSleeping() || owner.isPassenger() && !owner.onGround()) sh = sh.add(0, 0.05, 0);
+				// левое плечо; при приседании плечо ниже и чуть впереди — высота меняется плавно, как у модели игрока
+				double th = owner.isShiftKeyDown() || owner.isCrouching() ? PERCH_CROUCH : PERCH_STAND;
+				if (owner.isSleeping() || owner.isPassenger() && !owner.onGround()) th += 0.05;
+				this.perchYO = this.perchY;
+				this.perchY += (th - this.perchY) * 0.55;
+				Vec3 sh = shoulder(owner, 1F, this.perchY);
 				double d = this.pos.distanceTo(sh);
 				goal = sh;
-				if (d < 0.35) {
+				if (this.perched || d < 0.35) {
+					this.perched = true; // однажды сел — держится за плечо при прыжках, беге и падении
 					grounded = true; wantPerch = 1; wantSit = 1;
 					this.pos = sh; this.vel = Vec3.ZERO;
 					faceYaw = owner.yBodyRot;
