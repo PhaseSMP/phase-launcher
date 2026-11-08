@@ -18,6 +18,8 @@ jobs:
         working-directory: mod
         run: |
           chmod +x gradlew
+          # services.gradle.org иногда отвечает 504 — скачиваем Gradle с повторами
+          for i in 1 2 3 4 5 6; do ./gradlew --no-daemon --version >/dev/null 2>&1 && break; echo "Gradle не скачался, повтор $i"; sleep 20; done
           set -o pipefail
           ./gradlew --no-daemon build -x test 2>&1 | tee ../build.log || echo BUILD_FAILED >> ../build.log
       - name: Client game test (screenshots)
