@@ -99,17 +99,31 @@ public final class CosmeticsData {
 					}
 					worn = next;
 					adjOf = adj;
+					try {
+						JsonElement me = players.get(Minecraft.getInstance().getUser().getName());
+						if (me == null) for (Map.Entry<String, JsonElement> e : players.entrySet()) if (e.getKey().equalsIgnoreCase(Minecraft.getInstance().getUser().getName())) me = e.getValue();
+						String sig = me == null ? "" : me.toString();
+						if (!sig.equals(ownSig)) { ownSig = sig; ownChanged = true; }
+					} catch (Exception ignored) { ownChanged = true; }
 				}
 			} catch (Exception ignored) {
 				// нет сети — показываем то, что было
 			}
 			// своё (раскраска, шляпа, пак) могли поменять в лаунчере — перечитываем, если в игре ничего не меняли только что
-			if (TEST == null && System.currentTimeMillis() - localChangeAt > 8_000 && !token().isEmpty()) {
+			// Перечитываем только когда своё надетое поменялось (в лаунчере) или раз в 5 минут — меньше нагрузки на сервер при 50+ игроках
+			long nowMs = System.currentTimeMillis();
+			if (TEST == null && nowMs - localChangeAt > 8_000 && !token().isEmpty() && (ownChanged || nowMs - mineAt > 300_000)) {
+				ownChanged = false;
+				mineAt = nowMs;
 				try { loadMine().get(15, java.util.concurrent.TimeUnit.SECONDS); } catch (Exception ignored) { /* нет сети */ }
 			}
-			try { Thread.sleep(15_000); } catch (InterruptedException e) { /* «Перезагрузить» — опрашиваем сразу */ }
+			try { Thread.sleep(20_000); } catch (InterruptedException e) { /* «Перезагрузить» — опрашиваем сразу */ }
 		}
 	}
+
+	private static volatile String ownSig = null;
+	private static volatile boolean ownChanged = true;
+	private static volatile long mineAt = 0;
 
 	// ───────── API игрока (токен игровой сессии от лаунчера) ─────────
 	private static String token() {
