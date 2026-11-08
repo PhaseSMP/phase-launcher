@@ -317,7 +317,7 @@ public class PhaseMenuScreen extends Screen {
 		y += rh + 10;
 		boolean shown = m.pet() != null;
 		y = this.section("РАСКРАСКА", x, y);
-		String[][] colors = { { "default", "Эндер" }, { "crimson", "Пламя" }, { "frost", "Иней" }, { "gold", "Злато" }, { "void", "Бездна" } };
+		String[][] colors = { { "default", "Эндер" }, { "crimson", "Пламя" }, { "frost", "Иней" }, { "gold", "Злато" }, { "void", "Бездна" }, { "prism", "Призма" } };
 		for (int i = 0; i < colors.length; i++) {
 			String id = colors[i][0];
 			PhaseButton b = this.add(new PhaseButton(x + (i % 3) * (third + gap), y + (i / 3) * (rh + gap), third, rh, colors[i][1], PhaseButton.Kind.CHIP,

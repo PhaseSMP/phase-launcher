@@ -48,6 +48,13 @@ public final class NameTags {
 				case "owner" -> out.append(Component.literal(" ♛").withColor(0xFFD36B));
 				case "admin" -> out.append(Component.literal(" ✦").withColor(0xFF3B47));
 				case "media" -> out.append(Component.literal(" ✎").withColor(0xB36BFF));
+				case "ultra" -> {
+					// ULTRA: буквы разными цветами — «голограмма» над ником
+					int[] cols = { 0xFF1F6B, 0xFF8A3D, 0xFFE14D, 0x3DFFB4, 0x3DC8FF };
+					String t = "ULTRA";
+					out.append(Component.literal(" "));
+					for (int i = 0; i < t.length(); i++) out.append(Component.literal(String.valueOf(t.charAt(i))).withColor(cols[i]).withStyle(net.minecraft.ChatFormatting.BOLD));
+				}
 				case "max" -> out.append(Component.literal(" ★").withColor(0xFF5A4E));
 				case "pro" -> out.append(Component.literal(" ☆").withColor(0x6CC8F0));
 				default -> { }

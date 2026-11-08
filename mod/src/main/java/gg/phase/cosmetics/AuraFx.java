@@ -325,19 +325,19 @@ public final class AuraFx {
 			case ECLIPSE -> {
 				// Затмение: ровный нимб над головой — тёмное кольцо с алой каймой (луна закрыла солнце),
 				// над ним маленькое чёрное солнце с золотой короной. Высота — от роста игрока, на скин не налезает.
-				double h = head + 0.62;
+				double h = head + 0.42;
 				if (age % 4 == 0) {
-					P dark = orb(pl, "ring", c("0b0b12"), 0, 0, h, 0, 0, 0.62F, 5);
+					P dark = orb(pl, "ring", c("0b0b12"), 0, 0, h, 0, 0, 0.7F, 5);
 					dark.ground = true; dark.steady = true; dark.bright = false; dark.spin = 1.2F; dark.rot = dark.prot = age * 1.2F;
-					P rim = orb(pl, "ring", c("ff2d4a"), 0, 0, h + 0.012, 0, 0, 0.53F, 5);
+					P rim = orb(pl, "ring", c("ff2d4a"), 0, 0, h + 0.012, 0, 0, 0.6F, 5);
 					rim.ground = true; rim.steady = true; rim.spin = -1.6F; rim.rot = rim.prot = -age * 1.6F;
-					P sun = orb(pl, "glow", c("0b0b12"), 0, 0, h + 0.22, 0, 0, 0.13F, 5);
+					P sun = orb(pl, "glow", c("0b0b12"), 0, 0, h + 0.2, 0, 0, 0.14F, 5);
 					sun.steady = true; sun.bright = false; sun.spin = 0;
-					P corona = orb(pl, "ring", c("ffd36b"), 0, 0, h + 0.22, 0, 0, 0.2F, 5);
+					P corona = orb(pl, "ring", c("ffd36b"), 0, 0, h + 0.2, 0, 0, 0.21F, 5);
 					corona.steady = true; corona.spin = 2F; corona.rot = corona.prot = age * 2F;
 				}
 				// искры бегут по кругу нимба
-				if (age % 3 == 0) { P sp = orb(pl, "spark", c("ffd36b", "ff2d4a"), age * 0.12, 0.27, h + 0.01, 0.12, 0, 0.04F, 12); sp.spin = 0; sp.steady = true; }
+				if (age % 3 == 0) { P sp = orb(pl, "spark", c("ffd36b", "ff2d4a"), age * 0.12, 0.3, h + 0.01, 0.12, 0, 0.04F, 12); sp.spin = 0; sp.steady = true; }
 				if (age % 8 == 0) { P g = orb(pl, "star", c("ffd36b"), rnd(0, Mth.TWO_PI), rnd(0.32, 0.5), rnd(h - 0.05, h + 0.3), 0.02, 0.003, 0.045F, 26); g.twinkle = 1F; g.spin = 0; }
 			}
 		}
