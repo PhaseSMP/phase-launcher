@@ -323,22 +323,32 @@ public final class AuraFx {
 				if (age % 5 == 0) { P e = orb(pl, "ember", c("ffb13c", "ff6a3d"), rnd(0, Mth.TWO_PI), rnd(0.3, 0.75), rnd(0.05, 0.7), 0.025, 0.025, 0.045F, 32); e.twinkle = 0.8F; }
 			}
 			case ECLIPSE -> {
-				// Затмение: ровный нимб над головой — тёмное кольцо с алой каймой (луна закрыла солнце),
-				// над ним маленькое чёрное солнце с золотой короной. Высота — от роста игрока, на скин не налезает.
-				double h = head + 0.42;
+				// Затмение: объёмное чёрное солнце над головой. Тёмный шар и алая корона всегда повёрнуты к камере,
+				// вокруг — два наклонных кольца-«гироскопа» и искры на наклонных орбитах — видно со всех сторон
+				double h = head + 0.75; // чуть выше, чтобы корона не заходила на голову
 				if (age % 4 == 0) {
-					P dark = orb(pl, "ring", c("0b0b12"), 0, 0, h, 0, 0, 0.7F, 5);
-					dark.ground = true; dark.steady = true; dark.bright = false; dark.spin = 1.2F; dark.rot = dark.prot = age * 1.2F;
-					P rim = orb(pl, "ring", c("ff2d4a"), 0, 0, h + 0.012, 0, 0, 0.6F, 5);
-					rim.ground = true; rim.steady = true; rim.spin = -1.6F; rim.rot = rim.prot = -age * 1.6F;
-					P sun = orb(pl, "glow", c("0b0b12"), 0, 0, h + 0.2, 0, 0, 0.14F, 5);
+					P sun = orb(pl, "glow", c("0b0b12"), 0, 0, h, 0, 0, 0.26F, 5);
 					sun.steady = true; sun.bright = false; sun.spin = 0;
-					P corona = orb(pl, "ring", c("ffd36b"), 0, 0, h + 0.2, 0, 0, 0.21F, 5);
-					corona.steady = true; corona.spin = 2F; corona.rot = corona.prot = age * 2F;
+					P core = orb(pl, "glow", c("0b0b12"), 0, 0, h, 0, 0, 0.22F, 5);
+					core.steady = true; core.bright = false; core.spin = 0;
+					P corona = orb(pl, "ring", c("ff2d4a"), 0, 0, h, 0, 0, 0.36F, 5);
+					corona.steady = true; corona.spin = 2.5F; corona.rot = corona.prot = age * 2.5F;
+					P flare = orb(pl, "ring", c("ffd36b"), 0, 0, h, 0, 0, 0.43F, 5);
+					flare.steady = true; flare.spin = -1.5F; flare.rot = flare.prot = -age * 1.5F; flare.twinkle = 0.15F;
+					for (int i = 0; i < 2; i++) {
+						P g = orb(pl, "ring", c(i == 0 ? "ff2d4a" : "ff6a3d"), 0, 0, h, 0, 0, 0.66F, 5);
+						g.ground = true; g.steady = true; g.spin = 0;
+						g.tilt = i == 0 ? 58F : -58F;
+						g.yspin = i == 0 ? 3.2F : -2.4F;
+						g.yrot = g.pyrot = age * g.yspin + i * 90F;
+					}
 				}
-				// искры бегут по кругу нимба
-				if (age % 3 == 0) { P sp = orb(pl, "spark", c("ffd36b", "ff2d4a"), age * 0.12, 0.3, h + 0.01, 0.12, 0, 0.04F, 12); sp.spin = 0; sp.steady = true; }
-				if (age % 8 == 0) { P g = orb(pl, "star", c("ffd36b"), rnd(0, Mth.TWO_PI), rnd(0.32, 0.5), rnd(h - 0.05, h + 0.3), 0.02, 0.003, 0.045F, 26); g.twinkle = 1F; g.spin = 0; }
+				// искры бегут по двум наклонным орбитам, как электроны вокруг ядра
+				if (age % 2 == 0) for (int i = 0; i < 2; i++) {
+					P s = orb(pl, "spark", c("ffd36b", "ff6a3d", "ff2d4a"), age * 0.21 + i * Math.PI, 0.5, h, 0.21, 0, 0.055F, 14);
+					s.tiltY = i == 0 ? 0.9 : -0.9; s.spin = 0; s.stretch = 1.3F;
+				}
+				if (age % 6 == 0) { P g = orb(pl, "star", c("ffd36b"), rnd(0, Mth.TWO_PI), rnd(0.55, 0.9), rnd(h - 0.35, h + 0.3), 0.02, 0.004, 0.05F, 30); g.twinkle = 1F; g.spin = 0; }
 			}
 		}
 	}
