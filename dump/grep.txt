@@ -1,64 +1,19 @@
-=== net/minecraft/client/model/geom/ModelPart.java
-30:	public float x;
-31:	public float y;
-32:	public float z;
-33:	public float xRot;
-34:	public float yRot;
-35:	public float zRot;
-36:	public float xScale = 1.0F;
-37:	public float yScale = 1.0F;
-38:	public float zScale = 1.0F;
-39:	public boolean visible = true;
-50:	public PartPose storePose() {
-54:	public PartPose getInitialPose() {
-62:	public void resetPose() {
-103:	public void render(final PoseStack poseStack, final VertexConsumer buffer, final int lightCoords, final int overlayCoords) {
-107:	public void render(final PoseStack poseStack, final VertexConsumer buffer, final int lightCoords, final int overlayCoords, final int color) {
-166:	public void translateAndRotate(final PoseStack poseStack) {
-396:		public float worldX() {
-400:		public float worldY() {
-404:		public float worldZ() {
-=== net/minecraft/client/renderer/Sheets.java
-26:	public static final Identifier SHULKER_SHEET = Identifier.withDefaultNamespace("textures/atlas/shulker_boxes.png");
-27:	public static final Identifier BANNER_SHEET = Identifier.withDefaultNamespace("textures/atlas/banner_patterns.png");
-28:	public static final Identifier SHIELD_SHEET = Identifier.withDefaultNamespace("textures/atlas/shield_patterns.png");
-29:	public static final Identifier CHEST_SHEET = Identifier.withDefaultNamespace("textures/atlas/chest.png");
-30:	public static final Identifier DECORATED_POT_SHEET = Identifier.withDefaultNamespace("textures/atlas/decorated_pot.png");
-31:	public static final Identifier GUI_SHEET = Identifier.withDefaultNamespace("textures/atlas/gui.png");
-32:	public static final Identifier MAP_DECORATIONS_SHEET = Identifier.withDefaultNamespace("textures/atlas/map_decorations.png");
-33:	public static final Identifier PAINTINGS_SHEET = Identifier.withDefaultNamespace("textures/atlas/paintings.png");
-34:	public static final Identifier CELESTIAL_SHEET = Identifier.withDefaultNamespace("textures/atlas/celestials.png");
-47:	public static final SpriteMapper ITEMS_MAPPER = new SpriteMapper(TextureAtlas.LOCATION_ITEMS, "item");
-48:	public static final SpriteMapper BLOCKS_MAPPER = new SpriteMapper(TextureAtlas.LOCATION_BLOCKS, "block");
-49:	public static final SpriteMapper BLOCK_ENTITIES_MAPPER = new SpriteMapper(TextureAtlas.LOCATION_BLOCKS, "entity");
-50:	public static final SpriteMapper BANNER_MAPPER = new SpriteMapper(BANNER_SHEET, "entity/banner");
-51:	public static final SpriteMapper SHIELD_MAPPER = new SpriteMapper(SHIELD_SHEET, "entity/shield");
-52:	public static final SpriteMapper CHEST_MAPPER = new SpriteMapper(CHEST_SHEET, "entity/chest");
-53:	public static final SpriteMapper DECORATED_POT_MAPPER = new SpriteMapper(DECORATED_POT_SHEET, "entity/decorated_pot");
-54:	public static final SpriteMapper SHULKER_MAPPER = new SpriteMapper(SHULKER_SHEET, "entity/shulker");
-55:	public static final SpriteId DEFAULT_SHULKER_TEXTURE_LOCATION = SHULKER_MAPPER.defaultNamespaceApply("shulker");
-56:	public static final List<SpriteId> SHULKER_TEXTURE_LOCATION = Arrays.stream(DyeColor.values())
-60:	public static final SpriteId BANNER_BASE = BANNER_MAPPER.defaultNamespaceApply("banner_base");
-61:	public static final SpriteId SHIELD_BASE = SHIELD_MAPPER.defaultNamespaceApply("shield_base");
-62:	public static final SpriteId SHIELD_BASE_NO_PATTERN = SHIELD_MAPPER.defaultNamespaceApply("shield_base_nopattern");
-63:	public static final SpriteId BANNER_PATTERN_BASE = BANNER_MAPPER.defaultNamespaceApply("base");
-64:	public static final SpriteId SHIELD_PATTERN_BASE = SHIELD_MAPPER.defaultNamespaceApply("base");
-67:	public static final SpriteId DECORATED_POT_BASE = DECORATED_POT_MAPPER.defaultNamespaceApply("decorated_pot_base");
-68:	public static final SpriteId DECORATED_POT_SIDE = DECORATED_POT_MAPPER.defaultNamespaceApply("decorated_pot_side");
-69:	public static final SpriteId ENDER_CHEST_LOCATION = CHEST_MAPPER.defaultNamespaceApply("ender");
-70:	public static final MultiblockChestResources<SpriteId> CHEST_REGULAR = ChestSpecialRenderer.REGULAR.map(CHEST_MAPPER::apply);
-71:	public static final MultiblockChestResources<SpriteId> CHEST_TRAPPED = ChestSpecialRenderer.TRAPPED.map(CHEST_MAPPER::apply);
-72:	public static final MultiblockChestResources<SpriteId> CHEST_CHRISTMAS = ChestSpecialRenderer.CHRISTMAS.map(CHEST_MAPPER::apply);
-73:	public static final WeatheringCopperCollection.ByState<MultiblockChestResources<SpriteId>> CHEST_COPPER = ChestSpecialRenderer.COPPER
-76:	public static RenderType cutoutBlockItemSheet() {
-80:	public static RenderType cutoutBlockItemGlintSheet() {
-84:	public static RenderType cutoutBlockItemGlintSpecialSheet() {
-88:	public static RenderType cutoutItemSheet() {
-92:	public static RenderType cutoutItemGlintSheet() {
-96:	public static RenderType cutoutItemGlintSpecialSheet() {
-100:	public static RenderType translucentItemSheet() {
-104:	public static RenderType translucentItemGlintSheet() {
-108:	public static RenderType translucentItemGlintSpecialSheet() {
-112:	public static RenderType translucentBlockItemSheet() {
-116:	public static RenderType translucentBlockItemGlintSheet() {
-120:	public static RenderType translucentBlockItemGlintSpecialSheet() {
+=== net/minecraft/client/renderer/texture/SpriteContents.java
+5:import com.mojang.blaze3d.platform.Transparency;
+58:	private final float alphaCutoffBias;
+59:	private final Transparency transparency;
+84:		this.alphaCutoffBias = textureInfo.map(TextureMetadataSection::alphaCutoffBias).orElse(0.0F);
+85:		this.transparency = image.computeTransparency();
+90:			this.byMipLevel = MipmapGenerator.generateMipLevels(this.name, this.byMipLevel, mipLevel, this.mipmapStrategy, this.alphaCutoffBias, this.transparency);
+111:	public Transparency transparency() {
+112:		return this.transparency;
+215:	public boolean isTransparent(final int frame, final int x, final int y) {
+223:		return ARGB.alpha(this.originalImage.getPixel(actualX, actualY)) == 0;
+226:	public Transparency computeTransparency(final float u0, final float v0, final float u1, final float v1) {
+227:		if (this.transparency.isOpaque()) {
+228:			return this.transparency;
+232:			return this.transparency;
+240:			return this.originalImage.computeTransparency(x0, y0, x1, y1);
+244:		Transparency transparency = Transparency.NONE;
+250:			transparency = transparency.or(this.originalImage.computeTransparency(frameX + x0, frameY + y0, frameX + x1, frameY + y1));
+253:		return transparency;
