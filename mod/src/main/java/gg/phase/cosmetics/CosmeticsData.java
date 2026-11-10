@@ -24,10 +24,15 @@ import net.minecraft.client.Minecraft;
 public final class CosmeticsData {
 	/** fx — включённые части пака: a — аура, t — след, b — приземление (null — всё включено);
 	    fx2 — d — смерть, k — убийство игрока, s — звуки (null — всё включено) */
-	public record Worn(String hat, String pet, String mode, String aura, String petColor, String fx, String clan, String clanColor, String badge, String fx2) {}
+	public record Worn(String hat, String pet, String mode, String aura, String petColor, String fx, String clan, String clanColor, String badge, String fx2, String neck, String hands) {
+		/** Без шарфа и варежек (старые места и автотесты) */
+		public Worn(String hat, String pet, String mode, String aura, String petColor, String fx, String clan, String clanColor, String badge, String fx2) {
+			this(hat, pet, mode, aura, petColor, fx, clan, clanColor, badge, fx2, null, null);
+		}
+	}
 	public record Item(String id, String slot, String name, int price) {}
 	/** fx — все шесть частей пака одной строкой (a, t, b, d, k, s; null — всё включено), vol — громкость звуков паков 0–100 */
-	public record Mine(List<Item> items, List<Item> shop, String hat, String pet, String mode, String aura, String petColor, String fx, int vol) {}
+	public record Mine(List<Item> items, List<Item> shop, String hat, String pet, String mode, String aura, String petColor, String fx, int vol, String neck, String hands) {}
 
 	public static final String BASE = System.getProperty("phase.api", "https://phase.fujimc.workers.dev");
 	private static volatile Map<String, Worn> worn = Map.of();
@@ -52,6 +57,10 @@ public final class CosmeticsData {
 	public static void setTestFull(String hat, String pet, String aura, String petColor, String fx) {
 		TEST = new Worn(hat, pet, "follow", aura, petColor, atb(fx), "FUJI", "sakura", "max", dks(fx));
 	}
+	/** Для автотеста: то же + шарф (neck) и варежки (hands) */
+	public static void setTestWear(String hat, String pet, String aura, String petColor, String fx, String neck, String hands) {
+		TEST = new Worn(hat, pet, "follow", aura, petColor, atb(fx), "FUJI", "sakura", "max", dks(fx), neck, hands);
+	}
 	public static boolean isTest() { return TEST != null; }
 
 	public static Worn get(String name) {
@@ -64,12 +73,12 @@ public final class CosmeticsData {
 	}
 
 	/** Своё изменение — показываем сразу, не дожидаясь опроса сервера */
-	static void overrideOwn(String name, String hat, String pet, String aura, String petColor, String fx) {
+	static void overrideOwn(String name, String hat, String pet, String aura, String petColor, String fx, String neck, String hands) {
 		localChangeAt = System.currentTimeMillis();
 		String key = name.toLowerCase(Locale.ROOT);
 		Worn polled = worn.get(key); // тег клана и значок берём из общего опроса — их меняют не в игре
 		OVERRIDE.put(key, new Worn(hat, pet, Config.get().mode, aura, petColor, atb(fx),
-			polled == null ? null : polled.clan(), polled == null ? null : polled.clanColor(), polled == null ? null : polled.badge(), dks(fx)));
+			polled == null ? null : polled.clan(), polled == null ? null : polled.clanColor(), polled == null ? null : polled.badge(), dks(fx), neck, hands));
 		OVERRIDE_AT.put(key, System.currentTimeMillis());
 	}
 
@@ -93,7 +102,7 @@ public final class CosmeticsData {
 						JsonObject o = e.getValue().getAsJsonObject();
 						String mode = str(o, "mode");
 						next.put(e.getKey().toLowerCase(Locale.ROOT), new Worn(str(o, "hat"), str(o, "pet"), mode == null ? "follow" : mode, str(o, "aura"), str(o, "petColor"),
-							str(o, "fx"), str(o, "clan"), str(o, "clanColor"), str(o, "role") != null ? str(o, "role") : str(o, "plan"), str(o, "fx2")));
+							str(o, "fx"), str(o, "clan"), str(o, "clanColor"), str(o, "role") != null ? str(o, "role") : str(o, "plan"), str(o, "fx2"), str(o, "neck"), str(o, "hands")));
 						String a = str(o, "adj");
 						if (a != null) adj.put(e.getKey().toLowerCase(Locale.ROOT), a);
 					}
@@ -154,8 +163,9 @@ public final class CosmeticsData {
 	public static CompletableFuture<Mine> loadMine() {
 		if (TEST != null) {
 			Mine m = new Mine(List.of(new Item("kabuto", "hat", "Шлем кабуто", 0), new Item("straw_hat", "hat", "Соломенная каса", 0),
-				new Item("ender_dragon", "pet", "Эндер-дракончик", 0), new Item("aura_sakura", "aura", "Пак «Сакура»", 0), new Item("aura_ender", "aura", "Пак «Эндер»", 0), new Item("aura_oni", "aura", "Пак «Пламя они»", 0), new Item("aura_eclipse", "aura", "Пак «Затмение»", 0)),
-				List.of(new Item("oni_horns", "hat", "Рога они", 149)), TEST.hat(), TEST.pet(), Config.get().mode, TEST.aura(), TEST.petColor(), join(TEST.fx(), TEST.fx2()), 80);
+				new Item("ender_dragon", "pet", "Эндер-дракончик", 0), new Item("slime", "pet", "Слизень", 0), new Item("aura_sakura", "aura", "Пак «Сакура»", 0), new Item("aura_ender", "aura", "Пак «Эндер»", 0), new Item("aura_oni", "aura", "Пак «Пламя они»", 0), new Item("aura_eclipse", "aura", "Пак «Затмение»", 0),
+				new Item("scarf_red", "neck", "Красный шарф", 0), new Item("mittens_red", "hands", "Красные варежки", 0)),
+				List.of(new Item("oni_horns", "hat", "Рога они", 149)), TEST.hat(), TEST.pet(), Config.get().mode, TEST.aura(), TEST.petColor(), join(TEST.fx(), TEST.fx2()), 80, TEST.neck(), TEST.hands());
 			mine = m;
 			return CompletableFuture.completedFuture(m);
 		}
@@ -167,11 +177,12 @@ public final class CosmeticsData {
 		Mine cur = mine;
 		if (cur != null) {
 			String hat = slot.equals("hat") ? item : cur.hat(), pet = slot.equals("pet") ? item : cur.pet(), aura = slot.equals("aura") ? item : cur.aura();
-			overrideOwn(name, hat, pet, aura, cur.petColor(), cur.fx());
-			mine = new Mine(cur.items(), cur.shop(), hat, pet, cur.mode(), aura, cur.petColor(), cur.fx(), cur.vol());
+			String neck = slot.equals("neck") ? item : cur.neck(), hands = slot.equals("hands") ? item : cur.hands();
+			overrideOwn(name, hat, pet, aura, cur.petColor(), cur.fx(), neck, hands);
+			mine = new Mine(cur.items(), cur.shop(), hat, pet, cur.mode(), aura, cur.petColor(), cur.fx(), cur.vol(), neck, hands);
 		}
 		if (TEST != null) {
-			TEST = new Worn(mine.hat(), mine.pet(), "follow", mine.aura(), mine.petColor(), atb(mine.fx()), null, null, null, dks(mine.fx()));
+			TEST = new Worn(mine.hat(), mine.pet(), "follow", mine.aura(), mine.petColor(), atb(mine.fx()), null, null, null, dks(mine.fx()), mine.neck(), mine.hands());
 			return CompletableFuture.completedFuture(mine);
 		}
 		JsonObject b = new JsonObject();
@@ -237,11 +248,11 @@ public final class CosmeticsData {
 	private static CompletableFuture<Mine> saveFx(String nf, int vol) {
 		Mine cur = mine;
 		if (cur != null) {
-			mine = new Mine(cur.items(), cur.shop(), cur.hat(), cur.pet(), cur.mode(), cur.aura(), cur.petColor(), nf, vol);
-			overrideOwn(Minecraft.getInstance().getUser().getName(), cur.hat(), cur.pet(), cur.aura(), cur.petColor(), nf);
+			mine = new Mine(cur.items(), cur.shop(), cur.hat(), cur.pet(), cur.mode(), cur.aura(), cur.petColor(), nf, vol, cur.neck(), cur.hands());
+			overrideOwn(Minecraft.getInstance().getUser().getName(), cur.hat(), cur.pet(), cur.aura(), cur.petColor(), nf, cur.neck(), cur.hands());
 		}
 		if (TEST != null) {
-			TEST = new Worn(TEST.hat(), TEST.pet(), TEST.mode(), TEST.aura(), TEST.petColor(), atb(nf), TEST.clan(), TEST.clanColor(), TEST.badge(), dks(nf));
+			TEST = new Worn(TEST.hat(), TEST.pet(), TEST.mode(), TEST.aura(), TEST.petColor(), atb(nf), TEST.clan(), TEST.clanColor(), TEST.badge(), dks(nf), TEST.neck(), TEST.hands());
 			return CompletableFuture.completedFuture(mine);
 		}
 		JsonObject body = new JsonObject();
@@ -267,11 +278,11 @@ public final class CosmeticsData {
 		Mine cur = mine;
 		String c = color == null || color.equals("default") ? null : color;
 		if (cur != null) {
-			mine = new Mine(cur.items(), cur.shop(), cur.hat(), cur.pet(), cur.mode(), cur.aura(), c == null ? "default" : c, cur.fx(), cur.vol());
-			overrideOwn(Minecraft.getInstance().getUser().getName(), cur.hat(), cur.pet(), cur.aura(), c, cur.fx());
+			mine = new Mine(cur.items(), cur.shop(), cur.hat(), cur.pet(), cur.mode(), cur.aura(), c == null ? "default" : c, cur.fx(), cur.vol(), cur.neck(), cur.hands());
+			overrideOwn(Minecraft.getInstance().getUser().getName(), cur.hat(), cur.pet(), cur.aura(), c, cur.fx(), cur.neck(), cur.hands());
 		}
 		if (TEST != null) {
-			TEST = new Worn(TEST.hat(), TEST.pet(), TEST.mode(), TEST.aura(), c, TEST.fx(), TEST.clan(), TEST.clanColor(), TEST.badge(), TEST.fx2());
+			TEST = new Worn(TEST.hat(), TEST.pet(), TEST.mode(), TEST.aura(), c, TEST.fx(), TEST.clan(), TEST.clanColor(), TEST.badge(), TEST.fx2(), TEST.neck(), TEST.hands());
 			return CompletableFuture.completedFuture(mine);
 		}
 		JsonObject b = new JsonObject();
@@ -292,7 +303,7 @@ public final class CosmeticsData {
 		JsonObject eq = o.getAsJsonObject("equipped");
 		JsonObject fx = o.getAsJsonObject("fx");
 		int vol = fx != null && fx.has("vol") ? fx.get("vol").getAsInt() : 80;
-		Mine m = new Mine(items(o.getAsJsonArray("items")), items(o.getAsJsonArray("shop")), str(eq, "hat"), str(eq, "pet"), str(o, "mode"), str(eq, "aura"), str(o, "petColor"), fxLetters(fx), vol);
+		Mine m = new Mine(items(o.getAsJsonArray("items")), items(o.getAsJsonArray("shop")), str(eq, "hat"), str(eq, "pet"), str(o, "mode"), str(eq, "aura"), str(o, "petColor"), fxLetters(fx), vol, str(eq, "neck"), str(eq, "hands"));
 		JsonObject adj = o.getAsJsonObject("hatAdj");
 		if (adj != null && System.currentTimeMillis() - localChangeAt > 8_000) {
 			MY_ADJ.clear();
@@ -303,7 +314,7 @@ public final class CosmeticsData {
 		}
 		long keep = localChangeAt;
 		mine = m;
-		overrideOwn(Minecraft.getInstance().getUser().getName(), m.hat(), m.pet(), m.aura(), m.petColor(), m.fx());
+		overrideOwn(Minecraft.getInstance().getUser().getName(), m.hat(), m.pet(), m.aura(), m.petColor(), m.fx(), m.neck(), m.hands());
 		localChangeAt = keep;
 		return m;
 	}

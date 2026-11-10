@@ -17,7 +17,7 @@ import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.resources.Identifier;
 
 /**
- * Phase Cosmetics: шляпы, живой эндер-дракончик, скины из лаунчера и меню в игре (J).
+ * Phase Cosmetics: шляпы, шарф и варежки, живые питомцы (эндер-дракончик и слизень), скины из лаунчера и меню в игре (Ё).
  * Данные — с сервера аккаунтов Phase, работает в одиночной игре и на любом сервере.
  */
 public class PhaseCosmetics implements ClientModInitializer {
@@ -36,6 +36,7 @@ public class PhaseCosmetics implements ClientModInitializer {
 			}
 			PetManager.INSTANCE.tick(mc);
 			AuraFx.tick(mc);
+			WearPhysics.tick(mc);
 			SkinData.tick(mc);
 		});
 		InvalidateRenderStateCallback.EVENT.register(CosmeticsModels::invalidate);
@@ -43,6 +44,7 @@ public class PhaseCosmetics implements ClientModInitializer {
 			if (!CosmeticsModels.ready()) CosmeticsModels.setResolver(context.getItemModelResolver());
 			if (renderer instanceof AvatarRenderer<?>) {
 				helper.register(new CosmeticsLayer((RenderLayerParent<AvatarRenderState, PlayerModel>) renderer));
+				helper.register(new WearLayer((RenderLayerParent<AvatarRenderState, PlayerModel>) renderer));
 			}
 		});
 		LevelRenderEvents.COLLECT_SUBMITS.register(ctx -> {

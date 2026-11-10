@@ -30,7 +30,7 @@ public final class Pet {
 		CURL = 8, PERCH = 9, WAG = 10, LEAN = 11, N = 12;
 	private static final float[] RATE = { 0.12F, 0.1F, 0.06F, 0.14F, 0.2F, 0.2F, 0.3F, 0.15F, 0.06F, 0.2F, 0.1F, 0.15F };
 
-	public enum Act { HOVER, LOOP, CIRCLE, ROLL, DIVE, LAND, GROUND, TAKEOFF, PERCH, STAY, PETTED, ROAR, SPIN, VISIT, GUARD, LOOT }
+	public enum Act { HOVER, LOOP, CIRCLE, ROLL, DIVE, LAND, GROUND, TAKEOFF, PERCH, STAY, PETTED, ROAR, SPIN, VISIT, GUARD, LOOT, SULK }
 
 	public final int ownerId;
 	public Vec3 pos, prevPos;
@@ -75,6 +75,7 @@ public final class Pet {
 			case ROAR -> begin(Act.ROAR, 46);
 			case SPIN -> begin(Act.SPIN, 80);
 			case ROLL -> begin(Act.ROLL, 24);
+			case VISIT -> begin(Act.VISIT, 60);
 			default -> { }
 		}
 	}

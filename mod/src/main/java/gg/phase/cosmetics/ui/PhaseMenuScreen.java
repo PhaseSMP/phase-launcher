@@ -32,9 +32,9 @@ import org.joml.Vector3f;
  */
 public class PhaseMenuScreen extends Screen {
 	private static final int M = 8, HEAD = 30, FOOT = 18;
-	private static final String[] TABS = { "Шляпы", "Паки", "Питомец", "Настройки" };
-	private static final String[] TAB_TITLES = { "ШЛЯПЫ", "ПАКИ ЭФФЕКТОВ", "ЭНДЕР-ДРАКОНЧИК", "НАСТРОЙКИ" };
-	private static final String[] TAB_SUB = { "Наведите на шляпу — примерка на персонаже", "Аура, след, приземление, смерть и звуки",
+	private static final String[] TABS = { "Одежда", "Паки", "Питомец", "Настройки" };
+	private static final String[] TAB_TITLES = { "ОДЕЖДА", "ПАКИ ЭФФЕКТОВ", "ПИТОМЕЦ", "НАСТРОЙКИ" };
+	private static final String[] TAB_SUB = { "Шляпы, шарф и варежки · наведите — примерка", "Аура, след, приземление, смерть и звуки",
 		"Раскраска, команды и трюки", "Только на этом компьютере" };
 	private static int tab;
 	private static final int[] SCROLL = new int[TABS.length];
@@ -174,6 +174,24 @@ public class PhaseMenuScreen extends Screen {
 			this.text("Шляпы покупаются в лаунчере → «Донаты»", x, y, Style.MUTED);
 			y += 14;
 		}
+		// шарф и варежки
+		List<CosmeticsData.Item> wear = m.items().stream().filter(i -> i.slot().equals("neck") || i.slot().equals("hands")).toList();
+		y = this.section("ШАРФ И ВАРЕЖКИ", x, y);
+		if (wear.isEmpty()) {
+			this.text("Шарф и варежки — в лаунчере → «Донаты»", x, y, Style.MUTED);
+			y += 18;
+		} else {
+			int wc = 0;
+			for (CosmeticsData.Item it : wear) {
+				boolean neck = it.slot().equals("neck");
+				java.util.function.BooleanSupplier on = () -> CosmeticsData.mine != null && Objects.equals(neck ? CosmeticsData.mine.neck() : CosmeticsData.mine.hands(), it.id());
+				this.add(new PhaseButton(x + wc * (half + gap), y, wear.size() == 1 ? w : half, rh, it.name(), PhaseButton.Kind.TOGGLE, on,
+					() -> this.equip(it.slot(), on.getAsBoolean() ? null : it.id())));
+				if (++wc == 2) { wc = 0; y += rh + gap; }
+			}
+			if (wc != 0) y += rh + gap;
+			y += 6;
+		}
 		if (m.hat() == null) return y;
 
 		// настройка надетой шляпы
@@ -302,30 +320,47 @@ public class PhaseMenuScreen extends Screen {
 	}
 
 	// ── Питомец ──
+	private static final String[][] DRAGON_COLORS = { { "default", "Эндер" }, { "crimson", "Пламя" }, { "frost", "Иней" }, { "gold", "Злато" }, { "void", "Бездна" }, { "prism", "Призма" } };
+	private static final String[][] SLIME_COLORS = { { "default", "Лайм" }, { "sakura", "Сакура" }, { "frost", "Иней" }, { "lava", "Магма" }, { "honey", "Мёд" }, { "void", "Бездна" }, { "prism", "Призма" } };
+
 	private int pet(CosmeticsData.Mine m, int x, int y, int w) {
-		int gap = 4, rh = 20, third = (w - gap * 2) / 3;
-		boolean hasPet = m.items().stream().anyMatch(i -> i.id().equals("ender_dragon"));
-		if (!hasPet) {
+		int gap = 4, rh = 20, third = (w - gap * 2) / 3, half = (w - gap) / 2;
+		List<CosmeticsData.Item> pets = m.items().stream().filter(i -> i.slot().equals("pet")).toList();
+		if (pets.isEmpty()) {
 			this.texts.add(new Text("", x, y, Style.GOLD, 4, w));
-			this.text("Эндер-дракончик · премиум", x + 8, y + 6, Style.TEXT);
+			this.text("Эндер-дракончик и слизень", x + 8, y + 6, Style.TEXT);
 			this.text("Купить: лаунчер → «Донаты»", x + 8, y + 18, Style.MUTED);
 			return y + 36;
 		}
-		this.add(new PhaseButton(x, y, w, rh, "Дракончик рядом со мной", PhaseButton.Kind.TOGGLE,
-			() -> CosmeticsData.mine != null && CosmeticsData.mine.pet() != null,
-			() -> this.equip("pet", CosmeticsData.mine.pet() == null ? "ender_dragon" : null)));
+		// кто рядом: один из своих питомцев или никого
+		y = this.section("КТО РЯДОМ", x, y);
+		int col = 0;
+		for (CosmeticsData.Item it : pets) {
+			this.add(new PhaseButton(x + col * (half + gap), y, half, rh, it.name(), PhaseButton.Kind.CHIP,
+				() -> CosmeticsData.mine != null && Objects.equals(CosmeticsData.mine.pet(), it.id()), () -> this.equip("pet", it.id())));
+			if (++col == 2) { col = 0; y += rh + gap; }
+		}
+		this.add(new PhaseButton(x + col * (half + gap), y, col == 0 ? w : half, rh, "Без питомца", PhaseButton.Kind.CHIP,
+			() -> CosmeticsData.mine != null && CosmeticsData.mine.pet() == null, () -> this.equip("pet", null)));
 		y += rh + 10;
 		boolean shown = m.pet() != null;
-		y = this.section("РАСКРАСКА", x, y);
-		String[][] colors = { { "default", "Эндер" }, { "crimson", "Пламя" }, { "frost", "Иней" }, { "gold", "Злато" }, { "void", "Бездна" }, { "prism", "Призма" } };
+		boolean slime = "slime".equals(m.pet() != null ? m.pet() : pets.get(0).id());
+		String petWord = slime ? "СЛИЗНЯ" : "ДРАКОНЧИКА";
+		y = this.section("РАСКРАСКА " + petWord, x, y);
+		String[][] colors = slime ? SLIME_COLORS : DRAGON_COLORS;
+		java.util.Set<String> valid = new java.util.HashSet<>();
+		for (String[] c : colors) valid.add(c[0]);
 		for (int i = 0; i < colors.length; i++) {
 			String id = colors[i][0];
 			PhaseButton b = this.add(new PhaseButton(x + (i % 3) * (third + gap), y + (i / 3) * (rh + gap), third, rh, colors[i][1], PhaseButton.Kind.CHIP,
-				() -> id.equals(CosmeticsData.mine == null || CosmeticsData.mine.petColor() == null ? "default" : CosmeticsData.mine.petColor()),
+				() -> {
+					String cur = CosmeticsData.mine == null || CosmeticsData.mine.petColor() == null ? "default" : CosmeticsData.mine.petColor();
+					return id.equals(valid.contains(cur) ? cur : "default");
+				},
 				() -> this.petColor(id)));
 			b.active = shown;
 		}
-		y += 2 * (rh + gap) + 6;
+		y += ((colors.length + 2) / 3) * (rh + gap) + 6;
 		y = this.section("КОМАНДА", x, y);
 		String[][] modes = { { "follow", "Рядом" }, { "shoulder", "На плечо" }, { "stay", "Ждать тут" } };
 		for (int i = 0; i < 3; i++) {
@@ -335,8 +370,8 @@ public class PhaseMenuScreen extends Screen {
 			b.active = shown;
 		}
 		y += rh + 10;
-		// громкость дракончика — только на этом компьютере
-		y = this.section("ГРОМКОСТЬ ДРАКОНЧИКА", x, y);
+		// громкость питомца — только на этом компьютере
+		y = this.section("ГРОМКОСТЬ " + petWord, x, y);
 		Config cfg = Config.get();
 		int pv = cfg.sounds ? cfg.petVolume : 0;
 		PhaseButton pMinus = this.add(new PhaseButton(x, y, 26, rh, "−", PhaseButton.Kind.ACTION, null, () -> { cfg.petVolume = Math.max(0, cfg.petVolume - 10); cfg.sounds = true; cfg.save(); this.rebuildWidgets(); }));
@@ -347,8 +382,11 @@ public class PhaseMenuScreen extends Screen {
 		this.texts.add(new Text(pv > 0 ? pv + "%" : "выкл", x + w / 2, y + 6, Style.TEXT, 2, 0));
 		y += rh + 10;
 		y = this.section("ТРЮКИ", x, y);
-		Object[][] tricks = { { "Погладить", Pet.Act.PETTED }, { "Сальто", Pet.Act.LOOP }, { "Рык", Pet.Act.ROAR },
-			{ "Кружить", Pet.Act.SPIN }, { "Бочка", Pet.Act.ROLL }, { "Ко мне", Pet.Act.VISIT } };
+		Object[][] tricks = slime
+			? new Object[][] { { "Погладить", Pet.Act.PETTED }, { "Сальто", Pet.Act.LOOP }, { "Удивить", Pet.Act.ROAR },
+				{ "Танец", Pet.Act.SPIN }, { "Кувырок", Pet.Act.ROLL }, { "Ко мне", Pet.Act.VISIT }, { "Надуться", Pet.Act.SULK } }
+			: new Object[][] { { "Погладить", Pet.Act.PETTED }, { "Сальто", Pet.Act.LOOP }, { "Рык", Pet.Act.ROAR },
+				{ "Кружить", Pet.Act.SPIN }, { "Бочка", Pet.Act.ROLL }, { "Ко мне", Pet.Act.VISIT } };
 		for (int i = 0; i < tricks.length; i++) {
 			Pet.Act act = (Pet.Act) tricks[i][1];
 			PhaseButton b = this.add(new PhaseButton(x + (i % 3) * (third + gap), y + (i / 3) * (rh + gap), third, rh, (String) tricks[i][0], PhaseButton.Kind.ACTION,
@@ -359,7 +397,7 @@ public class PhaseMenuScreen extends Screen {
 				}));
 			b.active = shown;
 		}
-		y += 2 * (rh + gap) + 4;
+		y += ((tricks.length + 2) / 3) * (rh + gap) + 4;
 		this.text("Трюк закрывает меню, чтобы его было видно", x, y, Style.MUTED_D);
 		return y + 14;
 	}

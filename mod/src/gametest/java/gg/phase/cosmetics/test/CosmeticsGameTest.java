@@ -41,6 +41,101 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 					throw new java.io.UncheckedIOException(e);
 				}
 			});
+				// ── 4.3: шарф и варежки ──
+				CosmeticsData.setTestWear(null, null, null, null, null, "scarf_red", "mittens_red");
+				ctx.waitTicks(30);
+				ctx.takeScreenshot("w01-scarf-mittens-front");
+				ctx.runOnClient(mc -> mc.player.setYRot(65F));
+				ctx.waitTicks(15);
+				ctx.takeScreenshot("w02-side");
+				ctx.runOnClient(mc -> { mc.player.setYRot(0F); mc.player.setXRot(40F); });
+				ctx.waitTicks(10);
+				ctx.takeScreenshot("w03-look-down");
+				ctx.runOnClient(mc -> { mc.player.setXRot(0F); mc.options.setCameraType(CameraType.THIRD_PERSON_BACK); });
+				ctx.waitTicks(10);
+				ctx.takeScreenshot("w04-back");
+				ctx.runOnClient(mc -> mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT));
+				// идёт назад (лицом к камере) — концы прижимаются; резкая остановка — летят вперёд
+				ctx.getInput().holdKey(o -> o.keyDown);
+				ctx.waitTicks(20);
+				ctx.takeScreenshot("w05-walking");
+				ctx.getInput().releaseKey(o -> o.keyDown);
+				ctx.waitTicks(3);
+				ctx.takeScreenshot("w06-stopped");
+				ctx.waitTicks(20);
+				ctx.getInput().holdKey(o -> o.keyShift);
+				ctx.waitTicks(10);
+				ctx.takeScreenshot("w07-crouch");
+				ctx.getInput().releaseKey(o -> o.keyShift);
+				ctx.waitTicks(10);
+				ctx.getInput().pressKey(o -> o.keyJump);
+				ctx.waitTicks(9);
+				ctx.takeScreenshot("w08-jump-fall");
+				ctx.waitTicks(20);
+				ctx.getInput().holdKey(o -> o.keyLeft);
+				ctx.waitTicks(10);
+				ctx.takeScreenshot("w09-strafe");
+				ctx.getInput().releaseKey(o -> o.keyLeft);
+				ctx.waitTicks(20);
+				// варежки на тонких руках
+				Identifier skinId = Identifier.fromNamespaceAndPath("phase-test", "skin");
+				SkinData.setTest(new PlayerSkin(new ClientAsset.ResourceTexture(skinId, skinId), null, null, PlayerModelType.SLIM, true));
+				ctx.waitTicks(5);
+				ctx.takeScreenshot("w10-slim-mittens");
+				SkinData.setTest(new PlayerSkin(new ClientAsset.ResourceTexture(skinId, skinId), null, null, PlayerModelType.WIDE, true));
+				// ── 4.3: слизень ──
+				CosmeticsData.setTestWear(null, "slime", null, null, null, "scarf_red", null);
+				ctx.waitTicks(60);
+				ctx.takeScreenshot("s01-slime-follow");
+				String[] faces = { "normal", "blink", "happy", "sad", "wow", "sleep" };
+				for (int f = 0; f < faces.length; f++) {
+					int ff = f;
+					ctx.runOnClient(mc -> { var s = PetManager.INSTANCE.ownSlime(); if (s != null) s.forceFace = ff; });
+					ctx.waitTicks(3);
+					ctx.takeScreenshot("s02-face-" + faces[f]);
+				}
+				ctx.runOnClient(mc -> { var s = PetManager.INSTANCE.ownSlime(); if (s != null) s.forceFace = -1; });
+				for (String sk : new String[] { "sakura", "frost", "lava", "honey", "void", "prism" }) {
+					CosmeticsData.setTestWear(null, "slime", null, sk, null, null, null);
+					ctx.waitTicks(8);
+					ctx.takeScreenshot("s03-skin-" + sk);
+				}
+				CosmeticsData.setTestWear(null, "slime", null, null, null, null, null);
+				Object[][] tricks = { { "petted", Pet.Act.PETTED, 14 }, { "flip", Pet.Act.LOOP, 10 }, { "wow", Pet.Act.ROAR, 12 },
+					{ "dance", Pet.Act.SPIN, 20 }, { "roll", Pet.Act.ROLL, 9 }, { "sulk", Pet.Act.SULK, 25 } };
+				for (Object[] t : tricks) {
+					ctx.waitTicks(40);
+					ctx.runOnClient(mc -> PetManager.INSTANCE.command((Pet.Act) t[1]));
+					ctx.waitTicks((Integer) t[2]);
+					ctx.takeScreenshot("s04-trick-" + t[0]);
+				}
+				ctx.waitTicks(60);
+				Config.get().mode = "shoulder";
+				ctx.waitTicks(40);
+				ctx.takeScreenshot("s05-shoulder-front");
+				ctx.runOnClient(mc -> mc.options.setCameraType(CameraType.THIRD_PERSON_BACK));
+				ctx.waitTicks(5);
+				ctx.takeScreenshot("s06-shoulder-back");
+				ctx.runOnClient(mc -> mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT));
+				Config.get().mode = "follow";
+				ctx.waitTicks(30);
+				ctx.getInput().holdKey(o -> o.keyDown);
+				ctx.waitTicks(25);
+				ctx.takeScreenshot("s07-hopping-after");
+				ctx.getInput().releaseKey(o -> o.keyDown);
+				ctx.waitTicks(30);
+				CosmeticsData.setTestWear(null, "slime", null, "sakura", null, "scarf_red", "mittens_red");
+				for (int t = 0; t < 3; t += 2) {
+					int tt = t;
+					ctx.runOnClient(mc -> PhaseMenuScreen.testTab(tt));
+					ctx.setScreen(PhaseMenuScreen::new);
+					ctx.waitTicks(10);
+					ctx.takeScreenshot("s08-menu-" + t);
+				}
+				ctx.setScreen(() -> null);
+				ctx.waitTicks(5);
+				CosmeticsData.setTestWear(null, null, null, null, null, null, null);
+				ctx.waitTicks(5);
 			CosmeticsData.setTest("kabuto", "ender_dragon", "aura_sakura");
 			ctx.waitTicks(40);
 			ctx.takeScreenshot("01-skin-hat-pet-fly");
