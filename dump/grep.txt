@@ -1,19 +1,108 @@
-=== net/minecraft/client/renderer/texture/SpriteContents.java
-5:import com.mojang.blaze3d.platform.Transparency;
-58:	private final float alphaCutoffBias;
-59:	private final Transparency transparency;
-84:		this.alphaCutoffBias = textureInfo.map(TextureMetadataSection::alphaCutoffBias).orElse(0.0F);
-85:		this.transparency = image.computeTransparency();
-90:			this.byMipLevel = MipmapGenerator.generateMipLevels(this.name, this.byMipLevel, mipLevel, this.mipmapStrategy, this.alphaCutoffBias, this.transparency);
-111:	public Transparency transparency() {
-112:		return this.transparency;
-215:	public boolean isTransparent(final int frame, final int x, final int y) {
-223:		return ARGB.alpha(this.originalImage.getPixel(actualX, actualY)) == 0;
-226:	public Transparency computeTransparency(final float u0, final float v0, final float u1, final float v1) {
-227:		if (this.transparency.isOpaque()) {
-228:			return this.transparency;
-232:			return this.transparency;
-240:			return this.originalImage.computeTransparency(x0, y0, x1, y1);
-244:		Transparency transparency = Transparency.NONE;
-250:			transparency = transparency.or(this.originalImage.computeTransparency(frameX + x0, frameY + y0, frameX + x1, frameY + y1));
-253:		return transparency;
+=== net/minecraft/sounds/SoundEvents.java
+24:	public static final SoundEvent ALLAY_AMBIENT_WITH_ITEM = register("entity.allay.ambient_with_item");
+25:	public static final SoundEvent ALLAY_AMBIENT_WITHOUT_ITEM = register("entity.allay.ambient_without_item");
+26:	public static final SoundEvent ALLAY_DEATH = register("entity.allay.death");
+27:	public static final SoundEvent ALLAY_HURT = register("entity.allay.hurt");
+28:	public static final SoundEvent ALLAY_ITEM_GIVEN = register("entity.allay.item_given");
+29:	public static final SoundEvent ALLAY_ITEM_TAKEN = register("entity.allay.item_taken");
+30:	public static final SoundEvent ALLAY_THROW = register("entity.allay.item_thrown");
+53:	public static final SoundEvent AMETHYST_BLOCK_BREAK = register("block.amethyst_block.break");
+54:	public static final SoundEvent AMETHYST_BLOCK_CHIME = register("block.amethyst_block.chime");
+55:	public static final SoundEvent AMETHYST_BLOCK_FALL = register("block.amethyst_block.fall");
+56:	public static final SoundEvent AMETHYST_BLOCK_HIT = register("block.amethyst_block.hit");
+57:	public static final SoundEvent AMETHYST_BLOCK_PLACE = register("block.amethyst_block.place");
+58:	public static final SoundEvent AMETHYST_BLOCK_RESONATE = register("block.amethyst_block.resonate");
+59:	public static final SoundEvent AMETHYST_BLOCK_STEP = register("block.amethyst_block.step");
+60:	public static final SoundEvent AMETHYST_CLUSTER_BREAK = register("block.amethyst_cluster.break");
+61:	public static final SoundEvent AMETHYST_CLUSTER_FALL = register("block.amethyst_cluster.fall");
+62:	public static final SoundEvent AMETHYST_CLUSTER_HIT = register("block.amethyst_cluster.hit");
+63:	public static final SoundEvent AMETHYST_CLUSTER_PLACE = register("block.amethyst_cluster.place");
+64:	public static final SoundEvent AMETHYST_CLUSTER_STEP = register("block.amethyst_cluster.step");
+115:	public static final SoundEvent AXOLOTL_ATTACK = register("entity.axolotl.attack");
+116:	public static final SoundEvent AXOLOTL_DEATH = register("entity.axolotl.death");
+117:	public static final SoundEvent AXOLOTL_HURT = register("entity.axolotl.hurt");
+118:	public static final SoundEvent AXOLOTL_IDLE_AIR = register("entity.axolotl.idle_air");
+119:	public static final SoundEvent AXOLOTL_IDLE_WATER = register("entity.axolotl.idle_water");
+120:	public static final SoundEvent AXOLOTL_SPLASH = register("entity.axolotl.splash");
+121:	public static final SoundEvent AXOLOTL_SWIM = register("entity.axolotl.swim");
+241:	public static final SoundEvent BUBBLE_COLUMN_BUBBLE_POP = register("block.bubble_column.bubble_pop");
+242:	public static final SoundEvent BUBBLE_COLUMN_UPWARDS_AMBIENT = register("block.bubble_column.upwards_ambient");
+243:	public static final SoundEvent BUBBLE_COLUMN_UPWARDS_INSIDE = register("block.bubble_column.upwards_inside");
+244:	public static final SoundEvent BUBBLE_COLUMN_WHIRLPOOL_AMBIENT = register("block.bubble_column.whirlpool_ambient");
+245:	public static final SoundEvent BUBBLE_COLUMN_WHIRLPOOL_INSIDE = register("block.bubble_column.whirlpool_inside");
+246:	public static final SoundEvent BUBBLE_POP = register("ui.hud.bubble_pop");
+248:	public static final SoundEvent BUCKET_EMPTY_AXOLOTL = register("item.bucket.empty_axolotl");
+255:	public static final SoundEvent BUCKET_FILL_AXOLOTL = register("item.bucket.fill_axolotl");
+310:	public static final Holder.Reference<SoundEvent> CAT_PURR_BABY = registerForHolder("entity.baby_cat.purr");
+311:	public static final Holder.Reference<SoundEvent> CAT_PURREOW_BABY = registerForHolder("entity.baby_cat.purreow");
+832:	public static final SoundEvent HONEY_BLOCK_BREAK = register("block.honey_block.break");
+833:	public static final SoundEvent HONEY_BLOCK_FALL = register("block.honey_block.fall");
+834:	public static final SoundEvent HONEY_BLOCK_HIT = register("block.honey_block.hit");
+835:	public static final SoundEvent HONEY_BLOCK_PLACE = register("block.honey_block.place");
+836:	public static final SoundEvent HONEY_BLOCK_SLIDE = register("block.honey_block.slide");
+837:	public static final SoundEvent HONEY_BLOCK_STEP = register("block.honey_block.step");
+915:	public static final SoundEvent LARGE_AMETHYST_BUD_BREAK = register("block.large_amethyst_bud.break");
+916:	public static final SoundEvent LARGE_AMETHYST_BUD_PLACE = register("block.large_amethyst_bud.place");
+966:	public static final SoundEvent MEDIUM_AMETHYST_BUD_BREAK = register("block.medium_amethyst_bud.break");
+967:	public static final SoundEvent MEDIUM_AMETHYST_BUD_PLACE = register("block.medium_amethyst_bud.place");
+1156:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_BELL = registerForHolder("block.note_block.bell");
+1157:	public static final Holder.Reference<SoundEvent> NOTE_BLOCK_CHIME = registerForHolder("block.note_block.chime");
+1233:	public static final SoundEvent PARROT_IMITATE_SLIME = register("entity.parrot.imitate.slime");
+1324:	public static final SoundEvent PUFFER_FISH_BLOW_OUT = register("entity.puffer_fish.blow_out");
+1325:	public static final SoundEvent PUFFER_FISH_BLOW_UP = register("entity.puffer_fish.blow_up");
+1326:	public static final SoundEvent PUFFER_FISH_DEATH = register("entity.puffer_fish.death");
+1327:	public static final SoundEvent PUFFER_FISH_FLOP = register("entity.puffer_fish.flop");
+1328:	public static final SoundEvent PUFFER_FISH_HURT = register("entity.puffer_fish.hurt");
+1329:	public static final SoundEvent PUFFER_FISH_STING = register("entity.puffer_fish.sting");
+1475:	public static final SoundEvent SLIME_ATTACK = register("entity.slime.attack");
+1476:	public static final SoundEvent SLIME_DEATH = register("entity.slime.death");
+1477:	public static final SoundEvent SLIME_HURT = register("entity.slime.hurt");
+1478:	public static final SoundEvent SLIME_JUMP = register("entity.slime.jump");
+1479:	public static final SoundEvent SLIME_SQUISH = register("entity.slime.squish");
+1480:	public static final SoundEvent SLIME_BLOCK_BREAK = register("block.slime_block.break");
+1481:	public static final SoundEvent SLIME_BLOCK_FALL = register("block.slime_block.fall");
+1482:	public static final SoundEvent SLIME_BLOCK_HIT = register("block.slime_block.hit");
+1483:	public static final SoundEvent SLIME_BLOCK_PLACE = register("block.slime_block.place");
+1484:	public static final SoundEvent SLIME_BLOCK_STEP = register("block.slime_block.step");
+1485:	public static final SoundEvent SMALL_AMETHYST_BUD_BREAK = register("block.small_amethyst_bud.break");
+1486:	public static final SoundEvent SMALL_AMETHYST_BUD_PLACE = register("block.small_amethyst_bud.place");
+1528:	public static final SoundEvent SLIME_DEATH_SMALL = register("entity.slime.death_small");
+1529:	public static final SoundEvent SLIME_HURT_SMALL = register("entity.slime.hurt_small");
+1530:	public static final SoundEvent SLIME_JUMP_SMALL = register("entity.slime.jump_small");
+1531:	public static final SoundEvent SLIME_SQUISH_SMALL = register("entity.slime.squish_small");
+1545:	public static final SoundEvent SNIFFER_HAPPY = register("entity.sniffer.happy");
+2073:							CAT_PURR_BABY,
+2074:							CAT_PURREOW_BABY
+=== net/minecraft/core/particles/ParticleTypes.java
+14:	public static final SimpleParticleType ANGRY_VILLAGER = register("angry_villager", false);
+19:	public static final SimpleParticleType BUBBLE = register("bubble", false);
+20:	public static final SimpleParticleType SULFUR_BUBBLES = register("sulfur_bubbles", false);
+22:	public static final SimpleParticleType NOXIOUS_GAS_CLOUD = register("noxious_gas_cloud", false);
+27:	public static final ParticleType<GeyserBaseParticleOptions> GEYSER_POOF = register(
+33:	public static final SimpleParticleType CLOUD = register("cloud", false);
+40:	public static final SimpleParticleType DRIPPING_LAVA = register("dripping_lava", false);
+43:	public static final SimpleParticleType DRIPPING_WATER = register("dripping_water", false);
+44:	public static final SimpleParticleType FALLING_WATER = register("falling_water", false);
+53:	public static final SimpleParticleType END_ROD = register("end_rod", false);
+87:	public static final SimpleParticleType HAPPY_VILLAGER = register("happy_villager", false);
+89:	public static final SimpleParticleType HEART = register("heart", false);
+100:	public static final SimpleParticleType ITEM_SLIME = register("item_slime", false);
+106:	public static final SimpleParticleType NOTE = register("note", false);
+107:	public static final SimpleParticleType POOF = register("poof", true);
+118:	public static final SimpleParticleType SPLASH = register("splash", false);
+120:	public static final SimpleParticleType BUBBLE_POP = register("bubble_pop", false);
+122:	public static final SimpleParticleType BUBBLE_COLUMN_UP = register("bubble_column_up", false);
+127:	public static final SimpleParticleType DRIPPING_HONEY = register("dripping_honey", false);
+136:	public static final SimpleParticleType DRIPPING_OBSIDIAN_TEAR = register("dripping_obsidian_tear", false);
+143:	public static final SimpleParticleType DRIPPING_DRIPSTONE_LAVA = register("dripping_dripstone_lava", false);
+145:	public static final SimpleParticleType DRIPPING_DRIPSTONE_WATER = register("dripping_dripstone_water", false);
+149:	public static final SimpleParticleType WAX_ON = register("wax_on", true);
+=== net/minecraft/client/model/geom/ModelPart.java
+183:	public ModelPart.Cube getRandomCube(final RandomSource random) {
+234:	public static class Cube {
+236:		public final float minX;
+237:		public final float minY;
+238:		public final float minZ;
+239:		public final float maxX;
+240:		public final float maxY;
+241:		public final float maxZ;
