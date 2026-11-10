@@ -1,48 +1,64 @@
-=== net/minecraft/client/gui/GuiGraphicsExtractor.java
-137:	public int guiWidth() {
-141:	public int guiHeight() {
-145:	public Matrix3x2fStack pose() {
-170:	public void horizontalLine(int x0, int x1, final int y, final int col) {
-180:	public void verticalLine(final int x, int y0, int y1, final int col) {
-190:	public void fill(final int x0, final int y0, final int x1, final int y1, final int col) {
-194:	public void fill(final RenderPipeline pipeline, int x0, int y0, int x1, int y1, final int col) {
-210:	public void fillGradient(final int x0, final int y0, final int x1, final int y1, final int col1, final int col2) {
-214:	public void fill(final RenderPipeline renderPipeline, final TextureSetup textureSetup, final int x0, final int y0, final int x1, final int y1) {
-218:	public void outline(final int x, final int y, final int width, final int height, final int color) {
-251:	public void text(final Font font, final @Nullable String str, final int x, final int y, final int color) {
-255:	public void text(final Font font, final @Nullable String str, final int x, final int y, final int color, final boolean dropShadow) {
-261:	public void text(final Font font, final FormattedCharSequence str, final int x, final int y, final int color) {
-265:	public void text(final Font font, final FormattedCharSequence str, final int x, final int y, final int color, final boolean dropShadow) {
-271:	public void text(final Font font, final Component str, final int x, final int y, final int color) {
-275:	public void text(final Font font, final Component str, final int x, final int y, final int color, final boolean dropShadow) {
-279:	public void centeredText(final Font font, final String str, final int x, final int y, final int color) {
-283:	public void centeredText(final Font font, final Component text, final int x, final int y, final int color) {
-288:	public void centeredText(final Font font, final FormattedCharSequence text, final int x, final int y, final int color) {
-315:	public void blit(
-331:	public void blit(
-346:	public void blit(
-363:	public void blit(
-393:	public void blit(
-399:	public void blit(
-414:	public void blitSprite(final RenderPipeline renderPipeline, final Identifier location, final int x, final int y, final int width, final int height) {
-418:	public void blitSprite(
-424:	public void blitSprite(
-443:	public void blitSprite(
-458:	public void blitSprite(
-482:	public void blitSprite(final RenderPipeline renderPipeline, final TextureAtlasSprite sprite, final int x, final int y, final int width, final int height) {
-486:	public void blitSprite(
-1008:	public void entity(
-=== net/minecraft/client/gui/screens/Screen.java
-117:	public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-371:	protected void init() {
-374:	public void tick() {
-377:	public void removed() {
-435:	public boolean isPauseScreen() {
-=== net/minecraft/client/gui/Font.java
-36:	public final int lineHeight = 9;
-124:	public int width(final String str) {
-128:	public int width(final FormattedText text) {
-132:	public int width(final FormattedCharSequence text) {
-136:	public String plainSubstrByWidth(final String str, final int width, final boolean reverse) {
-140:	public String plainSubstrByWidth(final String str, final int width) {
-152:	public List<FormattedCharSequence> split(final FormattedText input, final int maxWidth) {
+=== net/minecraft/client/model/geom/ModelPart.java
+30:	public float x;
+31:	public float y;
+32:	public float z;
+33:	public float xRot;
+34:	public float yRot;
+35:	public float zRot;
+36:	public float xScale = 1.0F;
+37:	public float yScale = 1.0F;
+38:	public float zScale = 1.0F;
+39:	public boolean visible = true;
+50:	public PartPose storePose() {
+54:	public PartPose getInitialPose() {
+62:	public void resetPose() {
+103:	public void render(final PoseStack poseStack, final VertexConsumer buffer, final int lightCoords, final int overlayCoords) {
+107:	public void render(final PoseStack poseStack, final VertexConsumer buffer, final int lightCoords, final int overlayCoords, final int color) {
+166:	public void translateAndRotate(final PoseStack poseStack) {
+396:		public float worldX() {
+400:		public float worldY() {
+404:		public float worldZ() {
+=== net/minecraft/client/renderer/Sheets.java
+26:	public static final Identifier SHULKER_SHEET = Identifier.withDefaultNamespace("textures/atlas/shulker_boxes.png");
+27:	public static final Identifier BANNER_SHEET = Identifier.withDefaultNamespace("textures/atlas/banner_patterns.png");
+28:	public static final Identifier SHIELD_SHEET = Identifier.withDefaultNamespace("textures/atlas/shield_patterns.png");
+29:	public static final Identifier CHEST_SHEET = Identifier.withDefaultNamespace("textures/atlas/chest.png");
+30:	public static final Identifier DECORATED_POT_SHEET = Identifier.withDefaultNamespace("textures/atlas/decorated_pot.png");
+31:	public static final Identifier GUI_SHEET = Identifier.withDefaultNamespace("textures/atlas/gui.png");
+32:	public static final Identifier MAP_DECORATIONS_SHEET = Identifier.withDefaultNamespace("textures/atlas/map_decorations.png");
+33:	public static final Identifier PAINTINGS_SHEET = Identifier.withDefaultNamespace("textures/atlas/paintings.png");
+34:	public static final Identifier CELESTIAL_SHEET = Identifier.withDefaultNamespace("textures/atlas/celestials.png");
+47:	public static final SpriteMapper ITEMS_MAPPER = new SpriteMapper(TextureAtlas.LOCATION_ITEMS, "item");
+48:	public static final SpriteMapper BLOCKS_MAPPER = new SpriteMapper(TextureAtlas.LOCATION_BLOCKS, "block");
+49:	public static final SpriteMapper BLOCK_ENTITIES_MAPPER = new SpriteMapper(TextureAtlas.LOCATION_BLOCKS, "entity");
+50:	public static final SpriteMapper BANNER_MAPPER = new SpriteMapper(BANNER_SHEET, "entity/banner");
+51:	public static final SpriteMapper SHIELD_MAPPER = new SpriteMapper(SHIELD_SHEET, "entity/shield");
+52:	public static final SpriteMapper CHEST_MAPPER = new SpriteMapper(CHEST_SHEET, "entity/chest");
+53:	public static final SpriteMapper DECORATED_POT_MAPPER = new SpriteMapper(DECORATED_POT_SHEET, "entity/decorated_pot");
+54:	public static final SpriteMapper SHULKER_MAPPER = new SpriteMapper(SHULKER_SHEET, "entity/shulker");
+55:	public static final SpriteId DEFAULT_SHULKER_TEXTURE_LOCATION = SHULKER_MAPPER.defaultNamespaceApply("shulker");
+56:	public static final List<SpriteId> SHULKER_TEXTURE_LOCATION = Arrays.stream(DyeColor.values())
+60:	public static final SpriteId BANNER_BASE = BANNER_MAPPER.defaultNamespaceApply("banner_base");
+61:	public static final SpriteId SHIELD_BASE = SHIELD_MAPPER.defaultNamespaceApply("shield_base");
+62:	public static final SpriteId SHIELD_BASE_NO_PATTERN = SHIELD_MAPPER.defaultNamespaceApply("shield_base_nopattern");
+63:	public static final SpriteId BANNER_PATTERN_BASE = BANNER_MAPPER.defaultNamespaceApply("base");
+64:	public static final SpriteId SHIELD_PATTERN_BASE = SHIELD_MAPPER.defaultNamespaceApply("base");
+67:	public static final SpriteId DECORATED_POT_BASE = DECORATED_POT_MAPPER.defaultNamespaceApply("decorated_pot_base");
+68:	public static final SpriteId DECORATED_POT_SIDE = DECORATED_POT_MAPPER.defaultNamespaceApply("decorated_pot_side");
+69:	public static final SpriteId ENDER_CHEST_LOCATION = CHEST_MAPPER.defaultNamespaceApply("ender");
+70:	public static final MultiblockChestResources<SpriteId> CHEST_REGULAR = ChestSpecialRenderer.REGULAR.map(CHEST_MAPPER::apply);
+71:	public static final MultiblockChestResources<SpriteId> CHEST_TRAPPED = ChestSpecialRenderer.TRAPPED.map(CHEST_MAPPER::apply);
+72:	public static final MultiblockChestResources<SpriteId> CHEST_CHRISTMAS = ChestSpecialRenderer.CHRISTMAS.map(CHEST_MAPPER::apply);
+73:	public static final WeatheringCopperCollection.ByState<MultiblockChestResources<SpriteId>> CHEST_COPPER = ChestSpecialRenderer.COPPER
+76:	public static RenderType cutoutBlockItemSheet() {
+80:	public static RenderType cutoutBlockItemGlintSheet() {
+84:	public static RenderType cutoutBlockItemGlintSpecialSheet() {
+88:	public static RenderType cutoutItemSheet() {
+92:	public static RenderType cutoutItemGlintSheet() {
+96:	public static RenderType cutoutItemGlintSpecialSheet() {
+100:	public static RenderType translucentItemSheet() {
+104:	public static RenderType translucentItemGlintSheet() {
+108:	public static RenderType translucentItemGlintSpecialSheet() {
+112:	public static RenderType translucentBlockItemSheet() {
+116:	public static RenderType translucentBlockItemGlintSheet() {
+120:	public static RenderType translucentBlockItemGlintSpecialSheet() {

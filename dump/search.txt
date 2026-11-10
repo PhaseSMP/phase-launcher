@@ -1,0 +1,8 @@
+=== search detectRenderType 
+=== search translucentItemSheet 
+net/minecraft/client/resources/model/geometry/BakedQuad.java:90:				itemRenderType = transparency.hasTranslucent() ? Sheets.translucentItemSheet() : Sheets.cutoutItemSheet();
+net/minecraft/client/renderer/Sheets.java:100:	public static RenderType translucentItemSheet() {
+=== search interface ArmedModel
+net/minecraft/client/model/ArmedModel.java:10:public interface ArmedModel<T extends EntityRenderState> {
+=== search class PlayerModel
+net/minecraft/client/model/player/PlayerModel.java:22:public class PlayerModel extends HumanoidModel<AvatarRenderState> {
