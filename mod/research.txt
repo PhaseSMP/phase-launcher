@@ -1,8 +1,5 @@
-F net/minecraft/client/resources/model/geometry/BakedQuad.java
-G net/minecraft/client/renderer/texture/SpriteContents.java (ransparen|public .*Transparency|computeTransparency|alpha)
-S record PlayerSkin
-S enum PlayerModelType
-S computeTransparency
-S hasTranslucent\(\)
-S record Transparency
-S class Transparency
+F net/minecraft/world/entity/player/PlayerSkin.java
+F net/minecraft/world/entity/player/PlayerModelType.java
+G net/minecraft/sounds/SoundEvents.java (SLIME|HONEY_BLOCK|AXOLOTL|BUBBLE|AMETHYST|ALLAY|NOTE_BLOCK_BELL|NOTE_BLOCK_CHIME|PUFFER|SNIFFER_HAPPY|CAT_PURR)
+G net/minecraft/core/particles/ParticleTypes.java (SLIME|HEART|SPLASH|BUBBLE|NOTE|POOF|FALLING_WATER|DRIPPING|HAPPY_VILLAGER|ITEM_SLIME|CLOUD|END_ROD|WAX_ON|ANGRY)
+G net/minecraft/client/model/geom/ModelPart.java (getRandomCube|class Cube|public final float min|public final float max)
