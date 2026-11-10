@@ -1,8 +1,14 @@
-F net/minecraft/client/gui/screens/inventory/InventoryScreen.java
-F net/minecraft/client/gui/components/events/GuiEventListener.java
-F net/minecraft/client/input/MouseButtonEvent.java
-F net/minecraft/client/input/MouseButtonInfo.java
-F net/minecraft/world/damagesource/DamageSource.java
-G net/minecraft/client/gui/GuiGraphicsExtractor.java (public void entity|public void fill\(|public void text\(|public void fillGradient|public int guiWidth|public int guiHeight|public .*pose\(\)|public void blit|public void outline|public void submitOutline|public void centeredText|public void horizontalLine|public void verticalLine)
-G net/minecraft/client/gui/screens/Screen.java (public boolean isPauseScreen|protected void init|public void tick|public void removed|public void extractRenderState)
-G net/minecraft/client/gui/Font.java (public int width\(|public .*split\(|public String plainSubstrByWidth|lineHeight)
+F net/minecraft/client/model/HumanoidModel.java
+F net/minecraft/client/model/player/PlayerModel.java
+F net/minecraft/client/model/ArmedModel.java
+F net/minecraft/client/renderer/entity/layers/ItemInHandLayer.java
+F net/minecraft/client/renderer/item/BlockModelWrapper.java
+F net/minecraft/client/renderer/entity/state/AvatarRenderState.java
+F net/minecraft/client/renderer/entity/state/HumanoidRenderState.java
+F net/minecraft/client/renderer/item/ItemStackRenderState.java
+G net/minecraft/client/model/geom/ModelPart.java (public float|public void translateAndRotate|public boolean visible|public void resetPose|public PartPose|public void render|public void submit)
+G net/minecraft/client/renderer/Sheets.java (public static .*RenderType|public static .*Sheet|public static final)
+S detectRenderType
+S translucentItemSheet
+S interface ArmedModel
+S class PlayerModel
