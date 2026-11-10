@@ -1,14 +1,8 @@
-F net/minecraft/client/model/HumanoidModel.java
-F net/minecraft/client/model/player/PlayerModel.java
-F net/minecraft/client/model/ArmedModel.java
-F net/minecraft/client/renderer/entity/layers/ItemInHandLayer.java
-F net/minecraft/client/renderer/item/BlockModelWrapper.java
-F net/minecraft/client/renderer/entity/state/AvatarRenderState.java
-F net/minecraft/client/renderer/entity/state/HumanoidRenderState.java
-F net/minecraft/client/renderer/item/ItemStackRenderState.java
-G net/minecraft/client/model/geom/ModelPart.java (public float|public void translateAndRotate|public boolean visible|public void resetPose|public PartPose|public void render|public void submit)
-G net/minecraft/client/renderer/Sheets.java (public static .*RenderType|public static .*Sheet|public static final)
-S detectRenderType
-S translucentItemSheet
-S interface ArmedModel
-S class PlayerModel
+F net/minecraft/client/resources/model/geometry/BakedQuad.java
+G net/minecraft/client/renderer/texture/SpriteContents.java (ransparen|public .*Transparency|computeTransparency|alpha)
+S record PlayerSkin
+S enum PlayerModelType
+S computeTransparency
+S hasTranslucent\(\)
+S record Transparency
+S class Transparency
