@@ -181,15 +181,13 @@ public class PhaseMenuScreen extends Screen {
 			this.text("Шарф и варежки — в лаунчере → «Донаты»", x, y, Style.MUTED);
 			y += 18;
 		} else {
-			int wc = 0;
 			for (CosmeticsData.Item it : wear) {
 				boolean neck = it.slot().equals("neck");
 				java.util.function.BooleanSupplier on = () -> CosmeticsData.mine != null && Objects.equals(neck ? CosmeticsData.mine.neck() : CosmeticsData.mine.hands(), it.id());
-				this.add(new PhaseButton(x + wc * (half + gap), y, wear.size() == 1 ? w : half, rh, it.name(), PhaseButton.Kind.TOGGLE, on,
+				this.add(new PhaseButton(x, y, w, rh, it.name(), PhaseButton.Kind.TOGGLE, on,
 					() -> this.equip(it.slot(), on.getAsBoolean() ? null : it.id())));
-				if (++wc == 2) { wc = 0; y += rh + gap; }
+				y += rh + gap;
 			}
-			if (wc != 0) y += rh + gap;
 			y += 6;
 		}
 		if (m.hat() == null) return y;
@@ -336,7 +334,8 @@ public class PhaseMenuScreen extends Screen {
 		y = this.section("КТО РЯДОМ", x, y);
 		int col = 0;
 		for (CosmeticsData.Item it : pets) {
-			this.add(new PhaseButton(x + col * (half + gap), y, half, rh, it.name(), PhaseButton.Kind.CHIP,
+			String label = it.id().equals("ender_dragon") ? "Дракончик" : it.name();
+			this.add(new PhaseButton(x + col * (half + gap), y, half, rh, label, PhaseButton.Kind.CHIP,
 				() -> CosmeticsData.mine != null && Objects.equals(CosmeticsData.mine.pet(), it.id()), () -> this.equip("pet", it.id())));
 			if (++col == 2) { col = 0; y += rh + gap; }
 		}

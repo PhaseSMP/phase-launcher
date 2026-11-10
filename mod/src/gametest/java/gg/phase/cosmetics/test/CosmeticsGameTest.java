@@ -41,7 +41,9 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 					throw new java.io.UncheckedIOException(e);
 				}
 			});
-				// ── 4.3: шарф и варежки ──
+				// ── 4.3: шарф и варежки (окно побольше — детали видно) ──
+				ctx.getInput().resizeWindow(1920, 1080);
+				ctx.waitTicks(5);
 				CosmeticsData.setTestWear(null, null, null, null, null, "scarf_red", "mittens_red");
 				ctx.waitTicks(30);
 				ctx.takeScreenshot("w01-scarf-mittens-front");
@@ -84,9 +86,12 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 				ctx.takeScreenshot("w10-slim-mittens");
 				SkinData.setTest(new PlayerSkin(new ClientAsset.ResourceTexture(skinId, skinId), null, null, PlayerModelType.WIDE, true));
 				// ── 4.3: слизень ──
+				ctx.runOnClient(mc -> { mc.player.setYRot(0F); mc.player.setYBodyRot(0F); mc.player.setYHeadRot(0F); });
 				CosmeticsData.setTestWear(null, "slime", null, null, null, "scarf_red", null);
 				ctx.waitTicks(60);
 				ctx.takeScreenshot("s01-slime-follow");
+				Config.get().mode = "shoulder";
+				ctx.waitTicks(50);
 				String[] faces = { "normal", "blink", "happy", "sad", "wow", "sleep" };
 				for (int f = 0; f < faces.length; f++) {
 					int ff = f;
@@ -95,12 +100,18 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 					ctx.takeScreenshot("s02-face-" + faces[f]);
 				}
 				ctx.runOnClient(mc -> { var s = PetManager.INSTANCE.ownSlime(); if (s != null) s.forceFace = -1; });
+				ctx.runOnClient(mc -> mc.player.setYRot(30F));
+				ctx.waitTicks(10);
+				ctx.takeScreenshot("s02-shoulder-three-quarter");
+				ctx.runOnClient(mc -> mc.player.setYRot(0F));
 				for (String sk : new String[] { "sakura", "frost", "lava", "honey", "void", "prism" }) {
 					CosmeticsData.setTestWear(null, "slime", null, sk, null, null, null);
 					ctx.waitTicks(8);
 					ctx.takeScreenshot("s03-skin-" + sk);
 				}
 				CosmeticsData.setTestWear(null, "slime", null, null, null, null, null);
+				Config.get().mode = "follow";
+				ctx.waitTicks(40);
 				Object[][] tricks = { { "petted", Pet.Act.PETTED, 14 }, { "flip", Pet.Act.LOOP, 10 }, { "wow", Pet.Act.ROAR, 12 },
 					{ "dance", Pet.Act.SPIN, 20 }, { "roll", Pet.Act.ROLL, 9 }, { "sulk", Pet.Act.SULK, 25 } };
 				for (Object[] t : tricks) {
@@ -133,6 +144,7 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 					ctx.takeScreenshot("s08-menu-" + t);
 				}
 				ctx.setScreen(() -> null);
+				ctx.getInput().resizeWindow(854, 480);
 				ctx.waitTicks(5);
 				CosmeticsData.setTestWear(null, null, null, null, null, null, null);
 				ctx.waitTicks(5);
