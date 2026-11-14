@@ -148,6 +148,22 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 				ctx.waitTicks(5);
 				CosmeticsData.setTestWear(null, null, null, null, null, null, null);
 				ctx.waitTicks(5);
+				// ── 4.4: зимняя косметика ──
+				for (String wh : new String[] { "hat_santa", "hat_elf", "hat_ushanka", "hat_antlers", "hat_ice_crown" }) {
+					CosmeticsData.setTest(wh, null, null);
+					ctx.waitTicks(10);
+					ctx.takeScreenshot("x-" + wh);
+				}
+				CosmeticsData.setTest(null, null, null);
+				CosmeticsData.setTestWear(null, null, null, null, null, "scarf_candy", "mittens_snow");
+				ctx.waitTicks(20);
+				ctx.takeScreenshot("x-scarf-candy-mittens-snow");
+				ctx.runOnClient(mc -> mc.player.setYRot(65F));
+				ctx.waitTicks(10);
+				ctx.takeScreenshot("x-scarf-candy-side");
+				ctx.runOnClient(mc -> mc.player.setYRot(0F));
+				CosmeticsData.setTestWear(null, null, null, null, null, null, null);
+				ctx.waitTicks(5);
 			CosmeticsData.setTest("kabuto", "ender_dragon", "aura_sakura");
 			ctx.waitTicks(40);
 			ctx.takeScreenshot("01-skin-hat-pet-fly");

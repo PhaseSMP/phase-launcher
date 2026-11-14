@@ -37,11 +37,15 @@ public class WearLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
 		CosmeticsData.Worn w = CosmeticsData.get(player.getName().getString());
 		if (w == null) return;
 		PlayerModel m = this.getParentModel();
-		if ("scarf_red".equals(w.neck())) this.scarf(pose, out, light, state, m, player.getId());
-		if ("mittens_red".equals(w.hands())) this.mittens(pose, out, light, state, m);
+		// шарфы: «scarf_red», «scarf_candy» … — модель берём по id предмета
+		String neck = w.neck();
+		if (neck != null && neck.startsWith("scarf")) this.scarf(pose, out, light, state, m, player.getId(), neck);
+		// варежки: «mittens_red» → модель «mitten_red», «mittens_snow» → «mitten_snow»
+		String hands = w.hands();
+		if (hands != null && hands.startsWith("mittens")) this.mittens(pose, out, light, state, m, "mitten" + hands.substring("mittens".length()));
 	}
 
-	private void scarf(PoseStack pose, SubmitNodeCollector out, int light, AvatarRenderState state, PlayerModel m, int id) {
+	private void scarf(PoseStack pose, SubmitNodeCollector out, int light, AvatarRenderState state, PlayerModel m, int id, String name) {
 		float pt = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
 		// витки на плечах и узел — вместе с телом
 		pose.pushPose();
@@ -50,13 +54,13 @@ public class WearLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
 		// пространство тела: ось y вниз, перед к −z. Модель «вверх ногами» → поворот на 180° вокруг z; верх тела — y=16 модели
 		pose.rotateDegrees(Axis.ZP, 180.0F);
 		pose.translate(0.0F, -0.5F, 0.0F);
-		CosmeticsModels.get("scarf_red").submit(pose, out, light, OverlayTexture.NO_OVERLAY, state.outlineColor);
+		CosmeticsModels.get(name).submit(pose, out, light, OverlayTexture.NO_OVERLAY, state.outlineColor);
 		// концы: висят отвесно (компенсируем наклон тела при приседе) и качаются
 		float lean = (float) Math.toDegrees(m.body.xRot);
 		float swing = WearPhysics.swing(id, pt) + lean;
 		float sway = WearPhysics.sway(id, pt);
-		tail(pose, out, light, state, "scarf_red_tail_l", 6.9F, swing, sway);
-		tail(pose, out, light, state, "scarf_red_tail_r", 9.25F, swing * 0.88F + 2F, sway * 0.85F);
+		tail(pose, out, light, state, name + "_tail_l", 6.9F, swing, sway);
+		tail(pose, out, light, state, name + "_tail_r", 9.25F, swing * 0.88F + 2F, sway * 0.85F);
 		pose.popPose();
 		// виток вокруг шеи — вместе с головой
 		pose.pushPose();
@@ -64,7 +68,7 @@ public class WearLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
 		m.translateToHead(pose);
 		pose.rotateDegrees(Axis.ZP, 180.0F);
 		pose.translate(0.0F, 0.5F, 0.0F);
-		CosmeticsModels.get("scarf_red_neck").submit(pose, out, light, OverlayTexture.NO_OVERLAY, state.outlineColor);
+		CosmeticsModels.get(name + "_neck").submit(pose, out, light, OverlayTexture.NO_OVERLAY, state.outlineColor);
 		pose.popPose();
 	}
 
@@ -80,7 +84,7 @@ public class WearLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
 		pose.popPose();
 	}
 
-	private void mittens(PoseStack pose, SubmitNodeCollector out, int light, AvatarRenderState state, PlayerModel m) {
+	private void mittens(PoseStack pose, SubmitNodeCollector out, int light, AvatarRenderState state, PlayerModel m, String name) {
 		boolean slim = state.skin.model() == PlayerModelType.SLIM;
 		for (HumanoidArm arm : HumanoidArm.values()) {
 			pose.pushPose();
@@ -90,7 +94,7 @@ public class WearLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
 			// кончики пальцев — низ руки (y = 10 px); модель: ось x = 8, кончики — y = 0
 			pose.translate(-cx * PX, -0.125F, 0.0F);
 			String side = arm == HumanoidArm.RIGHT ? "_r" : "_l";
-			CosmeticsModels.get((slim ? "mitten_red_slim" : "mitten_red") + side).submit(pose, out, light, OverlayTexture.NO_OVERLAY, state.outlineColor);
+			CosmeticsModels.get(name + (slim ? "_slim" : "") + side).submit(pose, out, light, OverlayTexture.NO_OVERLAY, state.outlineColor);
 			pose.popPose();
 		}
 	}
