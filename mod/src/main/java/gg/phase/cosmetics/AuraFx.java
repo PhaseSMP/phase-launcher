@@ -45,7 +45,8 @@ public final class AuraFx {
 
 	private enum Pack {
 		SAKURA("aura_sakura", "sakura"), ENDER("aura_ender", "ender"), ONI("aura_oni", "oni"), LIMBO("aura_limbo", "limbo"),
-		FOXFIRE("aura_foxfire", "foxfire"), ASH("aura_ash", "ash"), ECLIPSE("aura_eclipse", "eclipse");
+		FOXFIRE("aura_foxfire", "foxfire"), ASH("aura_ash", "ash"), ECLIPSE("aura_eclipse", "eclipse"),
+		SNOW("aura_snow", "snow"), BLIZZARD("aura_blizzard", "blizzard");
 
 		final String id, snd;
 
@@ -340,6 +341,27 @@ public final class AuraFx {
 					// редкие золотые искорки едва заметно кружат по кольцу — немного жизни, не перегружая
 					if (age % 6 == 0) { P s = orb(pl, "spark", c("ffd36b", "ff6a3d"), age * 0.12, 0.5, h, 0, 0, 0.045F, 16); s.ground = true; s.spin = 0; s.yspin = 2.4F; s.yrot = s.pyrot = age * 2.4F; }
 			}
+			case SNOW -> {
+				// тихий снегопад вокруг: снежинки появляются над головой, медленно кружат и падают до земли
+				if (age % 3 == 0) {
+					P f = orb(pl, "flake", c(pick("ffffff", "e8f6ff", "bfe6ff")), rnd(0, Mth.TWO_PI), rnd(0.35, 1.0), head + rnd(0.45, 0.85), rnd(0.008, 0.02), -0.016, rndf(0.07F, 0.11F), (int) rnd(110, 140));
+					f.spin = rndf(-4F, 4F); f.vr = 0.0012;
+				}
+				if (age % 7 == 0) { P s = orb(pl, "star", c("ffffff", "bfe6ff"), rnd(0, Mth.TWO_PI), rnd(0.3, 0.8), rnd(0.2, head + 0.3), 0.012, 0.004, 0.05F, 26); s.twinkle = 1F; s.spin = 0; }
+				if (age % 16 == 0) { P g = orb(pl, "glow", c("e8f6ff", "bfe6ff"), rnd(0, Mth.TWO_PI), rnd(0.2, 0.5), rnd(0.1, head), 0.01, 0.006, 0.09F, 46); g.twinkle = 0.3F; }
+			}
+			case BLIZZARD -> {
+				// вихрь метели: позёмка и снег быстро кружат по наклонным орбитам на разной высоте
+				for (int i = 0; i < 2; i++) {
+					P f = orb(pl, "flake", c(pick("ffffff", "dcecf7")), rnd(0, Mth.TWO_PI), rnd(0.6, 1.0), rnd(0.1, head + 0.4), rnd(0.16, 0.24), rnd(-0.004, 0.006), rndf(0.06F, 0.09F), (int) rnd(24, 36));
+					f.spin = rndf(-16F, 16F); f.tiltY = rnd(-0.35, 0.35);
+				}
+				if (age % 2 == 0) {
+					P w = orb(pl, "smoke", c("eef6fb", "dcecf7", "a8c8dc"), rnd(0, Mth.TWO_PI), rnd(0.55, 0.85), rnd(0.0, 0.5), rnd(0.18, 0.26), 0.004, rndf(0.1F, 0.15F), 22);
+					w.bright = false; w.grow = 0.8F; w.tiltY = 0.2;
+				}
+				if (age % 4 == 0) { P sp = orb(pl, "spark", c("ffffff", "a8c8dc"), rnd(0, Mth.TWO_PI), rnd(0.7, 1.05), rnd(0.3, head), 0.22, 0, 0.05F, 14); sp.stretch = 0.5F; sp.spin = 90F; }
+			}
 		}
 	}
 
@@ -372,6 +394,17 @@ public final class AuraFx {
 					if (i == 0) { P s = at("spark", c("ffd36b", "ff2d4a"), x, y + rnd(0, 0.3), z, 0, 0.015, 0, 0.06F, 24, -0.0006F); s.stretch = 1.6F; s.spin = 0; }
 					else { P d = at("smoke", c("1a1622"), x, y + rnd(0, 0.3), z, 0, 0.008, 0, 0.08F, 30, 0); d.grow = 1.3F; }
 				}
+				case SNOW -> {
+					// морозный след: снежинки-отпечатки на земле и облачка снежной пыли
+					if (i == 0) { P f = at("flake", c("ffffff", "bfe6ff"), x, y + 0.02, z, 0, 0, 0, rndf(0.11F, 0.15F), 70, 0); f.ground = true; f.spin = 0; f.rot = f.prot = rndf(0F, 60F); }
+					else { P d = at("smoke", c("eef6fb", "cfe3f0"), x, y + rnd(0.02, 0.2), z, rnd(-0.01, 0.01), 0.006, rnd(-0.01, 0.01), rndf(0.07F, 0.1F), 26, 0.0008F); d.bright = false; d.grow = 0.9F; }
+				}
+				case BLIZZARD -> {
+					// позёмка: снег и ледяная крошка стелются над землёй и уносятся вбок
+					double gx = -dz / sp * 0.05, gz = dx / sp * 0.05;
+					P d = at("smoke", c("eef6fb", "dcecf7", "a8c8dc"), x, y + rnd(0.02, 0.18), z, gx + rnd(-0.02, 0.02), 0.002, gz + rnd(-0.02, 0.02), rndf(0.08F, 0.12F), 24, 0); d.bright = false; d.grow = 1.2F; d.drag = 0.93F;
+					if (i == 0) { P s = at("shard", c(pick("bfe6ff", "e8f6ff"), "7fb2d0"), x, y + 0.03, z, gx * 1.5, 0.01, gz * 1.5, rndf(0.05F, 0.08F), 30, 0.003F); s.spin = rndf(-14F, 14F); }
+				}
 			}
 		}
 	}
@@ -388,6 +421,17 @@ public final class AuraFx {
 			case FOXFIRE -> { ringOnGround("5ac8e6", x, y, z, 0.3F, 5F * pw, 16); burstOut("fire", c("a8ecff", "5ac8e6", "2a7bd6"), x, y + 0.1, z, 8, 0.07 * pw, 0.12, 0.11F, 24, -0.002F); }
 			case ASH -> { ringOnGround("6b6570", x, y, z, 0.3F, 4.5F * pw, 18); for (int i = 0; i < n; i++) { double a = rnd(0, Mth.TWO_PI), v = rnd(0.03, 0.09) * pw; P s = at("smoke", c("9a949e", "6b6570", "3a3640"), x, y + 0.1, z, Math.cos(a) * v, rnd(0.01, 0.05), Math.sin(a) * v, 0.12F, 30, -0.0005F); s.grow = 1.8F; s.bright = false; } }
 			case ECLIPSE -> { ringOnGround("0b0b12", x, y, z, 0.3F, 4.5F * pw, 18); ringOnGround("ff2d4a", x, y + 0.01, z, 0.2F, 6F * pw, 14); burstOut("spark", c("ffd36b", "ff6a3d", "ff2d4a"), x, y + 0.1, z, n, 0.1 * pw, 0.14, 0.06F, 20, 0.006F); }
+			case SNOW -> {
+				ringOnGround("bfe6ff", x, y, z, 0.3F, 5F * pw, 18);
+				for (int i = 0; i < n; i++) { double a = rnd(0, Mth.TWO_PI), v = rnd(0.03, 0.08) * pw; P s = at("smoke", c("eef6fb", "cfe3f0"), x, y + 0.08, z, Math.cos(a) * v, rnd(0.02, 0.07), Math.sin(a) * v, 0.1F, 28, 0.002F); s.grow = 1.4F; s.bright = false; }
+				burstOut("flake", c("ffffff", "bfe6ff"), x, y + 0.1, z, 10, 0.06 * pw, 0.16, 0.08F, 34, 0.005F);
+			}
+			case BLIZZARD -> {
+				ringOnGround("a8c8dc", x, y, z, 0.3F, 6F * pw, 14);
+				ringOnGround("ffffff", x, y + 0.01, z, 0.2F, 4F * pw, 10);
+				for (int i = 0; i < n; i++) { double a = rnd(0, Mth.TWO_PI), v = rnd(0.12, 0.2) * pw; P s = at("smoke", c("eef6fb", "dcecf7", "a8c8dc"), x, y + 0.1, z, Math.cos(a) * v, rnd(0.0, 0.03), Math.sin(a) * v, 0.12F, 22, 0); s.grow = 1.6F; s.bright = false; s.drag = 0.9F; }
+				burstOut("shard", c("bfe6ff", "7fb2d0"), x, y + 0.1, z, 10, 0.12 * pw, 0.2, 0.07F, 24, 0.012F);
+			}
 		}
 	}
 
@@ -456,6 +500,27 @@ public final class AuraFx {
 				ringOnGround("0b0b12", x, y, z, 0.4F, 7F, 30);
 				ringOnGround("ff2d4a", x, y + 0.01, z, 0.3F, 8F, 26);
 			}
+			case SNOW -> {
+				// тело рассыпается снегом: вихрь снежинок поднимается, потом медленно опадает, на земле — сугроб-кольцо
+				for (int i = 0; i < 64; i++) {
+					P f = swirl("flake", c(pick("ffffff", "e8f6ff", "bfe6ff")), x, y + rnd(0, h), z, rnd(0, Mth.TWO_PI), rnd(0.15, 0.5), rnd(0.08, 0.16), 0.02, rnd(0.02, 0.05), rndf(0.08F, 0.13F), (int) rnd(60, 90));
+					f.gravity = 0.0012F; f.spin = rndf(-8F, 8F); f.delay = i / 5;
+				}
+				for (int i = 0; i < 18; i++) { P s = at("smoke", c("eef6fb", "cfe3f0"), x + rnd(-0.4, 0.4), y + rnd(0, h * 0.8), z + rnd(-0.4, 0.4), 0, 0.01, 0, 0.22F, 40, 0.0008F); s.grow = 1.5F; s.bright = false; s.delay = (int) rnd(0, 10); }
+				for (int i = 0; i < 12; i++) { P st = at("star", c("ffffff", "bfe6ff"), x + rnd(-0.9, 0.9), y + rnd(0.3, h + 0.7), z + rnd(-0.9, 0.9), 0, 0.005, 0, 0.08F, 34, 0); st.twinkle = 1F; st.spin = 0; st.delay = (int) rnd(6, 26); }
+				ringOnGround("ffffff", x, y, z, 0.5F, 4.5F, 50);
+				ringOnGround("bfe6ff", x, y + 0.01, z, 0.3F, 7F, 30);
+			}
+			case BLIZZARD -> {
+				// буран уносит в белую пелену: широкий вихрь снега и ледяной крошки, вспышка холода
+				for (int i = 0; i < 70; i++) {
+					P f = swirl(i % 3 == 0 ? "shard" : "flake", c(pick("ffffff", "dcecf7", "bfe6ff"), "7fb2d0"), x, y + rnd(0, h + 0.5), z, rnd(0, Mth.TWO_PI), rnd(0.3, 0.8), rnd(0.25, 0.4), 0.05, rnd(-0.01, 0.03), rndf(0.07F, 0.12F), (int) rnd(30, 46));
+					f.spin = rndf(-18F, 18F); f.delay = i / 6;
+				}
+				for (int i = 0; i < 24; i++) { P s = swirl("smoke", c("eef6fb", "dcecf7", "a8c8dc"), x, y + rnd(0, h), z, rnd(0, Mth.TWO_PI), rnd(0.3, 0.6), 0.3, 0.06, 0.01, 0.2F, 36); s.bright = false; s.grow = 1.4F; s.delay = i / 2; }
+				P flash = at("glow", c("ffffff", "dcecf7"), x, mid, z, 0, 0, 0, 1.0F, 12, 0); flash.grow = 1.0F; flash.delay = 18;
+				ringOnGround("a8c8dc", x, y, z, 0.4F, 8F, 26);
+			}
 		}
 	}
 
@@ -506,6 +571,22 @@ public final class AuraFx {
 				P sun = at("glow", c("0b0b12", "1a1622"), x, top, z, 0, 0, 0, 0.55F, 26, 0);
 				sun.steady = false;
 				burstOut("spark", c("ffd36b", "ff6a3d", "ff2d4a"), x, top, z, 28, 0.22, 0.04, 0.08F, 20, 0.004F);
+			}
+			case SNOW -> {
+				// над целью распускается большая снежинка, вокруг — кольцо снежинок, потом тихо падает снег
+				P big = at("flake", c("ffffff", "e8f6ff", "bfe6ff"), x, top, z, 0, 0, 0, 0.35F, 36, 0); big.grow = 1.2F; big.spin = 3F;
+				for (int i = 0; i < 12; i++) { double a = i * Mth.TWO_PI / 12; P f = at("flake", c("ffffff", "bfe6ff"), x, top, z, Math.cos(a) * 0.09, Math.sin(a) * 0.05, Math.sin(a) * 0.09, 0.1F, 34, 0.0006F); f.spin = rndf(-6F, 6F); f.drag = 0.93F; }
+				for (int i = 0; i < 26; i++) { P f = at("flake", c(pick("ffffff", "e8f6ff")), x + rnd(-0.9, 0.9), top + rnd(0.2, 0.8), z + rnd(-0.9, 0.9), 0, -0.012, 0, rndf(0.06F, 0.09F), 70, 0); f.sway = 0.05F; f.delay = (int) rnd(6, 30); }
+				P g = at("glow", c("e8f6ff", "bfe6ff"), x, top, z, 0, 0, 0, 0.6F, 14, 0); g.grow = 0.7F;
+			}
+			case BLIZZARD -> {
+				// над целью срывается буран: быстрое кольцо вьюги и разлёт ледяной крошки
+				for (int i = 0; i < 26; i++) {
+					P f = swirl(i % 2 == 0 ? "flake" : "smoke", i % 2 == 0 ? c("ffffff", "dcecf7", "a8c8dc") : c("eef6fb", "dcecf7", "a8c8dc"), x, top - 0.3, z, i * Mth.TWO_PI / 26, 0.3, 0.32, 0.03, 0.01, i % 2 == 0 ? 0.09F : 0.16F, 32);
+					f.spin = rndf(-16F, 16F); if (i % 2 == 1) { f.bright = false; f.grow = 1.2F; }
+				}
+				burstOut("shard", c("bfe6ff", "e8f6ff", "7fb2d0"), x, top, z, 22, 0.2, 0.08, 0.08F, 22, 0.008F);
+				P g = at("glow", c("ffffff", "7fb2d0"), x, top, z, 0, 0, 0, 0.7F, 12, 0); g.grow = 0.6F;
 			}
 		}
 	}

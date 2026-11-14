@@ -187,5 +187,59 @@
    }
   ],
   "subtitle": "subtitles.phase.pack.kill"
+ },
+ "pack.snow_land": {
+  "sounds": [
+   {
+    "name": "phase:pack/snow_land",
+    "volume": 0.6
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.land"
+ },
+ "pack.snow_death": {
+  "sounds": [
+   {
+    "name": "phase:pack/snow_death",
+    "volume": 0.9
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.death"
+ },
+ "pack.snow_kill": {
+  "sounds": [
+   {
+    "name": "phase:pack/snow_kill",
+    "volume": 0.85
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.kill"
+ },
+ "pack.blizzard_land": {
+  "sounds": [
+   {
+    "name": "phase:pack/blizzard_land",
+    "volume": 0.6
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.land"
+ },
+ "pack.blizzard_death": {
+  "sounds": [
+   {
+    "name": "phase:pack/blizzard_death",
+    "volume": 0.9
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.death"
+ },
+ "pack.blizzard_kill": {
+  "sounds": [
+   {
+    "name": "phase:pack/blizzard_kill",
+    "volume": 0.85
+   }
+  ],
+  "subtitle": "subtitles.phase.pack.kill"
  }
 }

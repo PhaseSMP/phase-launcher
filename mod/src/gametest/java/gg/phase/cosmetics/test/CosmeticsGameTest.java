@@ -153,6 +153,10 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 					CosmeticsData.setTest(wh, null, null);
 					ctx.waitTicks(10);
 					ctx.takeScreenshot("x-" + wh);
+					ctx.runOnClient(mc -> { mc.player.setYRot(40F); mc.player.setYHeadRot(40F); mc.player.setYBodyRot(40F); });
+					ctx.waitTicks(8);
+					ctx.takeScreenshot("x-" + wh + "-34");
+					ctx.runOnClient(mc -> { mc.player.setYRot(0F); mc.player.setYHeadRot(0F); mc.player.setYBodyRot(0F); });
 				}
 				CosmeticsData.setTest(null, null, null);
 				CosmeticsData.setTestWear(null, null, null, null, null, "scarf_candy", "mittens_snow");
@@ -192,9 +196,9 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 			ctx.waitTicks(10);
 			ctx.takeScreenshot("01g-dragon-crimson");
 			// ауры-паки (аура + след): спереди стоя, затем в движении сзади
-			for (String au : new String[] { "aura_eclipse", "aura_foxfire", "aura_limbo", "aura_ash" }) {
+			for (String au : new String[] { "aura_snow", "aura_blizzard", "aura_eclipse" }) {
 				CosmeticsData.setTestFull(null, null, au, null, null);
-				ctx.waitTicks(30);
+				ctx.waitTicks(60);
 				ctx.takeScreenshot("01h-" + au + "-front");
 			}
 			// затмение: объёмный нимб — сбоку и сверху-сзади
@@ -208,7 +212,7 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 			ctx.runOnClient(mc -> { mc.player.setXRot(0F); mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT); });
 			// паки 4.0: смерть, убийство и приземление — каждый пак по очереди (рядом с игроком, лицом к камере)
 			CosmeticsData.setTestFull(null, null, null, null, null);
-			for (String au : new String[] { "aura_sakura", "aura_ender", "aura_oni", "aura_foxfire", "aura_ash", "aura_limbo", "aura_eclipse" }) {
+			for (String au : new String[] { "aura_snow", "aura_blizzard" }) {
 				ctx.runOnClient(mc -> AuraFx.testDeath(mc.player.getX() + 1.4, mc.player.getY(), mc.player.getZ() + 0.6, au));
 				ctx.waitTicks(14);
 				ctx.takeScreenshot("01l-death-" + au);
@@ -222,7 +226,7 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 				ctx.waitTicks(50);
 			}
 			ctx.runOnClient(mc -> mc.options.setCameraType(CameraType.THIRD_PERSON_BACK));
-			for (String au : new String[] { "aura_eclipse", "aura_foxfire", "aura_sakura" }) {
+			for (String au : new String[] { "aura_snow", "aura_blizzard" }) {
 				CosmeticsData.setTestFull(null, null, au, null, null);
 				ctx.getInput().holdKey(o -> o.keyUp);
 				ctx.waitTicks(16);
