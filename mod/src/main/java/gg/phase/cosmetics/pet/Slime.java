@@ -21,6 +21,8 @@ public final class Slime {
 	// ── Выражения лица ──
 	public static final int NORMAL = 0, BLINK = 1, HAPPY = 2, SAD = 3, WOW = 4, SLEEP = 5;
 	public static final String[] FACE_MODEL = { "slime_face", "slime_face_blink", "slime_face_happy", "slime_face_sad", "slime_face_wow", "slime_face_sleep" };
+	/** Снеговичок — те же выражения, свои модели */
+	public static final String[] SNOWY_FACE_MODEL = { "snowy_face", "snowy_face_blink", "snowy_face_happy", "snowy_face_sad", "snowy_face_wow", "snowy_face_sleep" };
 
 	public enum Act { IDLE, PERCH, STAY, PETTED, FLIP, WOW, DANCE, ROLL, VISIT, SULK, GUARD }
 
@@ -35,6 +37,8 @@ public final class Slime {
 	/** Для автотеста: принудительное выражение (−1 — как обычно) */
 	public int forceFace = -1;
 	public String color = "";
+	/** Снеговичок (приз Зимнего домика): повадки слизня, но снежное тело и снежные звуки */
+	public boolean snowy;
 	public float age;
 
 	// на плече: «пристёгнут» к плечу и рисуется вместе с хозяином

@@ -319,6 +319,7 @@ public class PhaseMenuScreen extends Screen {
 
 	// ── Питомец ──
 	private static final String[][] DRAGON_COLORS = { { "default", "Эндер" }, { "crimson", "Пламя" }, { "frost", "Иней" }, { "gold", "Злато" }, { "void", "Бездна" }, { "prism", "Призма" } };
+	private static final String[][] SNOWY_COLORS = { { "default", "Снежный" } };
 	private static final String[][] SLIME_COLORS = { { "default", "Лайм" }, { "sakura", "Сакура" }, { "frost", "Иней" }, { "lava", "Магма" }, { "honey", "Мёд" }, { "void", "Бездна" }, { "prism", "Призма" } };
 
 	private int pet(CosmeticsData.Mine m, int x, int y, int w) {
@@ -343,10 +344,12 @@ public class PhaseMenuScreen extends Screen {
 			() -> CosmeticsData.mine != null && CosmeticsData.mine.pet() == null, () -> this.equip("pet", null)));
 		y += rh + 10;
 		boolean shown = m.pet() != null;
-		boolean slime = "slime".equals(m.pet() != null ? m.pet() : pets.get(0).id());
-		String petWord = slime ? "СЛИЗНЯ" : "ДРАКОНЧИКА";
+		String petId = m.pet() != null ? m.pet() : pets.get(0).id();
+		boolean snowy = "snowman".equals(petId);
+		boolean slime = snowy || "slime".equals(petId); // снеговичок умеет всё то же, что слизень
+		String petWord = snowy ? "СНЕГОВИЧКА" : slime ? "СЛИЗНЯ" : "ДРАКОНЧИКА";
 		y = this.section("РАСКРАСКА " + petWord, x, y);
-		String[][] colors = slime ? SLIME_COLORS : DRAGON_COLORS;
+		String[][] colors = snowy ? SNOWY_COLORS : slime ? SLIME_COLORS : DRAGON_COLORS;
 		java.util.Set<String> valid = new java.util.HashSet<>();
 		for (String[] c : colors) valid.add(c[0]);
 		for (int i = 0; i < colors.length; i++) {

@@ -38,6 +38,7 @@ public final class SlimeRenderer {
 		float pitch = Mth.lerp(pt, s.pitchO, s.pitch);
 		float roll = Mth.lerp(pt, s.rollO, s.roll);
 		float sq = Mth.lerp(pt, s.sqO, s.sq);
+		if (s.snowy) sq *= 0.55F; // снег не желе: пружинит заметно слабее
 		float sy = 1F - sq, sxz = 1F + sq * 0.55F;
 
 		pose.pushPose();
@@ -45,15 +46,21 @@ public final class SlimeRenderer {
 		pose.scale(SCALE, SCALE, SCALE);
 		pose.rotateDegrees(Axis.YP, 180F - yaw);
 		if (pitch != 0F || roll != 0F) {
-			float c = 5.5F * PX; // центр слизня
+			float c = (s.snowy ? 7.5F : 5.5F) * PX; // центр тела
 			pose.translate(0F, c, 0F);
 			pose.rotateDegrees(Axis.XP, pitch);
 			pose.rotateDegrees(Axis.ZP, roll);
 			pose.translate(0F, -c, 0F);
 		}
 		pose.scale(sxz, sy, sxz);
-		String tint = SKINS.contains(s.color) ? "__" + s.color : "";
 		int face = Mth.clamp(s.face, 0, Slime.FACE_MODEL.length - 1);
+		if (s.snowy) {
+			CosmeticsModels.get("snowy_core").submit(pose, out, light, OverlayTexture.NO_OVERLAY, 0);
+			CosmeticsModels.get(Slime.SNOWY_FACE_MODEL[face]).submit(pose, out, light, OverlayTexture.NO_OVERLAY, 0);
+			pose.popPose();
+			return;
+		}
+		String tint = SKINS.contains(s.color) ? "__" + s.color : "";
 		// сначала непрозрачное (ядро, лицо), потом полупрозрачная оболочка
 		CosmeticsModels.get("slime_core" + tint).submit(pose, out, light, OverlayTexture.NO_OVERLAY, 0);
 		CosmeticsModels.get(Slime.FACE_MODEL[face] + tint).submit(pose, out, light, OverlayTexture.NO_OVERLAY, 0);

@@ -168,6 +168,12 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 				ctx.runOnClient(mc -> mc.player.setYRot(0F));
 				CosmeticsData.setTestWear(null, null, null, null, null, null, null);
 				ctx.waitTicks(5);
+				// ── 4.4: снеговичок — главный приз Зимнего домика ──
+				CosmeticsData.setTestWear("hat_santa", "snowman", null, null, null, "scarf_red", "mittens_red");
+				ctx.waitTicks(50);
+				ctx.takeScreenshot("x-snowman");
+				CosmeticsData.setTestWear(null, null, null, null, null, null, null);
+				ctx.waitTicks(5);
 			CosmeticsData.setTest("kabuto", "ender_dragon", "aura_sakura");
 			ctx.waitTicks(40);
 			ctx.takeScreenshot("01-skin-hat-pet-fly");

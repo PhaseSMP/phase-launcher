@@ -63,14 +63,19 @@ public final class PetManager implements PetFx {
 			if (w == null || w.pet() == null || pl.isSpectator() || pl.isInvisible()) continue;
 			String mode = own ? cfg.mode : w.mode() == null ? "follow" : w.mode();
 			String col = w.petColor();
-			if ("slime".equals(w.pet())) {
+			boolean snowy = "snowman".equals(w.pet());
+			if (snowy || "slime".equals(w.pet())) {
 				aliveSlimes.add(pl.getId());
 				Slime sl = this.slimes.computeIfAbsent(pl.getId(), id -> {
 					float by = pl.yBodyRot * Mth.DEG_TO_RAD;
 					return new Slime(id, pl.position().add(Mth.cos(by) * 0.9, 0, Mth.sin(by) * 0.9));
 				});
-				sl.color = col == null || col.equals("default") ? "" : col;
+				sl.color = snowy || col == null || col.equals("default") ? "" : col;
+				sl.snowy = snowy;
 				sl.tick(pl, mode, this, own);
+				// вокруг снеговичка тихо кружат снежинки
+				if (snowy && this.rnd.nextInt(12) == 0)
+					mc.level.addParticle(ParticleTypes.SNOWFLAKE, sl.pos.x + (this.rnd.nextDouble() - 0.5) * 0.5, sl.pos.y + 0.8, sl.pos.z + (this.rnd.nextDouble() - 0.5) * 0.5, 0, -0.01, 0);
 				continue;
 			}
 			if (!"ender_dragon".equals(w.pet())) continue;
@@ -205,12 +210,23 @@ public final class PetManager implements PetFx {
 
 	private Vec3 top(Slime s) { return s.pos.add(0, 0.4, 0); }
 
-	void slimeHop(Slime s) { sound(s.pos, SoundEvents.SLIME_JUMP_SMALL, 0.22F, 1.45F); }
+	void slimeHop(Slime s) {
+		if (s.snowy) sound(s.pos, SoundEvents.SNOW_STEP, 0.35F, 1.3F);
+		else sound(s.pos, SoundEvents.SLIME_JUMP_SMALL, 0.22F, 1.45F);
+	}
 
 	void slimeLand(Slime s, boolean big) {
-		sound(s.pos, SoundEvents.SLIME_SQUISH_SMALL, big ? 0.3F : 0.18F, big ? 1.25F : 1.5F);
+		if (s.snowy) sound(s.pos, SoundEvents.SNOW_PLACE, big ? 0.45F : 0.25F, big ? 1.1F : 1.4F);
+		else sound(s.pos, SoundEvents.SLIME_SQUISH_SMALL, big ? 0.3F : 0.18F, big ? 1.25F : 1.5F);
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.level == null || !big) return;
+		if (s.snowy) {
+			for (int i = 0; i < 6; i++) {
+				double a = this.rnd.nextDouble() * Mth.TWO_PI;
+				mc.level.addParticle(ParticleTypes.ITEM_SNOWBALL, s.pos.x + Math.cos(a) * 0.22, s.pos.y + 0.05, s.pos.z + Math.sin(a) * 0.22, Math.cos(a) * 0.04, 0.05, Math.sin(a) * 0.04);
+			}
+			return;
+		}
 		boolean lime = s.color.isEmpty() || !SlimeRenderer.SKINS.contains(s.color);
 		for (int i = 0; i < 5; i++) {
 			double a = this.rnd.nextDouble() * Mth.TWO_PI;
@@ -230,7 +246,7 @@ public final class PetManager implements PetFx {
 	}
 
 	void slimeSad(Slime s) {
-		sound(s.pos, SoundEvents.SLIME_HURT_SMALL, 0.16F, 0.75F);
+		sound(s.pos, s.snowy ? SoundEvents.SNOW_BREAK : SoundEvents.SLIME_HURT_SMALL, s.snowy ? 0.3F : 0.16F, 0.75F);
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.level == null) return;
 		Vec3 t = top(s);
@@ -239,7 +255,7 @@ public final class PetManager implements PetFx {
 
 	void slimePurr(Slime s) {
 		sound(s.pos, SoundEvents.CAT_PURR_BABY.value(), 0.6F, 1.35F);
-		sound(s.pos, SoundEvents.SLIME_SQUISH_SMALL, 0.2F, 1.8F);
+		if (!s.snowy) sound(s.pos, SoundEvents.SLIME_SQUISH_SMALL, 0.2F, 1.8F);
 	}
 
 	void slimeHearts(Slime s) {
