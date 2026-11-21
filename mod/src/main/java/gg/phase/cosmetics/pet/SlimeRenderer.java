@@ -31,10 +31,12 @@ public final class SlimeRenderer {
 		// на плече: позиция от хозяина в этом же кадре — не отстаёт при прыжке и беге
 		Minecraft mc = Minecraft.getInstance();
 		if (s.perched && mc.level != null && mc.level.getEntity(s.ownerId) instanceof Player owner) {
-			Vec3 sh = Pet.shoulder(owner, pt, Mth.lerp(pt, s.perchYO, s.perchY));
-			x = sh.x - cam.x; y = sh.y - cam.y; z = sh.z - cam.z;
-			yaw = Mth.rotLerp(pt, owner.yBodyRotO, owner.yBodyRot);
+			Vec3 sh = Slime.shoulder(owner, pt, Mth.lerp(pt, s.perchYO, s.perchY));
+			x = sh.x - cam.x; y = sh.y - cam.y + Math.max(0F, Mth.lerp(pt, s.bobO, s.bob)); z = sh.z - cam.z;
 		}
+		// на плече — меньше (слизень 0.62, снеговичок 0.45), чтобы сидеть на плече, а не нависать над ним
+		float pk = Mth.lerp(pt, s.perchKO, s.perchK);
+		float k = SCALE * (1F - pk * (s.snowy ? 0.55F : 0.38F));
 		float pitch = Mth.lerp(pt, s.pitchO, s.pitch);
 		float roll = Mth.lerp(pt, s.rollO, s.roll);
 		float sq = Mth.lerp(pt, s.sqO, s.sq);
@@ -43,7 +45,7 @@ public final class SlimeRenderer {
 
 		pose.pushPose();
 		pose.translate(x, y, z);
-		pose.scale(SCALE, SCALE, SCALE);
+		pose.scale(k, k, k);
 		pose.rotateDegrees(Axis.YP, 180F - yaw);
 		if (pitch != 0F || roll != 0F) {
 			float c = (s.snowy ? 7.5F : 5.5F) * PX; // центр тела

@@ -128,6 +128,15 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 				ctx.waitTicks(5);
 				ctx.takeScreenshot("s06-shoulder-back");
 				ctx.runOnClient(mc -> mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT));
+				// 4.5: на плече — вид сбоку и в приседе (слизень сидит на самом плече, а не висит рядом)
+				ctx.runOnClient(mc -> mc.player.setYRot(75F));
+				ctx.waitTicks(25);
+				ctx.takeScreenshot("s07-shoulder-side");
+				ctx.runOnClient(mc -> mc.player.setShiftKeyDown(true));
+				ctx.waitTicks(15);
+				ctx.takeScreenshot("s08-shoulder-crouch");
+				ctx.runOnClient(mc -> { mc.player.setShiftKeyDown(false); mc.player.setYRot(0F); });
+				ctx.waitTicks(10);
 				Config.get().mode = "follow";
 				ctx.waitTicks(30);
 				ctx.getInput().holdKey(o -> o.keyDown);
@@ -172,6 +181,15 @@ public class CosmeticsGameTest implements FabricClientGameTest {
 				CosmeticsData.setTestWear("hat_santa", "snowman", null, null, null, "scarf_red", "mittens_red");
 				ctx.waitTicks(50);
 				ctx.takeScreenshot("x-snowman");
+				Config.get().mode = "shoulder";
+				ctx.waitTicks(40);
+				ctx.takeScreenshot("x-snowman-shoulder");
+				ctx.runOnClient(mc -> mc.player.setYRot(75F));
+				ctx.waitTicks(20);
+				ctx.takeScreenshot("x-snowman-shoulder-side");
+				ctx.runOnClient(mc -> mc.player.setYRot(0F));
+				Config.get().mode = "follow";
+				ctx.waitTicks(20);
 				CosmeticsData.setTestWear(null, null, null, null, null, null, null);
 				ctx.waitTicks(5);
 			CosmeticsData.setTest("kabuto", "ender_dragon", "aura_sakura");

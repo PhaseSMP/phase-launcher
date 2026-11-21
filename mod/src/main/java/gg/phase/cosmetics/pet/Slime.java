@@ -44,7 +44,19 @@ public final class Slime {
 	// на плече: «пристёгнут» к плечу и рисуется вместе с хозяином
 	public boolean perched;
 	public double perchY = PERCH_STAND, perchYO = PERCH_STAND;
-	static final double PERCH_STAND = 1.5, PERCH_CROUCH = 1.22;
+	// модель игрока рисуется в масштабе 0.9375: верх плеча — 24 px × 0.9375 = 1.406 блока над ногами
+	static final double PERCH_STAND = 1.405, PERCH_CROUCH = 1.16;
+	/** Центр плеча — на 0.36 блока вбок от оси игрока (середина руки) */
+	static final double PERCH_SIDE = 0.36;
+	/** 0 — на земле, 1 — на плече (там он меньше, чтобы помещаться на плече, а не нависать) */
+	public float perchK, perchKO;
+	/** Подскок на плече (блоки) — пружинит от шагов и прыжков хозяина */
+	public float bob, bobO;
+	private float bobV, rollV, pitchV, stepPhase;
+	private float ownerYawPrev = Float.NaN;
+	private double ownerSpeedPrev;
+	private float lookYaw = Float.NaN;
+	private int lookFor, lookIn = 80, scaredLeft, scanIn, lastLevel = -1;
 
 	public Act act = Act.IDLE;
 	private int actTicks, actLen;
@@ -103,6 +115,7 @@ public final class Slime {
 		this.prevPos = this.pos;
 		this.yawO = this.yaw; this.pitchO = this.pitch; this.rollO = this.roll; this.sqO = this.sq;
 		this.perchYO = this.perchY;
+		this.bobO = this.bob; this.perchKO = this.perchK;
 		this.age++;
 		this.actTicks++;
 		Level level = owner.level();
@@ -155,6 +168,21 @@ public final class Slime {
 		}
 		this.wasHurt = hurtNow;
 
+		// враждебный моб рядом — пугается и прячется за хозяина; новый уровень у хозяина — радуется и пляшет
+		if (--this.scanIn <= 0) {
+			this.scanIn = 10;
+			boolean danger = false;
+			for (Entity e : level.getEntities(owner, owner.getBoundingBox().inflate(5.0))) if (e instanceof Enemy && e.isAlive()) { danger = true; break; }
+			if (danger && this.scaredLeft == 0) this.wowLeft = Math.max(this.wowLeft, 12);
+			this.scaredLeft = danger ? 30 : Math.max(0, this.scaredLeft - 10);
+		}
+		if (this.lastLevel >= 0 && owner.experienceLevel > this.lastLevel && !special) {
+			if (this.act == Act.IDLE) begin(Act.DANCE, 60);
+			this.happyLeft = 60; this.bobV += 0.08F;
+			fx.slimeNote(this);
+		}
+		this.lastLevel = owner.experienceLevel;
+
 		// ── Что делаем ──
 		Vec3 goal = null;             // куда скакать (точка на земле)
 		boolean faceOwner = true;
@@ -166,15 +194,39 @@ public final class Slime {
 				double th = owner.isShiftKeyDown() || owner.isCrouching() ? PERCH_CROUCH : PERCH_STAND;
 				if (owner.isSleeping() || owner.isPassenger() && !owner.onGround()) th += 0.05;
 				this.perchY += (th - this.perchY) * 0.55;
-				Vec3 sh = Pet.shoulder(owner, 1F, this.perchY);
+				Vec3 sh = shoulder(owner, 1F, this.perchY);
 				if (this.perched) {
 					this.pos = sh; this.hopping = false; this.falling = false;
-					this.yaw = owner.yBodyRot;
-					// хозяин прыгнул или приземлился — желе на плече пружинит
+					// смотрит туда же, куда хозяин (с ленцой), иногда — на самого хозяина или назад
+					if (this.lookFor > 0) this.lookFor--; else this.lookYaw = Float.NaN;
+					if (--this.lookIn <= 0) {
+						this.lookIn = 70 + this.rnd.nextInt(140);
+						int r = this.rnd.nextInt(10);
+						if (r < 4) { this.lookYaw = Pet.yawTo(this.pos, owner.getEyePosition()); this.lookFor = 30; this.happyLeft = Math.max(this.happyLeft, 20); }
+						else if (r < 6) { this.lookYaw = owner.getYHeadRot() + (this.rnd.nextBoolean() ? 110F : -110F); this.lookFor = 24; }
+					}
+					float want = Float.isNaN(this.lookYaw) ? owner.getYHeadRot() : this.lookYaw;
+					this.yaw += Mth.clamp(Mth.wrapDegrees(want - this.yaw), -11F, 11F);
+					// инерция желе: поворот хозяина — заваливается вбок, разгон и торможение — наклон назад и вперёд
+					if (!Float.isNaN(this.ownerYawPrev)) this.rollV += Mth.clamp(Mth.wrapDegrees(owner.yBodyRot - this.ownerYawPrev), -35F, 35F) * 0.5F;
+					this.ownerYawPrev = owner.yBodyRot;
+					double sp = Math.sqrt(mdx * mdx + mdz * mdz);
+					this.pitchV += Mth.clamp((float) (sp - this.ownerSpeedPrev) * -140F, -9F, 9F);
+					this.ownerSpeedPrev = sp;
+					// шаги: плечо покачивается в такт ходьбе — слизень подпрыгивает на каждом шаге
+					if (owner.onGround() && sp > 0.02) {
+						float ph = this.stepPhase;
+						this.stepPhase += (float) Math.min(sp, 0.35) * 3.6F;
+						if (Mth.sin(ph) < 0 && Mth.sin(this.stepPhase) >= 0) { this.bobV += (float) Math.min(sp, 0.3) * 0.12F; this.sqV += 0.06F; }
+					}
+					// хозяин прыгнул — подлетает и шлёпается обратно; приземлился — сплющивается
 					double vy = owner.getY() - owner.yo;
-					if (vy - this.ownerVyPrev > 0.25) this.sqV -= 0.25F;
-					if (this.ownerVyPrev - vy > 0.25) this.sqV += 0.35F;
+					if (vy - this.ownerVyPrev > 0.25) { this.bobV += 0.07F; this.sqV -= 0.22F; }
+					if (this.ownerVyPrev - vy > 0.25) { this.sqV += 0.38F; this.rollV += (this.rnd.nextFloat() - 0.5F) * 12F; }
 					this.ownerVyPrev = vy;
+					if (owner.isSprinting()) { this.sqWant = 0.17F; this.happyLeft = Math.max(this.happyLeft, 4); } // держится крепче и радуется скорости
+					else if (owner.isShiftKeyDown() || owner.isCrouching()) this.sqWant = 0.1F;
+					if (this.scaredLeft > 0) { this.sqWant = 0.24F; this.sadLeft = Math.max(this.sadLeft, 3); } // моб рядом — вжимается в плечо
 					if (this.idleFor > 900) this.face = SLEEP;
 				} else if (!this.hopping) {
 					// запрыгивает на плечо
@@ -263,6 +315,7 @@ public final class Slime {
 			}
 			default -> { // IDLE — рядом с хозяином, слева и чуть сзади
 				goal = base.add(left.scale(0.85)).add(fwd.scale(-0.35));
+				if (this.scaredLeft > 0) { goal = base.add(fwd.scale(-0.8)).add(left.scale(0.25)); hopScale = 1.3F; if (this.wowLeft == 0) this.sadLeft = Math.max(this.sadLeft, 3); } // прячется за хозяина
 				if (owner.isSprinting()) { goal = base.add(left.scale(0.7)).add(fwd.scale(-0.9)); hopScale = 1.6F; }
 				// мало здоровья — держится вплотную и грустит
 				if (owner.getHealth() > 0F && owner.getHealth() <= 6F) { goal = base.add(left.scale(0.6)).add(fwd.scale(0.25)); this.sadLeft = Math.max(this.sadLeft, 4); }
@@ -321,11 +374,14 @@ public final class Slime {
 				if (this.hopRoll != 0) { this.roll = this.rollO = 0; }
 				this.hopFlip = 0; this.hopRoll = 0;
 				this.sqV += (float) Math.min(0.75, 0.3 + this.hopH * 0.5);
+				float wob = (float) Math.min(1.0, 0.35 + this.hopH);
+				this.rollV += (this.rnd.nextFloat() - 0.5F) * 14F * wob;
+				this.pitchV += (this.rnd.nextFloat() - 0.5F) * 10F * wob;
 				this.restLeft = this.act == Act.DANCE ? 3 : 2 + this.rnd.nextInt(4);
 				fx.slimeLand(this, this.hopH > 0.6);
 				if (this.act == Act.PERCH) {
-					Vec3 sh = Pet.shoulder(owner, 1F, this.perchY);
-					if (this.pos.distanceTo(sh) < 0.45) { this.perched = true; this.pos = sh; }
+					Vec3 sh = shoulder(owner, 1F, this.perchY);
+					if (this.pos.distanceTo(sh) < 0.45) { this.perched = true; this.pos = sh; this.sqV += 0.3F; this.happyLeft = 20; this.ownerYawPrev = Float.NaN; }
 				}
 			}
 			this.yaw += Mth.clamp(Mth.wrapDegrees(Pet.yawTo(this.hopFrom, this.hopTo) - this.yaw), -18F, 18F) * (this.hopFrom.distanceToSqr(this.hopTo) > 0.01 ? 1F : 0F);
@@ -374,7 +430,19 @@ public final class Slime {
 		if (!this.hopping && this.crouchLeft == 0) this.sqV += (want - this.sq) * 0.32F;
 		this.sqV *= 0.74F;
 		this.sq = Mth.clamp(this.sq + this.sqV, -0.45F, 0.45F);
-		if (!this.hopping && this.act != Act.DANCE && this.act != Act.ROLL) this.roll *= 0.8F;
+		// наклоны — тоже на пружине: желе колышется, а не замирает
+		boolean trick = this.hopFlip != 0 || this.hopRoll != 0 || this.act == Act.DANCE;
+		if (!trick) {
+			this.rollV += -this.roll * 0.2F; this.rollV *= 0.76F; this.roll = Mth.clamp(this.roll + this.rollV, -32F, 32F);
+			this.pitchV += -this.pitch * 0.2F; this.pitchV *= 0.76F; this.pitch = Mth.clamp(this.pitch + this.pitchV, -28F, 28F);
+		} else { this.rollV = 0; this.pitchV = 0; }
+		// подскок на плече
+		this.bobV += -this.bob * 0.28F; this.bobV *= 0.72F; this.bob += this.bobV;
+		if (!this.perched) { this.bob *= 0.5F; this.bobV = 0; }
+		if (this.bob < -0.01F) { this.bob = -0.01F; this.bobV = Math.abs(this.bobV) * 0.3F; }
+		// на плече он меньше; плавно уменьшается ещё в прыжке на плечо
+		float pk = this.perched ? 1F : this.act == Act.PERCH && this.hopping ? Mth.clamp(this.hopT / (float) Math.max(1, this.hopLen), 0F, 1F) : 0F;
+		this.perchK += (pk - this.perchK) * 0.35F;
 
 		// ── Лицо ──
 		boolean asleep = this.face == SLEEP && (this.act == Act.IDLE && this.idleFor > 640 || this.act == Act.STAY && this.actTicks > 1300 || this.act == Act.PERCH && this.idleFor > 900);
@@ -397,6 +465,16 @@ public final class Slime {
 			this.chirpIn = 300 + this.rnd.nextInt(400);
 			if (this.face == SAD) fx.slimeSad(this); else fx.slimeChirp(this);
 		}
+	}
+
+	/** Точка на плече хозяина (низ слизня), с учётом наклона корпуса в приседе */
+	static Vec3 shoulder(Player owner, float pt, double height) {
+		float by = Mth.rotLerp(pt, owner.yBodyRotO, owner.yBodyRot) * Mth.DEG_TO_RAD;
+		double crouch = Mth.clamp((PERCH_STAND - height) / (PERCH_STAND - PERCH_CROUCH), 0, 1);
+		double fwdK = crouch * 0.16;
+		double x = Mth.lerp(pt, owner.xo, owner.getX()) + Mth.cos(by) * PERCH_SIDE - Mth.sin(by) * fwdK;
+		double z = Mth.lerp(pt, owner.zo, owner.getZ()) + Mth.sin(by) * PERCH_SIDE + Mth.cos(by) * fwdK;
+		return new Vec3(x, Mth.lerp(pt, owner.yo, owner.getY()) + height, z);
 	}
 
 	private void startHop(PetManager fx, Vec3 from, Vec3 to, double h, int len, float flip, float roll) {
