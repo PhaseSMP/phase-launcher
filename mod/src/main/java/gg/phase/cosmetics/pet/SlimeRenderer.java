@@ -36,7 +36,7 @@ public final class SlimeRenderer {
 		}
 		// на плече — меньше (слизень 0.62, снеговичок 0.45), чтобы сидеть на плече, а не нависать над ним
 		float pk = Mth.lerp(pt, s.perchKO, s.perchK);
-		float k = SCALE * (1F - pk * (s.snowy ? 0.55F : 0.38F));
+		float k = SCALE * (1F - pk * (s.snowy ? 0.3F : 0.38F)); // снеговик на плече крупнее: премиум-питомец должен быть виден
 		float pitch = Mth.lerp(pt, s.pitchO, s.pitch);
 		float roll = Mth.lerp(pt, s.rollO, s.roll);
 		float sq = Mth.lerp(pt, s.sqO, s.sq);
