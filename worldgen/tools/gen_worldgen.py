@@ -520,7 +520,7 @@ MASTER = [
      P('trees_marsh'), 'minecraft:bamboo', 'minecraft:bamboo_light',
      'minecraft:flower_cherry', 'minecraft:flower_default', 'minecraft:patch_tall_grass_2', 'minecraft:patch_grass_plain',
      'minecraft:patch_grass_forest', 'minecraft:patch_grass_taiga', 'minecraft:patch_large_fern', 'minecraft:patch_dead_bush',
-     'minecraft:patch_dry_grass_desert', 'minecraft:leaf_litter', 'minecraft:brown_mushroom_normal', 'minecraft:red_mushroom_normal',
+     'minecraft:patch_dry_grass_desert', 'minecraft:patch_leaf_litter', 'minecraft:brown_mushroom_normal', 'minecraft:red_mushroom_normal',
      'minecraft:patch_sugar_cane', 'minecraft:patch_sugar_cane_swamp', 'minecraft:patch_waterlily', 'minecraft:patch_berry_rare',
      'minecraft:forest_rock',
      P('patch_wild_rice_common'), P('patch_wild_rice'), P('patch_wild_soybean'), P('patch_wild_daikon'), P('patch_wild_wasabi'),
@@ -562,7 +562,7 @@ biome('sakura_valley', 'cherry_grove', 0.6, 0.7, grass='#a8d36b', foliage='#a8d3
                  P('patch_wild_soybean'), P('patch_wild_tea')]})
 biome('momiji_highlands', 'dark_forest', 0.55, 0.7, grass='#b5a24a', foliage='#c0602a', water=W_JAPAN,
       extra={6: [P('ore_emerald')], 9: [P('trees_momiji'), P('trees_momiji_small'), P('trees_ginkgo'), 'minecraft:patch_grass_forest',
-                 'minecraft:leaf_litter', 'minecraft:patch_large_fern', P('patch_shiitake'), P('patch_wild_daikon'), 'minecraft:forest_rock']})
+                 'minecraft:patch_leaf_litter', 'minecraft:patch_large_fern', P('patch_shiitake'), P('patch_wild_daikon'), 'minecraft:forest_rock']})
 biome('sugi_forest', 'old_growth_spruce_taiga', 0.35, 0.85, grass='#5f9a4e', foliage='#3f7a3a', water='#3b6bc0',
       extra={6: [P('ore_emerald')], 8: [],
              9: [P('trees_sugi'), P('trees_sugi_spruce'), 'minecraft:patch_large_fern', 'minecraft:patch_grass_taiga',
