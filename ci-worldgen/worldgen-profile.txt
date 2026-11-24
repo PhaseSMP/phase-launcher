@@ -1,0 +1,40 @@
+samples on worldgen/server threads: 80
+
+== self time (top 35)
+ 10.0%  net.minecraft.world.level.biome.Climate$Parameter.span
+  3.8%  net.minecraft.world.level.biome.Climate$RTree.buildParameterSpace
+  2.5%  net.minecraft.tags.TagLoader.tryBuildTag
+  2.5%  com.mojang.serialization.DataResult$Instance.ap2
+  2.5%  net.minecraft.resources.Identifier.isValidNamespace
+  2.5%  java.util.HashMap.getNode
+  2.5%  java.util.Arrays.equals
+  2.5%  java.util.Objects.requireNonNull
+  2.5%  java.util.Comparator.lambda$comparingLong$6043328a$1
+  2.5%  java.util.TimSort.mergeLo
+  2.5%  net.minecraft.world.level.biome.Climate$RTree.lambda$comparator$0
+  2.5%  com.google.common.collect.MapMakerInternalMap$Segment.getEntry
+  1.2%  org.objectweb.asm.tree.InsnList.resetLabels
+  1.2%  jdk.internal.classfile.impl.SplitConstantPool.nameAndTypeEntry
+  1.2%  com.mojang.serialization.Codec$2.decode
+  1.2%  java.util.stream.Streams$StreamBuilderImpl.build
+  1.2%  jdk.internal.vm.StackableScope.head
+  1.2%  net.minecraft.server.packs.PathPackResources.lambda$listPath$0
+  1.2%  java.util.concurrent.locks.ReentrantReadWriteLock$NonfairSync.readerShouldBlock
+  1.2%  com.google.common.base.Joiner.join
+  1.2%  com.mojang.serialization.codecs.KeyDispatchCodec.<init>
+  1.2%  net.minecraft.core.registries.codec.RegistryFileCodec.decode
+  1.2%  com.mojang.serialization.Codec$12.read
+  1.2%  net.minecraft.resources.ResourceManagerRegistryLoadTask.lambda$load$2
+  1.2%  java.util.Optional.map
+  1.2%  java.util.stream.AbstractPipeline.wrapAndCopyInto
+  1.2%  java.util.function.Function.lambda$andThen$0
+  1.2%  java.io.BufferedReader.read
+  1.2%  net.minecraft.server.packs.resources.Resource.knownPackInfo
+  1.2%  net.minecraft.resources.ResourceManagerRegistryLoadTask.mixinextras$bridge$newRegistryLoadTask$PendingRegistration$17
+  1.2%  net.minecraft.util.ExtraCodecs.lambda$compactListCodec$0
+  1.2%  com.mojang.serialization.DataResult$Error.setLifecycle
+  1.2%  jdk.internal.misc.Unsafe.invalidInput
+  1.2%  com.mojang.serialization.JsonOps.getMap
+  1.2%  java.util.stream.AbstractPipeline.sourceStageSpliterator
+
+== inclusive, our code and worldgen (top 45)

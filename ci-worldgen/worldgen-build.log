@@ -5,6 +5,9 @@ Daemon will be stopped at the end of the build
 Fabric Loom: 1.19.4
 
 > Task :compileJava
+Note: /home/runner/work/phase-launcher/phase-launcher/worldgen/src/main/java/gg/phase/world/gen/feature/WaterFillFeature.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
 > Task :processResources
 > Task :classes
 > Task :processIncludeJars
@@ -14,6 +17,8 @@ Fabric Loom: 1.19.4
 > Task :assemble
 > Task :build
 
-BUILD SUCCESSFUL in 28s
+[Incubating] Problems report is available at: file:///home/runner/work/phase-launcher/phase-launcher/worldgen/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 38s
 4 actionable tasks: 4 executed
 Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.2/userguide/configuration_cache_enabling.html
