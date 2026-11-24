@@ -19,7 +19,7 @@ public class WorldShots implements FabricClientGameTest {
 	@Override
 	public void runTest(ClientGameTestContext ctx) {
 		ctx.runOnClient(mc -> {
-			mc.options.renderDistance().set(10);
+			mc.options.renderDistance().set(6);
 			mc.options.simulationDistance().set(5);
 			mc.options.fov().set(80);
 		});
@@ -99,7 +99,7 @@ public class WorldShots implements FabricClientGameTest {
 		try {
 			sp.getServer().runOnServer(server -> {
 				net.minecraft.server.level.ServerLevel lvl = server.overworld();
-				for (int i = -10; i <= 10; i++) for (int j = -10; j <= 10; j++) lvl.getChunk((x >> 4) + i, (z >> 4) + j);
+				for (int i = -6; i <= 6; i++) for (int j = -6; j <= 6; j++) lvl.getChunk((x >> 4) + i, (z >> 4) + j);
 			});
 		} catch (Throwable t) {
 			LOG.info("[shots] pregen failed for {}: {}", name, t.toString());
