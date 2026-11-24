@@ -409,7 +409,7 @@ public final class WorldLayout {
 
 	/** Steep stone towers with flat, slightly domed tops (Zhangjiajie / Hallelujah mountains). */
 	double karstSpires(double x, double z) {
-		final double cell = 38;
+		final double cell = 31;
 		long cx = (long) Math.floor(x / cell), cz = (long) Math.floor(z / cell);
 		double best = 0;
 		for (long i = cx - 1; i <= cx + 1; i++) {

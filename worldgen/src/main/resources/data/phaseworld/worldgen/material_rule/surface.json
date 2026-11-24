@@ -827,8 +827,39 @@
                           "type": "minecraft:steep"
                         },
                         "then_run": {
-                          "type": "minecraft:block",
-                          "result_state": "phaseworld:scoria"
+                          "type": "minecraft:sequence",
+                          "sequence": [
+                            {
+                              "type": "minecraft:condition",
+                              "if_true": {
+                                "type": "minecraft:noise_threshold",
+                                "noise": "minecraft:surface",
+                                "min_threshold": -1000000000.0,
+                                "max_threshold": -0.35
+                              },
+                              "then_run": {
+                                "type": "minecraft:block",
+                                "result_state": "phaseworld:scoria"
+                              }
+                            },
+                            {
+                              "type": "minecraft:condition",
+                              "if_true": {
+                                "type": "minecraft:noise_threshold",
+                                "noise": "minecraft:surface",
+                                "min_threshold": -0.35,
+                                "max_threshold": -0.1
+                              },
+                              "then_run": {
+                                "type": "minecraft:block",
+                                "result_state": "minecraft:packed_ice"
+                              }
+                            },
+                            {
+                              "type": "minecraft:block",
+                              "result_state": "minecraft:snow_block"
+                            }
+                          ]
                         }
                       },
                       {
