@@ -25,3 +25,18 @@ loom {
 }
 
 // the offline map preview and data generators live in tools/ and are not part of the jar
+
+fabricApi {
+	configureTests {
+		createSourceSet = true
+		modId = "phaseworld-test"
+		enableGameTests = false
+		enableClientGameTests = true
+		eula = true
+	}
+}
+
+// -Pprofile=true records a JFR profile of the self-test server (CI uses it to find slow worldgen code)
+if (project.hasProperty('profile')) {
+	loom.runs.server.vmArg "-XX:StartFlightRecording=filename=${project.rootDir}/run/worldgen.jfr,settings=profile,dumponexit=true"
+}

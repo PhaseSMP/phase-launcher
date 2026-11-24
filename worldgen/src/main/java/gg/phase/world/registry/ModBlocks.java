@@ -1,6 +1,9 @@
 package gg.phase.world.registry;
 
+import gg.phase.world.block.HangingPlantBlock;
+import gg.phase.world.block.LotusBlock;
 import gg.phase.world.block.PhaseCropBlock;
+import gg.phase.world.block.ShrubBlock;
 import gg.phase.world.block.WildPlantBlock;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
@@ -11,6 +14,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ColorRGBA;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.PlaceOnWaterBlockItem;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.AmethystClusterBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -44,9 +50,21 @@ public final class ModBlocks {
 
 	// ---- caves
 	public static final Block HIKARI_MOSS = reg("hikari_moss", Block::new,
-		props().mapColor(MapColor.GLOW_LICHEN).strength(0.1f).sound(SoundType.MOSS).lightLevel(s -> 10).pushReaction(PushReaction.POPPED), true);
+		props().mapColor(MapColor.GLOW_LICHEN).strength(0.1f).sound(SoundType.MOSS).lightLevel(s -> 6).pushReaction(PushReaction.POPPED), true);
 	public static final Block HIKARI_MOSS_CARPET = reg("hikari_moss_carpet", CarpetBlock::new,
-		props().mapColor(MapColor.GLOW_LICHEN).strength(0.1f).sound(SoundType.MOSS_CARPET).lightLevel(s -> 7).pushReaction(PushReaction.POPPED), true);
+		props().mapColor(MapColor.GLOW_LICHEN).strength(0.1f).sound(SoundType.MOSS_CARPET).lightLevel(s -> 4).pushReaction(PushReaction.POPPED), true);
+	/** Small glowing mushrooms of the luminous caves and the spirit forest floor. */
+	public static final Block GLOWCAP = reg("glowcap", WildPlantBlock::new,
+		plant().sound(SoundType.FUNGUS).mapColor(MapColor.COLOR_CYAN).lightLevel(s -> 10), true);
+	public static final Block GLOWCAP_BLOCK = reg("glowcap_block", Block::new,
+		props().mapColor(MapColor.COLOR_CYAN).strength(0.2f).sound(SoundType.WART_BLOCK).lightLevel(s -> 14).ignitedByLava(), true);
+	public static final Block GLOWCAP_STEM = reg("glowcap_stem", RotatedPillarBlock::new,
+		props().mapColor(MapColor.WOOL).strength(0.2f).sound(SoundType.STEM).ignitedByLava(), true);
+	public static final Block LUMEN_FERN = reg("lumen_fern", WildPlantBlock::new,
+		plant().mapColor(MapColor.COLOR_LIGHT_BLUE).lightLevel(s -> 7), true);
+	/** Glowing vines that hang from cave ceilings and spirit trees. */
+	public static final Block SPIRIT_VINE = reg("spirit_vine", HangingPlantBlock::new,
+		plant().mapColor(MapColor.COLOR_LIGHT_BLUE).sound(SoundType.CAVE_VINES).lightLevel(s -> 9), true);
 	public static final Block ECLIPSE_CRYSTAL_BLOCK = reg("eclipse_crystal_block", Block::new,
 		props().mapColor(MapColor.COLOR_PURPLE).requiresCorrectToolForDrops().strength(1.5f).sound(SoundType.AMETHYST).lightLevel(s -> 6), true);
 	public static final Block ECLIPSE_CRYSTAL_CLUSTER = reg("eclipse_crystal_cluster", p -> new AmethystClusterBlock(7.0f, 3.0f, p),
@@ -60,6 +78,20 @@ public final class ModBlocks {
 	public static final Block GINKGO_LEAVES = reg("ginkgo_leaves",
 		p -> new UntintedParticleLeavesBlock(0.02f, ParticleTypes.YELLOW_POPLAR_LEAVES, AmbientLeavesBlockSoundPlayer.noAmbientSound(), p),
 		BlockBehaviour.Properties.ofFullCopy(Blocks.RED_POPLAR_LEAVES).mapColor(MapColor.COLOR_YELLOW), true);
+
+	public static final Block WISTERIA_LEAVES = reg("wisteria_leaves",
+		p -> new UntintedParticleLeavesBlock(0.02f, ParticleTypes.CHERRY_LEAVES, AmbientLeavesBlockSoundPlayer.noAmbientSound(), p),
+		BlockBehaviour.Properties.ofFullCopy(Blocks.CHERRY_LEAVES).mapColor(MapColor.COLOR_PURPLE), true);
+	public static final Block WISTERIA_VINE = reg("wisteria_vine", HangingPlantBlock::new,
+		plant().mapColor(MapColor.COLOR_PURPLE).sound(SoundType.CHERRY_LEAVES), true);
+
+	// ---- flowers and grasses
+	public static final Block HYDRANGEA_BLUE = reg("hydrangea_blue", ShrubBlock::new, shrub(MapColor.COLOR_BLUE), true);
+	public static final Block HYDRANGEA_PURPLE = reg("hydrangea_purple", ShrubBlock::new, shrub(MapColor.COLOR_PURPLE), true);
+	public static final Block HYDRANGEA_PINK = reg("hydrangea_pink", ShrubBlock::new, shrub(MapColor.COLOR_PINK), true);
+	public static final Block HIGANBANA = reg("higanbana", WildPlantBlock::new, plant().mapColor(MapColor.COLOR_RED), true);
+	public static final Block SUSUKI = reg("susuki", DoublePlantBlock::new, plant().mapColor(MapColor.SAND).replaceable(), true);
+	public static final Block LOTUS = regLotus();
 
 	// ---- shrines and dungeons
 	public static final Block SHRINE_BRICKS = reg("shrine_bricks", Block::new, stone(), true);
@@ -105,6 +137,23 @@ public final class ModBlocks {
 
 	private static BlockBehaviour.Properties crop() {
 		return props().mapColor(MapColor.PLANT).noCollision().randomTicks().instabreak().sound(SoundType.CROP).pushReaction(PushReaction.POPPED);
+	}
+
+	private static BlockBehaviour.Properties shrub(MapColor color) {
+		return props().mapColor(color).strength(0.2f).sound(SoundType.AZALEA_LEAVES).noOcclusion()
+			.isValidSpawn((st, l, p, t) -> false).isSuffocating((st, l, p) -> false).isViewBlocking((st, l, p, b) -> false).ignitedByLava()
+			.pushReaction(PushReaction.POPPED);
+	}
+
+	private static Block regLotus() {
+		ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, id("lotus"));
+		Block block = new LotusBlock(props().mapColor(MapColor.PLANT).instabreak().sound(SoundType.LILY_PAD).noOcclusion()
+			.pushReaction(PushReaction.POPPED).setId(key));
+		Registry.register(BuiltInRegistries.BLOCK, key, block);
+		ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, id("lotus"));
+		Registry.register(BuiltInRegistries.ITEM, itemKey, new PlaceOnWaterBlockItem(block, new Item.Properties().setId(itemKey).useBlockDescriptionPrefix()));
+		WITH_ITEMS.add(block);
+		return block;
 	}
 
 	private static BlockBehaviour.Properties plant() {

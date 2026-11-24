@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:river",
+    "phaseworld:reed_marsh",
+    "phaseworld:lotus_marsh"
+  ]
+}

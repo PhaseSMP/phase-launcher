@@ -1,0 +1,20 @@
+{
+  "type": "phaseworld:giant_tree",
+  "shape": "ginkgo",
+  "log": {
+    "Name": "minecraft:oak_log",
+    "Properties": {
+      "axis": "y"
+    }
+  },
+  "leaves": {
+    "Name": "phaseworld:ginkgo_leaves",
+    "Properties": {
+      "distance": "7",
+      "persistent": "false",
+      "waterlogged": "false"
+    }
+  },
+  "min_height": 20,
+  "max_height": 30
+}

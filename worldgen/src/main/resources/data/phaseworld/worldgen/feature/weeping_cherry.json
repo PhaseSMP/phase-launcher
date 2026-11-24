@@ -1,0 +1,20 @@
+{
+  "type": "phaseworld:giant_tree",
+  "shape": "weeping",
+  "log": {
+    "Name": "minecraft:cherry_log",
+    "Properties": {
+      "axis": "y"
+    }
+  },
+  "leaves": {
+    "Name": "minecraft:cherry_leaves",
+    "Properties": {
+      "distance": "7",
+      "persistent": "false",
+      "waterlogged": "false"
+    }
+  },
+  "min_height": 12,
+  "max_height": 17
+}

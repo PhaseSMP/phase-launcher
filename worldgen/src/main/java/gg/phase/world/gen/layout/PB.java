@@ -6,47 +6,64 @@ package gg.phase.world.gen.layout;
  * Never reorder: append new biomes at the end.
  */
 public enum PB {
-	DEEP_OCEAN("deep_ocean"),
-	OCEAN("ocean"),
-	INNER_SEA("inner_sea"),
-	BEACH("beach"),
-	BLACK_SAND_BEACH("black_sand_beach"),
-	ROCKY_SHORE("rocky_shore"),
-	RIVER("river"),
-	SAKURA_VALLEY("sakura_valley"),
-	MOMIJI_HIGHLANDS("momiji_highlands"),
-	SUGI_FOREST("sugi_forest"),
-	BAMBOO_GROVE("bamboo_grove"),
-	RICE_TERRACES("rice_terraces"),
-	TEA_HILLS("tea_hills"),
-	ALPINE_PEAKS("alpine_peaks"),
-	SNOWY_HIGHLANDS("snowy_highlands"),
-	ONSEN_VALLEY("onsen_valley"),
-	PINE_CLIFFS("pine_cliffs"),
-	REED_MARSH("reed_marsh"),
-	SAND_DUNES("sand_dunes"),
-	FROZEN_SUMMITS("frozen_summits"),
-	JUKAI_FOREST("jukai_forest"),
-	FUJI_SUBALPINE("fuji_subalpine"),
-	FUJI_SLOPES("fuji_slopes"),
-	FUJI_SUMMIT("fuji_summit"),
-	DEEP_CAVERNS("deep_caverns"),
-	HIKARI_GROTTO("hikari_grotto"),
-	ECLIPSE_HOLLOWS("eclipse_hollows"),
-	MAGMA_TUBES("magma_tubes"),
-	FLOODED_CAVES("flooded_caves"),
-	ICE_CAVES("ice_caves");
+	DEEP_OCEAN("deep_ocean", false),
+	OCEAN("ocean", false),
+	INNER_SEA("inner_sea", false),
+	BEACH("beach", false),
+	BLACK_SAND_BEACH("black_sand_beach", false),
+	ROCKY_SHORE("rocky_shore", false),
+	RIVER("river", false),
+	SAKURA_VALLEY("sakura_valley", false),
+	MOMIJI_HIGHLANDS("momiji_highlands", false),
+	SUGI_FOREST("sugi_forest", false),
+	BAMBOO_GROVE("bamboo_grove", false),
+	RICE_TERRACES("rice_terraces", false),
+	TEA_HILLS("tea_hills", false),
+	ALPINE_PEAKS("alpine_peaks", false),
+	SNOWY_HIGHLANDS("snowy_highlands", false),
+	ONSEN_VALLEY("onsen_valley", false),
+	PINE_CLIFFS("pine_cliffs", false),
+	REED_MARSH("reed_marsh", false),
+	SAND_DUNES("sand_dunes", false),
+	FROZEN_SUMMITS("frozen_summits", false),
+	JUKAI_FOREST("jukai_forest", false),
+	FUJI_SUBALPINE("fuji_subalpine", false),
+	FUJI_SLOPES("fuji_slopes", false),
+	FUJI_SUMMIT("fuji_summit", false),
+	DEEP_CAVERNS("deep_caverns", true),
+	HIKARI_GROTTO("hikari_grotto", true),
+	ECLIPSE_HOLLOWS("eclipse_hollows", true),
+	MAGMA_TUBES("magma_tubes", true),
+	FLOODED_CAVES("flooded_caves", true),
+	ICE_CAVES("ice_caves", true),
+	// ---- 1.1
+	WISTERIA_GROVE("wisteria_grove", false),
+	SPIRIT_FOREST("spirit_forest", false),
+	GINKGO_GROVE("ginkgo_grove", false),
+	HYDRANGEA_HILLS("hydrangea_hills", false),
+	HIGANBANA_FIELDS("higanbana_fields", false),
+	LOTUS_MARSH("lotus_marsh", false),
+	KARST_SPIRES("karst_spires", false),
+	CORAL_COAST("coral_coast", false),
+	JIGOKU_WASTES("jigoku_wastes", false),
+	SHIRAKABA_PLATEAU("shirakaba_plateau", false),
+	ALPINE_MEADOW("alpine_meadow", false),
+	LUMINOUS_DEPTHS("luminous_depths", true),
+	ROOT_HALLS("root_halls", true),
+	ABYSS("abyss", true);
 
 	public static final PB[] VALUES = values();
 
 	public final String id;
+	private final boolean cave;
 
-	PB(String id) {
+	PB(String id, boolean cave) {
 		this.id = id;
+		this.cave = cave;
 	}
 
 	public boolean isCave() {
-		return ordinal() >= DEEP_CAVERNS.ordinal();
+		return this.cave;
 	}
 
 	public static PB byId(int ordinal) {

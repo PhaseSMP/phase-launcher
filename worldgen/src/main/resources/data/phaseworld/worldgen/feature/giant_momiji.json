@@ -1,0 +1,20 @@
+{
+  "type": "phaseworld:giant_tree",
+  "shape": "broad",
+  "log": {
+    "Name": "minecraft:dark_oak_log",
+    "Properties": {
+      "axis": "y"
+    }
+  },
+  "leaves": {
+    "Name": "phaseworld:momiji_leaves",
+    "Properties": {
+      "distance": "7",
+      "persistent": "false",
+      "waterlogged": "false"
+    }
+  },
+  "min_height": 16,
+  "max_height": 22
+}

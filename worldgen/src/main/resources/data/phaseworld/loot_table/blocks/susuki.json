@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:match_block",
+        "blocks": "phaseworld:susuki",
+        "state": {
+          "half": "lower"
+        }
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "phaseworld:susuki"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "phaseworld:blocks/susuki"
+}

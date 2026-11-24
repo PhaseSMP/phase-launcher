@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": "phaseworld:glowcap"
+  },
+  "result": {
+    "id": "phaseworld:glowcap_block"
+  }
+}

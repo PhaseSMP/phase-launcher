@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "id": "phaseworld-test",
+  "version": "1.0.0",
+  "name": "Phase World screenshots",
+  "environment": "*",
+  "entrypoints": { "fabric-client-gametest": ["gg.phase.world.test.WorldShots"] }
+}

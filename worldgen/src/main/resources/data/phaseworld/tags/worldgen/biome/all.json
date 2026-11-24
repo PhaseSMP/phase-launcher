@@ -24,11 +24,25 @@
     "phaseworld:fuji_subalpine",
     "phaseworld:fuji_slopes",
     "phaseworld:fuji_summit",
+    "phaseworld:wisteria_grove",
+    "phaseworld:spirit_forest",
+    "phaseworld:ginkgo_grove",
+    "phaseworld:hydrangea_hills",
+    "phaseworld:higanbana_fields",
+    "phaseworld:lotus_marsh",
+    "phaseworld:karst_spires",
+    "phaseworld:coral_coast",
+    "phaseworld:jigoku_wastes",
+    "phaseworld:shirakaba_plateau",
+    "phaseworld:alpine_meadow",
     "phaseworld:deep_caverns",
     "phaseworld:hikari_grotto",
     "phaseworld:eclipse_hollows",
     "phaseworld:magma_tubes",
     "phaseworld:flooded_caves",
-    "phaseworld:ice_caves"
+    "phaseworld:ice_caves",
+    "phaseworld:luminous_depths",
+    "phaseworld:root_halls",
+    "phaseworld:abyss"
   ]
 }

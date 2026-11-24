@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:bamboo_grove",
+    "phaseworld:jukai_forest",
+    "phaseworld:momiji_highlands",
+    "phaseworld:sugi_forest",
+    "phaseworld:spirit_forest",
+    "phaseworld:rice_terraces"
+  ]
+}

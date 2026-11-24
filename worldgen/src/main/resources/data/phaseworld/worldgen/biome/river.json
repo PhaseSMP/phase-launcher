@@ -116,7 +116,8 @@
       },
       "modifier": "overlay"
     },
-    "minecraft:visual/sky_color": "#7ba4ff"
+    "minecraft:visual/sky_color": "#7ba4ff",
+    "minecraft:visual/water_fog_color": "#3f9bd1"
   },
   "carvers": [
     "minecraft:cave",
@@ -166,6 +167,11 @@
       "phaseworld:ore_lapis",
       "phaseworld:ore_lapis_buried",
       "phaseworld:ore_copper",
+      "phaseworld:ore_diamond_deep",
+      "phaseworld:ore_gold_deep",
+      "phaseworld:ore_redstone_deep",
+      "phaseworld:ore_lapis_deep",
+      "phaseworld:blob_tuff_deep",
       "minecraft:disk_sand",
       "minecraft:disk_clay",
       "minecraft:disk_gravel"
@@ -173,15 +179,7 @@
     [
       "minecraft:fossil_upper",
       "minecraft:fossil_lower",
-      "minecraft:dripstone_cluster",
-      "minecraft:large_dripstone",
-      "minecraft:pointed_dripstone",
-      "phaseworld:eclipse_clusters",
-      "phaseworld:hikari_patches",
-      "minecraft:lush_caves_ceiling_vegetation",
-      "minecraft:cave_vines",
-      "minecraft:lush_caves_clay",
-      "minecraft:spore_blossom"
+      "minecraft:pointed_dripstone"
     ],
     [
       "minecraft:spring_water",
@@ -189,6 +187,7 @@
     ],
     [
       "minecraft:glow_lichen",
+      "minecraft:patch_firefly_bush_near_water",
       "minecraft:patch_sugar_cane",
       "phaseworld:patch_wild_wasabi",
       "minecraft:seagrass_river"

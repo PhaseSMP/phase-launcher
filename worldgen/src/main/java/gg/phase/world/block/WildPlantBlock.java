@@ -26,6 +26,8 @@ public class WildPlantBlock extends VegetationBlock {
 
 	@Override
 	protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
-		return super.mayPlaceOn(state, level, pos) || state.is(Blocks.MUD) || state.is(Blocks.GRAVEL) || state.is(BlockTags.LOGS);
+		return super.mayPlaceOn(state, level, pos) || state.is(Blocks.MUD) || state.is(Blocks.GRAVEL) || state.is(BlockTags.LOGS)
+			|| state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(Blocks.MOSS_BLOCK) || state.is(Blocks.CLAY)
+			|| state.is(gg.phase.world.registry.ModBlocks.HIKARI_MOSS) || state.is(Blocks.SAND) || state.is(Blocks.COBBLED_DEEPSLATE);
 	}
 }

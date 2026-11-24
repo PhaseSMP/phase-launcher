@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:rice_terraces",
+    "phaseworld:reed_marsh",
+    "phaseworld:bamboo_grove",
+    "phaseworld:lotus_marsh",
+    "phaseworld:tea_hills"
+  ]
+}

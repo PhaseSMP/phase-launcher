@@ -15,6 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class WorldLayout {
 	public static final int SEA = 63;
+	/** Bottom of the world: 64 blocks deeper than vanilla. */
+	public static final int WORLD_MIN = -128;
 	/** Land fits into 5000 x 5000 blocks (radius 2500). */
 	public static final double MAP_RADIUS = 2500;
 
@@ -81,7 +83,9 @@ public final class WorldLayout {
 	/** Result of a column query. Mutable and cached per thread: copy what you need. */
 	public static final class Column {
 		int cx = Integer.MIN_VALUE, cz = Integer.MIN_VALUE;
-		public float height, base, coast, spine, overhang, water, fujiR, riverDist;
+		public float height, base, coast, spine, overhang, water, fujiR, riverDist, karst;
+		/** Floating island above this column (karst spires), NaN if none. */
+		public float floatTop = Float.NaN, floatBot = Float.NaN;
 		public byte zone, style, surface, waterKind;
 	}
 
@@ -116,8 +120,8 @@ public final class WorldLayout {
 		hoeiConeZ = fujiZ + Math.sin(hoeiTh) * (hoeiR + 105);
 
 		// ---- ring regions ----
-		int n = 11 + r.nextInt(3);
-		int extra = 3 + r.nextInt(3);
+		int n = 18 + r.nextInt(5);
+		int extra = 5 + r.nextInt(4);
 		regX = new double[n + extra];
 		regZ = new double[n + extra];
 		regStyle = new Style[n + extra];
@@ -141,15 +145,15 @@ public final class WorldLayout {
 			regZ[i] = ringCz + Math.sin(a) * edge;
 			double t = temperature(a);
 			Style[] pool = outer
-				? (t > 0.55 ? new Style[]{Style.PINE_CLIFFS, Style.DUNES, Style.SAKURA, Style.PINE_CLIFFS} : new Style[]{Style.PINE_CLIFFS, Style.SUGI, Style.PINE_CLIFFS})
-				: (t > 0.45 ? new Style[]{Style.MARSH, Style.BAMBOO, Style.TERRACES, Style.SAKURA} : new Style[]{Style.MARSH, Style.MOMIJI, Style.TERRACES});
+				? (t > 0.55 ? new Style[]{Style.PINE_CLIFFS, Style.DUNES, Style.SAKURA, Style.KARST, Style.PINE_CLIFFS} : new Style[]{Style.PINE_CLIFFS, Style.SUGI, Style.BIRCH, Style.PINE_CLIFFS})
+				: (t > 0.45 ? new Style[]{Style.MARSH, Style.BAMBOO, Style.TERRACES, Style.SAKURA, Style.SPIRIT} : new Style[]{Style.MARSH, Style.MOMIJI, Style.TERRACES, Style.SPIRIT});
 			regStyle[i] = pool[r.nextInt(pool.length)];
 		}
 
 		// ---- islets ----
 		int islets = 22 + r.nextInt(9);
 		isX = new double[islets]; isZ = new double[islets]; isR = new double[islets]; isStyle = new Style[islets];
-		Style[] isletPool = {Style.SAKURA, Style.PINE_CLIFFS, Style.PINE_CLIFFS, Style.BAMBOO, Style.ONSEN, Style.MOMIJI, Style.SUGI, Style.PINE_CLIFFS};
+		Style[] isletPool = {Style.SAKURA, Style.PINE_CLIFFS, Style.KARST, Style.BAMBOO, Style.ONSEN, Style.MOMIJI, Style.SUGI, Style.PINE_CLIFFS, Style.KARST, Style.SPIRIT};
 		int placed = 0;
 		for (int attempt = 0; attempt < islets * 40 && placed < islets; attempt++) {
 			double a = r.range(0, Math.PI * 2);
@@ -224,10 +228,10 @@ public final class WorldLayout {
 	}
 
 	private void assignRingStyles(Noise.SplitMix r, double[] ang, int n) {
-		Style[] cold = {Style.SNOWLAND, Style.ALPS, Style.SUGI, Style.SNOWLAND};
-		Style[] cool = {Style.SUGI, Style.MOMIJI, Style.ALPS, Style.ONSEN, Style.TERRACES, Style.MOMIJI};
-		Style[] warm = {Style.TERRACES, Style.TEA, Style.SAKURA, Style.BAMBOO, Style.ONSEN, Style.MARSH, Style.MOMIJI};
-		Style[] hot = {Style.BAMBOO, Style.DUNES, Style.SAKURA, Style.MARSH, Style.TEA, Style.BAMBOO};
+		Style[] cold = {Style.SNOWLAND, Style.ALPS, Style.SUGI, Style.BIRCH, Style.SNOWLAND, Style.BIRCH};
+		Style[] cool = {Style.SUGI, Style.MOMIJI, Style.ALPS, Style.ONSEN, Style.TERRACES, Style.MOMIJI, Style.SPIRIT, Style.KARST, Style.BIRCH};
+		Style[] warm = {Style.TERRACES, Style.TEA, Style.SAKURA, Style.BAMBOO, Style.ONSEN, Style.MARSH, Style.MOMIJI, Style.SPIRIT, Style.KARST};
+		Style[] hot = {Style.BAMBOO, Style.DUNES, Style.SAKURA, Style.MARSH, Style.TEA, Style.BAMBOO, Style.KARST};
 		for (int pass = 0; pass < 60; pass++) {
 			for (int i = 0; i < n; i++) {
 				double t = temperature(ang[i]);
@@ -248,6 +252,10 @@ public final class WorldLayout {
 		regStyle[(warmest + n - 1) % n] = Style.BAMBOO;
 		regStyle[(coldest + n / 2) % n] = Style.TERRACES;
 		regStyle[(coldest + n / 2 + 1) % n] = Style.ONSEN;
+		regStyle[(coldest + n / 4) % n] = Style.SPIRIT;
+		regStyle[(coldest + 3 * n / 4) % n] = Style.KARST;
+		regStyle[(coldest + n / 4 + 2) % n] = Style.MOMIJI;
+		regStyle[(coldest + 2) % n] = Style.SUGI;
 	}
 
 	private boolean validStyles(int n) {
@@ -256,9 +264,10 @@ public final class WorldLayout {
 			count[regStyle[i].ordinal()]++;
 			if (regStyle[i] == regStyle[(i + 1) % n]) return false;
 		}
-		Style[] must = {Style.ALPS, Style.SAKURA, Style.BAMBOO, Style.TERRACES, Style.ONSEN, Style.SUGI, Style.MOMIJI};
+		Style[] must = {Style.ALPS, Style.SAKURA, Style.BAMBOO, Style.TERRACES, Style.ONSEN, Style.SUGI, Style.MOMIJI, Style.SPIRIT, Style.KARST, Style.TEA};
 		for (Style s : must) if (count[s.ordinal()] == 0) return false;
-		return count[Style.DUNES.ordinal()] <= 1 && count[Style.MARSH.ordinal()] <= 1 && count[Style.ALPS.ordinal()] <= 2;
+		return count[Style.DUNES.ordinal()] <= 1 && count[Style.MARSH.ordinal()] <= 2 && count[Style.ALPS.ordinal()] <= 3
+			&& count[Style.KARST.ordinal()] <= 2 && count[Style.SPIRIT.ordinal()] <= 3;
 	}
 
 	// ------------------------------------------------------------------ land shape
@@ -366,9 +375,128 @@ public final class WorldLayout {
 				double dune = Math.pow(1 - Math.abs(relB.n2(x / 95 + 0.35 * relC.n2(x / 300, z / 300), z / 420)), 2);
 				return 5 + sp * (12 + 26 * dune) + 4 * relA.fbm2(x / 150, z / 150, 2);
 			}
+			case SPIRIT: {
+				// rolling old hills cut by deep, narrow mossy gorges
+				double base = 14 + sp * (45 + 55 * (0.5 + 0.5 * relB.fbm2(x / 420, z / 420, 4))) + 8 * relA.fbm2(x / 90, z / 90, 3);
+				double gorge = Math.pow(1 - Math.abs(relC.n2(x / 260 + 0.3 * relD.n2(x / 500, z / 500), z / 260)), 9);
+				return base - gorge * 30 * smooth(0.1, 0.6, sp);
+			}
+			case KARST: {
+				double base = 6 + sp * (14 + 16 * (0.5 + 0.5 * relA.fbm2(x / 260, z / 260, 3))) + 4 * relD.fbm2(x / 60, z / 60, 2);
+				return base + (0.35 + 0.65 * smooth(0.0, 0.3, sp)) * karstSpires(x, z) * smooth(8, 50, sp * 400);
+			}
+			case BIRCH: {
+				double base = 24 + sp * (60 + 30 * relA.fbm2(x / 500, z / 500, 3));
+				double mesa = smooth(-0.1, 0.2, relC.fbm2(x / 350, z / 350, 3)) * 20 * sp;
+				return base + mesa + 5 * relB.fbm2(x / 70, z / 70, 2);
+			}
 			case JUKAI:
 			default:
 				return 12 + 16 * relA.fbm2(x / 330, z / 330, 4) + 3.5 * Math.abs(relD.n2(x / 22, z / 22));
+		}
+	}
+
+	private long hashMix(long a, long b, long salt) {
+		long h = a * 0x9E3779B97F4A7C15L ^ b * 0xC2B2AE3D27D4EB4FL ^ (salt + this.seed) * 0x165667B19E3779F9L;
+		h ^= h >>> 33; h *= 0xff51afd7ed558ccdL; h ^= h >>> 33; h *= 0xc4ceb9fe1a85ec53L; h ^= h >>> 33;
+		return h;
+	}
+
+	/** Uniform [0, 1) from a cell and a salt. */
+	double hash01(long a, long b, long salt) {
+		return (hashMix(a, b, salt) >>> 11) * 0x1.0p-53;
+	}
+
+	/** Steep stone towers with flat, slightly domed tops (Zhangjiajie / Hallelujah mountains). */
+	double karstSpires(double x, double z) {
+		final double cell = 38;
+		long cx = (long) Math.floor(x / cell), cz = (long) Math.floor(z / cell);
+		double best = 0;
+		for (long i = cx - 1; i <= cx + 1; i++) {
+			for (long j = cz - 1; j <= cz + 1; j++) {
+				if (hash01(i, j, 11) > 0.72) continue;
+				double hx = (i + 0.15 + 0.7 * hash01(i, j, 12)) * cell;
+				double hz = (j + 0.15 + 0.7 * hash01(i, j, 13)) * cell;
+				double r = 4.5 + 10 * Math.pow(hash01(i, j, 14), 1.5);
+				double H = (40 + 160 * Math.pow(hash01(i, j, 15), 1.2)) * (0.65 + 0.35 * relB.n2(hx / 300, hz / 300));
+				double d = Math.hypot(x - hx, z - hz) * (1 + 0.12 * relC.n2(x / 7.0, z / 7.0));
+				if (d < r) {
+					double t = d / r;
+					double prof = (1 - Math.pow(t, 6)) * (1 - 0.2 * t);
+					best = Math.max(best, H * prof + 2.5 * relC.n2(x / 9.0, z / 9.0) * (1 - t));
+				} else if (d < r * 1.7) {
+					double t = (d - r) / (r * 0.7);
+					best = Math.max(best, H * 0.13 * sq(1 - t));
+				}
+			}
+		}
+		return best;
+	}
+
+	private final Map<Long, Float> islandStrength = new ConcurrentHashMap<>();
+
+	/** How firmly a floating-rock cell sits in karst country (0..1), judged at the rock's centre. */
+	private double islandStrength(long i, long j, double cell) {
+		long key = (i << 32) ^ (j & 0xFFFFFFFFL);
+		Float v = islandStrength.get(key);
+		if (v != null) return v;
+		double hx = (i + 0.2 + 0.6 * hash01(i, j, 22)) * cell;
+		double hz = (j + 0.2 + 0.6 * hash01(i, j, 23)) * cell;
+		Land L = new Land();
+		land(hx, hz, L);
+		double out = 0;
+		if (L.zone == ZONE_ISLET) {
+			out = isStyle[L.islet] == Style.KARST ? smooth(15, 60, L.d) : 0;
+		} else if (L.zone == ZONE_RING) {
+			double qx = hx + 260 * regionWarpA.fbm2(hx / 950, hz / 950, 3) + 70 * regionWarpB.n2(hx / 230, hz / 230);
+			double qz = hz + 260 * regionWarpB.fbm2(hx / 950, hz / 950, 3) + 70 * regionWarpA.n2(hx / 230 + 5, hz / 230);
+			double d0 = 1e18, sum = 0, ka = 0;
+			double[] dist = new double[regX.length];
+			for (int k = 0; k < regX.length; k++) {
+				dist[k] = Math.sqrt(sq(qx - regX[k]) + sq(qz - regZ[k]));
+				d0 = Math.min(d0, dist[k]);
+			}
+			for (int k = 0; k < regX.length; k++) {
+				double w = Math.exp(-(dist[k] - d0) / 70);
+				sum += w;
+				if (regStyle[k] == Style.KARST) ka += w;
+			}
+			out = smooth(0.4, 0.85, ka / sum) * smooth(40, 130, L.d);
+		}
+		if (islandStrength.size() < 200_000) islandStrength.put(key, (float) out);
+		return out;
+	}
+
+	/** Floating rocks over karst country. Writes floatTop / floatBot (or NaN) into the column. */
+	private void floatingIsland(double x, double z, Column c) {
+		c.floatTop = Float.NaN;
+		c.floatBot = Float.NaN;
+		if (c.karst < 0.02) return;
+		final double cell = 96;
+		long cx = (long) Math.floor(x / cell), cz = (long) Math.floor(z / cell);
+		double bestTop = -1e9, bestBot = 0;
+		for (long i = cx - 1; i <= cx + 1; i++) {
+			for (long j = cz - 1; j <= cz + 1; j++) {
+				if (hash01(i, j, 21) > 0.55) continue;
+				double thick = islandStrength(i, j, cell);
+				if (thick < 0.25) continue;
+				double hx = (i + 0.2 + 0.6 * hash01(i, j, 22)) * cell;
+				double hz = (j + 0.2 + 0.6 * hash01(i, j, 23)) * cell;
+				double r = 11 + 24 * Math.pow(hash01(i, j, 24), 1.2);
+				double yc = SEA + 120 + 115 * hash01(i, j, 25);
+				double d = Math.hypot(x - hx, z - hz);
+				if (d > r * 1.3) continue;
+				double edge = r * (1 + 0.2 * misc.n2(x / 13.0 + i * 3.1, z / 13.0 + j * 1.7));
+				if (d >= edge) continue;
+				double t = d / edge;
+				double top = yc + (4 * (1 - t * t) + 1.5 * relC.n2(x / 11.0, z / 11.0)) * thick;
+				double bot = yc - 2 - 0.85 * edge * Math.pow(1 - t, 1.3) * (0.75 + 0.25 * relD.n2(x / 9.0, z / 9.0)) * Math.max(0.6, thick);
+				if (top > bestTop) { bestTop = top; bestBot = bot; }
+			}
+		}
+		if (bestTop > -1e8 && bestTop - bestBot > 1.5) {
+			c.floatTop = (float) bestTop;
+			c.floatBot = (float) bestBot;
 		}
 	}
 
@@ -454,6 +582,7 @@ public final class WorldLayout {
 			col.spine = (float) L.spine;
 			col.style = -1;
 			col.overhang = 0;
+			col.karst = 0;
 		}
 		if (d < 0) {
 			double floor = oceanFloor(d, L.zone, x, z);
@@ -480,6 +609,7 @@ public final class WorldLayout {
 			if (col != null) {
 				col.style = (byte) s.ordinal();
 				col.overhang = s.overhang * 0.7f;
+				col.karst = s == Style.KARST ? 1 : 0;
 			}
 			return SEA + coastRamp(d) + e;
 		}
@@ -499,7 +629,7 @@ public final class WorldLayout {
 		double blend = 70;
 		double w0 = 1, w1 = Math.exp(-(d1 - d0) / blend), w2 = b2 >= 0 ? Math.exp(-(d2 - d0) / blend) : 0;
 		double sum = w0 + w1 + w2;
-		double e = 0, oh = 0;
+		double e = 0, oh = 0, ka = 0;
 		int[] idx = {b0, b1, b2};
 		double[] w = {w0, w1, w2};
 		for (int k = 0; k < 3; k++) {
@@ -507,6 +637,7 @@ public final class WorldLayout {
 			Style s = regStyle[idx[k]];
 			e += w[k] / sum * styleRelief(s, x, z, L.spine) * inland(s, d);
 			oh += w[k] / sum * s.overhang;
+			if (s == Style.KARST) ka += w[k] / sum;
 		}
 		if (col != null) {
 			// biome borders get a finer, ragged warp on top of the smooth height blend
@@ -521,6 +652,7 @@ public final class WorldLayout {
 			}
 			col.style = (byte) regStyle[best].ordinal();
 			col.overhang = (float) oh;
+			col.karst = (float) ka;
 		}
 		return SEA + coastRamp(d) + e;
 	}
@@ -573,7 +705,7 @@ public final class WorldLayout {
 			land(x, z, L);
 			if (L.zone != ZONE_RING || L.d < size + 60) continue;
 			Style s = nearestRegion(x, z);
-			if (s == Style.ALPS || s == Style.DUNES || s == Style.PINE_CLIFFS) continue;
+			if (s == Style.ALPS || s == Style.DUNES || s == Style.PINE_CLIFFS || s == Style.KARST) continue;
 			if (tooCloseToLake(x, z, size + 150)) continue;
 			lakes.add(new Lake(x, z, size, r.range(6, 15), r.range(0, 100)));
 			i++;
@@ -816,8 +948,10 @@ public final class WorldLayout {
 				water = lk.level;
 				kind = 2;
 			} else if (dist < rs + 45) {
-				double t = (dist - rs) / 45;
-				if (h0 > lk.level) h = Math.min(h, lk.level + 0.6 + Math.pow(t, 1.4) * (h0 - lk.level));
+				// a flat rim a few blocks wide sits clearly above the water, then the shore rises
+				double t = Math.max(0, dist - rs - 3) / 42;
+				if (h0 > lk.level + 1.7) h = Math.min(h, lk.level + 1.7 + Math.pow(t, 1.4) * (h0 - lk.level - 1.7));
+				else if (dist < rs + 4 && h0 > lk.level - 3) h = Math.max(h, lk.level + 1.3);
 			}
 		}
 
@@ -861,10 +995,14 @@ public final class WorldLayout {
 							}
 						}
 					} else {
+						// banks: a 2-3 block shelf above the water, then the valley side
 						double bank = Math.min(60, 6 + 0.35 * Math.max(0, h0 - lvl));
-						double t = (bestDist - bestW) / bank;
-						if (t < 1 && h0 > lvl) {
-							h = Math.min(h, lvl + 0.8 + Math.pow(t, 1.6) * (h0 - lvl - 0.8));
+						double t = Math.max(0, bestDist - bestW - 2.5) / bank;
+						if (t < 1 && h0 > lvl + 1.7) {
+							h = Math.min(h, lvl + 1.7 + Math.pow(t, 1.6) * (h0 - lvl - 1.7));
+						} else if (bestDist < bestW + 3.5 && h0 > lvl - 4 && lvl > SEA && h < lvl + 1.3) {
+							// low ground beside the river: a natural levee keeps the water in its bed
+							h = lvl + 1.3;
 						}
 					}
 				}
@@ -878,6 +1016,7 @@ public final class WorldLayout {
 		c.height = (float) h;
 		c.water = (float) water;
 		c.waterKind = kind;
+		floatingIsland(x, z, c);
 		c.surface = (byte) surfaceBiome(x, z, c).ordinal();
 	}
 
@@ -885,6 +1024,7 @@ public final class WorldLayout {
 		double d = c.coast;
 		if (d < 0 && c.waterKind == 0) {
 			if (c.zone == ZONE_INNER_SEA) return PB.INNER_SEA;
+			if (c.height > SEA - 18 && warmth(x, z) > 0.62 && misc.n2(x / 170.0, z / 170.0) > -0.35) return PB.CORAL_COAST;
 			return c.height < SEA - 30 ? PB.DEEP_OCEAN : PB.OCEAN;
 		}
 		if (c.riverDist < 2.5f) return PB.RIVER;
@@ -892,7 +1032,7 @@ public final class WorldLayout {
 		double beachW = 14 + 8 * misc.n2(x / 90.0, z / 90.0);
 		if (d < beachW && c.height < SEA + 5) {
 			if (c.zone == ZONE_ISLAND || st == Style.ONSEN) return PB.BLACK_SAND_BEACH;
-			if (st == Style.PINE_CLIFFS || st == Style.ALPS || st == Style.SUGI || c.height - c.base < -3) return PB.ROCKY_SHORE;
+			if (st == Style.PINE_CLIFFS || st == Style.ALPS || st == Style.SUGI || st == Style.KARST || c.height - c.base < -3) return PB.ROCKY_SHORE;
 			if (st == Style.MARSH) return PB.REED_MARSH;
 			return PB.BEACH;
 		}
@@ -908,7 +1048,57 @@ public final class WorldLayout {
 			if (Math.hypot(x - hoeiX, z - hoeiZ) < 95) return PB.FUJI_SLOPES;
 		}
 		if (h > SEA + 470 + 35 * misc.n2(x / 110.0, z / 110.0)) return PB.FROZEN_SUMMITS;
+		// sub-biomes: patches of a few hundred blocks inside each region
+		double sub = 8.3 * (misc.fbm2(x / 260.0 + 111, z / 260.0 - 37, 3) + 0.15 * misc.n2(x / 50.0, z / 50.0));
+		if ((st == Style.SAKURA || st == Style.TERRACES || st == Style.TEA) && c.riverDist > 2.5f && c.riverDist < 16
+			&& misc.n2(x / 40.0, z / 40.0) > 0.1) return PB.HIGANBANA_FIELDS;
+		switch (st) {
+			case SAKURA:
+				if (sub > 0.55) return PB.WISTERIA_GROVE;
+				if (sub < -0.75) return PB.HIGANBANA_FIELDS;
+				break;
+			case MOMIJI:
+				if (sub > 0.5) return PB.GINKGO_GROVE;
+				break;
+			case SUGI:
+				if (sub > 0.6) return PB.SPIRIT_FOREST;
+				break;
+			case JUKAI:
+				if (sub > 0.7) return PB.SPIRIT_FOREST;
+				break;
+			case TERRACES:
+				if (sub > 0.55) return PB.HYDRANGEA_HILLS;
+				break;
+			case TEA:
+				if (sub < -0.6) return PB.HYDRANGEA_HILLS;
+				break;
+			case ALPS:
+				if (h < SEA + 230 + 30 * misc.n2(x / 80.0, z / 80.0) && sub > -0.3) return PB.ALPINE_MEADOW;
+				break;
+			case SNOWLAND:
+				if (sub > 0.4) return PB.SHIRAKABA_PLATEAU;
+				break;
+			case ONSEN:
+				if (sub > 0.45) return PB.JIGOKU_WASTES;
+				break;
+			case MARSH:
+				if (sub > 0.1) return PB.LOTUS_MARSH;
+				break;
+			case BIRCH:
+				if (sub < -0.6) return PB.ALPINE_MEADOW;
+				break;
+			case SPIRIT:
+				if (sub < -0.9) return PB.MOMIJI_HIGHLANDS;
+				break;
+			default:
+				break;
+		}
 		return st.biome;
+	}
+
+	/** 0 at the cold north of the ring, 1 at the warm south. */
+	double warmth(double x, double z) {
+		return temperature(Math.atan2(z - ringCz, x - ringCx));
 	}
 
 	// ------------------------------------------------------------------ 3D queries
@@ -917,13 +1107,15 @@ public final class WorldLayout {
 	public int biome(int x, int y, int z) {
 		Column c = column(x, z);
 		double depth = c.height - y;
-		if (depth < 14 || c.surface <= PB.INNER_SEA.ordinal() && y > c.height - 6) return c.surface;
+		if (depth < 14 || c.surface <= PB.INNER_SEA.ordinal() && y > c.height - 6 || c.surface == PB.CORAL_COAST.ordinal() && y > c.height - 6) return c.surface;
 		return caveBiome(x, y, z, c).ordinal();
 	}
 
 	public PB caveBiome(int x, int y, int z, Column c) {
 		double n1 = caveA.fbm3(x / 230.0, y / 110.0, z / 230.0, 2);
 		double n2 = caveB.fbm3(x / 260.0, y / 130.0, z / 260.0, 2);
+		// the deep layer below vanilla's bottom: vanilla-style caves, sculk in places
+		if (y < -64) return n1 > 0.12 ? PB.ABYSS : PB.DEEP_CAVERNS;
 		boolean underFuji = c.zone == ZONE_ISLAND && c.fujiR < FUJI_FOOT * 0.95;
 		if (underFuji) {
 			// lava tubes inside the cone, wind and ice caves near its northern foot
@@ -932,30 +1124,60 @@ public final class WorldLayout {
 			if (rel < 1.3 && y > 10 && y < SEA + 160 && n2 > 0.05) return PB.ICE_CAVES;
 		}
 		Style st = c.style >= 0 ? Style.VALUES[c.style] : Style.SAKURA;
-		if ((st == Style.SNOWLAND || st == Style.ALPS) && y > 0 && n2 > 0.25) return PB.ICE_CAVES;
+		if ((st == Style.SNOWLAND || st == Style.ALPS || st == Style.BIRCH) && y > 0 && n2 > 0.25) return PB.ICE_CAVES;
 		if (st == Style.ONSEN && n1 > 0.1 && y < 40) return PB.MAGMA_TUBES;
+		// the giant halls and everything right around them glow
+		if (chamberField(x, y, z) > chamberThreshold(y, c) - 0.035) {
+			if (y < -8 && n1 > 0.3) return PB.ECLIPSE_HOLLOWS;
+			return n2 > -0.3 ? PB.LUMINOUS_DEPTHS : PB.DEEP_CAVERNS;
+		}
+		double depth = c.height - y;
+		boolean forest = st == Style.SUGI || st == Style.SPIRIT || st == Style.JUKAI || st == Style.MOMIJI || st == Style.BAMBOO;
+		if (forest && depth < 75 && n1 > 0.05) return PB.ROOT_HALLS;
 		if (y < -8 && n1 > 0.3) return PB.ECLIPSE_HOLLOWS;
-		if (n2 > 0.32) return PB.HIKARI_GROTTO;
+		if (n2 > 0.42 && y > -40) return PB.HIKARI_GROTTO;
 		if ((c.coast < 220 || st == Style.MARSH) && y < SEA - 5 && n1 < -0.2) return PB.FLOODED_CAVES;
 		return PB.DEEP_CAVERNS;
 	}
 
+	/** Low-frequency 3D field of the giant halls: carve where it exceeds {@link #chamberThreshold}. */
+	double chamberField(int x, int y, int z) {
+		return caveC.fbm3(x / 210.0, y / 78.0, z / 210.0, 3);
+	}
+
+	double chamberThreshold(int y, Column c) {
+		// three bands of halls: shallow, the main one around y 0 and a deep one near y -85
+		double band = Math.exp(-sq((y + 5) / 55.0)) * 0.12 + Math.exp(-sq((y - 70) / 60.0)) * 0.06 + Math.exp(-sq((y + 85) / 30.0)) * 0.10;
+		Style st = c.style >= 0 ? Style.VALUES[c.style] : Style.SAKURA;
+		double mountain = (st == Style.ALPS || st == Style.SUGI || st == Style.MOMIJI || st == Style.KARST) ? 0.05 * smooth(120, 300, c.height - SEA) : 0;
+		return 0.37 - band - mountain;
+	}
+
 	/**
-	 * Giant caverns and lava tubes, as a density (positive = keep stone, negative = carve).
+	 * Giant halls with stone pillars, and lava tubes, as a density (positive = keep stone, negative = carve).
 	 * Only matters well below the surface.
 	 */
 	public double cavern(int x, int y, int z, Column c) {
 		double depth = c.height - y;
-		if (depth < 26 || y < -58) return 1;
-		double fade = smooth(26, 60, depth) * smooth(-58, -40, y);
-		double v = 1;
-		// chambers: big, flattened blobs, more common in the -40..60 band and inside mountains
-		double band = Math.exp(-sq((y + 5) / 55.0)) * 0.12 + Math.exp(-sq((y - 70) / 60.0)) * 0.06;
-		Style st = c.style >= 0 ? Style.VALUES[c.style] : Style.SAKURA;
-		double mountain = (st == Style.ALPS || st == Style.SUGI || st == Style.MOMIJI) ? 0.05 * smooth(120, 300, c.height - SEA) : 0;
-		double ch = caveC.fbm3(x / 150.0, y / 62.0, z / 150.0, 3);
-		double thr = 0.365 - band - mountain;
-		v = Math.min(v, (thr - ch) * 9);
+		if (depth < 26 || y < WORLD_MIN + 6) return 1;
+		double fade = smooth(26, 60, depth) * smooth(WORLD_MIN + 6, WORLD_MIN + 26, y);
+		double ch = chamberField(x, y, z);
+		double v = Math.min(1, (chamberThreshold(y, c) - ch) * 9);
+		if (v < 0.6) {
+			// pillars: hourglass columns that hold up the ceiling
+			final double cell = 34;
+			long cx = (long) Math.floor(x / cell), cz = (long) Math.floor(z / cell);
+			for (long i = cx - 1; i <= cx + 1; i++) {
+				for (long j = cz - 1; j <= cz + 1; j++) {
+					if (hash01(i, j, 31) > 0.45) continue;
+					double px = (i + 0.2 + 0.6 * hash01(i, j, 32)) * cell, pz = (j + 0.2 + 0.6 * hash01(i, j, 33)) * cell;
+					double r0 = 2.5 + 4.5 * hash01(i, j, 34);
+					double r = r0 * (1 + 0.38 * Math.sin(y / 9.0 + hash01(i, j, 35) * 6.28)) + 0.8 * relA.n2(x / 5.0, z / 5.0 + y / 7.0);
+					double dd = Math.hypot(x - px, z - pz);
+					if (dd < r + 2) v = Math.max(v, (r - dd) * 1.5);
+				}
+			}
+		}
 		// lava tubes under Fuji: long, flat, winding tunnels a few blocks under the cone surface
 		if (c.zone == ZONE_ISLAND && c.fujiR < FUJI_FOOT && depth < 90) {
 			double t = Math.abs(caveA.n3(x / 95.0, y / 26.0, z / 95.0));
@@ -969,6 +1191,7 @@ public final class WorldLayout {
 	/**
 	 * Terrain density around the surface: positive is stone. Roughly (height - y) / 8 like vanilla's
 	 * sloped cheese, so vanilla cave thresholds keep working; styles with overhangs bend the surface in 3D.
+	 * Floating karst rocks are added on top.
 	 */
 	public double terrainDensity(int x, int y, int z, Column c) {
 		double h = c.height;
@@ -981,7 +1204,13 @@ public final class WorldLayout {
 				h += n * amp * 1.5 * (1 - dy / band);
 			}
 		}
-		return (h - y) / 8.0;
+		double g = (h - y) / 8.0;
+		if (!Float.isNaN(c.floatTop) && y > c.floatBot - 12 && y < c.floatTop + 12) {
+			double isl = Math.min(c.floatTop - y, y - c.floatBot) / 8.0;
+			if (isl > -1) isl += 0.25 * overhangN.n3(x / 8.0, y / 6.0, z / 8.0);
+			g = Math.max(g, isl);
+		}
+		return g;
 	}
 
 	/** Positive where aquifers should stay dry: deep inside mountains above sea level. */

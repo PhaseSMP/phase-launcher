@@ -37,6 +37,17 @@ public class Preview {
 			case FUJI_SUBALPINE: return 0x55704a;
 			case FUJI_SLOPES: return 0x5b4a45;
 			case FUJI_SUMMIT: return 0xfafafa;
+			case WISTERIA_GROVE: return 0x9b6fd0;
+			case SPIRIT_FOREST: return 0x1d6b5a;
+			case GINKGO_GROVE: return 0xe8c23a;
+			case HYDRANGEA_HILLS: return 0x5a7fd6;
+			case HIGANBANA_FIELDS: return 0xd42a2a;
+			case LOTUS_MARSH: return 0x8fb06f;
+			case KARST_SPIRES: return 0x6e7d6a;
+			case CORAL_COAST: return 0x2fc0c8;
+			case JIGOKU_WASTES: return 0xc9b14a;
+			case SHIRAKABA_PLATEAU: return 0xc8d8b0;
+			case ALPINE_MEADOW: return 0x9ccf6a;
 			default: return 0xff00ff;
 		}
 	}

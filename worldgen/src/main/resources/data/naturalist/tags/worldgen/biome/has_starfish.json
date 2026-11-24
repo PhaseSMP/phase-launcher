@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:coral_coast",
+    "phaseworld:beach",
+    "phaseworld:rocky_shore"
+  ]
+}

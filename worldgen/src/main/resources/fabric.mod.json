@@ -3,18 +3,30 @@
   "id": "phaseworld",
   "version": "${version}",
   "name": "Phase World",
-  "description": "Карта Phase: кольцевой материк вокруг острова с Фудзи, японские биомы, еда и культуры, пещеры и данжи. Нужен и на сервере, и у игроков.",
-  "authors": ["Phase"],
-  "contact": { "homepage": "https://phase.fujimc.workers.dev" },
+  "description": "Карта Phase: кольцевой материк вокруг острова с Фудзи, японские биомы, еда и культуры, пещеры и данжи. Нужен и на сервере, и у игроков. С Naturalist животные расселяются по японским биомам.",
+  "authors": [
+    "Phase"
+  ],
+  "contact": {
+    "homepage": "https://phase.fujimc.workers.dev"
+  },
   "license": "All-Rights-Reserved",
   "environment": "*",
   "entrypoints": {
-    "main": ["gg.phase.world.PhaseWorld"]
+    "main": [
+      "gg.phase.world.PhaseWorld"
+    ]
   },
   "depends": {
     "fabricloader": ">=0.20.1",
     "minecraft": "~26.3",
     "java": ">=25",
     "fabric-api": "*"
+  },
+  "mixins": [
+    "phaseworld.mixins.json"
+  ],
+  "suggests": {
+    "naturalist": "*"
   }
 }

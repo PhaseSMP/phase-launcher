@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "phaseworld:block/susuki_bottom"
+    },
+    "half=upper": {
+      "model": "phaseworld:block/susuki_top"
+    }
+  }
+}

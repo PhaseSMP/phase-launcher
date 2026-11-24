@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "phaseworld:block/glowcap_stem_top",
+    "side": "phaseworld:block/glowcap_stem"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "phaseworld:giant_tree",
+  "shape": "wisteria",
+  "log": {
+    "Name": "minecraft:pale_oak_log",
+    "Properties": {
+      "axis": "y"
+    }
+  },
+  "leaves": {
+    "Name": "phaseworld:wisteria_leaves",
+    "Properties": {
+      "distance": "7",
+      "persistent": "false",
+      "waterlogged": "false"
+    }
+  },
+  "min_height": 7,
+  "max_height": 11,
+  "hanging": {
+    "Name": "phaseworld:wisteria_vine"
+  }
+}

@@ -2,7 +2,10 @@ package gg.phase.world;
 
 import gg.phase.world.gen.LayoutFunction;
 import gg.phase.world.gen.PhaseBiomeSource;
+import gg.phase.world.gen.feature.GiantTreeFeature;
+import gg.phase.world.gen.feature.GlowcapFeature;
 import gg.phase.world.gen.feature.OnsenFeature;
+import gg.phase.world.gen.feature.ShrineDecorFeature;
 import gg.phase.world.gen.feature.PaddyFeature;
 import gg.phase.world.gen.feature.WaterFillFeature;
 import gg.phase.world.registry.ModBlocks;
@@ -40,6 +43,9 @@ public class PhaseWorld implements ModInitializer {
 		Registry.register(BuiltInRegistries.FEATURE_TYPE, id("water_fill"), WaterFillFeature.CODEC);
 		Registry.register(BuiltInRegistries.FEATURE_TYPE, id("paddy"), PaddyFeature.CODEC);
 		Registry.register(BuiltInRegistries.FEATURE_TYPE, id("onsen"), OnsenFeature.CODEC);
+		Registry.register(BuiltInRegistries.FEATURE_TYPE, id("giant_tree"), GiantTreeFeature.CODEC);
+		Registry.register(BuiltInRegistries.FEATURE_TYPE, id("glowcap"), GlowcapFeature.CODEC);
+		Registry.register(BuiltInRegistries.FEATURE_TYPE, id("shrine_decor"), ShrineDecorFeature.CODEC);
 
 		Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, ResourceKey.create(Registries.CREATIVE_MODE_TAB, id("main")),
 			FabricCreativeModeTab.builder()

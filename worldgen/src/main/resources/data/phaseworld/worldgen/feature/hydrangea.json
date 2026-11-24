@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:simple_block",
+  "to_place": {
+    "type": "minecraft:weighted",
+    "entries": [
+      {
+        "data": {
+          "Name": "phaseworld:hydrangea_blue"
+        },
+        "weight": 5
+      },
+      {
+        "data": {
+          "Name": "phaseworld:hydrangea_purple"
+        },
+        "weight": 4
+      },
+      {
+        "data": {
+          "Name": "phaseworld:hydrangea_pink"
+        },
+        "weight": 3
+      }
+    ]
+  }
+}

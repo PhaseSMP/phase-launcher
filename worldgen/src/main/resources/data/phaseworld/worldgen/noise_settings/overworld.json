@@ -54,8 +54,8 @@
   "legacy_random_source": false,
   "material_rule": "phaseworld:overworld",
   "noise": {
-    "min_y": -64,
-    "height": 1360
+    "min_y": -128,
+    "height": 1424
   },
   "noise_router": {
     "chunk_surface_level": {

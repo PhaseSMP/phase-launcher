@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:higanbana",
+    "phaseworld:lumen_fern",
+    "phaseworld:glowcap",
+    "phaseworld:susuki",
+    "phaseworld:spirit_vine",
+    "phaseworld:wisteria_vine",
+    "phaseworld:wild_rice",
+    "phaseworld:wild_soybean",
+    "phaseworld:wild_daikon",
+    "phaseworld:wild_wasabi",
+    "phaseworld:wild_tea",
+    "phaseworld:shiitake"
+  ]
+}

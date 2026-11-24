@@ -5,6 +5,9 @@
     "phaseworld:eclipse_hollows",
     "phaseworld:magma_tubes",
     "phaseworld:flooded_caves",
-    "phaseworld:ice_caves"
+    "phaseworld:ice_caves",
+    "phaseworld:luminous_depths",
+    "phaseworld:root_halls",
+    "phaseworld:abyss"
   ]
 }

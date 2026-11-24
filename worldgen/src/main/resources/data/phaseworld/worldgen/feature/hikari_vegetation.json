@@ -4,20 +4,28 @@
     "type": "minecraft:weighted",
     "entries": [
       {
-        "data": "phaseworld:hikari_moss_carpet",
-        "weight": 20
+        "data": {
+          "Name": "phaseworld:hikari_moss_carpet"
+        },
+        "weight": 10
       },
       {
-        "data": "minecraft:short_grass",
+        "data": {
+          "Name": "phaseworld:glowcap"
+        },
+        "weight": 5
+      },
+      {
+        "data": {
+          "Name": "phaseworld:lumen_fern"
+        },
         "weight": 6
       },
       {
-        "data": "minecraft:fern",
-        "weight": 4
-      },
-      {
-        "data": "phaseworld:shiitake",
-        "weight": 2
+        "data": {
+          "Name": "minecraft:short_grass"
+        },
+        "weight": 3
       }
     ]
   }

@@ -4,6 +4,7 @@
     "phaseworld:deep_ocean",
     "phaseworld:ocean",
     "phaseworld:inner_sea",
-    "phaseworld:river"
+    "phaseworld:river",
+    "phaseworld:coral_coast"
   ]
 }

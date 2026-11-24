@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=y": {
+      "model": "phaseworld:block/glowcap_stem"
+    },
+    "axis=x": {
+      "model": "phaseworld:block/glowcap_stem_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=z": {
+      "model": "phaseworld:block/glowcap_stem_horizontal",
+      "x": 90
+    }
+  }
+}

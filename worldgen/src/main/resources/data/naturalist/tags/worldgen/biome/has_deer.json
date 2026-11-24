@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:momiji_highlands",
+    "phaseworld:ginkgo_grove",
+    "phaseworld:sugi_forest",
+    "phaseworld:spirit_forest",
+    "phaseworld:jukai_forest",
+    "phaseworld:fuji_subalpine",
+    "phaseworld:shirakaba_plateau",
+    "phaseworld:tea_hills",
+    "phaseworld:sakura_valley",
+    "phaseworld:alpine_meadow",
+    "phaseworld:wisteria_grove"
+  ]
+}

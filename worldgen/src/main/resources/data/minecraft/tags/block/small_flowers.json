@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:higanbana",
+    "phaseworld:lumen_fern",
+    "phaseworld:wild_rice",
+    "phaseworld:wild_soybean",
+    "phaseworld:wild_daikon",
+    "phaseworld:wild_wasabi",
+    "phaseworld:wild_tea"
+  ]
+}

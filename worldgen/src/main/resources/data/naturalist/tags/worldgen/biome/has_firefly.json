@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:rice_terraces",
+    "phaseworld:reed_marsh",
+    "phaseworld:lotus_marsh",
+    "phaseworld:river",
+    "phaseworld:spirit_forest",
+    "phaseworld:bamboo_grove",
+    "phaseworld:sakura_valley",
+    "phaseworld:hydrangea_hills",
+    "phaseworld:wisteria_grove",
+    "phaseworld:jukai_forest"
+  ]
+}

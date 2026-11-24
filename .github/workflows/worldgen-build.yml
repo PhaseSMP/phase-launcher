@@ -21,7 +21,7 @@ jobs:
           for i in 1 2 3 4 5 6; do ./gradlew --no-daemon --version >/dev/null 2>&1 && break; echo "Gradle retry $i"; sleep 20; done
           set -o pipefail
           ./gradlew --no-daemon build -x test 2>&1 | tee ../worldgen-build.log || echo BUILD_FAILED >> ../worldgen-build.log
-      - name: Server self-test (generates part of the map)
+      - name: Server self-test (generates part of the map, profiled)
         if: hashFiles('worldgen/build/libs/*.jar') != ''
         timeout-minutes: 25
         continue-on-error: true
@@ -31,16 +31,32 @@ jobs:
           mkdir -p run
           echo "eula=true" > run/eula.txt
           printf "level-seed=20261124\nonline-mode=false\nspawn-protection=0\n" > run/server.properties
-          timeout 1300 ./gradlew --no-daemon runServer > ../worldgen-server-full.log 2>&1
-          grep -E "\[selftest\]|ERROR|Exception|Caused by|Failed to|Couldn't" ../worldgen-server-full.log | head -400 > ../worldgen-server.log
+          timeout 1300 ./gradlew --no-daemon runServer -Pprofile=true > ../worldgen-server-full.log 2>&1
+          grep -E "\[selftest\]|ERROR|Exception|Caused by|Failed to|Couldn't|Mixin" ../worldgen-server-full.log | head -400 > ../worldgen-server.log
           tail -150 ../worldgen-server-full.log >> ../worldgen-server.log
+          if [ -f run/worldgen.jfr ]; then
+            jfr print --events jdk.ExecutionSample --stack-depth 64 run/worldgen.jfr > ../samples.txt 2>/dev/null
+            python3 tools/jfr_top.py ../samples.txt > ../worldgen-profile.txt
+          fi
+      - name: Client screenshots
+        if: hashFiles('worldgen/build/libs/*.jar') != ''
+        timeout-minutes: 45
+        continue-on-error: true
+        working-directory: worldgen
+        run: |
+          set +e
+          (sudo apt-get update -qq; for p in xvfb mesa-utils libgl1-mesa-dri libglx-mesa0 libegl1 mesa-vulkan-drivers libvulkan1 vulkan-tools; do sudo apt-get install -y -qq $p || echo "no package $p"; done) > ../apt.log 2>&1
+          LIBGL_ALWAYS_SOFTWARE=1 timeout 2500 xvfb-run -a -s "-screen 0 1280x720x24 +extension GLX +render -noreset" ./gradlew --no-daemon runClientGameTest > ../shots-full.log 2>&1
+          grep -E "\[shots\]|ERROR|Exception|Caused by" ../shots-full.log | head -300 > ../worldgen-shots.log
+          tail -120 ../shots-full.log >> ../worldgen-shots.log
       - name: Publish result
         if: always()
         run: |
           set +e
-          rm -rf ci-worldgen && mkdir -p ci-worldgen
-          cp worldgen-build.log worldgen-server.log ci-worldgen/ 2>/dev/null
+          rm -rf ci-worldgen && mkdir -p ci-worldgen/screenshots
+          cp worldgen-build.log worldgen-server.log worldgen-profile.txt worldgen-shots.log ci-worldgen/ 2>/dev/null
           JAR=$(ls worldgen/build/libs/*.jar 2>/dev/null | grep -v sources | head -1)
           [ -n "$JAR" ] && cp "$JAR" ci-worldgen/phase-world.jar
+          find worldgen -path '*screenshots*' -name '*.png' -exec cp {} ci-worldgen/screenshots/ \; 2>/dev/null
           git config user.name "phase-ci"; git config user.email "ci@phase.local"
           git add -A ci-worldgen && git commit -qm "CI: Phase World [skip ci]" && git pull -q --rebase && git push -q

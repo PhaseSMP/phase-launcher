@@ -31,12 +31,26 @@
             "fuji_subalpine": "phaseworld:fuji_subalpine",
             "fuji_slopes": "phaseworld:fuji_slopes",
             "fuji_summit": "phaseworld:fuji_summit",
+            "wisteria_grove": "phaseworld:wisteria_grove",
+            "spirit_forest": "phaseworld:spirit_forest",
+            "ginkgo_grove": "phaseworld:ginkgo_grove",
+            "hydrangea_hills": "phaseworld:hydrangea_hills",
+            "higanbana_fields": "phaseworld:higanbana_fields",
+            "lotus_marsh": "phaseworld:lotus_marsh",
+            "karst_spires": "phaseworld:karst_spires",
+            "coral_coast": "phaseworld:coral_coast",
+            "jigoku_wastes": "phaseworld:jigoku_wastes",
+            "shirakaba_plateau": "phaseworld:shirakaba_plateau",
+            "alpine_meadow": "phaseworld:alpine_meadow",
             "deep_caverns": "phaseworld:deep_caverns",
             "hikari_grotto": "phaseworld:hikari_grotto",
             "eclipse_hollows": "phaseworld:eclipse_hollows",
             "magma_tubes": "phaseworld:magma_tubes",
             "flooded_caves": "phaseworld:flooded_caves",
-            "ice_caves": "phaseworld:ice_caves"
+            "ice_caves": "phaseworld:ice_caves",
+            "luminous_depths": "phaseworld:luminous_depths",
+            "root_halls": "phaseworld:root_halls",
+            "abyss": "phaseworld:abyss"
           }
         },
         "settings": "phaseworld:overworld"

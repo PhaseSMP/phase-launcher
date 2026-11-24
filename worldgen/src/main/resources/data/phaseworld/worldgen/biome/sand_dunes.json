@@ -18,22 +18,7 @@
               "weight": 10
             }
           ],
-          "creature": [
-            {
-              "type": "minecraft:rabbit",
-              "count": {
-                "type": "minecraft:uniform",
-                "max_inclusive": 3,
-                "min_inclusive": 2
-              },
-              "weight": 12
-            },
-            {
-              "type": "minecraft:camel",
-              "count": 1,
-              "weight": 1
-            }
-          ],
+          "creature": [],
           "monster": [
             {
               "type": "minecraft:spider",
@@ -106,7 +91,8 @@
       "modifier": "overlay"
     },
     "minecraft:gameplay/snow_golem_melts": true,
-    "minecraft:visual/sky_color": "#6eb1ff"
+    "minecraft:visual/sky_color": "#6eb1ff",
+    "minecraft:visual/water_fog_color": "#3f87c9"
   },
   "carvers": [
     "minecraft:cave",
@@ -156,6 +142,11 @@
       "phaseworld:ore_lapis",
       "phaseworld:ore_lapis_buried",
       "phaseworld:ore_copper",
+      "phaseworld:ore_diamond_deep",
+      "phaseworld:ore_gold_deep",
+      "phaseworld:ore_redstone_deep",
+      "phaseworld:ore_lapis_deep",
+      "phaseworld:blob_tuff_deep",
       "minecraft:disk_sand",
       "minecraft:disk_clay",
       "minecraft:disk_gravel"
@@ -163,15 +154,7 @@
     [
       "minecraft:fossil_upper",
       "minecraft:fossil_lower",
-      "minecraft:dripstone_cluster",
-      "minecraft:large_dripstone",
-      "minecraft:pointed_dripstone",
-      "phaseworld:eclipse_clusters",
-      "phaseworld:hikari_patches",
-      "minecraft:lush_caves_ceiling_vegetation",
-      "minecraft:cave_vines",
-      "minecraft:lush_caves_clay",
-      "minecraft:spore_blossom"
+      "minecraft:pointed_dripstone"
     ],
     [
       "minecraft:spring_water",
@@ -180,7 +163,8 @@
     [
       "minecraft:glow_lichen",
       "minecraft:patch_dead_bush",
-      "minecraft:patch_dry_grass_desert"
+      "minecraft:patch_dry_grass_desert",
+      "phaseworld:patch_susuki_sparse"
     ],
     [
       "minecraft:freeze_top_layer"

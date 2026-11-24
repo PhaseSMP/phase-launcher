@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/carpet",
   "textures": {
-    "wool": "phaseworld:block/hikari_moss"
+    "wool": "phaseworld:block/hikari_moss_1"
   }
 }

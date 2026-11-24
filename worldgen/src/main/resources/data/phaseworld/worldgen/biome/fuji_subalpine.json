@@ -13,47 +13,31 @@
           ],
           "creature": [
             {
-              "type": "minecraft:sheep",
-              "count": 4,
-              "weight": 12
-            },
-            {
-              "type": "minecraft:pig",
-              "count": 4,
-              "weight": 10
-            },
-            {
-              "type": "minecraft:chicken",
-              "count": 4,
-              "weight": 10
-            },
-            {
-              "type": "minecraft:cow",
-              "count": 4,
-              "weight": 8
-            },
-            {
-              "type": "minecraft:wolf",
-              "count": 4,
+              "type": "minecraft:fox",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 2,
+                "max_inclusive": 4
+              },
               "weight": 8
             },
             {
               "type": "minecraft:rabbit",
               "count": {
                 "type": "minecraft:uniform",
-                "max_inclusive": 3,
-                "min_inclusive": 2
-              },
-              "weight": 4
-            },
-            {
-              "type": "minecraft:fox",
-              "count": {
-                "type": "minecraft:uniform",
-                "max_inclusive": 4,
-                "min_inclusive": 2
+                "min_inclusive": 2,
+                "max_inclusive": 3
               },
               "weight": 8
+            },
+            {
+              "type": "minecraft:wolf",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 2,
+                "max_inclusive": 4
+              },
+              "weight": 4
             }
           ],
           "monster": [
@@ -117,7 +101,8 @@
       },
       "modifier": "overlay"
     },
-    "minecraft:visual/sky_color": "#7da3ff"
+    "minecraft:visual/sky_color": "#7da3ff",
+    "minecraft:visual/water_fog_color": "#3b6bc0"
   },
   "carvers": [
     "minecraft:cave",
@@ -169,8 +154,13 @@
       "phaseworld:ore_lapis",
       "phaseworld:ore_lapis_buried",
       "phaseworld:ore_copper",
+      "phaseworld:ore_diamond_deep",
+      "phaseworld:ore_gold_deep",
+      "phaseworld:ore_redstone_deep",
+      "phaseworld:ore_lapis_deep",
       "phaseworld:blob_scoria",
       "phaseworld:blob_pumice",
+      "phaseworld:blob_tuff_deep",
       "minecraft:disk_sand",
       "minecraft:disk_clay",
       "minecraft:disk_gravel"
@@ -178,15 +168,7 @@
     [
       "minecraft:fossil_upper",
       "minecraft:fossil_lower",
-      "minecraft:dripstone_cluster",
-      "minecraft:large_dripstone",
-      "minecraft:pointed_dripstone",
-      "phaseworld:eclipse_clusters",
-      "phaseworld:hikari_patches",
-      "minecraft:lush_caves_ceiling_vegetation",
-      "minecraft:cave_vines",
-      "minecraft:lush_caves_clay",
-      "minecraft:spore_blossom"
+      "minecraft:pointed_dripstone"
     ],
     [
       "minecraft:spring_water",
@@ -196,7 +178,10 @@
       "minecraft:glow_lichen",
       "phaseworld:trees_subalpine",
       "phaseworld:trees_subalpine_birch",
-      "minecraft:patch_grass_taiga"
+      "minecraft:fallen_spruce_tree",
+      "minecraft:patch_bush",
+      "minecraft:patch_grass_taiga",
+      "phaseworld:patch_susuki_sparse"
     ],
     [
       "minecraft:freeze_top_layer"

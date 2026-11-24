@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:rice_terraces",
+    "phaseworld:tea_hills",
+    "phaseworld:sakura_valley",
+    "phaseworld:higanbana_fields"
+  ]
+}

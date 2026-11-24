@@ -1,0 +1,20 @@
+{
+  "type": "phaseworld:giant_tree",
+  "shape": "sugi",
+  "log": {
+    "Name": "minecraft:spruce_log",
+    "Properties": {
+      "axis": "y"
+    }
+  },
+  "leaves": {
+    "Name": "minecraft:spruce_leaves",
+    "Properties": {
+      "distance": "7",
+      "persistent": "false",
+      "waterlogged": "false"
+    }
+  },
+  "min_height": 36,
+  "max_height": 58
+}

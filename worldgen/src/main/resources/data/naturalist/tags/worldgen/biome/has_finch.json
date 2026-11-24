@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:sakura_valley",
+    "phaseworld:momiji_highlands",
+    "phaseworld:ginkgo_grove",
+    "phaseworld:wisteria_grove"
+  ]
+}

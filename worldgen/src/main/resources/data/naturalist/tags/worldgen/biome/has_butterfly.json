@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:sakura_valley",
+    "phaseworld:tea_hills",
+    "phaseworld:wisteria_grove",
+    "phaseworld:hydrangea_hills",
+    "phaseworld:higanbana_fields",
+    "phaseworld:alpine_meadow",
+    "phaseworld:rice_terraces"
+  ]
+}

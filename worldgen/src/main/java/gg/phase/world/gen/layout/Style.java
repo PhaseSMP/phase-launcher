@@ -18,7 +18,14 @@ public enum Style {
 	PINE_CLIFFS (PB.PINE_CLIFFS,        2,   16, 9f),
 	MARSH       (PB.REED_MARSH,         4,   70, 0f),
 	DUNES       (PB.SAND_DUNES,         6,  110, 0f),
-	JUKAI       (PB.JUKAI_FOREST,       6,  120, 2.5f);
+	JUKAI       (PB.JUKAI_FOREST,       6,  120, 2.5f),
+	// ---- 1.1
+	/** Mononoke-style ancient forest: rolling hills cut by mossy gorges, giant trees, fog. */
+	SPIRIT      (PB.SPIRIT_FOREST,      8,  150, 4f),
+	/** Stone spires with pines on top and floating rocks above them. */
+	KARST       (PB.KARST_SPIRES,       6,  110, 5f),
+	/** Cold birch plateau. */
+	BIRCH       (PB.SHIRAKABA_PLATEAU, 10,  170, 1.5f);
 
 	public static final Style[] VALUES = values();
 

@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:spirit_forest",
+    "phaseworld:jukai_forest",
+    "phaseworld:hydrangea_hills",
+    "phaseworld:bamboo_grove"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:sugi_forest",
+    "phaseworld:jukai_forest",
+    "phaseworld:momiji_highlands",
+    "phaseworld:spirit_forest",
+    "phaseworld:shirakaba_plateau",
+    "phaseworld:fuji_subalpine"
+  ]
+}

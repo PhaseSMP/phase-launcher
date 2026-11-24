@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "phaseworld:hydrangea_purple"
+  ],
+  "result": {
+    "id": "minecraft:purple_dye",
+    "count": 2
+  }
+}

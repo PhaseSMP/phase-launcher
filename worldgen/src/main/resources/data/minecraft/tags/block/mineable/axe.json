@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "phaseworld:vermilion_planks"
+    "phaseworld:vermilion_planks",
+    "phaseworld:glowcap_stem"
   ]
 }
