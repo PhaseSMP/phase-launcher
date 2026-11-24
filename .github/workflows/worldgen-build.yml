@@ -62,10 +62,13 @@ jobs:
         if: always()
         run: |
           set +e
+          git config user.name "phase-ci"; git config user.email "ci@phase.local"
+          git pull -q --rebase --autostash origin mod
           rm -rf ci-worldgen && mkdir -p ci-worldgen/screenshots
           cp worldgen-build.log worldgen-server.log worldgen-profile.txt worldgen-shots.log mod-index.txt mod-dump.zip fetch-mods.log ci-worldgen/ 2>/dev/null
           JAR=$(ls worldgen/build/libs/*.jar 2>/dev/null | grep -v sources | head -1)
           [ -n "$JAR" ] && cp "$JAR" ci-worldgen/phase-world.jar
           find worldgen -path '*screenshots*' -name '*.png' -exec cp {} ci-worldgen/screenshots/ \; 2>/dev/null
           git config user.name "phase-ci"; git config user.email "ci@phase.local"
-          git add -A ci-worldgen && git commit -qm "CI: Phase World [skip ci]" && git pull -q --rebase && git push -q
+          git add -A ci-worldgen && git commit -qm "CI: Phase World [skip ci]"
+          for i in 1 2 3; do git pull -q --rebase -X theirs --autostash origin mod && git push -q && break; sleep 5; done

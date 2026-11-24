@@ -117,6 +117,8 @@ def noise_router():
             return any(skip_air(v) for v in n)
         return False
     assert skip_air(fd)
+    # caves and noodles never open into a river bed or a lake shore
+    fd = {'type': 'minecraft:max', 'left': fd, 'right': layout('water_guard')}
     write(NS, 'worldgen/density_function/final_density', fd)
 
     noodle = van('worldgen/density_function/overworld/caves/noodle')

@@ -100,20 +100,33 @@ public record WaterFillFeature() implements Feature {
 					WorldLayout.Column nc = layout.column(nx, nz);
 					float nw = nc.water;
 					int ntop = Float.isNaN(nw) ? Integer.MIN_VALUE : (int) Math.floor(nw);
-					for (int y = top; y > top - 8; y--) {
-						if (ntop >= y) break; // the neighbour holds water up to here itself
+					if (ntop >= top) continue; // the neighbour holds water up to here itself
+					np.set(nx, top, nz);
+					if (holds(level.getBlockState(np))) continue;
+					boolean lowerWater = ntop != Integer.MIN_VALUE && ntop < top && nc.waterKind != 0;
+					boolean mouth = nc.riverDist < 0.5f || nc.height < WorldLayout.SEA;
+					if (lowerWater || mouth) {
+						// a lower step of the same water: let it fall
+						spill = true;
+						continue;
+					}
+					// dry ground lower than the water: find it (at most 4 blocks down)
+					int ground = Integer.MIN_VALUE;
+					for (int y = top - 1; y >= top - 4; y--) {
+						if (ntop >= y) { ground = y; break; }
 						np.set(nx, y, nz);
 						BlockState ns = level.getBlockState(np);
-						if (holds(ns)) break;
-						boolean lowerWater = ntop != Integer.MIN_VALUE && ntop < top && nc.waterKind != 0;
-						boolean mouth = nc.riverDist < 0.5f || nc.height < WorldLayout.SEA
-							|| level.getBlockState(np.below()).getFluidState().is(Fluids.WATER);
-						if (lowerWater || mouth) {
-							// a lower step of the same water: let it fall
-							spill = true;
-							break;
-						}
-						// dry ground lower than the water: build the bank up
+						if (ns.getFluidState().is(Fluids.WATER)) { ground = Integer.MAX_VALUE; break; }
+						if (holds(ns)) { ground = y; break; }
+					}
+					if (ground == Integer.MAX_VALUE || ground == Integer.MIN_VALUE) {
+						// water or a drop deeper than 4 blocks beside the river: a small waterfall,
+						// never a free-hanging dirt column (that was the "flat walls" and floating banks)
+						spill = true;
+						continue;
+					}
+					for (int y = ground + 1; y <= top; y++) {
+						np.set(nx, y, nz);
 						level.setBlock(np, y == top ? bankTop(level, np) : Blocks.DIRT.defaultBlockState(), 2);
 					}
 				}

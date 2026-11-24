@@ -84,6 +84,8 @@ public final class WorldLayout {
 	public static final class Column {
 		int cx = Integer.MIN_VALUE, cz = Integer.MIN_VALUE;
 		public float height, base, coast, spine, overhang, water, fujiR, riverDist, karst;
+		/** Distance to the nearest lake or river edge (negative inside the water). */
+		public float wet;
 		/** Floating island above this column (karst spires), NaN if none. */
 		public float floatTop = Float.NaN, floatBot = Float.NaN;
 		public byte zone, style, surface, waterKind;
@@ -932,6 +934,7 @@ public final class WorldLayout {
 		byte kind = 0;
 		c.base = (float) h0;
 		c.riverDist = 1e6f;
+		double wet = 1e6;
 		double dxF = x - fujiX, dzF = z - fujiZ;
 		c.fujiR = (float) Math.sqrt(dxF * dxF + dzF * dzF);
 
@@ -942,6 +945,7 @@ public final class WorldLayout {
 			if (Math.abs(dx) > lim || Math.abs(dz) > lim) continue;
 			double dist = Math.sqrt(dx * dx + dz * dz);
 			double rs = lakeShape(lk, Math.atan2(dz, dx));
+			wet = Math.min(wet, dist - rs);
 			if (dist < rs) {
 				double t = dist / rs;
 				double bed = lk.level - 1 - lk.depth * Math.pow(1 - t * t, 0.7) + 1.5 * relA.n2(x / 18.0, z / 18.0);
@@ -952,7 +956,11 @@ public final class WorldLayout {
 				// a flat rim a few blocks wide sits clearly above the water, then the shore rises
 				double t = Math.max(0, dist - rs - 3) / 42;
 				if (h0 > lk.level + 1.7) h = Math.min(h, lk.level + 1.7 + Math.pow(t, 1.4) * (h0 - lk.level - 1.7));
-				else if (dist < rs + 4 && h0 > lk.level - 3) h = Math.max(h, lk.level + 1.3);
+				else if (Double.isNaN(water)) {
+					// low shore: a rim that slopes back down to the plain (a sudden step was a flat wall)
+					double rim = lk.level + 1.3 - 0.55 * Math.max(0, dist - rs - 3);
+					if (rim > h) h = rim;
+				}
 			}
 		}
 
@@ -1001,19 +1009,31 @@ public final class WorldLayout {
 						double t = Math.max(0, bestDist - bestW - 2.5) / bank;
 						if (t < 1 && h0 > lvl + 1.7) {
 							h = Math.min(h, lvl + 1.7 + Math.pow(t, 1.6) * (h0 - lvl - 1.7));
-						} else if (bestDist < bestW + 3.5 && h0 > lvl - 4 && lvl > SEA && h < lvl + 1.3) {
-							// low ground beside the river: a natural levee keeps the water in its bed
-							h = lvl + 1.3;
+						} else if (lvl > SEA && Double.isNaN(water)) {
+							// low ground beside the river: a natural levee that slopes back down to the plain
+							// (a 3-block-wide levee with a sudden step was the "flat wall" along rivers)
+							double lev = lvl + 1.3 - 0.55 * Math.max(0, bestDist - bestW - 2.5);
+							if (lev > h) h = lev;
 						}
 					}
 				}
 			}
 		}
+		wet = Math.min(wet, c.riverDist);
 		// water below sea level is the ocean's business (aquifers fill it)
 		if (!Double.isNaN(water) && water <= SEA) {
 			water = Double.NaN;
 			kind = 0;
 		}
+		// inland ground never dips under sea level away from the coast: aquifers would fill such a dip
+		// with walls of water at sea level
+		if (Double.isNaN(water) && c.coast > 12 && c.riverDist > 6 && wet > 4 && c.zone != ZONE_OCEAN && c.zone != ZONE_INNER_SEA) {
+			double floor = SEA + 1 - 12 * (1 - smooth(12, 60, c.coast));
+			if (h < floor) h = floor;
+		}
+		// no overhang crust over or beside water
+		c.overhang *= (float) smooth(6, 30, wet);
+		c.wet = (float) wet;
 		c.height = (float) h;
 		c.water = (float) water;
 		c.waterKind = kind;
@@ -1261,6 +1281,16 @@ public final class WorldLayout {
 			g = Math.max(g, isl);
 		}
 		return g;
+	}
+
+	/**
+	 * Keeps the ground under and beside rivers and lakes solid for 18 blocks: caves and noodles must not
+	 * open into a river bed or a bank (that was the hanging water and the floating banks).
+	 * -10 (no effect under max) elsewhere.
+	 */
+	public double waterGuard(int y, Column c) {
+		if (c.wet > 12 || y > c.height || y < c.height - 18) return -10;
+		return Math.max(0.05, (c.height - y) / 8.0);
 	}
 
 	/** Positive where aquifers should stay dry: deep inside mountains above sea level. */
