@@ -94,14 +94,13 @@
     },
     "minecraft:visual/sky_color": "#7da2ff",
     "minecraft:visual/fog_end_distance": {
-      "argument": 0.55,
+      "argument": 0.6,
       "modifier": "multiply"
     },
     "minecraft:visual/fog_start_distance": {
-      "argument": 0.33,
+      "argument": 0.36,
       "modifier": "multiply"
     },
-    "minecraft:visual/fog_color": "#b4cbd8",
     "minecraft:visual/water_fog_color": "#3aa0b8"
   },
   "carvers": [
@@ -166,8 +165,7 @@
     ],
     [
       "minecraft:fossil_upper",
-      "minecraft:fossil_lower",
-      "minecraft:pointed_dripstone"
+      "minecraft:fossil_lower"
     ],
     [
       "minecraft:spring_water",

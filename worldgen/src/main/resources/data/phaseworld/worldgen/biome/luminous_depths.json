@@ -99,14 +99,14 @@
     },
     "minecraft:visual/sky_color": "#7ba4ff",
     "minecraft:visual/fog_end_distance": {
-      "argument": 0.65,
+      "argument": 0.85,
       "modifier": "multiply"
     },
     "minecraft:visual/fog_start_distance": {
-      "argument": 0.39,
+      "argument": 0.51,
       "modifier": "multiply"
     },
-    "minecraft:visual/fog_color": "#163845",
+    "minecraft:visual/fog_color": "#10303a",
     "minecraft:visual/water_fog_color": "#1f6f7a",
     "minecraft:visual/ambient_particles": {
       "argument": [
@@ -181,7 +181,6 @@
     [
       "minecraft:fossil_upper",
       "minecraft:fossil_lower",
-      "minecraft:pointed_dripstone",
       "phaseworld:moss_cave_floor",
       "phaseworld:hikari_patches_sparse",
       "phaseworld:giant_glowcaps",

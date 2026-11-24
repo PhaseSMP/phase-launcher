@@ -472,7 +472,7 @@ def features():
     PF['trees_snowy'] = placed('minecraft:pine', tree_placement('minecraft:spruce_sapling', 2, 2))
     PF['trees_alpine'] = placed('minecraft:spruce', [rarity(2)] + tree_placement('minecraft:spruce_sapling', 1, 1))
     PF['trees_cherry_sparse'] = placed('minecraft:cherry', [rarity(2)] + tree_placement('minecraft:cherry_sapling', 1))
-    PF['trees_cherry'] = placed('minecraft:cherry_bees_005', tree_placement('minecraft:cherry_sapling', 6, 2))
+    PF['trees_cherry'] = placed('minecraft:cherry_bees_005', tree_placement('minecraft:cherry_sapling', 2, 2))
     PF['trees_marsh'] = placed('minecraft:swamp_oak', [rarity(2)] + tree_placement('minecraft:oak_sapling', 1))
     PF['trees_shirakaba'] = placed('minecraft:super_birch_bees_0002', tree_placement('minecraft:birch_sapling', 6, 3))
     PF['trees_shirakaba_small'] = placed('minecraft:birch', tree_placement('minecraft:birch_sapling', 2, 2))
@@ -725,7 +725,7 @@ MASTER = [
 COMMON_UNDER = {1: [P('water_fill'), 'minecraft:lake_lava_underground'],
                 2: ['minecraft:amethyst_geode', P('eclipse_geode_rare')],
                 6: STONES + [P(o) for o in ORES] + ['minecraft:disk_sand', 'minecraft:disk_clay', 'minecraft:disk_gravel', P('blob_tuff_deep')],
-                7: ['minecraft:fossil_upper', 'minecraft:fossil_lower', 'minecraft:pointed_dripstone'],
+                7: ['minecraft:fossil_upper', 'minecraft:fossil_lower'],
                 8: ['minecraft:spring_water', 'minecraft:spring_lava'],
                 9: ['minecraft:glow_lichen'],
                 10: ['minecraft:freeze_top_layer']}
@@ -821,7 +821,7 @@ biome('reed_marsh', 'swamp', 0.7, 0.9, grass='#8aa04a', foliage='#6f8a3a', water
 biome('sand_dunes', 'desert', 1.2, 0.1, precip=False, water=W_JAPAN, spawns='none',
       extra={9: ['minecraft:patch_dead_bush', 'minecraft:patch_dry_grass_desert', P('patch_susuki_sparse')]})
 biome('frozen_summits', 'frozen_peaks', -0.7, 0.9, water='#3938c9', music='minecraft:music.overworld.frozen_peaks', parts=[('snowflake', 0.004)])
-biome('jukai_forest', 'dark_forest', 0.5, 0.95, grass='#4f8a3c', foliage='#386b2c', water='#3b6bc0', spawns='deep_forest', fog=0.6, fog_color='#9fb8b0',
+biome('jukai_forest', 'dark_forest', 0.5, 0.95, grass='#4f8a3c', foliage='#386b2c', water='#3b6bc0', spawns='deep_forest', fog=0.65,
       parts=[('firefly', 0.0006)],
       extra={6: [P('blob_basalt')], 9: [P('moss_surface'), P('camphor'), P('giant_sugi_rare'), P('trees_jukai'), P('trees_jukai_oak'), P('trees_sugi_spruce'),
                                          'minecraft:patch_large_fern', 'minecraft:patch_grass_taiga', 'minecraft:brown_mushroom_normal', 'minecraft:red_mushroom_normal',
@@ -839,7 +839,7 @@ biome('wisteria_grove', 'cherry_grove', 0.65, 0.75, grass='#93c95c', foliage='#9
       extra={4: SHRINE, 9: [P('wisteria_trees'), P('trees_wisteria_small'), 'minecraft:flower_cherry', 'minecraft:patch_grass_plain',
                             'minecraft:patch_tall_grass_2', P('patch_hydrangea_sparse'), 'minecraft:patch_firefly_bush_near_water']})
 biome('spirit_forest', 'old_growth_pine_taiga', 0.55, 0.95, grass='#4f9a6a', foliage='#2f7a58', water='#3aa0a8', spawns='deep_forest',
-      fog=0.42, fog_color='#86b5a8', water_fog='#2d7d80', parts=[('firefly', 0.0016), ('spore_blossom_air', 0.003)],
+      fog=0.55, water_fog='#2d7d80', parts=[('firefly', 0.0016), ('spore_blossom_air', 0.003)],
       extra={4: [P('shrine_decor_sparse')], 6: [P('ore_emerald')],
              9: [P('moss_surface'), P('spirit_tree'), P('camphor'), P('giant_sugi_rare'), P('trees_jukai_oak'), P('vines_tall'),
                  'minecraft:patch_large_fern', 'minecraft:patch_grass_taiga', P('patch_glowcap'), P('patch_lumen_fern'), P('patch_shiitake'),
@@ -854,17 +854,17 @@ biome('hydrangea_hills', 'flower_forest', 0.65, 0.9, grass='#6cbf5a', foliage='#
 biome('higanbana_fields', 'meadow', 0.7, 0.7, grass='#8fbf55', foliage='#78a84a', water=W_JAPAN, spawns='meadow',
       extra={4: [P('shrine_decor_sparse')], 9: [P('weeping_cherry_rare'), P('patch_higanbana'), P('patch_susuki'), 'minecraft:patch_grass_meadow',
                                                 'minecraft:patch_firefly_bush_near_water']})
-biome('lotus_marsh', 'swamp', 0.75, 0.9, grass='#7fae4a', foliage='#6a9a3a', water='#4f9a7a', spawns='marsh', fog=0.75, fog_color='#b8cfc2',
+biome('lotus_marsh', 'swamp', 0.75, 0.9, grass='#7fae4a', foliage='#6a9a3a', water='#4f9a7a', spawns='marsh', fog=0.8,
       parts=[('firefly', 0.0012)],
       extra={9: [P('trees_marsh'), P('patch_lotus'), 'minecraft:patch_waterlily', 'minecraft:patch_sugar_cane_swamp', 'minecraft:patch_grass_plain',
                  P('patch_wild_rice_common'), 'minecraft:patch_firefly_bush_near_water']})
-biome('karst_spires', 'windswept_forest', 0.65, 0.85, grass='#6fae58', foliage='#4f9446', water='#3aa0b8', spawns='mountain', fog=0.55, fog_color='#b4cbd8',
+biome('karst_spires', 'windswept_forest', 0.65, 0.85, grass='#6fae58', foliage='#4f9446', water='#3aa0b8', spawns='mountain', fog=0.6,
       extra={6: [P('ore_emerald')], 9: [P('trees_matsu_karst'), P('vines_tall'), 'minecraft:patch_grass_forest', 'minecraft:patch_large_fern',
                                         'minecraft:patch_bush', 'minecraft:forest_rock', P('patch_lumen_fern_sparse')]})
 biome('coral_coast', 'warm_ocean', 0.9, 0.5, water='#37d4cf', water_fog='#2bc3c3',
       extra={9: ['minecraft:warm_ocean_vegetation', 'minecraft:seagrass_warm', 'minecraft:sea_pickle']})
 biome('jigoku_wastes', 'windswept_savanna', 1.1, 0.1, precip=False, grass='#b8b06a', foliage='#a09a5a', water='#7ad0c0', spawns='none', fog=0.6,
-      fog_color='#d8d2c0', parts=[('white_ash', 0.012)],
+      parts=[('white_ash', 0.012)],
       extra={2: [P('onsen_common')], 6: [P('blob_tuff'), P('blob_scoria')], 9: ['minecraft:patch_dead_bush', P('patch_susuki_sparse')]})
 biome('shirakaba_plateau', 'old_growth_birch_forest', 0.3, 0.7, grass='#8ab86a', foliage='#7aa85a', water='#3d70c0', spawns='cold',
       extra={9: [P('trees_shirakaba'), P('trees_shirakaba_small'), 'minecraft:wildflowers_birch_forest', 'minecraft:patch_grass_forest',
@@ -873,7 +873,7 @@ biome('alpine_meadow', 'meadow', 0.35, 0.8, grass='#83bf60', foliage='#6aa850', 
       extra={9: [P('trees_meadow_sparse'), 'minecraft:wildflowers_meadow', 'minecraft:flower_meadow', 'minecraft:patch_grass_meadow',
                  P('patch_susuki'), P('boulders')]})
 # caves
-DRIP = {7: ['minecraft:dripstone_cluster', 'minecraft:large_dripstone']}
+DRIP = {7: ['minecraft:dripstone_cluster', 'minecraft:large_dripstone', 'minecraft:pointed_dripstone']}
 biome('deep_caverns', 'dripstone_caves', 0.6, 0.4, water=W_JAPAN, cave=True, extra=DRIP)
 biome('hikari_grotto', 'lush_caves', 0.6, 0.6, water='#43d5ee', cave=True, parts=[('spore_blossom_air', 0.006)],
       extra={7: [P('hikari_patches'), P('spirit_vines_sparse'), P('glowcap_cave'), P('lumen_fern_cave'), 'minecraft:cave_vines', 'minecraft:spore_blossom']})
@@ -883,15 +883,15 @@ biome('magma_tubes', 'sulfur_caves', 1.0, 0.0, precip=False, water='#5a8a6a', ca
       extra={1: [P('lava_lakes_deep')], 6: [P('blob_basalt'), P('blob_blackstone'), P('blob_scoria'), 'minecraft:ore_magma']})
 biome('flooded_caves', 'lush_caves', 0.6, 0.8, water='#3f76e4', cave=True, extra={7: ['minecraft:lush_caves_clay']})
 biome('ice_caves', 'dripstone_caves', -0.5, 0.4, water='#3938c9', cave=True, extra={6: [P('blob_packed_ice'), P('blob_ice')]})
-biome('luminous_depths', 'lush_caves', 0.6, 0.7, water='#3fd8e0', water_fog='#1f6f7a', cave=True, fog=0.65, fog_color='#163845',
+biome('luminous_depths', 'lush_caves', 0.6, 0.7, water='#3fd8e0', water_fog='#1f6f7a', cave=True, fog=0.85, fog_color='#10303a',
       parts=[('glow', 0.0012), ('spore_blossom_air', 0.004)],
       extra={7: [P('moss_cave_floor'), P('hikari_patches_sparse'), P('giant_glowcaps'), 'minecraft:lush_caves_ceiling_vegetation', P('spirit_vines_cave'),
                  P('glowcap_cave'), P('lumen_fern_cave'), 'minecraft:spore_blossom']})
 biome('root_halls', 'lush_caves', 0.6, 0.7, water='#3f9ad0', cave=True, parts=[('spore_blossom_air', 0.002)],
       extra={7: [P('moss_cave_floor'), P('giant_glowcaps_rare'), 'minecraft:lush_caves_ceiling_vegetation', P('spirit_vines_sparse'), P('hanging_roots_cave'),
                  'minecraft:cave_vines', P('glowcap_cave')]})
-biome('abyss', 'dripstone_caves', 0.5, 0.4, water='#28306a', cave=True, fog=0.55, fog_color='#0b0f1a', parts=[('ash', 0.003)],
-      extra={7: ['minecraft:sculk_vein', P('abyss_sculk'), 'minecraft:large_dripstone']}, music='minecraft:music.overworld.deep_dark')
+biome('abyss', 'dripstone_caves', 0.5, 0.4, water='#28306a', cave=True, fog=0.7, fog_color='#0b0f1a', parts=[('ash', 0.003)],
+      extra={7: ['minecraft:sculk_vein', P('abyss_sculk'), 'minecraft:large_dripstone', 'minecraft:pointed_dripstone']}, music='minecraft:music.overworld.deep_dark')
 
 BIOMES = list(B.keys())
 

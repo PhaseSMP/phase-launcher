@@ -374,8 +374,18 @@ def ginkgo_leaves():
 
 
 def wisteria_leaves():
-    return leaves(64, ['#244a1e', '#2f5f25', '#3d7530', '#4f8c3b', '#68a84a'], 0.22,
-                  flowers=['#4a2a7a', '#7a4fc0', '#b18be8'])
+    """Mostly hanging purple flower clusters over a little green."""
+    img = leaves(64, ['#244a1e', '#2f5f25', '#3d7530', '#4f8c3b', '#68a84a'], 0.3)
+    fp = [hexc(c) for c in ('#3e2470', '#5d3a9e', '#8462c4', '#ad8ce6', '#d8c4fb')]
+    f = field(65, ((4, 0.5), (8, 0.3), (16, 0.2)))
+    for y in range(S):
+        for x in range(S):
+            v = f[y][x]
+            if v > 0.38:
+                # vertical streaks: racemes hang down, lighter at the top of each
+                k = quant(v * 0.6 + ((y + x * 3) % 4) / 10, 5, 0.25, x, y)
+                img.putpixel((x, y), fp[k])
+    return img
 
 
 def hydrangea(colors):

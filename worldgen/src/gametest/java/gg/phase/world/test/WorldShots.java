@@ -19,7 +19,7 @@ public class WorldShots implements FabricClientGameTest {
 	@Override
 	public void runTest(ClientGameTestContext ctx) {
 		ctx.runOnClient(mc -> {
-			mc.options.renderDistance().set(7);
+			mc.options.renderDistance().set(6);
 			mc.options.simulationDistance().set(5);
 			mc.options.fov().set(80);
 		});
@@ -77,7 +77,7 @@ public class WorldShots implements FabricClientGameTest {
 
 	private static void waitRender(TestSingleplayerContext sp, String what) {
 		try {
-			sp.getConnection().waitForChunksRender(false, 20 * 300);
+			sp.getConnection().waitForChunksRender(true, 20 * 600);
 		} catch (Throwable t) {
 			LOG.info("[shots] chunks did not finish for {}: {}", what, t.toString());
 		}
@@ -94,6 +94,15 @@ public class WorldShots implements FabricClientGameTest {
 	private static void shot(ClientGameTestContext ctx, TestSingleplayerContext sp, String name, int x, int y, int z, float yaw, float pitch) {
 		LOG.info("[shots] {} at {} {} {}", name, x, y, z);
 		long t0 = System.currentTimeMillis();
+		// generate the area on the server first, then fly there and wait for the client to receive and draw it
+		try {
+			sp.getServer().runOnServer(server -> {
+				net.minecraft.server.level.ServerLevel lvl = server.overworld();
+				for (int i = -6; i <= 6; i++) for (int j = -6; j <= 6; j++) lvl.getChunk((x >> 4) + i, (z >> 4) + j);
+			});
+		} catch (Throwable t) {
+			LOG.info("[shots] pregen failed for {}: {}", name, t.toString());
+		}
 		cmd(sp, String.format(java.util.Locale.ROOT, "tp @p %d %d %d %.1f %.1f", x, y, z, yaw, pitch));
 		ctx.waitTicks(40);
 		waitRender(sp, name);
@@ -116,12 +125,12 @@ public class WorldShots implements FabricClientGameTest {
 	private static int[] find(WorldLayout L, PB biome) {
 		int best = Integer.MAX_VALUE;
 		int[] out = null;
-		for (int x = -2600; x <= 2600; x += 32) {
-			for (int z = -2600; z <= 2600; z += 32) {
+		for (int x = -2600; x <= 2600; x += 16) {
+			for (int z = -2600; z <= 2600; z += 16) {
 				if (L.column(x, z).surface != biome.ordinal()) continue;
 				boolean deep = true;
-				for (int a = -48; a <= 48 && deep; a += 48)
-					for (int b = -48; b <= 48 && deep; b += 48)
+				for (int a = -24; a <= 24 && deep; a += 24)
+					for (int b = -24; b <= 24 && deep; b += 24)
 						if (L.column(x + a, z + b).surface != biome.ordinal()) deep = false;
 				if (!deep) continue;
 				int d = Math.abs(x - L.spawnX) + Math.abs(z - L.spawnZ);

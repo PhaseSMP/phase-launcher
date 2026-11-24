@@ -86,11 +86,11 @@
     },
     "minecraft:visual/sky_color": "#78a7ff",
     "minecraft:visual/fog_end_distance": {
-      "argument": 0.55,
+      "argument": 0.7,
       "modifier": "multiply"
     },
     "minecraft:visual/fog_start_distance": {
-      "argument": 0.33,
+      "argument": 0.42,
       "modifier": "multiply"
     },
     "minecraft:visual/fog_color": "#0b0f1a",

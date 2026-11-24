@@ -40,13 +40,13 @@ jobs:
           fi
       - name: Client screenshots
         if: hashFiles('worldgen/build/libs/*.jar') != ''
-        timeout-minutes: 45
+        timeout-minutes: 85
         continue-on-error: true
         working-directory: worldgen
         run: |
           set +e
           (sudo apt-get update -qq; for p in xvfb mesa-utils libgl1-mesa-dri libglx-mesa0 libegl1 mesa-vulkan-drivers libvulkan1 vulkan-tools; do sudo apt-get install -y -qq $p || echo "no package $p"; done) > ../apt.log 2>&1
-          LIBGL_ALWAYS_SOFTWARE=1 timeout 2500 xvfb-run -a -s "-screen 0 1280x720x24 +extension GLX +render -noreset" ./gradlew --no-daemon runClientGameTest > ../shots-full.log 2>&1
+          LIBGL_ALWAYS_SOFTWARE=1 timeout 4800 xvfb-run -a -s "-screen 0 1280x720x24 +extension GLX +render -noreset" ./gradlew --no-daemon runClientGameTest > ../shots-full.log 2>&1
           grep -E "\[shots\]|ERROR|Exception|Caused by" ../shots-full.log | head -300 > ../worldgen-shots.log
           tail -120 ../shots-full.log >> ../worldgen-shots.log
       - name: Publish result

@@ -88,7 +88,6 @@
       "argument": 0.36,
       "modifier": "multiply"
     },
-    "minecraft:visual/fog_color": "#d8d2c0",
     "minecraft:visual/water_fog_color": "#7ad0c0",
     "minecraft:visual/ambient_particles": {
       "argument": [
@@ -166,8 +165,7 @@
     ],
     [
       "minecraft:fossil_upper",
-      "minecraft:fossil_lower",
-      "minecraft:pointed_dripstone"
+      "minecraft:fossil_lower"
     ],
     [
       "minecraft:spring_water",

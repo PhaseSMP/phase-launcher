@@ -84,6 +84,12 @@ public final class SelfTest {
 		}
 		PhaseWorld.LOG.info("[selftest] rivers: {} chunks, {} water sources, {} floating, {} leaking sideways", checked, sources, floating, leaks);
 		PhaseWorld.LOG.info("[selftest] OK");
+		// halt() skips shutdown hooks, so write the CI profile (if one is running) ourselves
+		try {
+			for (jdk.jfr.Recording r : jdk.jfr.FlightRecorder.getFlightRecorder().getRecordings()) r.dump(java.nio.file.Path.of("worldgen.jfr"));
+		} catch (Throwable t) {
+			PhaseWorld.LOG.info("[selftest] no profile: {}", t.toString());
+		}
 		server.halt(false);
 	}
 }

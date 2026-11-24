@@ -117,14 +117,13 @@
       "modifier": "multiply"
     },
     "minecraft:visual/fog_end_distance": {
-      "argument": 0.75,
+      "argument": 0.8,
       "modifier": "multiply"
     },
     "minecraft:visual/fog_start_distance": {
-      "argument": 0.44999999999999996,
+      "argument": 0.48,
       "modifier": "multiply"
     },
-    "minecraft:visual/fog_color": "#b8cfc2",
     "minecraft:visual/ambient_particles": {
       "argument": [
         {
@@ -199,8 +198,7 @@
     ],
     [
       "minecraft:fossil_upper",
-      "minecraft:fossil_lower",
-      "minecraft:pointed_dripstone"
+      "minecraft:fossil_lower"
     ],
     [
       "minecraft:spring_water",
