@@ -30,12 +30,16 @@ public final class Pet {
 		CURL = 8, PERCH = 9, WAG = 10, LEAN = 11, N = 12;
 	private static final float[] RATE = { 0.12F, 0.1F, 0.06F, 0.14F, 0.2F, 0.2F, 0.3F, 0.15F, 0.06F, 0.2F, 0.1F, 0.15F };
 
-	public enum Act { HOVER, LOOP, CIRCLE, ROLL, DIVE, LAND, GROUND, TAKEOFF, PERCH, STAY, PETTED, ROAR, SPIN, VISIT, GUARD, LOOT, SULK }
+	public enum Act { HOVER, LOOP, CIRCLE, ROLL, DIVE, LAND, GROUND, TAKEOFF, PERCH, STAY, PETTED, ROAR, SPIN, VISIT, GUARD, LOOT, SULK,
+		/* 2.14: новые трюки дракончика */ CORKSCREW, FIREWORK, HEADSIT, BOW, FIRE_RING }
 
 	public final int ownerId;
 	public Vec3 pos, prevPos;
 	// на плече: дракончик «пристёгнут» к плечу и рисуется вместе с хозяином (прыжки, бег, присед)
 	public boolean perched;
+	// на голове хозяина (трюк «На голову»): рисуется от хозяина в том же кадре, как и на плече
+	public boolean onHead;
+	public double headY = 1.74, headYO = 1.74;
 	public double perchY = 1.42, perchYO = 1.42;
 	private Vec3 vel = Vec3.ZERO;
 	public float yaw, yawO, pitch, pitchO, roll, rollO;
@@ -60,6 +64,8 @@ public final class Pet {
 	private float lookYaw, lookPitch, lookIn;
 	private final RandomSource rnd = RandomSource.create();
 	private String lastMode = "follow";
+	private int lastLevel = -1;
+	private static boolean follow0(String mode) { return mode.equals("follow"); }
 
 	public Pet(int ownerId, Vec3 start) {
 		this.ownerId = ownerId;
@@ -76,11 +82,22 @@ public final class Pet {
 			case SPIN -> begin(Act.SPIN, 80);
 			case ROLL -> begin(Act.ROLL, 24);
 			case VISIT -> begin(Act.VISIT, 60);
+			case DIVE -> begin(Act.DIVE, 40);
+			case CORKSCREW -> begin(Act.CORKSCREW, 64);
+			case FIREWORK -> begin(Act.FIREWORK, 64);
+			case HEADSIT -> begin(Act.HEADSIT, 200);
+			case BOW -> { this.landAt = null; begin(Act.BOW, 80); }
+			case FIRE_RING -> begin(Act.FIRE_RING, 76);
 			default -> { }
 		}
 	}
 
 	static final double PERCH_STAND = 1.42, PERCH_CROUCH = 1.17;
+
+	/** Макушка хозяина (трюк «На голову») */
+	public static Vec3 headTop(Player owner, float pt, double height) {
+		return new Vec3(Mth.lerp(pt, owner.xo, owner.getX()), Mth.lerp(pt, owner.yo, owner.getY()) + height, Mth.lerp(pt, owner.zo, owner.getZ()));
+	}
 
 	/** Точка на левом плече хозяина (pt — доля тика для плавной отрисовки) */
 	public static Vec3 shoulder(Player owner, float pt, double height) {
@@ -94,6 +111,7 @@ public final class Pet {
 
 	private void begin(Act a, int len) {
 		if (a != Act.PERCH) this.perched = false;
+		if (a != Act.HEADSIT) this.onHead = false;
 		if (a != Act.STAY && a != Act.GROUND) this.falling = false;
 		if (this.act == Act.LOOP && a != Act.LOOP) this.finishLoop();
 		this.act = a;
@@ -148,7 +166,12 @@ public final class Pet {
 			if (this.act == Act.PERCH || this.act == Act.GROUND) this.falling = false;
 			begin(this.act == Act.GROUND ? Act.TAKEOFF : Act.HOVER, 12);
 		}
-		boolean special = this.act == Act.PETTED || this.act == Act.LOOP || this.act == Act.ROAR || this.act == Act.SPIN || this.act == Act.ROLL;
+		boolean special = this.act == Act.PETTED || this.act == Act.LOOP || this.act == Act.ROAR || this.act == Act.SPIN || this.act == Act.ROLL
+			|| this.act == Act.CORKSCREW || this.act == Act.FIREWORK || this.act == Act.HEADSIT || this.act == Act.BOW || this.act == Act.FIRE_RING || this.act == Act.DIVE;
+		// новый уровень у хозяина — салют в его честь
+		int lvl = owner.experienceLevel;
+		if (this.lastLevel >= 0 && lvl > this.lastLevel && follow0(mode) && !special && this.act != Act.GUARD && !wet) begin(Act.FIREWORK, 64);
+		this.lastLevel = lvl;
 		if (!special) {
 			if (mode.equals("shoulder") && this.act != Act.PERCH && !wet && this.act != Act.TAKEOFF) begin(Act.PERCH, 0);
 			if (staying && this.act != Act.STAY) { if (this.stayPos == null) { this.stayPos = this.pos; this.stayLanded = false; } begin(Act.STAY, 0); }
@@ -348,6 +371,84 @@ public final class Pet {
 				if (this.pos.distanceToSqr(goal) < 0.6 && this.actTicks % 5 == 0) fx.sparkle(this, ip);
 				this.happyLeft = 2;
 			}
+			case CORKSCREW -> {
+				// штопор: по спирали вверх вокруг хозяина, кувыркаясь, и обратно вниз
+				float t = this.actTicks / (float) this.actLen;
+				float up = t < 0.7F ? smooth(t / 0.7F) : 1F - smooth((t - 0.7F) / 0.3F);
+				float a = this.actTicks * 0.34F + by;
+				double r = 1.3 - up * 0.6;
+				goal = base.add(Mth.cos(a) * r, 1.6 + up * 2.8, Mth.sin(a) * r);
+				stiff = 0.22F; maxSpeed = 0.8F; flapAmp = 1.4F; flapSpeed = 1.0F;
+				this.roll = 720F * smooth(t);
+				if (this.actTicks % 3 == 0) fx.sparkle(this, this.pos);
+				this.happyLeft = 20;
+				if (this.actTicks >= this.actLen) { this.roll = this.rollO = 0; begin(Act.HOVER, 0); }
+			}
+			case FIREWORK -> {
+				// салют: взмывает над хозяином, ревёт и выпускает пламя Края в небо, потом плавно опускается
+				float t = this.actTicks;
+				double h = t < 22 ? 1.7 + smooth(t / 22F) * 2.6 : t < 44 ? 4.3 : 4.3 - smooth((t - 44) / 20F) * 2.6;
+				goal = base.add(left.scale(0.3)).add(0, h, 0);
+				stiff = 0.2F; maxSpeed = 0.7F; flapAmp = 1.35F; flapSpeed = 0.95F;
+				faceYaw = owner.yBodyRot;
+				lookAt = this.pos.add(fwd.scale(0.5)).add(0, 6, 0);
+				this.target[JAW] = t > 22 && t < 42 ? 1F : 0F;
+				if (this.actTicks == 22) fx.roar(this);
+				if (t > 23 && t < 42 && this.actTicks % 2 == 0) fx.breath(this, new Vec3(Mth.sin(t * 0.7F) * 0.25, 1, Mth.cos(t * 0.7F) * 0.25).normalize());
+				if (t > 26 && t < 44 && this.actTicks % 4 == 0) fx.sparkle(this, this.pos.add(0, 2.2 + this.rnd.nextDouble() * 1.5, 0));
+				this.happyLeft = 30;
+				if (this.actTicks >= this.actLen) begin(Act.HOVER, 0);
+			}
+			case HEADSIT -> {
+				// садится хозяину на голову и сидит, пока тот не побежит
+				double th = owner.isShiftKeyDown() || owner.isCrouching() ? 1.48 : 1.74;
+				this.headYO = this.headY;
+				this.headY += (th - this.headY) * 0.5;
+				Vec3 top = headTop(owner, 1F, this.headY);
+				goal = top;
+				if (this.onHead || this.pos.distanceTo(top) < 0.3) {
+					this.onHead = true;
+					grounded = true; wantSit = 1; this.pos = top; this.vel = Vec3.ZERO;
+					faceYaw = owner.getYHeadRot();
+					lookAt = owner.getEyePosition().add(owner.getViewVector(1F).scale(6));
+					if (this.actTicks % 40 == 20) this.happyLeft = 16;
+				} else { stiff = 0.14F; maxSpeed = 0.5F; }
+				if (this.actTicks >= this.actLen || owner.isSprinting() || owner.isFallFlying() || wet) { begin(Act.TAKEOFF, 12); fx.takeoff(this); }
+			}
+			case BOW -> {
+				// поклон: садится перед хозяином, раскрывает крылья и кланяется
+				if (this.landAt == null) {
+					Vec3 spot = base.add(fwd.scale(1.5));
+					double gy = groundBelow(level, spot.add(0, 1.2, 0), 3.0);
+					this.landAt = Double.isNaN(gy) ? spot.add(0, 1.2, 0) : new Vec3(spot.x, gy, spot.z);
+				}
+				goal = this.landAt;
+				faceYaw = yawTo(this.pos, base);
+				lookAt = owner.getEyePosition();
+				boolean down = this.pos.distanceToSqr(this.landAt) < 0.02;
+				if (down) {
+					grounded = true; this.pos = this.landAt; this.vel = Vec3.ZERO; wantSit = 0.3F;
+					float bt = this.actTicks;
+					if (bt > 26 && bt < 56) { this.target[HEAD_PITCH] = -40F; this.head = 2; }
+					if (this.actTicks == 30) fx.chirp(this);
+					if (this.actTicks == 56) { fx.hearts(this); this.happyLeft = 40; }
+				} else { maxSpeed = 0.3F; stiff = 0.1F; flapAmp = 0.9F; }
+				if (this.actTicks >= this.actLen || ownerMoving && this.actTicks > 20) { this.landAt = null; begin(Act.TAKEOFF, 12); fx.takeoff(this); }
+			}
+			case FIRE_RING -> {
+				// огненный круг: облетает хозяина и дышит пламенем Края наружу
+				float a = this.actTicks * 0.2F + by;
+				goal = base.add(Mth.cos(a) * 2.1, 1.45, Mth.sin(a) * 2.1);
+				stiff = 0.2F; maxSpeed = 0.75F; flapAmp = 1.3F; flapSpeed = 0.9F;
+				wantRoll = -30F; customRoll = true;
+				Vec3 out = new Vec3(Mth.cos(a), 0, Mth.sin(a));
+				faceYaw = (float) (Mth.atan2(-(-Mth.sin(a)), Mth.cos(a)) * Mth.RAD_TO_DEG); // по касательной
+				lookAt = this.pos.add(out.scale(4));
+				this.target[JAW] = this.actTicks > 8 && this.actTicks < 68 ? 1F : 0F;
+				if (this.actTicks == 6) fx.roar(this);
+				if (this.actTicks > 8 && this.actTicks < 68 && this.actTicks % 2 == 0) fx.breath(this, out);
+				if (this.actTicks >= this.actLen) begin(Act.HOVER, 0);
+			}
 			case PETTED -> {
 				goal = owner.getEyePosition().add(owner.getViewVector(1F).scale(0.95)).add(0, -0.3, 0);
 				stiff = 0.12F; maxSpeed = 0.4F;
@@ -388,7 +489,9 @@ public final class Pet {
 				// иногда играет сам
 				if (--this.playIn <= 0) {
 					this.playIn = 160 + this.rnd.nextInt(260);
-					int r = this.rnd.nextInt(10);
+					int r = this.rnd.nextInt(12);
+					if (r == 10) { begin(Act.CORKSCREW, 64); break; }
+					if (r == 11 && !ownerMoving && owner.onGround()) { begin(Act.HEADSIT, 140); break; }
 					if (r < 3) begin(Act.CIRCLE, 70 + this.rnd.nextInt(50));
 					else if (r < 5) begin(Act.LOOP, 36);
 					else if (r < 7) begin(Act.DIVE, 40);
@@ -420,12 +523,12 @@ public final class Pet {
 		float speed = (float) this.vel.horizontalDistance();
 		boolean landing = this.act == Act.LAND && this.pos.distanceToSqr(goal) < 0.09;
 		this.target[FLY] = grounded ? 0F : landing ? 0.4F : 1F;
-		this.target[FOLD] = grounded ? 1F : landing ? 0.3F : 0F;
+		this.target[FOLD] = this.act == Act.BOW ? 0F : grounded ? 1F : landing ? 0.3F : 0F; // в поклоне крылья раскрыты
 		this.target[SIT] = grounded ? Math.max(0, wantSit - wantLie) : 0F;
 		this.target[LIE] = grounded ? wantLie : 0F;
 		this.target[PERCH] = wantPerch;
 		this.target[FLAP_AMP] = grounded ? 0F : flapAmp * (0.75F + Math.min(speed * 1.5F, 0.6F));
-		if (this.act != Act.ROAR && this.act != Act.GUARD) this.target[JAW] = this.head == 3 ? 0F : this.target[JAW] * 0.5F;
+		if (this.act != Act.ROAR && this.act != Act.GUARD && this.act != Act.FIREWORK && this.act != Act.FIRE_RING) this.target[JAW] = this.head == 3 ? 0F : this.target[JAW] * 0.5F;
 		if (this.happyLeft > 0) { this.happyLeft--; this.head = this.head == 0 ? 2 : this.head; }
 		this.target[WAG] = this.happyLeft > 0 || this.act == Act.PETTED ? 1F : grounded && this.head != 3 ? 0.25F : 0.4F;
 		this.target[CURL] = grounded ? 1F : 0F;
@@ -439,7 +542,7 @@ public final class Pet {
 			wantPitch = grounded ? 0F : Mth.clamp((float) -this.vel.y * 160F, -35F, 35F);
 			this.pitch += (wantPitch - this.pitch) * 0.2F;
 		}
-		if (this.act != Act.ROLL) {
+		if (this.act != Act.ROLL && this.act != Act.CORKSCREW) {
 			// крен: в поворотах наклоняется, в трюках — свой
 			float wr = customRoll ? wantRoll : grounded ? 0F : Mth.clamp(-turn * 3.2F, -40F, 40F);
 			this.roll += (wr - this.roll) * 0.15F;
@@ -457,7 +560,7 @@ public final class Pet {
 		double hd = Math.sqrt((lookAt.x - eye.x) * (lookAt.x - eye.x) + (lookAt.z - eye.z) * (lookAt.z - eye.z));
 		float lp = (float) (Mth.atan2(lookAt.y - eye.y, hd) * Mth.RAD_TO_DEG) + this.lookPitch;
 		this.target[HEAD_YAW] = this.head == 3 ? 0F : Mth.clamp(ly, -75F, 75F);
-		this.target[HEAD_PITCH] = this.head == 3 ? -10F : Mth.clamp(lp - this.pitch * 0.5F, -40F, 45F);
+		this.target[HEAD_PITCH] = this.head == 3 ? -10F : this.act == Act.BOW && this.actTicks > 26 && this.actTicks < 56 ? -40F : Mth.clamp(lp - this.pitch * 0.5F, -40F, 45F);
 		this.target[LEAN] = Mth.clamp((float) this.vel.y * 6F, -1F, 1F);
 
 		for (int i = 0; i < N; i++) this.p[i] += (this.target[i] - this.p[i]) * RATE[i];

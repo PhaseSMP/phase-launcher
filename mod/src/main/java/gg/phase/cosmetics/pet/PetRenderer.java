@@ -42,6 +42,13 @@ public final class PetRenderer {
 			x = sh.x - cam.x; y = sh.y - cam.y; z = sh.z - cam.z;
 			yaw = Mth.rotLerp(pt, owner.yBodyRotO, owner.yBodyRot);
 		}
+		// на голове: так же от хозяина в этом кадре
+		if (pet.onHead && net.minecraft.client.Minecraft.getInstance().level != null
+			&& net.minecraft.client.Minecraft.getInstance().level.getEntity(pet.ownerId) instanceof net.minecraft.world.entity.player.Player owner) {
+			Vec3 top = Pet.headTop(owner, pt, Mth.lerp(pt, pet.headYO, pet.headY));
+			x = top.x - cam.x; y = top.y - cam.y; z = top.z - cam.z;
+			yaw = Mth.rotLerp(pt, owner.yHeadRotO, owner.yHeadRot);
+		}
 		float pitch = Mth.lerp(pt, pet.pitchO, pet.pitch);
 		float roll = Mth.lerp(pt, pet.rollO, pet.roll);
 

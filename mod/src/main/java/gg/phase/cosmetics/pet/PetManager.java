@@ -98,7 +98,7 @@ public final class PetManager implements PetFx {
 		Vec3 cam = mc.gameRenderer.mainCamera().position();
 		boolean firstPerson = mc.options.getCameraType() == CameraType.FIRST_PERSON;
 		for (Pet pet : this.pets.values()) {
-			if (firstPerson && mc.player != null && pet.ownerId == mc.player.getId() && pet.act == Pet.Act.PERCH && pet.p[Pet.PERCH] > 0.5F) continue;
+			if (firstPerson && mc.player != null && pet.ownerId == mc.player.getId() && (pet.act == Pet.Act.PERCH && pet.p[Pet.PERCH] > 0.5F || pet.onHead)) continue;
 			Vec3 at = pet.pos;
 			if (at.distanceToSqr(cam) > 96 * 96) continue;
 			int light = LightCoordsUtil.getLightCoords(mc.level, BlockPos.containing(at.add(0, 0.3, 0)));

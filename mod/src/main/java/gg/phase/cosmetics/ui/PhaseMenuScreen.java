@@ -388,7 +388,9 @@ public class PhaseMenuScreen extends Screen {
 			? new Object[][] { { "Погладить", Pet.Act.PETTED }, { "Сальто", Pet.Act.LOOP }, { "Удивить", Pet.Act.ROAR },
 				{ "Танец", Pet.Act.SPIN }, { "Кувырок", Pet.Act.ROLL }, { "Ко мне", Pet.Act.VISIT }, { "Надуться", Pet.Act.SULK } }
 			: new Object[][] { { "Погладить", Pet.Act.PETTED }, { "Сальто", Pet.Act.LOOP }, { "Рык", Pet.Act.ROAR },
-				{ "Кружить", Pet.Act.SPIN }, { "Бочка", Pet.Act.ROLL }, { "Ко мне", Pet.Act.VISIT } };
+				{ "Кружить", Pet.Act.SPIN }, { "Бочка", Pet.Act.ROLL }, { "Ко мне", Pet.Act.VISIT },
+				{ "Штопор", Pet.Act.CORKSCREW }, { "Салют", Pet.Act.FIREWORK }, { "Огненный круг", Pet.Act.FIRE_RING },
+				{ "Пике", Pet.Act.DIVE }, { "Поклон", Pet.Act.BOW }, { "На голову", Pet.Act.HEADSIT } };
 		for (int i = 0; i < tricks.length; i++) {
 			Pet.Act act = (Pet.Act) tricks[i][1];
 			PhaseButton b = this.add(new PhaseButton(x + (i % 3) * (third + gap), y + (i / 3) * (rh + gap), third, rh, (String) tricks[i][0], PhaseButton.Kind.ACTION,
