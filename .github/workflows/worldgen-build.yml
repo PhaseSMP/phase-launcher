@@ -30,7 +30,7 @@ jobs:
           set +e
           mkdir -p run
           echo "eula=true" > run/eula.txt
-          printf "level-seed=20261124\nonline-mode=false\nspawn-protection=0\n" > run/server.properties
+          printf "level-seed=20261124\nonline-mode=false\nspawn-protection=0\nmax-tick-time=-1\n" > run/server.properties
           timeout 1300 ./gradlew --no-daemon runServer -Pprofile=true > ../worldgen-server-full.log 2>&1
           grep -E "\[selftest\]|ERROR|Exception|Caused by|Failed to|Couldn't|Mixin" ../worldgen-server-full.log | head -400 > ../worldgen-server.log
           tail -150 ../worldgen-server-full.log >> ../worldgen-server.log

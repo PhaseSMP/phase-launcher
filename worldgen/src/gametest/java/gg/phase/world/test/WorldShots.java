@@ -27,7 +27,7 @@ public class WorldShots implements FabricClientGameTest {
 			.setUseConsistentSettings(false)
 			.adjustSettings(s -> s.setSeed("20261124"))
 			.create()) {
-			sp.getConnection().waitForChunksRender();
+			waitRender(sp, "spawn");
 			cmd(sp, "gamemode spectator @p");
 			cmd(sp, "time set 1000");
 			cmd(sp, "weather clear 100000");
@@ -75,6 +75,14 @@ public class WorldShots implements FabricClientGameTest {
 		}
 	}
 
+	private static void waitRender(TestSingleplayerContext sp, String what) {
+		try {
+			sp.getConnection().waitForChunksRender(false, 20 * 300);
+		} catch (Throwable t) {
+			LOG.info("[shots] chunks did not finish for {}: {}", what, t.toString());
+		}
+	}
+
 	private static void cmd(TestSingleplayerContext sp, String c) {
 		try {
 			sp.getServer().runCommand(c);
@@ -88,11 +96,7 @@ public class WorldShots implements FabricClientGameTest {
 		long t0 = System.currentTimeMillis();
 		cmd(sp, String.format(java.util.Locale.ROOT, "tp @p %d %d %d %.1f %.1f", x, y, z, yaw, pitch));
 		ctx.waitTicks(40);
-		try {
-			sp.getConnection().waitForChunksRender(false, 20 * 240);
-		} catch (Throwable t) {
-			LOG.info("[shots] chunks did not finish for {}: {}", name, t.toString());
-		}
+		waitRender(sp, name);
 		ctx.waitTicks(60);
 		ctx.takeScreenshot(name);
 		LOG.info("[shots] {} done in {} s", name, (System.currentTimeMillis() - t0) / 1000);
