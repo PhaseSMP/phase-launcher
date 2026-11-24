@@ -1,86 +1,86 @@
-[16:58:34] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/home/runner/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.17.5+mixin.0.8.7/cef8519a91129d0c21fa03bb9378f0e8ca810e5/sponge-mixin-0.17.5+mixin.0.8.7.jar Service=Knot/Fabric Env=SERVER
-[16:58:35] [main/INFO] (FabricLoader/MixinExtras|Service) Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.5).
-[16:58:45] [Server thread/INFO] (Phase World) [selftest] seed 20261124 fuji at 0 1, spawn 132 962, islets 25, lakes 8, rivers 31
-[16:58:47] [Server thread/INFO] (Phase World) [selftest] d=0 x=0 z=1 surface=1189 layout=1182 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
-[16:58:47] [Server thread/INFO] (Phase World) [selftest] d=48 x=48 z=17 surface=1215 layout=1214 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
-[16:58:48] [Server thread/INFO] (Phase World) [selftest] d=96 x=96 z=33 surface=1225 layout=1224 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
-[16:58:49] [Server thread/INFO] (Phase World) [selftest] d=144 x=144 z=49 surface=1121 layout=1121 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
-[16:58:49] [Server thread/INFO] (Phase World) [selftest] d=192 x=192 z=65 surface=1025 layout=1025 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
-[16:58:50] [Server thread/INFO] (Phase World) [selftest] d=240 x=240 z=81 surface=931 layout=933 biome=phaseworld:fuji_slopes cave=phaseworld:deep_caverns
-[16:58:50] [Server thread/INFO] (Phase World) [selftest] d=288 x=288 z=97 surface=844 layout=844 biome=phaseworld:fuji_slopes cave=phaseworld:deep_caverns
-[16:58:51] [Server thread/INFO] (Phase World) [selftest] d=336 x=336 z=113 surface=756 layout=756 biome=phaseworld:fuji_slopes cave=phaseworld:deep_caverns
-[16:58:51] [Server thread/INFO] (Phase World) [selftest] d=384 x=384 z=129 surface=668 layout=668 biome=phaseworld:fuji_subalpine cave=phaseworld:deep_caverns
-[16:58:51] [Server thread/INFO] (Phase World) [selftest] d=432 x=432 z=145 surface=589 layout=591 biome=phaseworld:fuji_subalpine cave=phaseworld:deep_caverns
-[16:58:52] [Server thread/INFO] (Phase World) [selftest] d=480 x=480 z=161 surface=520 layout=520 biome=phaseworld:fuji_subalpine cave=phaseworld:deep_caverns
-[16:58:52] [Server thread/INFO] (Phase World) [selftest] d=528 x=528 z=177 surface=452 layout=453 biome=phaseworld:wisteria_grove cave=phaseworld:deep_caverns
-[16:58:53] [Server thread/INFO] (Phase World) [selftest] d=576 x=576 z=193 surface=398 layout=398 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:53] [Server thread/INFO] (Phase World) [selftest] d=624 x=624 z=209 surface=341 layout=341 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:53] [Server thread/INFO] (Phase World) [selftest] d=672 x=672 z=225 surface=282 layout=282 biome=phaseworld:sakura_valley cave=phaseworld:deep_caverns
-[16:58:54] [Server thread/INFO] (Phase World) [selftest] d=720 x=720 z=241 surface=231 layout=230 biome=phaseworld:sakura_valley cave=phaseworld:deep_caverns
-[16:58:54] [Server thread/INFO] (Phase World) [selftest] d=768 x=768 z=257 surface=181 layout=181 biome=phaseworld:sakura_valley cave=phaseworld:luminous_depths
-[16:58:54] [Server thread/INFO] (Phase World) [selftest] d=816 x=816 z=273 surface=150 layout=138 biome=phaseworld:sakura_valley cave=phaseworld:deep_caverns
-[16:58:55] [Server thread/INFO] (Phase World) [selftest] d=864 x=864 z=289 surface=103 layout=102 biome=phaseworld:sakura_valley cave=phaseworld:luminous_depths
-[16:58:55] [Server thread/INFO] (Phase World) [selftest] d=912 x=912 z=305 surface=82 layout=80 biome=phaseworld:sakura_valley cave=phaseworld:luminous_depths
-[16:58:55] [Server thread/INFO] (Phase World) [selftest] d=960 x=960 z=321 surface=79 layout=77 biome=phaseworld:sakura_valley cave=phaseworld:luminous_depths
-[16:58:55] [Server thread/INFO] (Phase World) [selftest] d=1008 x=1008 z=337 surface=81 layout=69 biome=phaseworld:wisteria_grove cave=phaseworld:deep_caverns
-[16:58:56] [Server thread/INFO] (Phase World) [selftest] d=1056 x=1056 z=353 surface=63 layout=56 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
-[16:58:56] [Server thread/INFO] (Phase World) [selftest] d=1104 x=1104 z=369 surface=63 layout=46 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
-[16:58:56] [Server thread/INFO] (Phase World) [selftest] d=1152 x=1152 z=385 surface=63 layout=40 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
-[16:58:56] [Server thread/INFO] (Phase World) [selftest] d=1200 x=1200 z=401 surface=63 layout=36 biome=phaseworld:inner_sea cave=phaseworld:flooded_caves
-[16:58:57] [Server thread/INFO] (Phase World) [selftest] d=1248 x=1248 z=417 surface=63 layout=35 biome=phaseworld:inner_sea cave=phaseworld:flooded_caves
-[16:58:57] [Server thread/INFO] (Phase World) [selftest] d=1296 x=1296 z=433 surface=63 layout=39 biome=phaseworld:inner_sea cave=phaseworld:flooded_caves
-[16:58:57] [Server thread/INFO] (Phase World) [selftest] d=1344 x=1344 z=449 surface=63 layout=42 biome=phaseworld:inner_sea cave=phaseworld:flooded_caves
-[16:58:57] [Server thread/INFO] (Phase World) [selftest] d=1392 x=1392 z=465 surface=63 layout=47 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
-[16:58:57] [Server thread/INFO] (Phase World) [selftest] d=1440 x=1440 z=481 surface=63 layout=55 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
-[16:58:58] [Server thread/INFO] (Phase World) [selftest] d=1488 x=1488 z=497 surface=68 layout=67 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:58] [Server thread/INFO] (Phase World) [selftest] d=1536 x=1536 z=513 surface=78 layout=76 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:58] [Server thread/INFO] (Phase World) [selftest] d=1584 x=1584 z=529 surface=101 layout=100 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:58] [Server thread/INFO] (Phase World) [selftest] d=1632 x=1632 z=545 surface=124 layout=123 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:59] [Server thread/INFO] (Phase World) [selftest] d=1680 x=1680 z=561 surface=143 layout=143 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:59] [Server thread/INFO] (Phase World) [selftest] d=1728 x=1728 z=577 surface=159 layout=159 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:59] [Server thread/INFO] (Phase World) [selftest] d=1776 x=1776 z=593 surface=161 layout=160 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:59] [Server thread/INFO] (Phase World) [selftest] d=1824 x=1824 z=609 surface=152 layout=152 biome=phaseworld:higanbana_fields cave=phaseworld:deep_caverns
-[16:59:00] [Server thread/INFO] (Phase World) [selftest] d=1872 x=1872 z=625 surface=151 layout=151 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:59:00] [Server thread/INFO] (Phase World) [selftest] d=1920 x=1920 z=641 surface=139 layout=139 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:59:00] [Server thread/INFO] (Phase World) [selftest] d=1968 x=1968 z=657 surface=129 layout=128 biome=phaseworld:momiji_highlands cave=phaseworld:deep_caverns
-[16:59:00] [Server thread/INFO] (Phase World) [selftest] d=2016 x=2016 z=673 surface=116 layout=118 biome=phaseworld:momiji_highlands cave=phaseworld:deep_caverns
-[16:59:01] [Server thread/INFO] (Phase World) [selftest] d=2064 x=2064 z=689 surface=98 layout=90 biome=phaseworld:momiji_highlands cave=phaseworld:deep_caverns
-[16:59:01] [Server thread/INFO] (Phase World) [selftest] d=2112 x=2112 z=705 surface=66 layout=71 biome=phaseworld:ginkgo_grove cave=phaseworld:flooded_caves
-[16:59:01] [Server thread/INFO] (Phase World) [selftest] d=2160 x=2160 z=721 surface=66 layout=64 biome=phaseworld:beach cave=phaseworld:flooded_caves
-[16:59:01] [Server thread/INFO] (Phase World) [selftest] d=2208 x=2208 z=737 surface=63 layout=45 biome=phaseworld:ocean cave=phaseworld:luminous_depths
-[16:59:02] [Server thread/INFO] (Phase World) [selftest] d=2256 x=2256 z=753 surface=63 layout=39 biome=phaseworld:ocean cave=phaseworld:flooded_caves
-[16:59:02] [Server thread/INFO] (Phase World) [selftest] d=2304 x=2304 z=769 surface=63 layout=40 biome=phaseworld:ocean cave=phaseworld:flooded_caves
-[16:59:02] [Server thread/INFO] (Phase World) [selftest] d=2352 x=2352 z=785 surface=63 layout=36 biome=phaseworld:ocean cave=phaseworld:deep_caverns
-[16:59:02] [Server thread/INFO] (Phase World) [selftest] d=2400 x=2400 z=801 surface=63 layout=30 biome=phaseworld:deep_ocean cave=phaseworld:deep_caverns
-[16:59:02] [Server thread/INFO] (Phase World) [selftest] d=2448 x=2448 z=817 surface=63 layout=14 biome=phaseworld:deep_ocean cave=phaseworld:deep_caverns
-[16:59:03] [Server thread/INFO] (Phase World) [selftest] d=2496 x=2496 z=833 surface=63 layout=11 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:03] [Server thread/INFO] (Phase World) [selftest] d=2544 x=2544 z=849 surface=63 layout=8 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:03] [Server thread/INFO] (Phase World) [selftest] d=2592 x=2592 z=865 surface=63 layout=6 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:03] [Server thread/INFO] (Phase World) [selftest] d=2640 x=2640 z=881 surface=63 layout=6 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:03] [Server thread/INFO] (Phase World) [selftest] d=2688 x=2688 z=897 surface=63 layout=4 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:04] [Server thread/INFO] (Phase World) [selftest] d=2736 x=2736 z=913 surface=63 layout=3 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:04] [Server thread/INFO] (Phase World) [selftest] d=2784 x=2784 z=929 surface=63 layout=3 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:04] [Server thread/INFO] (Phase World) [selftest] d=2832 x=2832 z=945 surface=63 layout=1 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:04] [Server thread/INFO] (Phase World) [selftest] d=2880 x=2880 z=961 surface=63 layout=-2 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:05] [Server thread/INFO] (Phase World) [selftest] d=2928 x=2928 z=977 surface=63 layout=-3 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:05] [Server thread/INFO] (Phase World) [selftest] d=2976 x=2976 z=993 surface=63 layout=-3 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:05] [Server thread/INFO] (Phase World) [selftest] strip: 63 chunks in 19827 ms (314 ms/chunk)
-[16:59:07] [Server thread/INFO] (Phase World) [selftest] land block: 64 chunks in 2623 ms (40 ms/chunk)
-[16:59:56] [Server thread/INFO] (Phase World) [selftest] rivers: 60 chunks, 31450 water sources, 0 floating, 24 leaking sideways
-[16:59:56] [Server thread/INFO] (Phase World) [selftest] OK
-
-> Task :runServer
-[0.976s][info][jfr,startup] Started recording 1. No limit specified, using maxsize=250MB as default.
-[0.976s][info][jfr,startup] 
-[0.976s][info][jfr,startup] Use jcmd 2616 JFR.dump name=1 to copy recording data to file.
-[16:58:34] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 26.3 with Fabric Loader 0.20.1
-[16:58:34] [main/INFO] (FabricLoader/Mappings) Mappings not present!
-[16:58:34] [main/INFO] (FabricLoader) Loading 44 mods:
-	- fabric-advancement-api-v1 1.0.1+38c7a2d55d
-	- fabric-api 0.165.0+26.3
-	- fabric-api-base 2.0.6+fcdff87f5d
-	- fabric-api-lookup-api-v1 2.0.24+3434d6d95d
-	- fabric-biome-api-v1 20.1.1+85210bca5d
+[18:02:30] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/home/runner/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.17.5+mixin.0.8.7/cef8519a91129d0c21fa03bb9378f0e8ca810e5/sponge-mixin-0.17.5+mixin.0.8.7.jar Service=Knot/Fabric Env=SERVER
+[18:02:30] [main/INFO] (FabricLoader/MixinExtras|Service) Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.5).
+[18:02:44] [Server thread/INFO] (Phase World) [selftest] seed 20261124 fuji at 0 1, spawn 164 1200, islets 23, lakes 12, rivers 50
+[18:02:45] [Server thread/INFO] (Phase World) [selftest] d=0 x=0 z=1 surface=787 layout=780 biome=phaseworld:fuji_summit cave=phaseworld:root_halls
+[18:02:46] [Server thread/INFO] (Phase World) [selftest] d=48 x=48 z=17 surface=800 layout=799 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
+[18:02:47] [Server thread/INFO] (Phase World) [selftest] d=96 x=96 z=33 surface=835 layout=834 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
+[18:02:48] [Server thread/INFO] (Phase World) [selftest] d=144 x=144 z=49 surface=815 layout=814 biome=phaseworld:fuji_summit cave=phaseworld:luminous_depths
+[18:02:48] [Server thread/INFO] (Phase World) [selftest] d=192 x=192 z=65 surface=755 layout=753 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
+[18:02:49] [Server thread/INFO] (Phase World) [selftest] d=240 x=240 z=81 surface=696 layout=695 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
+[18:02:49] [Server thread/INFO] (Phase World) [selftest] d=288 x=288 z=97 surface=638 layout=639 biome=phaseworld:fuji_slopes cave=phaseworld:deep_caverns
+[18:02:50] [Server thread/INFO] (Phase World) [selftest] d=336 x=336 z=113 surface=582 layout=584 biome=phaseworld:fuji_slopes cave=phaseworld:deep_caverns
+[18:02:50] [Server thread/INFO] (Phase World) [selftest] d=384 x=384 z=129 surface=527 layout=528 biome=phaseworld:fuji_slopes cave=phaseworld:deep_caverns
+[18:02:51] [Server thread/INFO] (Phase World) [selftest] d=432 x=432 z=145 surface=478 layout=480 biome=phaseworld:fuji_subalpine cave=phaseworld:deep_caverns
+[18:02:51] [Server thread/INFO] (Phase World) [selftest] d=480 x=480 z=161 surface=436 layout=437 biome=phaseworld:fuji_subalpine cave=phaseworld:deep_caverns
+[18:02:52] [Server thread/INFO] (Phase World) [selftest] d=528 x=528 z=177 surface=397 layout=397 biome=phaseworld:fuji_subalpine cave=phaseworld:deep_caverns
+[18:02:52] [Server thread/INFO] (Phase World) [selftest] d=576 x=576 z=193 surface=368 layout=369 biome=phaseworld:fuji_subalpine cave=phaseworld:magma_tubes
+[18:02:53] [Server thread/INFO] (Phase World) [selftest] d=624 x=624 z=209 surface=338 layout=338 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:02:53] [Server thread/INFO] (Phase World) [selftest] d=672 x=672 z=225 surface=299 layout=297 biome=phaseworld:sakura_valley cave=phaseworld:magma_tubes
+[18:02:53] [Server thread/INFO] (Phase World) [selftest] d=720 x=720 z=241 surface=273 layout=271 biome=phaseworld:sakura_valley cave=phaseworld:magma_tubes
+[18:02:54] [Server thread/INFO] (Phase World) [selftest] d=768 x=768 z=257 surface=249 layout=238 biome=phaseworld:sakura_valley cave=phaseworld:magma_tubes
+[18:02:54] [Server thread/INFO] (Phase World) [selftest] d=816 x=816 z=273 surface=224 layout=207 biome=phaseworld:sakura_valley cave=phaseworld:deep_caverns
+[18:02:55] [Server thread/INFO] (Phase World) [selftest] d=864 x=864 z=289 surface=176 layout=174 biome=phaseworld:sakura_valley cave=phaseworld:luminous_depths
+[18:02:55] [Server thread/INFO] (Phase World) [selftest] d=912 x=912 z=305 surface=164 layout=156 biome=phaseworld:sakura_valley cave=phaseworld:luminous_depths
+[18:02:56] [Server thread/INFO] (Phase World) [selftest] d=960 x=960 z=321 surface=130 layout=141 biome=phaseworld:deep_caverns cave=phaseworld:deep_caverns
+[18:02:56] [Server thread/INFO] (Phase World) [selftest] d=1008 x=1008 z=337 surface=124 layout=123 biome=phaseworld:wisteria_grove cave=phaseworld:deep_caverns
+[18:02:56] [Server thread/INFO] (Phase World) [selftest] d=1056 x=1056 z=353 surface=110 layout=108 biome=phaseworld:wisteria_grove cave=phaseworld:deep_caverns
+[18:02:56] [Server thread/INFO] (Phase World) [selftest] d=1104 x=1104 z=369 surface=95 layout=95 biome=phaseworld:tea_hills cave=phaseworld:luminous_depths
+[18:02:57] [Server thread/INFO] (Phase World) [selftest] d=1152 x=1152 z=385 surface=84 layout=83 biome=phaseworld:tea_hills cave=phaseworld:luminous_depths
+[18:02:57] [Server thread/INFO] (Phase World) [selftest] d=1200 x=1200 z=401 surface=79 layout=78 biome=phaseworld:hydrangea_hills cave=phaseworld:luminous_depths
+[18:02:57] [Server thread/INFO] (Phase World) [selftest] d=1248 x=1248 z=417 surface=80 layout=79 biome=phaseworld:hydrangea_hills cave=phaseworld:luminous_depths
+[18:02:58] [Server thread/INFO] (Phase World) [selftest] d=1296 x=1296 z=433 surface=75 layout=73 biome=phaseworld:hydrangea_hills cave=phaseworld:luminous_depths
+[18:02:58] [Server thread/INFO] (Phase World) [selftest] d=1344 x=1344 z=449 surface=66 layout=66 biome=phaseworld:higanbana_fields cave=phaseworld:luminous_depths
+[18:02:58] [Server thread/INFO] (Phase World) [selftest] d=1392 x=1392 z=465 surface=63 layout=51 biome=phaseworld:inner_sea cave=phaseworld:luminous_depths
+[18:02:59] [Server thread/INFO] (Phase World) [selftest] d=1440 x=1440 z=481 surface=63 layout=42 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
+[18:02:59] [Server thread/INFO] (Phase World) [selftest] d=1488 x=1488 z=497 surface=63 layout=38 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
+[18:02:59] [Server thread/INFO] (Phase World) [selftest] d=1536 x=1536 z=513 surface=63 layout=35 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
+[18:03:00] [Server thread/INFO] (Phase World) [selftest] d=1584 x=1584 z=529 surface=63 layout=34 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
+[18:03:00] [Server thread/INFO] (Phase World) [selftest] d=1632 x=1632 z=545 surface=63 layout=37 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
+[18:03:00] [Server thread/INFO] (Phase World) [selftest] d=1680 x=1680 z=561 surface=63 layout=43 biome=phaseworld:inner_sea cave=phaseworld:flooded_caves
+[18:03:00] [Server thread/INFO] (Phase World) [selftest] d=1728 x=1728 z=577 surface=63 layout=51 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
+[18:03:01] [Server thread/INFO] (Phase World) [selftest] d=1776 x=1776 z=593 surface=67 layout=66 biome=phaseworld:wisteria_grove cave=phaseworld:deep_caverns
+[18:03:01] [Server thread/INFO] (Phase World) [selftest] d=1824 x=1824 z=609 surface=72 layout=70 biome=phaseworld:wisteria_grove cave=phaseworld:deep_caverns
+[18:03:01] [Server thread/INFO] (Phase World) [selftest] d=1872 x=1872 z=625 surface=91 layout=81 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:02] [Server thread/INFO] (Phase World) [selftest] d=1920 x=1920 z=641 surface=89 layout=88 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:02] [Server thread/INFO] (Phase World) [selftest] d=1968 x=1968 z=657 surface=103 layout=94 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:02] [Server thread/INFO] (Phase World) [selftest] d=2016 x=2016 z=673 surface=102 layout=100 biome=phaseworld:hydrangea_hills cave=phaseworld:deep_caverns
+[18:03:02] [Server thread/INFO] (Phase World) [selftest] d=2064 x=2064 z=689 surface=107 layout=106 biome=phaseworld:hydrangea_hills cave=phaseworld:deep_caverns
+[18:03:03] [Server thread/INFO] (Phase World) [selftest] d=2112 x=2112 z=705 surface=85 layout=114 biome=phaseworld:deep_caverns cave=phaseworld:deep_caverns
+[18:03:03] [Server thread/INFO] (Phase World) [selftest] d=2160 x=2160 z=721 surface=125 layout=124 biome=phaseworld:hydrangea_hills cave=phaseworld:deep_caverns
+[18:03:04] [Server thread/INFO] (Phase World) [selftest] d=2208 x=2208 z=737 surface=138 layout=138 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:04] [Server thread/INFO] (Phase World) [selftest] d=2256 x=2256 z=753 surface=152 layout=151 biome=phaseworld:hydrangea_hills cave=phaseworld:deep_caverns
+[18:03:05] [Server thread/INFO] (Phase World) [selftest] d=2304 x=2304 z=769 surface=165 layout=163 biome=phaseworld:hydrangea_hills cave=phaseworld:deep_caverns
+[18:03:05] [Server thread/INFO] (Phase World) [selftest] d=2352 x=2352 z=785 surface=170 layout=168 biome=phaseworld:hydrangea_hills cave=phaseworld:deep_caverns
+[18:03:05] [Server thread/INFO] (Phase World) [selftest] d=2400 x=2400 z=801 surface=162 layout=161 biome=phaseworld:hydrangea_hills cave=phaseworld:deep_caverns
+[18:03:05] [Server thread/INFO] (Phase World) [selftest] d=2448 x=2448 z=817 surface=158 layout=156 biome=phaseworld:hydrangea_hills cave=phaseworld:deep_caverns
+[18:03:06] [Server thread/INFO] (Phase World) [selftest] d=2496 x=2496 z=833 surface=152 layout=152 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:06] [Server thread/INFO] (Phase World) [selftest] d=2544 x=2544 z=849 surface=144 layout=144 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:06] [Server thread/INFO] (Phase World) [selftest] d=2592 x=2592 z=865 surface=136 layout=135 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:07] [Server thread/INFO] (Phase World) [selftest] d=2640 x=2640 z=881 surface=128 layout=133 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:07] [Server thread/INFO] (Phase World) [selftest] d=2688 x=2688 z=897 surface=127 layout=126 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:07] [Server thread/INFO] (Phase World) [selftest] d=2736 x=2736 z=913 surface=115 layout=114 biome=phaseworld:ginkgo_grove cave=phaseworld:root_halls
+[18:03:08] [Server thread/INFO] (Phase World) [selftest] d=2784 x=2784 z=929 surface=113 layout=101 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:08] [Server thread/INFO] (Phase World) [selftest] d=2832 x=2832 z=945 surface=92 layout=91 biome=phaseworld:tea_hills cave=phaseworld:flooded_caves
+[18:03:08] [Server thread/INFO] (Phase World) [selftest] d=2880 x=2880 z=961 surface=73 layout=79 biome=phaseworld:tea_hills cave=phaseworld:flooded_caves
+[18:03:09] [Server thread/INFO] (Phase World) [selftest] d=2928 x=2928 z=977 surface=70 layout=69 biome=phaseworld:tea_hills cave=phaseworld:flooded_caves
+[18:03:09] [Server thread/INFO] (Phase World) [selftest] d=2976 x=2976 z=993 surface=63 layout=59 biome=phaseworld:beach cave=phaseworld:deep_caverns
+[18:03:10] [Server thread/INFO] (Phase World) [selftest] d=3024 x=3024 z=1009 surface=63 layout=44 biome=phaseworld:ocean cave=phaseworld:deep_caverns
+[18:03:10] [Server thread/INFO] (Phase World) [selftest] d=3072 x=3072 z=1025 surface=63 layout=39 biome=phaseworld:ocean cave=phaseworld:deep_caverns
+[18:03:10] [Server thread/INFO] (Phase World) [selftest] d=3120 x=3120 z=1041 surface=63 layout=53 biome=phaseworld:coral_coast cave=phaseworld:deep_caverns
+[18:03:11] [Server thread/INFO] (Phase World) [selftest] d=3168 x=3168 z=1057 surface=68 layout=70 biome=phaseworld:sugi_forest cave=phaseworld:root_halls
+[18:03:11] [Server thread/INFO] (Phase World) [selftest] d=3216 x=3216 z=1073 surface=108 layout=107 biome=phaseworld:sugi_forest cave=phaseworld:root_halls
+[18:03:11] [Server thread/INFO] (Phase World) [selftest] d=3264 x=3264 z=1089 surface=70 layout=69 biome=phaseworld:sugi_forest cave=phaseworld:root_halls
+[18:03:11] [Server thread/INFO] (Phase World) [selftest] d=3312 x=3312 z=1105 surface=63 layout=57 biome=phaseworld:coral_coast cave=phaseworld:deep_caverns
+[18:03:12] [Server thread/INFO] (Phase World) [selftest] d=3360 x=3360 z=1121 surface=63 layout=46 biome=phaseworld:coral_coast cave=phaseworld:luminous_depths
+[18:03:12] [Server thread/INFO] (Phase World) [selftest] d=3408 x=3408 z=1137 surface=63 layout=39 biome=phaseworld:ocean cave=phaseworld:flooded_caves
+[18:03:12] [Server thread/INFO] (Phase World) [selftest] d=3456 x=3456 z=1153 surface=63 layout=30 biome=phaseworld:deep_ocean cave=phaseworld:flooded_caves
+[18:03:12] [Server thread/INFO] (Phase World) [selftest] d=3504 x=3504 z=1169 surface=63 layout=23 biome=phaseworld:deep_ocean cave=phaseworld:deep_caverns
+[18:03:13] [Server thread/INFO] (Phase World) [selftest] d=3552 x=3552 z=1185 surface=63 layout=2 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
+[18:03:13] [Server thread/INFO] (Phase World) [selftest] d=3600 x=3600 z=1201 surface=63 layout=0 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
+[18:03:13] [Server thread/INFO] (Phase World) [selftest] strip: 76 chunks in 29347 ms (386 ms/chunk)
+[18:03:17] [Server thread/INFO] (Phase World) [selftest] land block: 64 chunks in 3762 ms (58 ms/chunk)
+[18:04:19] [Server thread/INFO] (Phase World) [selftest] rivers: 60 chunks, 28964 water sources, 0 floating, 6 leaking sideways
+[18:04:19] [Server thread/INFO] (Phase World) [selftest] OK
 	- fabric-block-api-v1 3.1.0+0ae6f9115d
 	- fabric-block-getter-api-v2 2.0.9+3434d6d95d
 	- fabric-command-api-v2 3.1.2+fcdff87f5d
@@ -119,102 +119,115 @@
 	- java 25
 	- minecraft 26.3
 	- mixinextras 0.5.5
-	- phaseworld 1.1.0
-[16:58:34] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/home/runner/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.17.5+mixin.0.8.7/cef8519a91129d0c21fa03bb9378f0e8ca810e5/sponge-mixin-0.17.5+mixin.0.8.7.jar Service=Knot/Fabric Env=SERVER
-[16:58:35] [main/INFO] (FabricLoader/MixinExtras|Service) Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.5).
-[16:58:41] [main/INFO] (Phase World) Phase World loaded: ring map, Fuji, 35 blocks, 30 items
-[16:58:41] [main/INFO] (Minecraft) Environment: Environment[discoveryUrl=https://discovery.minecraftservices.com/minecraft/client, name=PROD]
-[16:58:42] [Worker-Main-1/INFO] (Minecraft) No existing world data, creating new world
-[16:58:43] [Worker-Main-3/INFO] (Minecraft) Loaded 1866 advancements
-[16:58:43] [main/INFO] (BiomeModificationImpl) Applied 0 biome modifications to 0 of 111 new biomes in 1.415 ms
-[16:58:43] [Server thread/INFO] (Minecraft) Starting minecraft server version 26.3
-[16:58:43] [Server thread/INFO] (Minecraft) Loading properties
-[16:58:43] [Server thread/INFO] (Minecraft) Default game type: SURVIVAL
-[16:58:43] [Server thread/INFO] (Minecraft) Generating keypair
-[16:58:43] [Server thread/INFO] (Minecraft) Starting Minecraft server on *:25565
-[16:58:43] [Server thread/WARN] (Minecraft) **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
-[16:58:43] [Server thread/WARN] (Minecraft) The server will make no attempt to authenticate usernames. Beware.
-[16:58:43] [Server thread/WARN] (Minecraft) While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
-[16:58:43] [Server thread/WARN] (Minecraft) To change this, set "online-mode" to "true" in the server.properties file.
-[16:58:43] [Server thread/INFO] (Minecraft) Preparing level "world"
-[16:58:43] [Server thread/INFO] (Minecraft) Selecting global world spawn...
-[16:58:45] [Server thread/INFO] (Minecraft) Loading 0 persistent chunks...
-[16:58:45] [Server thread/INFO] (Minecraft) Preparing spawn area: 100%
-[16:58:45] [Server thread/INFO] (Minecraft) Time elapsed: 1642 ms
-[16:58:45] [Server thread/INFO] (Minecraft) Done (1.858s)! For help, type "help"
-[16:58:45] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
-[16:58:45] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
-[16:58:45] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
-[16:58:45] [Server thread/INFO] (Phase World) World border set to 6000.0 blocks around 0,0
-[16:58:45] [Server thread/INFO] (Phase World) [selftest] seed 20261124 fuji at 0 1, spawn 132 962, islets 25, lakes 8, rivers 31
-[16:58:47] [Server thread/INFO] (Phase World) [selftest] d=0 x=0 z=1 surface=1189 layout=1182 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
-[16:58:47] [Server thread/INFO] (Phase World) [selftest] d=48 x=48 z=17 surface=1215 layout=1214 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
-[16:58:48] [Server thread/INFO] (Phase World) [selftest] d=96 x=96 z=33 surface=1225 layout=1224 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
-[16:58:49] [Server thread/INFO] (Phase World) [selftest] d=144 x=144 z=49 surface=1121 layout=1121 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
-[16:58:49] [Server thread/INFO] (Phase World) [selftest] d=192 x=192 z=65 surface=1025 layout=1025 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
-[16:58:50] [Server thread/INFO] (Phase World) [selftest] d=240 x=240 z=81 surface=931 layout=933 biome=phaseworld:fuji_slopes cave=phaseworld:deep_caverns
-[16:58:50] [Server thread/INFO] (Phase World) [selftest] d=288 x=288 z=97 surface=844 layout=844 biome=phaseworld:fuji_slopes cave=phaseworld:deep_caverns
-[16:58:51] [Server thread/INFO] (Phase World) [selftest] d=336 x=336 z=113 surface=756 layout=756 biome=phaseworld:fuji_slopes cave=phaseworld:deep_caverns
-[16:58:51] [Server thread/INFO] (Phase World) [selftest] d=384 x=384 z=129 surface=668 layout=668 biome=phaseworld:fuji_subalpine cave=phaseworld:deep_caverns
-[16:58:51] [Server thread/INFO] (Phase World) [selftest] d=432 x=432 z=145 surface=589 layout=591 biome=phaseworld:fuji_subalpine cave=phaseworld:deep_caverns
-[16:58:52] [Server thread/INFO] (Phase World) [selftest] d=480 x=480 z=161 surface=520 layout=520 biome=phaseworld:fuji_subalpine cave=phaseworld:deep_caverns
-[16:58:52] [Server thread/INFO] (Phase World) [selftest] d=528 x=528 z=177 surface=452 layout=453 biome=phaseworld:wisteria_grove cave=phaseworld:deep_caverns
-[16:58:53] [Server thread/INFO] (Phase World) [selftest] d=576 x=576 z=193 surface=398 layout=398 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:53] [Server thread/INFO] (Phase World) [selftest] d=624 x=624 z=209 surface=341 layout=341 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:53] [Server thread/INFO] (Phase World) [selftest] d=672 x=672 z=225 surface=282 layout=282 biome=phaseworld:sakura_valley cave=phaseworld:deep_caverns
-[16:58:54] [Server thread/INFO] (Phase World) [selftest] d=720 x=720 z=241 surface=231 layout=230 biome=phaseworld:sakura_valley cave=phaseworld:deep_caverns
-[16:58:54] [Server thread/INFO] (Phase World) [selftest] d=768 x=768 z=257 surface=181 layout=181 biome=phaseworld:sakura_valley cave=phaseworld:luminous_depths
-[16:58:54] [Server thread/INFO] (Phase World) [selftest] d=816 x=816 z=273 surface=150 layout=138 biome=phaseworld:sakura_valley cave=phaseworld:deep_caverns
-[16:58:55] [Server thread/INFO] (Phase World) [selftest] d=864 x=864 z=289 surface=103 layout=102 biome=phaseworld:sakura_valley cave=phaseworld:luminous_depths
-[16:58:55] [Server thread/INFO] (Phase World) [selftest] d=912 x=912 z=305 surface=82 layout=80 biome=phaseworld:sakura_valley cave=phaseworld:luminous_depths
-[16:58:55] [Server thread/INFO] (Phase World) [selftest] d=960 x=960 z=321 surface=79 layout=77 biome=phaseworld:sakura_valley cave=phaseworld:luminous_depths
-[16:58:55] [Server thread/INFO] (Phase World) [selftest] d=1008 x=1008 z=337 surface=81 layout=69 biome=phaseworld:wisteria_grove cave=phaseworld:deep_caverns
-[16:58:56] [Server thread/INFO] (Phase World) [selftest] d=1056 x=1056 z=353 surface=63 layout=56 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
-[16:58:56] [Server thread/INFO] (Phase World) [selftest] d=1104 x=1104 z=369 surface=63 layout=46 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
-[16:58:56] [Server thread/INFO] (Phase World) [selftest] d=1152 x=1152 z=385 surface=63 layout=40 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
-[16:58:56] [Server thread/INFO] (Phase World) [selftest] d=1200 x=1200 z=401 surface=63 layout=36 biome=phaseworld:inner_sea cave=phaseworld:flooded_caves
-[16:58:57] [Server thread/INFO] (Phase World) [selftest] d=1248 x=1248 z=417 surface=63 layout=35 biome=phaseworld:inner_sea cave=phaseworld:flooded_caves
-[16:58:57] [Server thread/INFO] (Phase World) [selftest] d=1296 x=1296 z=433 surface=63 layout=39 biome=phaseworld:inner_sea cave=phaseworld:flooded_caves
-[16:58:57] [Server thread/INFO] (Phase World) [selftest] d=1344 x=1344 z=449 surface=63 layout=42 biome=phaseworld:inner_sea cave=phaseworld:flooded_caves
-[16:58:57] [Server thread/INFO] (Phase World) [selftest] d=1392 x=1392 z=465 surface=63 layout=47 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
-[16:58:57] [Server thread/INFO] (Phase World) [selftest] d=1440 x=1440 z=481 surface=63 layout=55 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
-[16:58:58] [Server thread/INFO] (Phase World) [selftest] d=1488 x=1488 z=497 surface=68 layout=67 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:58] [Server thread/INFO] (Phase World) [selftest] d=1536 x=1536 z=513 surface=78 layout=76 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:58] [Server thread/INFO] (Phase World) [selftest] d=1584 x=1584 z=529 surface=101 layout=100 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:58] [Server thread/INFO] (Phase World) [selftest] d=1632 x=1632 z=545 surface=124 layout=123 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:59] [Server thread/INFO] (Phase World) [selftest] d=1680 x=1680 z=561 surface=143 layout=143 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:59] [Server thread/INFO] (Phase World) [selftest] d=1728 x=1728 z=577 surface=159 layout=159 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:59] [Server thread/INFO] (Phase World) [selftest] d=1776 x=1776 z=593 surface=161 layout=160 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:58:59] [Server thread/INFO] (Phase World) [selftest] d=1824 x=1824 z=609 surface=152 layout=152 biome=phaseworld:higanbana_fields cave=phaseworld:deep_caverns
-[16:59:00] [Server thread/INFO] (Phase World) [selftest] d=1872 x=1872 z=625 surface=151 layout=151 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:59:00] [Server thread/INFO] (Phase World) [selftest] d=1920 x=1920 z=641 surface=139 layout=139 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
-[16:59:00] [Server thread/INFO] (Phase World) [selftest] d=1968 x=1968 z=657 surface=129 layout=128 biome=phaseworld:momiji_highlands cave=phaseworld:deep_caverns
-[16:59:00] [Server thread/INFO] (Phase World) [selftest] d=2016 x=2016 z=673 surface=116 layout=118 biome=phaseworld:momiji_highlands cave=phaseworld:deep_caverns
-[16:59:01] [Server thread/INFO] (Phase World) [selftest] d=2064 x=2064 z=689 surface=98 layout=90 biome=phaseworld:momiji_highlands cave=phaseworld:deep_caverns
-[16:59:01] [Server thread/INFO] (Phase World) [selftest] d=2112 x=2112 z=705 surface=66 layout=71 biome=phaseworld:ginkgo_grove cave=phaseworld:flooded_caves
-[16:59:01] [Server thread/INFO] (Phase World) [selftest] d=2160 x=2160 z=721 surface=66 layout=64 biome=phaseworld:beach cave=phaseworld:flooded_caves
-[16:59:01] [Server thread/INFO] (Phase World) [selftest] d=2208 x=2208 z=737 surface=63 layout=45 biome=phaseworld:ocean cave=phaseworld:luminous_depths
-[16:59:02] [Server thread/INFO] (Phase World) [selftest] d=2256 x=2256 z=753 surface=63 layout=39 biome=phaseworld:ocean cave=phaseworld:flooded_caves
-[16:59:02] [Server thread/INFO] (Phase World) [selftest] d=2304 x=2304 z=769 surface=63 layout=40 biome=phaseworld:ocean cave=phaseworld:flooded_caves
-[16:59:02] [Server thread/INFO] (Phase World) [selftest] d=2352 x=2352 z=785 surface=63 layout=36 biome=phaseworld:ocean cave=phaseworld:deep_caverns
-[16:59:02] [Server thread/INFO] (Phase World) [selftest] d=2400 x=2400 z=801 surface=63 layout=30 biome=phaseworld:deep_ocean cave=phaseworld:deep_caverns
-[16:59:02] [Server thread/INFO] (Phase World) [selftest] d=2448 x=2448 z=817 surface=63 layout=14 biome=phaseworld:deep_ocean cave=phaseworld:deep_caverns
-[16:59:03] [Server thread/INFO] (Phase World) [selftest] d=2496 x=2496 z=833 surface=63 layout=11 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:03] [Server thread/INFO] (Phase World) [selftest] d=2544 x=2544 z=849 surface=63 layout=8 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:03] [Server thread/INFO] (Phase World) [selftest] d=2592 x=2592 z=865 surface=63 layout=6 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:03] [Server thread/INFO] (Phase World) [selftest] d=2640 x=2640 z=881 surface=63 layout=6 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:03] [Server thread/INFO] (Phase World) [selftest] d=2688 x=2688 z=897 surface=63 layout=4 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:04] [Server thread/INFO] (Phase World) [selftest] d=2736 x=2736 z=913 surface=63 layout=3 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:04] [Server thread/INFO] (Phase World) [selftest] d=2784 x=2784 z=929 surface=63 layout=3 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:04] [Server thread/INFO] (Phase World) [selftest] d=2832 x=2832 z=945 surface=63 layout=1 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:04] [Server thread/INFO] (Phase World) [selftest] d=2880 x=2880 z=961 surface=63 layout=-2 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:05] [Server thread/INFO] (Phase World) [selftest] d=2928 x=2928 z=977 surface=63 layout=-3 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:05] [Server thread/INFO] (Phase World) [selftest] d=2976 x=2976 z=993 surface=63 layout=-3 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
-[16:59:05] [Server thread/INFO] (Phase World) [selftest] strip: 63 chunks in 19827 ms (314 ms/chunk)
-[16:59:07] [Server thread/INFO] (Phase World) [selftest] land block: 64 chunks in 2623 ms (40 ms/chunk)
-[16:59:56] [Server thread/INFO] (Phase World) [selftest] rivers: 60 chunks, 31450 water sources, 0 floating, 24 leaking sideways
-[16:59:56] [Server thread/INFO] (Phase World) [selftest] OK
+	- phaseworld 1.2.0
+[18:02:30] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/home/runner/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.17.5+mixin.0.8.7/cef8519a91129d0c21fa03bb9378f0e8ca810e5/sponge-mixin-0.17.5+mixin.0.8.7.jar Service=Knot/Fabric Env=SERVER
+[18:02:30] [main/INFO] (FabricLoader/MixinExtras|Service) Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.5).
+[18:02:38] [main/INFO] (Phase World) Phase World loaded: ring map, Fuji, 35 blocks, 30 items
+[18:02:38] [main/INFO] (Minecraft) Environment: Environment[discoveryUrl=https://discovery.minecraftservices.com/minecraft/client, name=PROD]
+[18:02:39] [Worker-Main-3/INFO] (Minecraft) No existing world data, creating new world
+[18:02:40] [Worker-Main-3/INFO] (Minecraft) Loaded 1866 advancements
+[18:02:40] [main/INFO] (BiomeModificationImpl) Applied 0 biome modifications to 0 of 111 new biomes in 1.919 ms
+[18:02:40] [Server thread/INFO] (Minecraft) Starting minecraft server version 26.3
+[18:02:40] [Server thread/INFO] (Minecraft) Loading properties
+[18:02:40] [Server thread/INFO] (Minecraft) Default game type: SURVIVAL
+[18:02:40] [Server thread/INFO] (Minecraft) Generating keypair
+[18:02:41] [Server thread/INFO] (Minecraft) Starting Minecraft server on *:25565
+[18:02:41] [Server thread/WARN] (Minecraft) **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[18:02:41] [Server thread/WARN] (Minecraft) The server will make no attempt to authenticate usernames. Beware.
+[18:02:41] [Server thread/WARN] (Minecraft) While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[18:02:41] [Server thread/WARN] (Minecraft) To change this, set "online-mode" to "true" in the server.properties file.
+[18:02:41] [Server thread/INFO] (Minecraft) Preparing level "world"
+[18:02:41] [Server thread/INFO] (Minecraft) Selecting global world spawn...
+[18:02:43] [Server thread/INFO] (Minecraft) Loading 0 persistent chunks...
+[18:02:44] [Server thread/INFO] (Minecraft) Preparing spawn area: 100%
+[18:02:44] [Server thread/INFO] (Minecraft) Time elapsed: 2436 ms
+[18:02:44] [Server thread/INFO] (Minecraft) Done (2.790s)! For help, type "help"
+[18:02:44] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[18:02:44] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[18:02:44] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[18:02:44] [Server thread/INFO] (Phase World) World border set to 7400.0 blocks around 0,0
+[18:02:44] [Server thread/INFO] (Phase World) [selftest] seed 20261124 fuji at 0 1, spawn 164 1200, islets 23, lakes 12, rivers 50
+[18:02:45] [Server thread/INFO] (Phase World) [selftest] d=0 x=0 z=1 surface=787 layout=780 biome=phaseworld:fuji_summit cave=phaseworld:root_halls
+[18:02:46] [Server thread/INFO] (Phase World) [selftest] d=48 x=48 z=17 surface=800 layout=799 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
+[18:02:47] [Server thread/INFO] (Phase World) [selftest] d=96 x=96 z=33 surface=835 layout=834 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
+[18:02:48] [Server thread/INFO] (Phase World) [selftest] d=144 x=144 z=49 surface=815 layout=814 biome=phaseworld:fuji_summit cave=phaseworld:luminous_depths
+[18:02:48] [Server thread/INFO] (Phase World) [selftest] d=192 x=192 z=65 surface=755 layout=753 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
+[18:02:49] [Server thread/INFO] (Phase World) [selftest] d=240 x=240 z=81 surface=696 layout=695 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
+[18:02:49] [Server thread/INFO] (Phase World) [selftest] d=288 x=288 z=97 surface=638 layout=639 biome=phaseworld:fuji_slopes cave=phaseworld:deep_caverns
+[18:02:50] [Server thread/INFO] (Phase World) [selftest] d=336 x=336 z=113 surface=582 layout=584 biome=phaseworld:fuji_slopes cave=phaseworld:deep_caverns
+[18:02:50] [Server thread/INFO] (Phase World) [selftest] d=384 x=384 z=129 surface=527 layout=528 biome=phaseworld:fuji_slopes cave=phaseworld:deep_caverns
+[18:02:51] [Server thread/INFO] (Phase World) [selftest] d=432 x=432 z=145 surface=478 layout=480 biome=phaseworld:fuji_subalpine cave=phaseworld:deep_caverns
+[18:02:51] [Server thread/INFO] (Phase World) [selftest] d=480 x=480 z=161 surface=436 layout=437 biome=phaseworld:fuji_subalpine cave=phaseworld:deep_caverns
+[18:02:52] [Server thread/INFO] (Phase World) [selftest] d=528 x=528 z=177 surface=397 layout=397 biome=phaseworld:fuji_subalpine cave=phaseworld:deep_caverns
+[18:02:52] [Server thread/INFO] (Phase World) [selftest] d=576 x=576 z=193 surface=368 layout=369 biome=phaseworld:fuji_subalpine cave=phaseworld:magma_tubes
+[18:02:53] [Server thread/INFO] (Phase World) [selftest] d=624 x=624 z=209 surface=338 layout=338 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:02:53] [Server thread/INFO] (Phase World) [selftest] d=672 x=672 z=225 surface=299 layout=297 biome=phaseworld:sakura_valley cave=phaseworld:magma_tubes
+[18:02:53] [Server thread/INFO] (Phase World) [selftest] d=720 x=720 z=241 surface=273 layout=271 biome=phaseworld:sakura_valley cave=phaseworld:magma_tubes
+[18:02:54] [Server thread/INFO] (Phase World) [selftest] d=768 x=768 z=257 surface=249 layout=238 biome=phaseworld:sakura_valley cave=phaseworld:magma_tubes
+[18:02:54] [Server thread/INFO] (Phase World) [selftest] d=816 x=816 z=273 surface=224 layout=207 biome=phaseworld:sakura_valley cave=phaseworld:deep_caverns
+[18:02:55] [Server thread/INFO] (Phase World) [selftest] d=864 x=864 z=289 surface=176 layout=174 biome=phaseworld:sakura_valley cave=phaseworld:luminous_depths
+[18:02:55] [Server thread/INFO] (Phase World) [selftest] d=912 x=912 z=305 surface=164 layout=156 biome=phaseworld:sakura_valley cave=phaseworld:luminous_depths
+[18:02:56] [Server thread/INFO] (Phase World) [selftest] d=960 x=960 z=321 surface=130 layout=141 biome=phaseworld:deep_caverns cave=phaseworld:deep_caverns
+[18:02:56] [Server thread/INFO] (Phase World) [selftest] d=1008 x=1008 z=337 surface=124 layout=123 biome=phaseworld:wisteria_grove cave=phaseworld:deep_caverns
+[18:02:56] [Server thread/INFO] (Phase World) [selftest] d=1056 x=1056 z=353 surface=110 layout=108 biome=phaseworld:wisteria_grove cave=phaseworld:deep_caverns
+[18:02:56] [Server thread/INFO] (Phase World) [selftest] d=1104 x=1104 z=369 surface=95 layout=95 biome=phaseworld:tea_hills cave=phaseworld:luminous_depths
+[18:02:57] [Server thread/INFO] (Phase World) [selftest] d=1152 x=1152 z=385 surface=84 layout=83 biome=phaseworld:tea_hills cave=phaseworld:luminous_depths
+[18:02:57] [Server thread/INFO] (Phase World) [selftest] d=1200 x=1200 z=401 surface=79 layout=78 biome=phaseworld:hydrangea_hills cave=phaseworld:luminous_depths
+[18:02:57] [Server thread/INFO] (Phase World) [selftest] d=1248 x=1248 z=417 surface=80 layout=79 biome=phaseworld:hydrangea_hills cave=phaseworld:luminous_depths
+[18:02:58] [Server thread/INFO] (Phase World) [selftest] d=1296 x=1296 z=433 surface=75 layout=73 biome=phaseworld:hydrangea_hills cave=phaseworld:luminous_depths
+[18:02:58] [Server thread/INFO] (Phase World) [selftest] d=1344 x=1344 z=449 surface=66 layout=66 biome=phaseworld:higanbana_fields cave=phaseworld:luminous_depths
+[18:02:58] [Server thread/INFO] (Phase World) [selftest] d=1392 x=1392 z=465 surface=63 layout=51 biome=phaseworld:inner_sea cave=phaseworld:luminous_depths
+[18:02:59] [Server thread/INFO] (Phase World) [selftest] d=1440 x=1440 z=481 surface=63 layout=42 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
+[18:02:59] [Server thread/INFO] (Phase World) [selftest] d=1488 x=1488 z=497 surface=63 layout=38 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
+[18:02:59] [Server thread/INFO] (Phase World) [selftest] d=1536 x=1536 z=513 surface=63 layout=35 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
+[18:03:00] [Server thread/INFO] (Phase World) [selftest] d=1584 x=1584 z=529 surface=63 layout=34 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
+[18:03:00] [Server thread/INFO] (Phase World) [selftest] d=1632 x=1632 z=545 surface=63 layout=37 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
+[18:03:00] [Server thread/INFO] (Phase World) [selftest] d=1680 x=1680 z=561 surface=63 layout=43 biome=phaseworld:inner_sea cave=phaseworld:flooded_caves
+[18:03:00] [Server thread/INFO] (Phase World) [selftest] d=1728 x=1728 z=577 surface=63 layout=51 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
+[18:03:01] [Server thread/INFO] (Phase World) [selftest] d=1776 x=1776 z=593 surface=67 layout=66 biome=phaseworld:wisteria_grove cave=phaseworld:deep_caverns
+[18:03:01] [Server thread/INFO] (Phase World) [selftest] d=1824 x=1824 z=609 surface=72 layout=70 biome=phaseworld:wisteria_grove cave=phaseworld:deep_caverns
+[18:03:01] [Server thread/INFO] (Phase World) [selftest] d=1872 x=1872 z=625 surface=91 layout=81 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:02] [Server thread/INFO] (Phase World) [selftest] d=1920 x=1920 z=641 surface=89 layout=88 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:02] [Server thread/INFO] (Phase World) [selftest] d=1968 x=1968 z=657 surface=103 layout=94 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:02] [Server thread/INFO] (Phase World) [selftest] d=2016 x=2016 z=673 surface=102 layout=100 biome=phaseworld:hydrangea_hills cave=phaseworld:deep_caverns
+[18:03:02] [Server thread/INFO] (Phase World) [selftest] d=2064 x=2064 z=689 surface=107 layout=106 biome=phaseworld:hydrangea_hills cave=phaseworld:deep_caverns
+[18:03:03] [Server thread/INFO] (Phase World) [selftest] d=2112 x=2112 z=705 surface=85 layout=114 biome=phaseworld:deep_caverns cave=phaseworld:deep_caverns
+[18:03:03] [Server thread/INFO] (Phase World) [selftest] d=2160 x=2160 z=721 surface=125 layout=124 biome=phaseworld:hydrangea_hills cave=phaseworld:deep_caverns
+[18:03:04] [Server thread/INFO] (Phase World) [selftest] d=2208 x=2208 z=737 surface=138 layout=138 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:04] [Server thread/INFO] (Phase World) [selftest] d=2256 x=2256 z=753 surface=152 layout=151 biome=phaseworld:hydrangea_hills cave=phaseworld:deep_caverns
+[18:03:05] [Server thread/INFO] (Phase World) [selftest] d=2304 x=2304 z=769 surface=165 layout=163 biome=phaseworld:hydrangea_hills cave=phaseworld:deep_caverns
+[18:03:05] [Server thread/INFO] (Phase World) [selftest] d=2352 x=2352 z=785 surface=170 layout=168 biome=phaseworld:hydrangea_hills cave=phaseworld:deep_caverns
+[18:03:05] [Server thread/INFO] (Phase World) [selftest] d=2400 x=2400 z=801 surface=162 layout=161 biome=phaseworld:hydrangea_hills cave=phaseworld:deep_caverns
+[18:03:05] [Server thread/INFO] (Phase World) [selftest] d=2448 x=2448 z=817 surface=158 layout=156 biome=phaseworld:hydrangea_hills cave=phaseworld:deep_caverns
+[18:03:06] [Server thread/INFO] (Phase World) [selftest] d=2496 x=2496 z=833 surface=152 layout=152 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:06] [Server thread/INFO] (Phase World) [selftest] d=2544 x=2544 z=849 surface=144 layout=144 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:06] [Server thread/INFO] (Phase World) [selftest] d=2592 x=2592 z=865 surface=136 layout=135 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:07] [Server thread/INFO] (Phase World) [selftest] d=2640 x=2640 z=881 surface=128 layout=133 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:07] [Server thread/INFO] (Phase World) [selftest] d=2688 x=2688 z=897 surface=127 layout=126 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:07] [Server thread/INFO] (Phase World) [selftest] d=2736 x=2736 z=913 surface=115 layout=114 biome=phaseworld:ginkgo_grove cave=phaseworld:root_halls
+[18:03:08] [Server thread/INFO] (Phase World) [selftest] d=2784 x=2784 z=929 surface=113 layout=101 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[18:03:08] [Server thread/INFO] (Phase World) [selftest] d=2832 x=2832 z=945 surface=92 layout=91 biome=phaseworld:tea_hills cave=phaseworld:flooded_caves
+[18:03:08] [Server thread/INFO] (Phase World) [selftest] d=2880 x=2880 z=961 surface=73 layout=79 biome=phaseworld:tea_hills cave=phaseworld:flooded_caves
+[18:03:09] [Server thread/INFO] (Phase World) [selftest] d=2928 x=2928 z=977 surface=70 layout=69 biome=phaseworld:tea_hills cave=phaseworld:flooded_caves
+[18:03:09] [Server thread/INFO] (Phase World) [selftest] d=2976 x=2976 z=993 surface=63 layout=59 biome=phaseworld:beach cave=phaseworld:deep_caverns
+[18:03:10] [Server thread/INFO] (Phase World) [selftest] d=3024 x=3024 z=1009 surface=63 layout=44 biome=phaseworld:ocean cave=phaseworld:deep_caverns
+[18:03:10] [Server thread/INFO] (Phase World) [selftest] d=3072 x=3072 z=1025 surface=63 layout=39 biome=phaseworld:ocean cave=phaseworld:deep_caverns
+[18:03:10] [Server thread/INFO] (Phase World) [selftest] d=3120 x=3120 z=1041 surface=63 layout=53 biome=phaseworld:coral_coast cave=phaseworld:deep_caverns
+[18:03:11] [Server thread/INFO] (Phase World) [selftest] d=3168 x=3168 z=1057 surface=68 layout=70 biome=phaseworld:sugi_forest cave=phaseworld:root_halls
+[18:03:11] [Server thread/INFO] (Phase World) [selftest] d=3216 x=3216 z=1073 surface=108 layout=107 biome=phaseworld:sugi_forest cave=phaseworld:root_halls
+[18:03:11] [Server thread/INFO] (Phase World) [selftest] d=3264 x=3264 z=1089 surface=70 layout=69 biome=phaseworld:sugi_forest cave=phaseworld:root_halls
+[18:03:11] [Server thread/INFO] (Phase World) [selftest] d=3312 x=3312 z=1105 surface=63 layout=57 biome=phaseworld:coral_coast cave=phaseworld:deep_caverns
+[18:03:12] [Server thread/INFO] (Phase World) [selftest] d=3360 x=3360 z=1121 surface=63 layout=46 biome=phaseworld:coral_coast cave=phaseworld:luminous_depths
+[18:03:12] [Server thread/INFO] (Phase World) [selftest] d=3408 x=3408 z=1137 surface=63 layout=39 biome=phaseworld:ocean cave=phaseworld:flooded_caves
+[18:03:12] [Server thread/INFO] (Phase World) [selftest] d=3456 x=3456 z=1153 surface=63 layout=30 biome=phaseworld:deep_ocean cave=phaseworld:flooded_caves
+[18:03:12] [Server thread/INFO] (Phase World) [selftest] d=3504 x=3504 z=1169 surface=63 layout=23 biome=phaseworld:deep_ocean cave=phaseworld:deep_caverns
+[18:03:13] [Server thread/INFO] (Phase World) [selftest] d=3552 x=3552 z=1185 surface=63 layout=2 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
+[18:03:13] [Server thread/INFO] (Phase World) [selftest] d=3600 x=3600 z=1201 surface=63 layout=0 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
+[18:03:13] [Server thread/INFO] (Phase World) [selftest] strip: 76 chunks in 29347 ms (386 ms/chunk)
+[18:03:17] [Server thread/INFO] (Phase World) [selftest] land block: 64 chunks in 3762 ms (58 ms/chunk)
+[18:04:19] [Server thread/INFO] (Phase World) [selftest] rivers: 60 chunks, 28964 water sources, 0 floating, 6 leaking sideways
+[18:04:19] [Server thread/INFO] (Phase World) [selftest] OK
 
-BUILD SUCCESSFUL in 1m 30s
+BUILD SUCCESSFUL in 2m
 7 actionable tasks: 4 executed, 3 up-to-date
 Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.2/userguide/configuration_cache_enabling.html
