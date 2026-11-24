@@ -810,7 +810,7 @@ def shaped(pattern, key, result, n=1):
 
 
 def shapeless(ingr, result, n=1, cat='misc'):
-    r = {'type': 'minecraft:crafting_shapeless', 'category': cat, 'ingredients': ingr, 'result': {'id': result}}
+    r = {'type': 'minecraft:crafting_shapeless', 'category': 'misc', 'ingredients': ingr, 'result': {'id': result}}
     if n > 1:
         r['result']['count'] = n
     return r
