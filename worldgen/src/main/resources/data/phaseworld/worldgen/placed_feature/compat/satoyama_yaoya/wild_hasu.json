@@ -1,0 +1,71 @@
+{
+  "feature": "satoyama_yaoya:wild_hasu",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 3
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "count": 32,
+      "max_scale": 1.3,
+      "min_scale": 0.7,
+      "type": "satoyama:patch_density"
+    },
+    {
+      "max_scale": 1.4,
+      "min_scale": 0.75,
+      "spread": 6,
+      "type": "satoyama:patch_spread"
+    },
+    {
+      "heightmap": "OCEAN_FLOOR_WG",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "type": "minecraft:biome"
+    },
+    {
+      "predicate": {
+        "predicates": [
+          {
+            "blocks": "minecraft:water",
+            "type": "minecraft:matching_blocks"
+          },
+          {
+            "blocks": "minecraft:air",
+            "offset": [
+              0,
+              1,
+              0
+            ],
+            "type": "minecraft:matching_blocks"
+          },
+          {
+            "state": {
+              "id": "satoyama_yaoya:hasu",
+              "properties": {
+                "age": "0",
+                "half": "lower",
+                "wild": "true"
+              }
+            },
+            "type": "minecraft:would_survive"
+          }
+        ],
+        "type": "minecraft:all_of"
+      },
+      "type": "minecraft:block_predicate_filter"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "satoyama_yaoya"
+      ]
+    }
+  ]
+}

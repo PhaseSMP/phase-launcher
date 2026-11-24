@@ -1,0 +1,62 @@
+{
+  "feature": "satoyama_yaoya:akebi_vine_north",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 3
+    },
+    {
+      "count": 32,
+      "type": "minecraft:count"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "heightmap": "MOTION_BLOCKING",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "type": "minecraft:offset",
+      "x": 0,
+      "y": {
+        "max_inclusive": 0,
+        "min_inclusive": -8,
+        "type": "minecraft:uniform"
+      },
+      "z": 0
+    },
+    {
+      "predicate": {
+        "predicates": [
+          {
+            "tag": "minecraft:air",
+            "type": "minecraft:matching_block_tag"
+          },
+          {
+            "offset": [
+              0,
+              0,
+              -1
+            ],
+            "tag": "satoyama:vine_hosts",
+            "type": "minecraft:matching_block_tag"
+          }
+        ],
+        "type": "minecraft:all_of"
+      },
+      "type": "minecraft:block_predicate_filter"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "satoyama_yaoya"
+      ]
+    }
+  ]
+}

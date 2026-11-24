@@ -40,7 +40,7 @@ jobs:
           echo "eula=true" > run/eula.txt
           printf "level-seed=20261124\nonline-mode=false\nspawn-protection=0\nmax-tick-time=-1\n" > run/server.properties
           timeout 1300 ./gradlew --no-daemon runServer -Pprofile=true > ../worldgen-server-full.log 2>&1
-          grep -E "\[selftest\]|ERROR|Exception|Caused by|Failed to|Couldn't|Mixin|Loading [0-9]+ mods|^\s+- " ../worldgen-server-full.log | head -500 > ../worldgen-server.log
+          grep -E "\[selftest\]|ERROR|Exception|Caused by|Failed to|Couldn't|Mixin|Loading [0-9]+ mods|^\s+- |^\s+\\-- |\(Phase World\)" ../worldgen-server-full.log | head -500 > ../worldgen-server.log
           tail -150 ../worldgen-server-full.log >> ../worldgen-server.log
           if [ -f run/worldgen.jfr ]; then
             jfr print --events jdk.ExecutionSample --stack-depth 64 run/worldgen.jfr > ../samples.txt 2>/dev/null

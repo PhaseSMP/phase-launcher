@@ -1,0 +1,78 @@
+{
+  "feature": "satoyama_yaoya:sasa_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 3
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "heightmap": "MOTION_BLOCKING",
+      "type": "minecraft:heightmap"
+    },
+    {
+      "type": "minecraft:biome"
+    },
+    {
+      "count": 14,
+      "type": "minecraft:count"
+    },
+    {
+      "type": "minecraft:offset",
+      "x": {
+        "max": 5,
+        "min": -5,
+        "plateau": 0,
+        "type": "minecraft:trapezoid"
+      },
+      "y": 0,
+      "z": {
+        "max": 5,
+        "min": -5,
+        "plateau": 0,
+        "type": "minecraft:trapezoid"
+      }
+    },
+    {
+      "predicate": {
+        "predicates": [
+          {
+            "blocks": "minecraft:air",
+            "type": "minecraft:matching_blocks"
+          },
+          {
+            "blocks": "minecraft:air",
+            "offset": [
+              0,
+              1,
+              0
+            ],
+            "type": "minecraft:matching_blocks"
+          },
+          {
+            "state": {
+              "id": "satoyama_yaoya:sasa",
+              "properties": {
+                "half": "lower",
+                "pattern": "0"
+              }
+            },
+            "type": "minecraft:would_survive"
+          }
+        ],
+        "type": "minecraft:all_of"
+      },
+      "type": "minecraft:block_predicate_filter"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "satoyama_yaoya"
+      ]
+    }
+  ]
+}

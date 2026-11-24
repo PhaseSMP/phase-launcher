@@ -27,16 +27,16 @@ public final class SongbirdBiomes {
 
 	/** variant index -> its biomes. One species per group, no biome shared between two species. */
 	static final String[] HOMES = {
-		"sakura_valley,tea_hills",                                  // 0
-		"momiji_highlands,ginkgo_grove",                            // 1
-		"bamboo_grove,rice_terraces",                               // 2
-		"sugi_forest,jukai_forest,fuji_subalpine",                  // 3
-		"wisteria_grove,hydrangea_hills",                           // 4
-		"tropical_forest,mangrove_coast,yakushima_moss",            // 5
-		"shirakaba_plateau,alpine_meadow,snowy_highlands",          // 6
-		"susuki_plains,higanbana_fields,reed_marsh,lotus_marsh",    // 7
-		"tsutsuji_hills,onsen_valley,karst_spires",                 // 8
-		"spirit_forest,pine_cliffs,rocky_shore",                    // 9
+		"rice_terraces,tea_hills,susuki_plains,higanbana_fields",        // 0 brown-grey: a sparrow of the fields
+		"momiji_highlands",                                              // 1 red: in the red maples
+		"ginkgo_grove,bamboo_grove",                                     // 2 grey and yellow: ginkgo and bamboo
+		"wisteria_grove,hydrangea_hills",                                // 3 bright blue: wisteria and hydrangea
+		"shirakaba_plateau,alpine_meadow,snowy_highlands",               // 4 pale blue-grey: birches and snow
+		"sakura_valley,tsutsuji_hills",                                  // 5 cream, orange face: cherry and azalea
+		"reed_marsh,lotus_marsh,rocky_shore",                            // 6 black and white: a wagtail by the water
+		"tropical_forest,mangrove_coast,yakushima_moss,karst_spires",    // 7 green and teal: the warm south
+		"sugi_forest,jukai_forest,fuji_subalpine,pine_cliffs",           // 8 dark grey and orange: conifers
+		"spirit_forest,onsen_valley",                                    // 9 black: the spirit forest and the hot springs
 	};
 
 	private static final Map<ResourceKey<Biome>, Integer> VARIANT = new HashMap<>();

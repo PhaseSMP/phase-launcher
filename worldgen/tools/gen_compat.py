@@ -2,7 +2,11 @@
 # is installed. Rows are (mod id, placed feature, generation step, biomes). A feature in our namespace is a copy
 # with our own placement and a fabric:load_conditions guard, so the data pack still loads without the mod.
 # Called from gen_worldgen.py (needs its helpers and the biome table B).
+import json
 import os
+import zipfile
+
+DUMP = os.path.join(os.path.dirname(__file__), '..', '..', 'ci-worldgen', 'mod-dump.zip')
 
 VEG, ORES, UNDER = 9, 6, 7
 CONIFER = ['sugi_forest', 'jukai_forest', 'pine_cliffs', 'fuji_subalpine']
@@ -67,6 +71,8 @@ def rows(P):
         ('satoyama_uekiya', 'satoyama_uekiya:yuzu_grove', VEG, ['onsen_valley']),
         ('satoyama_uekiya', 'satoyama_uekiya:shikuwasa_grove', VEG, ['tropical_forest', 'mangrove_coast']),
         ('satoyama_uekiya', 'satoyama_uekiya:hydrangea_patch', VEG, ['hydrangea_hills']),
+        ('satoyama_uekiya', 'satoyama_uekiya:hydrangea_tree_blue', VEG, ['hydrangea_hills']),
+        ('satoyama_uekiya', 'satoyama_uekiya:hydrangea_tree_purple', VEG, ['hydrangea_hills']),
         ('satoyama_yaoya', 'satoyama_yaoya:sasa_patch', VEG, ['sugi_forest', 'jukai_forest', 'shirakaba_plateau', 'bamboo_grove']),
         ('satoyama_yaoya', 'satoyama_yaoya:fuki_patch', VEG, ['river', 'sugi_forest', 'yakushima_moss']),
         ('satoyama_yaoya', 'satoyama_yaoya:wild_shiso', VEG, ['rice_terraces', 'tea_hills']),
@@ -143,8 +149,28 @@ def generate(g):
         [rarity(3), IN_SQUARE, ground, BIOME, SOLID_BELOW,
          {'type': 'minecraft:block_predicate_filter', 'predicate': {'type': 'minecraft:matching_block_tag', 'tag': 'minecraft:air'}}])))
 
+    # Satoyama spreads its plants with a "regional palette": a few kinds per 32x32-chunk region, rationed per
+    # vanilla biome. Our biomes are not in its budgets, so the copies trade the palette for a plain rarity.
+    dump = zipfile.ZipFile(DUMP)
+    names = set(dump.namelist())
+
+    def satoyama_copy(mod, feat):
+        name = feat.split(':')[1]
+        src = f'satoyama__runtime-26.3.jar__{mod}.jar/data/{mod}/worldgen/placed_feature/{name}.json'
+        assert src in names, src
+        d = json.loads(dump.read(src))
+        pl = d['placement']
+        if not any(m.get('type') == 'satoyama:regional_palette' for m in pl):
+            return feat
+        chance = 5 if name.endswith('_grove') or name.endswith('_stand') else 3
+        d['placement'] = [rarity(chance) if m.get('type') == 'satoyama:regional_palette' else m for m in pl]
+        write(NS, f'worldgen/placed_feature/compat/{mod}/{name}', guarded(mod, d))
+        return P(f'compat/{mod}/{name}')
+
     out = []
     for mod, feat, step, bs in rows(P):
+        if mod.startswith('satoyama_'):
+            feat = satoyama_copy(mod, feat)
         missing = [b for b in bs if b not in B]
         assert not missing, (feat, missing)
         out.append('\t\t{"%s", "%s", "%d", "%s"},' % (mod, feat, step, ','.join(dict.fromkeys(bs))))
