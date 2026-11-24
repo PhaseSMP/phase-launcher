@@ -35,7 +35,7 @@ dump = zipfile.ZipFile(DUMP, 'w', zipfile.ZIP_DEFLATED)
 
 # classes whose bytecode we need to read (spawn rules, variants, worldgen hooks): keep them raw for javap
 CLASS_HINTS = ('fabulousbirds/entity/Songbird', 'fabulousbirds/Birds', 'fabulousbirds/BirdProfile', 'fabulousbirds/FabulousBirds',
-               'fabulousbirds/mixin/NaturalSpawner', 'FabulousBirdsConfig', 'BirdHooks',
+               'fabulousbirds/mixin/NaturalSpawner', 'fabulousbirds/registry/ModEntities', 'FabulousBirdsConfig', 'BirdHooks',
                'worldgen', 'WorldGen', 'Worldgen', 'Feature', 'Biome', 'Spawn')
 
 
@@ -46,7 +46,8 @@ def dump_jar(z, tag, depth=0):
     for n in names:
         keep = (n.startswith('data/') and n.endswith('.json')) or n == 'fabric.mod.json' or n.endswith('en_us.json') \
             or n.endswith('.mixins.json') or (n.startswith('META-INF/') and n.endswith('.json') and '/data/' in n) \
-            or (n.endswith('.class') and any(h in n for h in CLASS_HINTS))
+            or (n.endswith('.class') and any(h in n for h in CLASS_HINTS)) \
+            or (n.endswith('.png') and 'textures/entity/songbird' in n)
         if keep:
             try:
                 dump.writestr(f'{tag}/{n}', z.read(n))

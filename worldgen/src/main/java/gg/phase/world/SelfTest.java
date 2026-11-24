@@ -28,9 +28,10 @@ public final class SelfTest {
 			layout.isletCount(), layout.lakes.size(), layout.rivers.size());
 		long t0 = System.nanoTime();
 		int chunks = 0;
+		java.util.List<ChunkAccess> scan = new java.util.ArrayList<>();
 		for (int d = 0; d <= 3200; d += 48) {
 			int x = (int) layout.fujiX + d, z = (int) layout.fujiZ + d / 3;
-			level.getChunk(x >> 4, z >> 4);
+			scan.add(level.getChunk(x >> 4, z >> 4));
 			chunks++;
 			int h = level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
 			String biome = level.getBiome(new BlockPos(x, h, z)).unwrapKey().map(k -> k.identifier().toString()).orElse("?");
@@ -83,6 +84,30 @@ public final class SelfTest {
 			}
 		}
 		PhaseWorld.LOG.info("[selftest] rivers: {} chunks, {} water sources, {} floating, {} leaking sideways", checked, sources, floating, leaks);
+
+		// generation bugs and other mods' blocks on the land block: anything that could not survive where it was
+		// placed (a flower over air, a rock on leaves...) is a bug; blocks of other mods are counted per namespace
+		java.util.Map<String, Integer> bad = new java.util.TreeMap<>(), mods = new java.util.TreeMap<>();
+		BlockPos.MutableBlockPos q = new BlockPos.MutableBlockPos();
+		int scanned = 0;
+		for (int i = 0; i < 8; i++) for (int j = 0; j < 8; j++) scan.add(level.getChunk(cx0 + 20 + i, cz0 + j));
+		for (ChunkAccess ch : scan) {
+			for (int dx = 0; dx < 16; dx++) for (int dz = 0; dz < 16; dz++) {
+				int wx = ch.getPos().getMinBlockX() + dx, wz = ch.getPos().getMinBlockZ() + dz;
+				int top = level.getHeight(Heightmap.Types.WORLD_SURFACE, wx, wz);
+				for (int y = top - 10; y <= top + 2; y++) {
+					q.set(wx, y, wz);
+					BlockState s = level.getBlockState(q);
+					if (s.isAir()) continue;
+					scanned++;
+					String id = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(s.getBlock()).toString();
+					String ns = id.substring(0, id.indexOf(':'));
+					if (!ns.equals("minecraft") && !ns.equals(PhaseWorld.MOD_ID)) mods.merge(ns, 1, Integer::sum);
+					if (!s.canSurvive(level, q)) bad.merge(id, 1, Integer::sum);
+				}
+			}
+		}
+		PhaseWorld.LOG.info("[selftest] land scan: {} blocks, other mods {}, cannot survive {}", scanned, mods, bad);
 		PhaseWorld.LOG.info("[selftest] OK");
 		// halt() skips shutdown hooks, so write the CI profile (if one is running) ourselves
 		try {

@@ -3,6 +3,9 @@ package gg.phase.world.gen.feature;
 import com.mojang.serialization.MapCodec;
 import gg.phase.world.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.resources.Identifier;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
@@ -57,12 +60,34 @@ public record ShrineDecorFeature() implements Feature {
 		level.setBlock(p, s, 2);
 	}
 
+	/** The same x/z on the actual ground: small props never hang a block above a dip. */
+	private static BlockPos ground(WorldGenLevel level, BlockPos p) {
+		return new BlockPos(p.getX(), level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, p.getX(), p.getZ()), p.getZ());
+	}
+
+	/** A post standing on the ground: fills down to solid ground (at most 4 blocks) with the foundation block. */
+	private static void footing(WorldGenLevel level, BlockPos p, BlockState foundation) {
+		BlockPos.MutableBlockPos m = p.mutable();
+		for (int i = 0; i < 4; i++) {
+			m.move(0, -1, 0);
+			BlockState s = level.getBlockState(m);
+			if (s.isSolid() && !s.is(BlockTags.LEAVES)) break;
+			level.setBlock(m, foundation, 2);
+		}
+	}
+
+	// Beautify (optional): bamboo lamps and flower pot clusters at the shrines
+	private static BlockState optional(String id) {
+		return BuiltInRegistries.BLOCK.getOptional(Identifier.parse(id)).map(Block::defaultBlockState).orElse(null);
+	}
+
 	private static boolean torii(WorldGenLevel level, BlockPos b, boolean alongX) {
 		BlockState red = ModBlocks.VERMILION_PLANKS.defaultBlockState();
 		BlockState black = Blocks.POLISHED_BLACKSTONE.defaultBlockState();
 		BlockState blackSlab = Blocks.POLISHED_BLACKSTONE_SLAB.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.BOTTOM);
 		for (int u : new int[]{-2, 2}) {
 			set(level, off(b, alongX, u, -1, 0), Blocks.STONE_BRICKS.defaultBlockState());
+			footing(level, off(b, alongX, u, -1, 0), Blocks.STONE_BRICKS.defaultBlockState());
 			for (int y = 0; y < 5; y++) set(level, off(b, alongX, u, y, 0), red);
 		}
 		for (int u = -2; u <= 2; u++) set(level, off(b, alongX, u, 3, 0), red);       // nuki
@@ -78,23 +103,37 @@ public record ShrineDecorFeature() implements Feature {
 		BlockState stone = ModBlocks.SHRINE_BRICKS.defaultBlockState();
 		BlockState wood = ModBlocks.VERMILION_PLANKS.defaultBlockState();
 		BlockState roof = Blocks.DARK_OAK_SLAB.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.BOTTOM);
-		for (int dx = -1; dx <= 1; dx++) for (int dz = -1; dz <= 1; dz++) set(level, b.offset(dx, -1, dz), stone);
+		for (int dx = -1; dx <= 1; dx++) for (int dz = -1; dz <= 1; dz++) {
+			set(level, b.offset(dx, -1, dz), stone);
+			footing(level, b.offset(dx, -1, dz), stone);
+		}
 		set(level, b, stone);
 		set(level, b.above(), wood);
 		set(level, b.above(2), Blocks.DARK_OAK_PLANKS.defaultBlockState());
 		for (int dx = -1; dx <= 1; dx++) for (int dz = -1; dz <= 1; dz++) set(level, b.offset(dx, 3, dz), roof);
 		set(level, b.offset(1, 0, 0), ModBlocks.STONE_LANTERN.defaultBlockState());
-		if (random.nextBoolean()) set(level, b.offset(-1, 0, 1), Blocks.FLOWER_POT.defaultBlockState());
+		if (random.nextBoolean()) {
+			BlockState cluster = optional("beautify:multi_flower_pot");
+			set(level, b.offset(-1, 0, 1), cluster != null && random.nextBoolean() ? cluster : Blocks.FLOWER_POT.defaultBlockState());
+		}
 		return true;
 	}
 
 	private static boolean lanterns(WorldGenLevel level, BlockPos b, boolean alongX, RandomSource random) {
 		BlockState lantern = ModBlocks.STONE_LANTERN.defaultBlockState();
-		set(level, off(b, alongX, -2, 0, 0), lantern);
-		set(level, off(b, alongX, 2, 0, 0), lantern);
+		set(level, ground(level, off(b, alongX, -2, 0, 0)), lantern);
+		set(level, ground(level, off(b, alongX, 2, 0, 0)), lantern);
+		BlockState lamp = optional("beautify:lamp_bamboo");
+		if (lamp != null && random.nextBoolean()) {
+			for (int v : new int[]{-4, 4}) {
+				BlockPos p = ground(level, off(b, alongX, 2, 0, v));
+				if (level.getBlockState(p).isAir() && level.getBlockState(p.below()).isSolid()) set(level, p, lamp);
+			}
+		}
 		for (int v = -5; v <= 5; v++) {
 			if (random.nextInt(5) == 0) continue;
-			BlockPos p = off(b, alongX, 0, -1, v);
+			BlockPos p = ground(level, off(b, alongX, 0, 0, v)).below();
+			if (Math.abs(p.getY() + 1 - b.getY()) > 1) continue;
 			set(level, p, random.nextInt(3) == 0 ? Blocks.COBBLESTONE.defaultBlockState() : Blocks.GRAVEL.defaultBlockState());
 			if (!level.getBlockState(p.above()).isAir() && !level.getBlockState(p.above()).is(ModBlocks.STONE_LANTERN)) set(level, p.above(), Blocks.AIR.defaultBlockState());
 		}
@@ -103,7 +142,7 @@ public record ShrineDecorFeature() implements Feature {
 
 	private static boolean garden(WorldGenLevel level, BlockPos b, RandomSource random) {
 		for (int i = 0; i < 3; i++) {
-			BlockPos c = b.offset(random.nextInt(7) - 3, 0, random.nextInt(7) - 3);
+			BlockPos c = ground(level, b.offset(random.nextInt(7) - 3, 0, random.nextInt(7) - 3)).below();
 			int r = random.nextInt(2);
 			for (int dx = -r; dx <= r; dx++) for (int dz = -r; dz <= r; dz++) for (int dy = 0; dy <= r; dy++) {
 				if (dx * dx + dz * dz + dy * dy > r * r + 1) continue;
@@ -111,7 +150,7 @@ public record ShrineDecorFeature() implements Feature {
 			}
 		}
 		for (int i = 0; i < 14; i++) {
-			BlockPos p = b.offset(random.nextInt(9) - 4, 0, random.nextInt(9) - 4);
+			BlockPos p = ground(level, b.offset(random.nextInt(9) - 4, 0, random.nextInt(9) - 4));
 			if (level.getBlockState(p).isAir() && level.getBlockState(p.below()).is(BlockTags.DIRT)) set(level, p, Blocks.MOSS_CARPET.defaultBlockState());
 		}
 		return true;

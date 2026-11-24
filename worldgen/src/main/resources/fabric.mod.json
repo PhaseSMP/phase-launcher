@@ -3,7 +3,7 @@
   "id": "phaseworld",
   "version": "${version}",
   "name": "Phase World",
-  "description": "Карта Phase: кольцевой материк вокруг острова с Фудзи, японские биомы, еда и культуры, пещеры и данжи. Нужен и на сервере, и у игроков. С Naturalist животные расселяются по японским биомам.",
+  "description": "Карта Phase: кольцевой материк вокруг острова с Фудзи, японские биомы, еда и культуры, пещеры и данжи. Нужен и на сервере, и у игроков. С Naturalist, This Rocks, Farmer's/Rustic Delight, Satoyama, Fabulous Birds и Beautify их растения, камни, звери и птицы расселяются по японским биомам.",
   "authors": [
     "Phase"
   ],
@@ -24,9 +24,17 @@
     "fabric-api": "*"
   },
   "mixins": [
-    "phaseworld.mixins.json"
+    "phaseworld.mixins.json",
+    "phaseworld.compat.mixins.json"
   ],
   "suggests": {
-    "naturalist": "*"
+    "naturalist": "*",
+    "rocks": "*",
+    "farmersdelight": "*",
+    "rusticdelight": "*",
+    "satoyama": "*",
+    "fabulousbirds": "*",
+    "beautify": "*",
+    "more_armor_trims": "*"
   }
 }

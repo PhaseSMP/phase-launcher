@@ -1086,4 +1086,6 @@ if __name__ == '__main__':
     features()
     biomes()
     tags()
+    import gen_compat
+    print('compat rows: %d' % gen_compat.generate(globals()))
     print('worldgen: %d biomes' % len(B))
