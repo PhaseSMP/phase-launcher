@@ -53,7 +53,7 @@ public final class SongbirdBiomes {
 		BiomeModifications.create(PhaseWorld.id("compat/songbirds"))
 			.add(ModificationPhase.ADDITIONS, BiomeSelectors.includeByKey(VARIANT.keySet()), ctx -> {
 				EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.getValue(SONGBIRD);
-				if (type != null && BuiltInRegistries.ENTITY_TYPE.getKey(type).equals(SONGBIRD)) ctx.getSpawnSettings().addSpawn(type, 12, 3, 6);
+				if (type != null && BuiltInRegistries.ENTITY_TYPE.getKey(type).equals(SONGBIRD)) ctx.getMobSpawnSettings().addSpawn(type, 12, 3, 6);
 			});
 		PhaseWorld.LOG.info("Fabulous Birds: {} songbird species, each in its own biomes", HOMES.length);
 	}
