@@ -90,6 +90,7 @@ public final class SelfTest {
 		} catch (Throwable t) {
 			PhaseWorld.LOG.info("[selftest] no profile: {}", t.toString());
 		}
-		server.halt(false);
+		// the test world is throwaway: leave at once instead of saving hundreds of tall chunks
+		Runtime.getRuntime().halt(0);
 	}
 }

@@ -18,7 +18,11 @@
                   "if_true": {
                     "type": "minecraft:biome",
                     "biome_is": [
-                      "phaseworld:beach"
+                      "phaseworld:beach",
+                      "phaseworld:sand_dunes",
+                      "phaseworld:ocean",
+                      "phaseworld:inner_sea",
+                      "phaseworld:coral_coast"
                     ]
                   },
                   "then_run": {
@@ -68,19 +72,6 @@
                         "result_state": "minecraft:stone"
                       }
                     ]
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:river"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:grass_block"
                   }
                 },
                 {
@@ -266,19 +257,6 @@
                         "result_state": "minecraft:grass_block"
                       }
                     ]
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:rice_terraces"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:grass_block"
                   }
                 },
                 {
@@ -585,19 +563,6 @@
                   "if_true": {
                     "type": "minecraft:biome",
                     "biome_is": [
-                      "phaseworld:sand_dunes"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:sand"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
                       "phaseworld:frozen_summits"
                     ]
                   },
@@ -896,51 +861,12 @@
                   "if_true": {
                     "type": "minecraft:biome",
                     "biome_is": [
-                      "phaseworld:ocean"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:sand"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
                       "phaseworld:deep_ocean"
                     ]
                   },
                   "then_run": {
                     "type": "minecraft:block",
                     "result_state": "minecraft:gravel"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:inner_sea"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:sand"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:coral_coast"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:sand"
                   }
                 },
                 {
@@ -1080,32 +1006,6 @@
                         "result_state": "minecraft:grass_block"
                       }
                     ]
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:hydrangea_hills"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:grass_block"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:higanbana_fields"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:grass_block"
                   }
                 },
                 {
@@ -1390,12 +1290,29 @@
                   "if_true": {
                     "type": "minecraft:biome",
                     "biome_is": [
-                      "phaseworld:beach"
+                      "phaseworld:ocean",
+                      "phaseworld:inner_sea",
+                      "phaseworld:beach",
+                      "phaseworld:sand_dunes",
+                      "phaseworld:coral_coast"
                     ]
                   },
                   "then_run": {
                     "type": "minecraft:block",
                     "result_state": "minecraft:sand"
+                  }
+                },
+                {
+                  "type": "minecraft:condition",
+                  "if_true": {
+                    "type": "minecraft:biome",
+                    "biome_is": [
+                      "phaseworld:deep_ocean"
+                    ]
+                  },
+                  "then_run": {
+                    "type": "minecraft:block",
+                    "result_state": "minecraft:gravel"
                   }
                 },
                 {
@@ -1440,71 +1357,6 @@
                         "result_state": "minecraft:stone"
                       }
                     ]
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:sand_dunes"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:sand"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:ocean"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:sand"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:deep_ocean"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:gravel"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:inner_sea"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:sand"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:coral_coast"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:sand"
                   }
                 }
               ]
@@ -1565,7 +1417,11 @@
                   "if_true": {
                     "type": "minecraft:biome",
                     "biome_is": [
-                      "phaseworld:beach"
+                      "phaseworld:beach",
+                      "phaseworld:sand_dunes",
+                      "phaseworld:ocean",
+                      "phaseworld:inner_sea",
+                      "phaseworld:coral_coast"
                     ]
                   },
                   "then_run": {
@@ -1604,71 +1460,6 @@
                   "if_true": {
                     "type": "minecraft:biome",
                     "biome_is": [
-                      "phaseworld:river"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:dirt"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:sakura_valley"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:dirt"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:momiji_highlands"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:dirt"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:sugi_forest"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:dirt"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:bamboo_grove"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:dirt"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
                       "phaseworld:rice_terraces"
                     ]
                   },
@@ -1693,19 +1484,6 @@
                         "result_state": "minecraft:dirt"
                       }
                     ]
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:tea_hills"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:dirt"
                   }
                 },
                 {
@@ -1746,19 +1524,6 @@
                   "if_true": {
                     "type": "minecraft:biome",
                     "biome_is": [
-                      "phaseworld:snowy_highlands"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:dirt"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
                       "phaseworld:onsen_valley"
                     ]
                   },
@@ -1790,38 +1555,13 @@
                   "if_true": {
                     "type": "minecraft:biome",
                     "biome_is": [
-                      "phaseworld:pine_cliffs"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:dirt"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:reed_marsh"
+                      "phaseworld:reed_marsh",
+                      "phaseworld:lotus_marsh"
                     ]
                   },
                   "then_run": {
                     "type": "minecraft:block",
                     "result_state": "minecraft:mud"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:sand_dunes"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:sand"
                   }
                 },
                 {
@@ -1873,19 +1613,6 @@
                   "if_true": {
                     "type": "minecraft:biome",
                     "biome_is": [
-                      "phaseworld:fuji_subalpine"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:dirt"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
                       "phaseworld:fuji_slopes"
                     ]
                   },
@@ -1930,19 +1657,6 @@
                   "if_true": {
                     "type": "minecraft:biome",
                     "biome_is": [
-                      "phaseworld:ocean"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:sand"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
                       "phaseworld:deep_ocean"
                     ]
                   },
@@ -1956,155 +1670,12 @@
                   "if_true": {
                     "type": "minecraft:biome",
                     "biome_is": [
-                      "phaseworld:inner_sea"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:sand"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:coral_coast"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:sand"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:wisteria_grove"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:dirt"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:spirit_forest"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:dirt"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:ginkgo_grove"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:dirt"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:hydrangea_hills"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:dirt"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:higanbana_fields"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:dirt"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:lotus_marsh"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:mud"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:karst_spires"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:dirt"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
                       "phaseworld:jigoku_wastes"
                     ]
                   },
                   "then_run": {
                     "type": "minecraft:block",
                     "result_state": "minecraft:tuff"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:shirakaba_plateau"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:dirt"
-                  }
-                },
-                {
-                  "type": "minecraft:condition",
-                  "if_true": {
-                    "type": "minecraft:biome",
-                    "biome_is": [
-                      "phaseworld:alpine_meadow"
-                    ]
-                  },
-                  "then_run": {
-                    "type": "minecraft:block",
-                    "result_state": "minecraft:dirt"
                   }
                 },
                 {

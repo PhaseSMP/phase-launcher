@@ -270,18 +270,27 @@ SURF = {
 SANDY_DEEP = ['beach', 'sand_dunes', 'ocean', 'inner_sea', 'coral_coast']
 
 
+def grouped(pairs):
+    """One biome condition per distinct rule (every biome condition costs a biome lookup per block)."""
+    order, groups = [], {}
+    for name, rule in pairs:
+        k = json.dumps(rule, sort_keys=True)
+        if k not in groups:
+            groups[k] = (rule, [])
+            order.append(k)
+        groups[k][1].append(name)
+    return [cond(biome_is(*groups[k][1]), groups[k][0]) for k in order]
+
+
 def material_rules():
-    on_floor = []
-    under_floor = []
-    for name, (top, under) in SURF.items():
-        on_floor.append(cond(biome_is(name), top))
-        under_floor.append(cond(biome_is(name), under))
+    on_floor = grouped([(n, t) for n, (t, u) in SURF.items() if t != GRASS])
+    under_floor = grouped([(n, u) for n, (t, u) in SURF.items() if u != DIRT])
+    shore = ('ocean', 'inner_sea', 'deep_ocean', 'beach', 'black_sand_beach', 'rocky_shore', 'sand_dunes', 'coral_coast')
+    shore_floor = grouped([(n, SURF[n][0]) for n in shore])
     surface = seq(
         cond('minecraft:on_floor', seq(
             cond('minecraft:not_underwater', seq(*on_floor, GRASS)),
-            cond(biome_is('ocean', 'inner_sea', 'deep_ocean', 'beach', 'black_sand_beach', 'rocky_shore', 'sand_dunes', 'coral_coast'),
-                 seq(*[c for c in on_floor if c['if_true']['biome_is'][0] in
-                       [P(x) for x in ('ocean', 'inner_sea', 'deep_ocean', 'beach', 'black_sand_beach', 'rocky_shore', 'sand_dunes', 'coral_coast')]])),
+            cond(biome_is(*shore), seq(*shore_floor)),
             UNDERWATER_FLOOR)),
         cond('minecraft:not_under_deep_water', seq(
             cond('minecraft:under_floor', seq(*under_floor, DIRT)),
@@ -290,13 +299,10 @@ def material_rules():
     )
     write(NS, 'worldgen/material_rule/surface', surface)
 
-    underground = seq(
-        cond(biome_is('magma_tubes'), 'minecraft:overworld/sulfur_cave_bands'),
-        cond(biome_is('magma_tubes'), cond(noise_band(-0.3, 0.3, 'minecraft:calcite'), block('minecraft:basalt'))),
-        cond(biome_is('ice_caves'), cond(noise_band(0.35, 1e9, 'minecraft:packed_ice'), block('minecraft:packed_ice'))),
-        cond(biome_is('abyss'), cond(noise_band(0.3, 1e9, 'minecraft:calcite'), block('minecraft:tuff'))),
-        'minecraft:overworld/underground',
-    )
+    # No biome conditions down here: they cost a biome lookup for every stone block of a 1424-block column
+    # (more than half of all generation time). Cave stones come from ore-like blobs instead.
+    underground = cond({'type': 'minecraft:vertical_gradient', 'random_name': 'minecraft:deepslate',
+                        'true_at_and_below': A(0), 'false_at_and_above': A(8)}, block('minecraft:deepslate'))
     write(NS, 'worldgen/material_rule/underground', underground)
 
     root = seq(
@@ -601,6 +607,8 @@ def features():
     ore('blob_packed_ice', 'minecraft:packed_ice', 40)
     ore('blob_ice', 'minecraft:ice', 24)
     ore('blob_tuff', 'minecraft:tuff', 56)
+    ore('blob_sulfur', 'minecraft:sulfur', 36)
+    ore('blob_calcite', 'minecraft:calcite', 30)
     PF['blob_scoria'] = placed(P('blob_scoria'), [count(4), IN_SQUARE, height_uniform(A(-30), A(900)), BIOME])
     PF['blob_pumice'] = placed(P('blob_pumice'), [count(2), IN_SQUARE, height_uniform(A(0), A(900)), BIOME])
     PF['blob_basalt'] = placed(P('blob_basalt'), [count(5), IN_SQUARE, height_uniform(A(-40), A(400)), BIOME])
@@ -609,6 +617,9 @@ def features():
     PF['blob_ice'] = placed(P('blob_ice'), [count(4), IN_SQUARE, height_uniform(A(0), A(500)), BIOME])
     PF['blob_tuff'] = placed(P('blob_tuff'), [count(3), IN_SQUARE, height_uniform(A(0), A(260)), BIOME])
     PF['blob_tuff_deep'] = placed(P('blob_tuff'), [count(4), IN_SQUARE, height_uniform({'above_bottom': 0}, A(-64)), BIOME])
+    PF['blob_sulfur'] = placed(P('blob_sulfur'), [count(5), IN_SQUARE, height_uniform(A(-60), A(400)), BIOME])
+    PF['blob_calcite'] = placed(P('blob_calcite'), [count(3), IN_SQUARE, height_uniform({'above_bottom': 0}, A(-40)), BIOME])
+    PF['blob_packed_ice_caves'] = placed(P('blob_packed_ice'), [count(14), IN_SQUARE, height_uniform(A(0), A(500)), BIOME])
     PF['lava_lakes_deep'] = placed('minecraft:lake_lava', [rarity(4), IN_SQUARE, height_uniform(A(-50), A(40)), BIOME])
 
     # ---- ores, tuned for a finite 5000x5000 map and ~50 players for one season.
@@ -689,7 +700,8 @@ MASTER = [
     [P('shrine_decor'), P('shrine_decor_sparse')],                                       # 4 surface_structures
     [],                                                                                  # 5 strongholds
     STONES + [P(o) for o in ORES] + [P('ore_emerald'), P('blob_scoria'), P('blob_pumice'), P('blob_basalt'),
-              P('blob_blackstone'), P('blob_packed_ice'), P('blob_ice'), P('blob_tuff'), P('blob_tuff_deep'), 'minecraft:ore_magma',
+              P('blob_blackstone'), P('blob_packed_ice'), P('blob_packed_ice_caves'), P('blob_ice'), P('blob_tuff'), P('blob_tuff_deep'),
+              P('blob_sulfur'), P('blob_calcite'), 'minecraft:ore_magma',
               'minecraft:disk_sand', 'minecraft:disk_clay', 'minecraft:disk_gravel'],   # 6 underground_ores
     ['minecraft:fossil_upper', 'minecraft:fossil_lower', 'minecraft:dripstone_cluster', 'minecraft:large_dripstone',
      'minecraft:pointed_dripstone', P('eclipse_clusters'), P('moss_cave_floor'), P('hikari_patches'), P('hikari_patches_sparse'),
@@ -838,7 +850,7 @@ biome('wisteria_grove', 'cherry_grove', 0.65, 0.75, grass='#93c95c', foliage='#9
       parts=[('cherry_leaves', 0.0015)],
       extra={4: SHRINE, 9: [P('wisteria_trees'), P('trees_wisteria_small'), 'minecraft:flower_cherry', 'minecraft:patch_grass_plain',
                             'minecraft:patch_tall_grass_2', P('patch_hydrangea_sparse'), 'minecraft:patch_firefly_bush_near_water']})
-biome('spirit_forest', 'old_growth_pine_taiga', 0.55, 0.95, grass='#4f9a6a', foliage='#2f7a58', water='#3aa0a8', spawns='deep_forest',
+biome('spirit_forest', 'old_growth_pine_taiga', 0.85, 0.95, grass='#4f9a6a', foliage='#2f7a58', water='#3aa0a8', spawns='deep_forest',
       fog=0.55, water_fog='#2d7d80', parts=[('firefly', 0.0016), ('spore_blossom_air', 0.003)],
       extra={4: [P('shrine_decor_sparse')], 6: [P('ore_emerald')],
              9: [P('moss_surface'), P('spirit_tree'), P('camphor'), P('giant_sugi_rare'), P('trees_jukai_oak'), P('vines_tall'),
@@ -880,9 +892,9 @@ biome('hikari_grotto', 'lush_caves', 0.6, 0.6, water='#43d5ee', cave=True, parts
 biome('eclipse_hollows', 'dripstone_caves', 0.5, 0.4, water='#3f3fae', cave=True,
       extra={2: [P('eclipse_geode')], 6: [P('blob_blackstone')], 7: [P('eclipse_clusters'), 'minecraft:large_dripstone']}, music='minecraft:music.overworld.deep_dark')
 biome('magma_tubes', 'sulfur_caves', 1.0, 0.0, precip=False, water='#5a8a6a', cave=True,
-      extra={1: [P('lava_lakes_deep')], 6: [P('blob_basalt'), P('blob_blackstone'), P('blob_scoria'), 'minecraft:ore_magma']})
+      extra={1: [P('lava_lakes_deep')], 6: [P('blob_basalt'), P('blob_blackstone'), P('blob_scoria'), P('blob_sulfur'), 'minecraft:ore_magma']})
 biome('flooded_caves', 'lush_caves', 0.6, 0.8, water='#3f76e4', cave=True, extra={7: ['minecraft:lush_caves_clay']})
-biome('ice_caves', 'dripstone_caves', -0.5, 0.4, water='#3938c9', cave=True, extra={6: [P('blob_packed_ice'), P('blob_ice')]})
+biome('ice_caves', 'dripstone_caves', -0.5, 0.4, water='#3938c9', cave=True, extra={6: [P('blob_packed_ice_caves'), P('blob_ice')]})
 biome('luminous_depths', 'lush_caves', 0.6, 0.7, water='#3fd8e0', water_fog='#1f6f7a', cave=True, fog=0.85, fog_color='#10303a',
       parts=[('glow', 0.0012), ('spore_blossom_air', 0.004)],
       extra={7: [P('moss_cave_floor'), P('hikari_patches_sparse'), P('giant_glowcaps'), 'minecraft:lush_caves_ceiling_vegetation', P('spirit_vines_cave'),
@@ -891,7 +903,7 @@ biome('root_halls', 'lush_caves', 0.6, 0.7, water='#3f9ad0', cave=True, parts=[(
       extra={7: [P('moss_cave_floor'), P('giant_glowcaps_rare'), 'minecraft:lush_caves_ceiling_vegetation', P('spirit_vines_sparse'), P('hanging_roots_cave'),
                  'minecraft:cave_vines', P('glowcap_cave')]})
 biome('abyss', 'dripstone_caves', 0.5, 0.4, water='#28306a', cave=True, fog=0.7, fog_color='#0b0f1a', parts=[('ash', 0.003)],
-      extra={7: ['minecraft:sculk_vein', P('abyss_sculk'), 'minecraft:large_dripstone', 'minecraft:pointed_dripstone']}, music='minecraft:music.overworld.deep_dark')
+      extra={6: [P('blob_calcite')], 7: ['minecraft:sculk_vein', P('abyss_sculk'), 'minecraft:large_dripstone', 'minecraft:pointed_dripstone']}, music='minecraft:music.overworld.deep_dark')
 
 BIOMES = list(B.keys())
 

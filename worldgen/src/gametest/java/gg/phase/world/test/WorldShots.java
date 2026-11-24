@@ -43,11 +43,12 @@ public class WorldShots implements FabricClientGameTest {
 			LOG.info("[shots] seed {}", seed);
 
 			// Fuji from the south, high up
-			shot(ctx, sp, "01-fuji", (int) L.fujiX + 40, 420, (int) L.fujiZ + 1500, 180, -8);
+			shot(ctx, sp, "01-fuji", (int) L.fujiX + 20, 900, (int) L.fujiZ + 330, 180, 12);
+			shot(ctx, sp, "01b-fuji-foot", (int) L.fujiX + 10, 520, (int) L.fujiZ + 700, 180, -10);
 			// spawn area
 			int sh = (int) L.column(L.spawnX, L.spawnZ).height;
 			shot(ctx, sp, "02-spawn", L.spawnX, sh + 24, L.spawnZ, 0, 12);
-			biomeShot(ctx, sp, L, PB.KARST_SPIRES, "03-karst", 70, 30, 0);
+			karstShot(ctx, sp, L);
 			biomeShot(ctx, sp, L, PB.SPIRIT_FOREST, "04-spirit-forest", 3, 18, 0);
 			biomeShot(ctx, sp, L, PB.WISTERIA_GROVE, "05-wisteria", 4, 10, 0);
 			biomeShot(ctx, sp, L, PB.HYDRANGEA_HILLS, "06-hydrangea", 4, 12, 0);
@@ -118,7 +119,7 @@ public class WorldShots implements FabricClientGameTest {
 			LOG.info("[shots] {} not found", biome.id);
 			return;
 		}
-		int h = (int) Math.ceil(L.column(p[0], p[1]).height);
+		int h = Math.max(WorldLayout.SEA + 1, (int) Math.ceil(L.column(p[0], p[1]).height));
 		shot(ctx, sp, name, p[0], h + up, p[1] + back, 180, up > 20 ? 18 : 4);
 	}
 
@@ -140,13 +141,31 @@ public class WorldShots implements FabricClientGameTest {
 		return out;
 	}
 
+	/** The tallest spire near a floating rock, seen from the side at two thirds of its height. */
+	private static void karstShot(ClientGameTestContext ctx, TestSingleplayerContext sp, WorldLayout L) {
+		int bx = 0, bz = 0;
+		float best = 0;
+		for (int x = -2600; x <= 2600; x += 6) {
+			for (int z = -2600; z <= 2600; z += 6) {
+				WorldLayout.Column c = L.column(x, z);
+				if (c.surface != PB.KARST_SPIRES.ordinal()) continue;
+				float score = c.height + (Float.isNaN(c.floatTop) ? 0 : 60);
+				if (score > best) { best = score; bx = x; bz = z; }
+			}
+		}
+		if (best == 0) return;
+		int h = (int) L.column(bx, bz).height;
+		shot(ctx, sp, "03-karst", bx, Math.max(h - 40, 110), bz + 70, 180, 0);
+		shot(ctx, sp, "03b-karst-high", bx + 40, h + 40, bz + 90, 160, 20);
+	}
+
 	private static void riverShot(ClientGameTestContext ctx, TestSingleplayerContext sp, WorldLayout L) {
 		for (WorldLayout.River rv : L.rivers) {
 			for (int i = rv.n / 3; i < rv.n; i++) {
 				if (rv.level[i] < WorldLayout.SEA + 8 || rv.width[i] < 5) continue;
 				int x = (int) rv.x[i], z = (int) rv.z[i];
 				int y = (int) rv.level[i];
-				shot(ctx, sp, "17-river", x + 14, y + 9, z + 14, 135, 25);
+				shot(ctx, sp, "17-river", x + 10, y + 16, z + 10, 135, 45);
 				return;
 			}
 		}
@@ -155,7 +174,7 @@ public class WorldShots implements FabricClientGameTest {
 	private static void lakeShot(ClientGameTestContext ctx, TestSingleplayerContext sp, WorldLayout L) {
 		if (L.lakes.isEmpty()) return;
 		WorldLayout.Lake lk = L.lakes.get(0);
-		shot(ctx, sp, "18-lake", (int) lk.x, (int) lk.level + 14, (int) (lk.z + lk.r + 20), 180, 22);
+		shot(ctx, sp, "18-lake", (int) lk.x, (int) lk.level + 30, (int) (lk.z + lk.r * 0.8), 180, 35);
 	}
 
 	private static void caveShot(ClientGameTestContext ctx, TestSingleplayerContext sp, WorldLayout L, PB biome, String name) {
