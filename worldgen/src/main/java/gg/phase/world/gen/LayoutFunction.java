@@ -38,7 +38,9 @@ public record LayoutFunction(Kind kind) implements DensityFunction {
 		/** (height - y) / 128, like vanilla depth (3D). */
 		DEPTH(false),
 		/** Positive where aquifers stay dry (3D). */
-		AQUIFER_EXCLUSION(false);
+		AQUIFER_EXCLUSION(false),
+		/** Aquifer floodedness for underground lakes and grottoes (3D). */
+		FLOODEDNESS(false);
 
 		final boolean flat;
 
@@ -66,7 +68,7 @@ public record LayoutFunction(Kind kind) implements DensityFunction {
 			case CAVERNS -> Interval.of(-10.0f, 10.0f);
 			case BIOME -> Interval.of(0.0f, 64.0f);
 			case SPAWN -> Interval.of(0.0f, 1.0f);
-			case CONTINENTS, AQUIFER_EXCLUSION -> Interval.of(-1.0f, 1.0f);
+			case CONTINENTS, AQUIFER_EXCLUSION, FLOODEDNESS -> Interval.of(-1.0f, 1.0f);
 			case DEPTH -> Interval.of(-12.0f, 12.0f);
 		};
 	}
@@ -98,6 +100,7 @@ public record LayoutFunction(Kind kind) implements DensityFunction {
 				case CONTINENTS -> Math.max(-1.0, Math.min(1.0, c.coast / 300.0));
 				case DEPTH -> (c.height - y) / 128.0;
 				case AQUIFER_EXCLUSION -> this.layout.aquiferExclusion(y, c);
+				case FLOODEDNESS -> this.layout.floodedness(x, y, z, c);
 			};
 		}
 

@@ -18,12 +18,12 @@ public final class WorldLayout {
 	/** Bottom of the world: 64 blocks deeper than vanilla. */
 	public static final int WORLD_MIN = -128;
 	/** Land fits into 5000 x 5000 blocks (radius 2500). */
-	public static final double MAP_RADIUS = 3500;
+	public static final double MAP_RADIUS = 3000;
 
 	public static final int ZONE_OCEAN = 0, ZONE_INNER_SEA = 1, ZONE_RING = 2, ZONE_ISLAND = 3, ZONE_ISLET = 4;
 
 	// Fuji: summit rim about 1200 blocks above sea level.
-	static final double FUJI_FOOT = 1260;
+	static final double FUJI_FOOT = 1120;
 	static final double FUJI_RIM = 125;
 	static final double FUJI_H = 770;
 	static final double CRATER_DEPTH = 78;
@@ -105,9 +105,9 @@ public final class WorldLayout {
 		ringCx = r.range(-45, 45); ringCz = r.range(-45, 45);
 		islandCx = r.range(-55, 55); islandCz = r.range(-55, 55);
 		fujiX = islandCx + r.range(-35, 35); fujiZ = islandCz + r.range(-35, 35);
-		ringInBase = r.range(1820, 1900);
-		ringOutBase = r.range(3080, 3160);
-		islandBase = r.range(1380, 1430);
+		ringInBase = r.range(1640, 1710);
+		ringOutBase = r.range(2640, 2710);
+		islandBase = r.range(1230, 1280);
 		northTh = -Math.PI / 2 + r.range(-0.45, 0.45);
 		// Osawa gully faces west-ish, Hoei crater south-east like the real mountain.
 		osawaTh = Math.PI + r.range(-0.5, 0.5);
@@ -120,8 +120,8 @@ public final class WorldLayout {
 		hoeiConeZ = fujiZ + Math.sin(hoeiTh) * (hoeiR + 105);
 
 		// ---- ring regions ----
-		int n = 38 + r.nextInt(8);
-		int extra = 14 + r.nextInt(6);
+		int n = 26 + r.nextInt(6);
+		int extra = 8 + r.nextInt(5);
 		regX = new double[n + extra];
 		regZ = new double[n + extra];
 		regStyle = new Style[n + extra];
@@ -151,22 +151,22 @@ public final class WorldLayout {
 		}
 
 		// ---- islets ----
-		int islets = 22 + r.nextInt(9);
+		int islets = 48 + r.nextInt(16);
 		isX = new double[islets]; isZ = new double[islets]; isR = new double[islets]; isStyle = new Style[islets];
 		Style[] isletPool = {Style.SAKURA, Style.PINE_CLIFFS, Style.KARST, Style.BAMBOO, Style.ONSEN, Style.MOMIJI, Style.SUGI, Style.PINE_CLIFFS, Style.KARST, Style.SPIRIT};
 		int placed = 0;
-		for (int attempt = 0; attempt < islets * 40 && placed < islets; attempt++) {
+		for (int attempt = 0; attempt < islets * 80 && placed < islets; attempt++) {
 			double a = r.range(0, Math.PI * 2);
 			double u = r.nextDouble();
-			double size = 32 + 150 * Math.pow(u, 1.7);
-			double rad = ringOut(a) + r.range(110, 330) + size * 0.5;
+			double size = 26 + 140 * Math.pow(u, 1.9);
+			double rad = ringOut(a) + r.range(90, 380) + size * 0.5;
 			if (rad + size > MAP_RADIUS - 10) rad = MAP_RADIUS - 10 - size;
 			double x = ringCx + Math.cos(a) * rad, z = ringCz + Math.sin(a) * rad;
 			if (rad - size < ringOut(a) + 70) continue;
 			boolean ok = true;
 			for (int j = 0; j < placed; j++) {
 				double dx = isX[j] - x, dz = isZ[j] - z;
-				if (Math.sqrt(dx * dx + dz * dz) < isR[j] + size + 70) { ok = false; break; }
+				if (Math.sqrt(dx * dx + dz * dz) < isR[j] + size + 40) { ok = false; break; }
 			}
 			if (!ok) continue;
 			isX[placed] = x; isZ[placed] = z; isR[placed] = size;
@@ -642,8 +642,8 @@ public final class WorldLayout {
 		}
 		if (col != null) {
 			// biome borders get a finer, ragged warp on top of the smooth height blend
-			double jx = qx + 38 * regionWarpA.n2(x / 75.0, z / 75.0) + 12 * regionWarpB.n2(x / 21.0, z / 21.0);
-			double jz = qz + 38 * regionWarpB.n2(x / 75.0 + 3, z / 75.0) + 12 * regionWarpA.n2(x / 21.0, z / 21.0 + 7);
+			double jx = qx + 34 * regionWarpA.n2(x / 90.0, z / 90.0);
+			double jz = qz + 34 * regionWarpB.n2(x / 90.0 + 3, z / 90.0);
 			int best = b0;
 			double bd = 1e18;
 			for (int k = 0; k < 3; k++) {
@@ -686,7 +686,7 @@ public final class WorldLayout {
 		int fuji = 3 + r.nextInt(3);
 		for (int i = 0, tries = 0; i < fuji && tries < 200; tries++) {
 			double a = northTh + r.range(-1.45, 1.45);
-			double rad = r.range(1020, 1180);
+			double rad = r.range(900, 1050);
 			double x = fujiX + Math.cos(a) * rad, z = fujiZ + Math.sin(a) * rad;
 			double size = r.range(45, 120);
 			land(x, z, L);
@@ -762,7 +762,7 @@ public final class WorldLayout {
 			sources.add(new double[]{lk.x + Math.cos(bestA) * rs, lk.z + Math.sin(bestA) * rs, lk.level, Math.cos(bestA), Math.sin(bestA)});
 		}
 		// mountain springs along the ring spine
-		int count = 30 + r.nextInt(8);
+		int count = 24 + r.nextInt(8);
 		for (int i = 0, tries = 0; i < count && tries < 600; tries++) {
 			double a = r.range(0, Math.PI * 2);
 			double m = r.range(0.38, 0.62);
@@ -782,7 +782,7 @@ public final class WorldLayout {
 		// springs on the Fuji foothills (think Shiraito falls)
 		for (int i = 0; i < 3; i++) {
 			double a = northTh + Math.PI + r.range(-1.6, 1.6);
-			double rad = r.range(820, 1040);
+			double rad = r.range(720, 920);
 			double x = fujiX + Math.cos(a) * rad, z = fujiZ + Math.sin(a) * rad;
 			sources.add(new double[]{x, z, Double.NaN, Math.cos(a), Math.sin(a)});
 		}
@@ -1050,11 +1050,12 @@ public final class WorldLayout {
 		}
 		if (h > SEA + 470 + 35 * misc.n2(x / 110.0, z / 110.0)) return PB.FROZEN_SUMMITS;
 		// sub-biomes: patches of a few hundred blocks inside each region
-		double sub = 8.3 * (misc.fbm2(x / 160.0 + 111, z / 160.0 - 37, 3) + 0.15 * misc.n2(x / 40.0, z / 40.0));
-		double sub2 = 8.3 * (overhangN.fbm2(x / 190.0 - 71, z / 190.0 + 53, 3) + 0.15 * overhangN.n2(x / 45.0, z / 45.0));
-		if ((st == Style.SAKURA || st == Style.TERRACES || st == Style.TEA) && c.riverDist > 2.5f && c.riverDist < 16
-			&& misc.n2(x / 40.0, z / 40.0) > 0.1) return PB.HIGANBANA_FIELDS;
-		if (d < 70 && h < SEA + 5 && warmth(x, z) > 0.62 && (st == Style.MARSH || st == Style.BAMBOO || st == Style.KARST || sub2 > 0.3))
+		double sub = 8.3 * misc.fbm2(x / 330.0 + 111, z / 330.0 - 37, 2);
+		double sub2 = 8.3 * overhangN.fbm2(x / 380.0 - 71, z / 380.0 + 53, 2);
+		double warm = warmth(x, z);
+		if ((st == Style.SAKURA || st == Style.TERRACES) && c.riverDist > 2.5f && c.riverDist < 40
+			&& misc.fbm2(x / 260.0, z / 260.0, 2) > 0.12) return PB.HIGANBANA_FIELDS;
+		if (d < 90 && h < SEA + 6 && warm > 0.7 && (st == Style.MARSH || st == Style.BAMBOO || st == Style.KARST))
 			return PB.MANGROVE_COAST;
 		switch (st) {
 			case SAKURA:
@@ -1069,14 +1070,14 @@ public final class WorldLayout {
 				break;
 			case SUGI:
 				if (sub > 0.6) return PB.SPIRIT_FOREST;
-				if (sub2 > 0.5) return PB.YAKUSHIMA_MOSS;
+				if (sub2 > 0.5 && warm > 0.35) return PB.YAKUSHIMA_MOSS;
 				break;
 			case JUKAI:
 				if (sub > 0.7) return PB.SPIRIT_FOREST;
 				if (sub2 > 0.55) return PB.YAKUSHIMA_MOSS;
 				break;
 			case BAMBOO:
-				if (sub > 0.45) return PB.TROPICAL_FOREST;
+				if (sub > 0.45 && warm > 0.6) return PB.TROPICAL_FOREST;
 				if (sub < -0.6) return PB.TSUTSUJI_HILLS;
 				if (sub2 > 0.6) return PB.HYDRANGEA_HILLS;
 				break;
@@ -1091,7 +1092,7 @@ public final class WorldLayout {
 				break;
 			case ALPS:
 				if (h < SEA + 230 + 30 * misc.n2(x / 80.0, z / 80.0) && sub > -0.3) return PB.ALPINE_MEADOW;
-				if (sub2 > 0.7) return PB.SHIRAKABA_PLATEAU;
+				if (sub2 > 0.7 && warm < 0.45) return PB.SHIRAKABA_PLATEAU;
 				break;
 			case SNOWLAND:
 				if (sub > 0.4) return PB.SHIRAKABA_PLATEAU;
@@ -1111,10 +1112,10 @@ public final class WorldLayout {
 			case SPIRIT:
 				if (sub < -0.9) return PB.MOMIJI_HIGHLANDS;
 				if (sub2 > 0.55) return PB.YAKUSHIMA_MOSS;
-				if (sub2 < -0.6) return PB.TROPICAL_FOREST;
+				if (sub2 < -0.6 && warm > 0.65) return PB.TROPICAL_FOREST;
 				break;
 			case KARST:
-				if (sub2 > 0.6) return PB.TROPICAL_FOREST;
+				if (sub2 > 0.6 && warm > 0.6) return PB.TROPICAL_FOREST;
 				break;
 			case DUNES:
 				if (sub2 > 0.5) return PB.SUSUKI_PLAINS;
@@ -1161,15 +1162,32 @@ public final class WorldLayout {
 		// the giant halls and everything right around them glow
 		if (chamberField(x, y, z) > chamberThreshold(y, c) - 0.035) {
 			if (y < -8 && n1 > 0.3) return PB.ECLIPSE_HOLLOWS;
+			if (n2 < -0.35) return PB.UNDERGROUND_LAKE;
 			return n2 > -0.3 ? PB.LUMINOUS_DEPTHS : PB.DEEP_CAVERNS;
 		}
 		double depth = c.height - y;
 		boolean forest = st == Style.SUGI || st == Style.SPIRIT || st == Style.JUKAI || st == Style.MOMIJI || st == Style.BAMBOO;
 		if (forest && depth < 75 && n1 > 0.05) return PB.ROOT_HALLS;
+		double n3 = caveC.fbm3(x / 200.0 + 300, y / 90.0, z / 200.0 - 300, 2);
 		if (y < -8 && n1 > 0.3) return PB.ECLIPSE_HOLLOWS;
+		if (c.coast < 380 && y < SEA - 4 && y > -40 && n3 > 0.22) return PB.BLUE_GROTTO;
+		if (n3 < -0.28 && y < 20) return PB.UNDERGROUND_LAKE;
+		if (n2 < -0.35 && y > -50) return PB.MUSHROOM_CAVERNS;
 		if (n2 > 0.42 && y > -40) return PB.HIKARI_GROTTO;
 		if ((c.coast < 220 || st == Style.MARSH) && y < SEA - 5 && n1 < -0.2) return PB.FLOODED_CAVES;
 		return PB.DEEP_CAVERNS;
+	}
+
+	/**
+	 * Aquifer floodedness: lakes stand in the underground-lake halls (partly flooded, the water level varies by cell),
+	 * the blue grottoes near the coast fill to sea level. Elsewhere vanilla's own noise decides (combined with max).
+	 */
+	public double floodedness(int x, int y, int z, Column c) {
+		if (c.height - y < 20 || y > SEA) return -1;
+		PB b = caveBiome(x, y, z, c);
+		if (b == PB.BLUE_GROTTO) return 0.9;
+		if (b == PB.UNDERGROUND_LAKE) return 0.6;
+		return -1;
 	}
 
 	/** Low-frequency 3D field of the giant halls: carve where it exceeds {@link #chamberThreshold}. */
@@ -1265,7 +1283,7 @@ public final class WorldLayout {
 		int[] best = {(int) fujiX, (int) (fujiZ + 1000)};
 		double bestScore = -1e9;
 		for (int k = -10; k <= 10; k++) {
-			for (double rad = 1060; rad <= 1300; rad += 25) {
+			for (double rad = 940; rad <= 1160; rad += 25) {
 				double aa = a + k * 0.06;
 				int x = (int) (fujiX + Math.cos(aa) * rad), z = (int) (fujiZ + Math.sin(aa) * rad);
 				Column c = column(x, z);

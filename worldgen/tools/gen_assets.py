@@ -294,7 +294,9 @@ def main():
         'root_halls': ('Залы корней', 'Root Halls'), 'abyss': ('Бездна', 'The Abyss'),
         'tsutsuji_hills': ('Азалиевые холмы цуцудзи', 'Tsutsuji Hills'), 'yakushima_moss': ('Моховой лес Якусима', 'Yakushima Moss Forest'),
         'susuki_plains': ('Равнины сусуки', 'Susuki Plains'), 'mangrove_coast': ('Мангровое побережье', 'Mangrove Coast'),
-        'tropical_forest': ('Тропический лес Окинавы', 'Okinawa Rainforest')})
+        'tropical_forest': ('Тропический лес Окинавы', 'Okinawa Rainforest'),
+        'underground_lake': ('Подземное озеро', 'Underground Lake'), 'blue_grotto': ('Голубой грот', 'Blue Grotto'),
+        'mushroom_caverns': ('Грибные пещеры', 'Mushroom Caverns')})
     for b in B:
         ru[f'biome.{NS}.{b}'], en[f'biome.{NS}.{b}'] = bnames[b]
     wj(f'{A}/lang/ru_ru.json', ru)

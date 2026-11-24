@@ -12,7 +12,7 @@ import java.util.Properties;
 
 /**
  * config/phaseworld.properties
- *   border_size=7400      world border edge length (7400 = from -3700 to 3700), 0 = don't touch
+ *   border_size=7400      world border edge length (6400 = from -3200 to 3200), 0 = don't touch
  *   border_applied=false  set to true after the first apply; set back to false to re-apply a new size
  */
 public final class PhaseConfig {
@@ -28,7 +28,7 @@ public final class PhaseConfig {
 					p.load(in);
 				}
 			}
-			double size = Double.parseDouble(p.getProperty("border_size", "7400"));
+			double size = Double.parseDouble(p.getProperty("border_size", "6400"));
 			boolean applied = Boolean.parseBoolean(p.getProperty("border_applied", "false"));
 			if (size > 0 && !applied) {
 				WorldBorder border = server.overworld().getWorldBorder();
@@ -41,7 +41,7 @@ public final class PhaseConfig {
 			p.setProperty("border_applied", Boolean.toString(applied));
 			Files.createDirectories(file.getParent());
 			try (OutputStream out = Files.newOutputStream(file)) {
-				p.store(out, "Phase World. border_size: edge length of the world border (7400 = -3700..3700). "
+				p.store(out, "Phase World. border_size: edge length of the world border (6400 = -3200..3200). "
 					+ "Set border_applied=false to apply a new size on next start, or use /worldborder.");
 			}
 		} catch (IOException | RuntimeException e) {

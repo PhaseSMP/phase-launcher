@@ -117,9 +117,9 @@ public record WaterFillFeature() implements Feature {
 						level.setBlock(np, y == top ? bankTop(level, np) : Blocks.DIRT.defaultBlockState(), 2);
 					}
 				}
-				if (spill) {
-					level.scheduleTick(new BlockPos(x, top, z), Fluids.WATER, 1);
-				}
+				// every surface water block gets a fluid tick: water placed by worldgen must behave like real water
+				// (flow over real steps, settle against banks) instead of standing as a frozen block
+				level.scheduleTick(new BlockPos(x, top, z), Fluids.WATER, spill ? 1 : 5);
 			}
 		}
 		return any;

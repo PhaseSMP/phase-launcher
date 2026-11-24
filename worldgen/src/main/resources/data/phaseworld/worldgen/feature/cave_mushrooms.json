@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:simple_block",
+  "to_place": {
+    "type": "minecraft:weighted",
+    "entries": [
+      {
+        "data": "minecraft:brown_mushroom",
+        "weight": 3
+      },
+      {
+        "data": "minecraft:red_mushroom",
+        "weight": 2
+      },
+      {
+        "data": "phaseworld:glowcap",
+        "weight": 1
+      }
+    ]
+  }
+}

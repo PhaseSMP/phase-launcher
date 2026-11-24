@@ -28,7 +28,7 @@ public final class SelfTest {
 			layout.isletCount(), layout.lakes.size(), layout.rivers.size());
 		long t0 = System.nanoTime();
 		int chunks = 0;
-		for (int d = 0; d <= 3600; d += 48) {
+		for (int d = 0; d <= 3200; d += 48) {
 			int x = (int) layout.fujiX + d, z = (int) layout.fujiZ + d / 3;
 			level.getChunk(x >> 4, z >> 4);
 			chunks++;

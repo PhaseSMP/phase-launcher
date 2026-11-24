@@ -55,6 +55,9 @@
             "ice_caves": "phaseworld:ice_caves",
             "luminous_depths": "phaseworld:luminous_depths",
             "root_halls": "phaseworld:root_halls",
+            "underground_lake": "phaseworld:underground_lake",
+            "blue_grotto": "phaseworld:blue_grotto",
+            "mushroom_caverns": "phaseworld:mushroom_caverns",
             "abyss": "phaseworld:abyss"
           }
         },

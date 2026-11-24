@@ -52,6 +52,12 @@ public record GlowcapFeature() implements Feature {
 			}
 		}
 		int cx = origin.getX() + (int) Math.round(x), cy = origin.getY() + stem, cz = origin.getZ() + (int) Math.round(z);
+		// the stem continues up inside the dome and meets the cap's roof
+		int capTop = (int) Math.round(capR * 0.55);
+		for (int y = 0; y < capTop; y++) {
+			p.set(cx, cy + y, cz);
+			if (level.getBlockState(p).isAir()) level.setBlock(p, stemState, 2);
+		}
 		for (int dx = -capR; dx <= capR; dx++) {
 			for (int dz = -capR; dz <= capR; dz++) {
 				double d = Math.sqrt(dx * dx + dz * dz);
@@ -61,7 +67,7 @@ public record GlowcapFeature() implements Feature {
 				int bottom = t > 0.75 ? -1 - (int) Math.round((t - 0.75) * 4) : 0;
 				for (int dy = bottom; dy <= top; dy++) {
 					// hollow dome: only the outer shell and the rim
-					boolean shell = dy == top || d > capR - 1.2 || dy == bottom && t > 0.8;
+					boolean shell = dy == top || d > capR - 1.2 || dy == bottom;
 					if (!shell) continue;
 					p.set(cx + dx, cy + dy, cz + dz);
 					if (level.getBlockState(p).isAir()) level.setBlock(p, cap, 2);

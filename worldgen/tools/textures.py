@@ -354,7 +354,7 @@ def leaves(seed, cols, holes=0.2, flowers=None):
 
 def momiji_leaves():
     # five-point maple leaves: red with orange and a few deep crimson
-    img = leaves(60, ['#5e0f0c', '#8c1a14', '#b52a1c', '#d9472a', '#f06a36'], 0.4)
+    img = leaves(60, ['#5e0f0c', '#8c1a14', '#b52a1c', '#d9472a', '#f06a36'], 0.3)
     r = random.Random(61)
     star = [(0, -1), (-1, 0), (1, 0), (0, 0), (-1, 1), (1, 1)]
     for _ in range(5):
@@ -366,7 +366,7 @@ def momiji_leaves():
 
 
 def ginkgo_leaves():
-    img = leaves(62, ['#7a5a08', '#a87d10', '#d2a51e', '#efc83a', '#fbe274'], 0.47)
+    img = leaves(62, ['#7a5a08', '#a87d10', '#d2a51e', '#efc83a', '#fbe274'], 0.36)
     r = random.Random(63)
     fan = [(-1, 0), (0, 0), (1, 0), (0, 1)]
     for _ in range(6):
@@ -379,7 +379,7 @@ def ginkgo_leaves():
 
 def wisteria_leaves():
     """Mostly hanging purple flower clusters over a little green."""
-    img = leaves(64, ['#244a1e', '#2f5f25', '#3d7530', '#4f8c3b', '#68a84a'], 0.4)
+    img = leaves(64, ['#244a1e', '#2f5f25', '#3d7530', '#4f8c3b', '#68a84a'], 0.3)
     fp = [hexc(c) for c in ('#3e2470', '#5d3a9e', '#8462c4', '#ad8ce6', '#d8c4fb')]
     f = field(65, ((4, 0.5), (8, 0.3), (16, 0.2)))
     for y in range(S):

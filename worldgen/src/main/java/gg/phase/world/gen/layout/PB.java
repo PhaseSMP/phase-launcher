@@ -56,7 +56,11 @@ public enum PB {
 	YAKUSHIMA_MOSS("yakushima_moss", false),
 	SUSUKI_PLAINS("susuki_plains", false),
 	MANGROVE_COAST("mangrove_coast", false),
-	TROPICAL_FOREST("tropical_forest", false);
+	TROPICAL_FOREST("tropical_forest", false),
+	// ---- 1.4 caves
+	UNDERGROUND_LAKE("underground_lake", true),
+	BLUE_GROTTO("blue_grotto", true),
+	MUSHROOM_CAVERNS("mushroom_caverns", true);
 
 	public static final PB[] VALUES = values();
 

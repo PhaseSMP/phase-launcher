@@ -147,6 +147,9 @@ def noise_router():
         'vegetation': 0.0,
     }
     ns['aquifers']['exclusion'] = layout('aquifer_exclusion')
+    # underground lakes and grottoes: our floodedness on top of vanilla's noise
+    ns['aquifers']['fluid_level_floodedness'] = {'type': 'minecraft:max', 'left': ns['aquifers']['fluid_level_floodedness'],
+                                                 'right': layout('floodedness')}
     ns['aquifers']['surface_level'] = P('surface')
     ns['spawn_target'] = [{P('spawn'): [0.97, 1.0]}]
     ns['debug_functions'] = [
@@ -539,6 +542,16 @@ def features():
     PF['jungle_bushes'] = placed('minecraft:jungle_bush', tree_placement('minecraft:oak_sapling', 5, 4))
     PF['jungle_bushes_sparse'] = placed('minecraft:jungle_bush', tree_placement('minecraft:oak_sapling', 2, 2))
     PF['cave_trees'] = placed(P('cave_tree'), cave_floor(3))
+    PF['huge_mushrooms_brown'] = placed('minecraft:huge_brown_mushroom', cave_floor(8))
+    PF['huge_mushrooms_red'] = placed('minecraft:huge_red_mushroom', cave_floor(6))
+    myc = van('worldgen/feature/moss_patch')
+    myc['ground_state'] = {'id': 'minecraft:mycelium'}
+    myc['vegetation_feature'] = {'feature': P('cave_mushrooms'), 'placement': []}
+    myc['vegetation_chance'] = 0.35
+    F['mycelium_patch'] = myc
+    F['cave_mushrooms'] = {'type': 'minecraft:simple_block', 'to_place': {'type': 'minecraft:weighted', 'entries': [
+        {'data': 'minecraft:brown_mushroom', 'weight': 3}, {'data': 'minecraft:red_mushroom', 'weight': 2}, {'data': P('glowcap'), 'weight': 1}]}}
+    PF['mycelium_cave_floor'] = placed(P('mycelium_patch'), cave_floor(30))
     PF['trees_azalea'] = placed('minecraft:azalea_tree', tree_placement('minecraft:azalea', 3, 3))
     F['azalea_bush'] = {'type': 'minecraft:simple_block', 'to_place': {'type': 'minecraft:weighted', 'entries': [
         {'data': 'minecraft:flowering_azalea', 'weight': 3}, {'data': 'minecraft:azalea', 'weight': 1}]}}
@@ -738,13 +751,13 @@ MASTER = [
               P('blob_sulfur'), P('blob_calcite'), 'minecraft:ore_magma',
               'minecraft:disk_sand', 'minecraft:disk_clay', 'minecraft:disk_gravel'],   # 6 underground_ores
     ['minecraft:fossil_upper', 'minecraft:fossil_lower', 'minecraft:dripstone_cluster', 'minecraft:large_dripstone',
-     'minecraft:pointed_dripstone', P('eclipse_clusters'), P('moss_cave_floor'), P('hikari_patches'), P('hikari_patches_sparse'),
+     'minecraft:pointed_dripstone', P('eclipse_clusters'), P('moss_cave_floor'), P('mycelium_cave_floor'), P('hikari_patches'), P('hikari_patches_sparse'),
      P('giant_glowcaps'), P('giant_glowcaps_rare'), 'minecraft:lush_caves_ceiling_vegetation', P('spirit_vines_cave'), P('spirit_vines_sparse'),
      P('hanging_roots_cave'), 'minecraft:cave_vines', 'minecraft:lush_caves_clay', 'minecraft:spore_blossom', P('glowcap_cave'), P('lumen_fern_cave'),
      'minecraft:sculk_vein', P('abyss_sculk')],                                         # 7 underground_decoration
     ['minecraft:spring_water', 'minecraft:spring_lava'],                                 # 8 fluid_springs
     ['minecraft:glow_lichen', P('moss_surface'), 'minecraft:forest_rock', P('forest_rock_common'), P('boulders'),
-     P('emergent'), P('emergent_rare'), P('cave_trees'),
+     P('emergent'), P('emergent_rare'), P('cave_trees'), P('huge_mushrooms_brown'), P('huge_mushrooms_red'),
      P('giant_sugi'), P('giant_sugi_rare'), P('spirit_tree'), P('camphor'), P('camphor_rare'), P('giant_momiji'), P('giant_ginkgo'),
      P('weeping_cherry'), P('weeping_cherry_rare'), P('wisteria_trees'),
      P('trees_cherry'), P('trees_cherry_sparse'), P('trees_momiji'), P('trees_momiji_small'), P('trees_ginkgo'), P('trees_ginkgo_grove'),
@@ -957,6 +970,13 @@ biome('luminous_depths', 'lush_caves', 0.6, 0.7, water='#3fd8e0', water_fog='#1f
 biome('root_halls', 'lush_caves', 0.6, 0.7, water='#3f9ad0', cave=True, parts=[('spore_blossom_air', 0.002)],
       extra={7: [P('moss_cave_floor'), P('giant_glowcaps_rare'), 'minecraft:lush_caves_ceiling_vegetation', P('spirit_vines_sparse'), P('hanging_roots_cave'),
                  'minecraft:cave_vines', P('glowcap_cave')]})
+biome('underground_lake', 'lush_caves', 0.6, 0.8, water='#2f86d8', cave=True,
+      extra={6: [P('blob_calcite')], 7: ['minecraft:lush_caves_clay', 'minecraft:lush_caves_ceiling_vegetation', P('spirit_vines_sparse'),
+                                          'minecraft:cave_vines', 'minecraft:spore_blossom']})
+biome('blue_grotto', 'lush_caves', 0.7, 0.8, water='#21c8ff', water_fog='#1aa8e0', cave=True,
+      extra={6: [P('blob_calcite')], 7: ['minecraft:lush_caves_clay', P('hikari_patches_sparse'), P('spirit_vines_sparse'), 'minecraft:pointed_dripstone']})
+biome('mushroom_caverns', 'lush_caves', 0.6, 0.7, water=W_JAPAN, cave=True,
+      extra={7: [P('mycelium_cave_floor'), P('glowcap_cave')], 9: [P('huge_mushrooms_brown'), P('huge_mushrooms_red')]})
 biome('abyss', 'dripstone_caves', 0.5, 0.4, water='#28306a', cave=True, fog=0.7, fog_color='#0b0f1a', parts=[('ash', 0.003)],
       extra={6: [P('blob_calcite')], 7: ['minecraft:sculk_vein', P('abyss_sculk'), 'minecraft:large_dripstone', 'minecraft:pointed_dripstone']}, music='minecraft:music.overworld.deep_dark')
 

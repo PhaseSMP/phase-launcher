@@ -46,6 +46,13 @@ public record PaddyFeature() implements Feature {
 				int top = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z) - 1;
 				BlockPos p = new BlockPos(x, top, z);
 				if (!level.getBlockState(p).is(Blocks.GRASS_BLOCK)) continue;
+				// the real terrain (not just the layout) must hold the water: all four neighbours at the same height
+				boolean flat = true;
+				for (int k = 0; k < 4 && flat; k++) {
+					int nx = x + (k == 0 ? 1 : k == 1 ? -1 : 0), nz = z + (k == 2 ? 1 : k == 3 ? -1 : 0);
+					flat = level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, nx, nz) - 1 == top;
+				}
+				if (!flat) continue;
 				level.setBlock(p.below(), Blocks.MUD.defaultBlockState(), 2);
 				if (Math.floorMod(x + 2 * z, 3) != 0) {
 					// rows of rice standing in the flooded field
@@ -53,6 +60,7 @@ public record PaddyFeature() implements Feature {
 					level.setBlock(p.above(), rice.getStateForAge(4 + random.nextInt(4)), 2);
 				} else {
 					level.setBlock(p, Blocks.WATER.defaultBlockState(), 2);
+					level.scheduleTick(p, net.minecraft.world.level.material.Fluids.WATER, 5);
 				}
 				any = true;
 			}
