@@ -2,14 +2,14 @@
   "type": "phaseworld:giant_tree",
   "shape": "broad",
   "log": {
-    "Name": "minecraft:dark_oak_log",
-    "Properties": {
+    "id": "minecraft:dark_oak_log",
+    "properties": {
       "axis": "y"
     }
   },
   "leaves": {
-    "Name": "phaseworld:momiji_leaves",
-    "Properties": {
+    "id": "phaseworld:momiji_leaves",
+    "properties": {
       "distance": "7",
       "persistent": "false",
       "waterlogged": "false"

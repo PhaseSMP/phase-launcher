@@ -2,14 +2,14 @@
   "type": "phaseworld:giant_tree",
   "shape": "broad",
   "log": {
-    "Name": "minecraft:oak_log",
-    "Properties": {
+    "id": "minecraft:oak_log",
+    "properties": {
       "axis": "y"
     }
   },
   "leaves": {
-    "Name": "minecraft:oak_leaves",
-    "Properties": {
+    "id": "minecraft:oak_leaves",
+    "properties": {
       "distance": "7",
       "persistent": "false",
       "waterlogged": "false"
@@ -17,7 +17,5 @@
   },
   "min_height": 18,
   "max_height": 26,
-  "decor": {
-    "Name": "minecraft:moss_carpet"
-  }
+  "decor": "minecraft:moss_carpet"
 }

@@ -412,10 +412,10 @@ def cave_ceiling(n, top=320):
 
 
 def state(name, **props):
-    st = {'Name': name}
-    if props:
-        st['Properties'] = {k: str(v).lower() for k, v in props.items()}
-    return st
+    # 26.3 block state codec: a bare id, or {"id": ..., "properties": {...}}
+    if not props:
+        return name
+    return {'id': name, 'properties': {k: str(v).lower() for k, v in props.items()}}
 
 
 def features():

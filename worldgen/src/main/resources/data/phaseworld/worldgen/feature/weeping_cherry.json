@@ -2,14 +2,14 @@
   "type": "phaseworld:giant_tree",
   "shape": "weeping",
   "log": {
-    "Name": "minecraft:cherry_log",
-    "Properties": {
+    "id": "minecraft:cherry_log",
+    "properties": {
       "axis": "y"
     }
   },
   "leaves": {
-    "Name": "minecraft:cherry_leaves",
-    "Properties": {
+    "id": "minecraft:cherry_leaves",
+    "properties": {
       "distance": "7",
       "persistent": "false",
       "waterlogged": "false"

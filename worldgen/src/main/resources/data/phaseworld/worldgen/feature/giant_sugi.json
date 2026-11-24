@@ -2,14 +2,14 @@
   "type": "phaseworld:giant_tree",
   "shape": "sugi",
   "log": {
-    "Name": "minecraft:spruce_log",
-    "Properties": {
+    "id": "minecraft:spruce_log",
+    "properties": {
       "axis": "y"
     }
   },
   "leaves": {
-    "Name": "minecraft:spruce_leaves",
-    "Properties": {
+    "id": "minecraft:spruce_leaves",
+    "properties": {
       "distance": "7",
       "persistent": "false",
       "waterlogged": "false"

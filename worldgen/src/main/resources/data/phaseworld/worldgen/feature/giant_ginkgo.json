@@ -2,14 +2,14 @@
   "type": "phaseworld:giant_tree",
   "shape": "ginkgo",
   "log": {
-    "Name": "minecraft:oak_log",
-    "Properties": {
+    "id": "minecraft:oak_log",
+    "properties": {
       "axis": "y"
     }
   },
   "leaves": {
-    "Name": "phaseworld:ginkgo_leaves",
-    "Properties": {
+    "id": "phaseworld:ginkgo_leaves",
+    "properties": {
       "distance": "7",
       "persistent": "false",
       "waterlogged": "false"

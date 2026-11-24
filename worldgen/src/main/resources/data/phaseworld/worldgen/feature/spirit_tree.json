@@ -2,14 +2,14 @@
   "type": "phaseworld:giant_tree",
   "shape": "spirit",
   "log": {
-    "Name": "minecraft:dark_oak_log",
-    "Properties": {
+    "id": "minecraft:dark_oak_log",
+    "properties": {
       "axis": "y"
     }
   },
   "leaves": {
-    "Name": "minecraft:dark_oak_leaves",
-    "Properties": {
+    "id": "minecraft:dark_oak_leaves",
+    "properties": {
       "distance": "7",
       "persistent": "false",
       "waterlogged": "false"
@@ -17,10 +17,6 @@
   },
   "min_height": 26,
   "max_height": 36,
-  "hanging": {
-    "Name": "phaseworld:spirit_vine"
-  },
-  "decor": {
-    "Name": "phaseworld:glowcap"
-  }
+  "hanging": "phaseworld:spirit_vine",
+  "decor": "phaseworld:glowcap"
 }
