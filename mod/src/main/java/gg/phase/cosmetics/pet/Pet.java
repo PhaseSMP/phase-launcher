@@ -401,7 +401,10 @@ public final class Pet {
 			}
 			case HEADSIT -> {
 				// садится хозяину на голову и сидит, пока тот не побежит
-				double th = owner.isShiftKeyDown() || owner.isCrouching() ? 1.48 : 1.74;
+				// в шляпе садится на шляпу, а не внутрь неё
+				gg.phase.cosmetics.CosmeticsData.Worn w = gg.phase.cosmetics.CosmeticsData.get(owner.getName().getString());
+				double hatUp = w != null && w.hat() != null && !w.hat().isEmpty() ? 0.36 : 0.0;
+				double th = (owner.isShiftKeyDown() || owner.isCrouching() ? 1.48 : 1.74) + hatUp;
 				this.headYO = this.headY;
 				this.headY += (th - this.headY) * 0.5;
 				Vec3 top = headTop(owner, 1F, this.headY);
