@@ -1,5 +1,6 @@
 package gg.phase.world;
 
+import gg.phase.world.compat.ModCompat;
 import gg.phase.world.gen.LayoutFunction;
 import gg.phase.world.gen.PhaseBiomeSource;
 import gg.phase.world.gen.feature.GiantTreeFeature;
@@ -56,6 +57,8 @@ public class PhaseWorld implements ModInitializer {
 					ModItems.ALL.forEach(out::accept);
 				})
 				.build());
+
+		ModCompat.init();
 
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			PhaseConfig.applyWorldBorder(server);

@@ -33,14 +33,28 @@ DUMP = os.path.join(os.path.dirname(out_dir.rstrip('/')) or '.', 'mod-dump.zip')
 dump = zipfile.ZipFile(DUMP, 'w', zipfile.ZIP_DEFLATED)
 
 
-def dump_jar(z, tag):
+# classes whose bytecode we need to read (spawn rules, variants, worldgen hooks): keep them raw for javap
+CLASS_HINTS = ('fabulousbirds/entity/Songbird', 'fabulousbirds/Birds', 'fabulousbirds/BirdProfile', 'fabulousbirds/FabulousBirds',
+               'fabulousbirds/mixin/NaturalSpawner', 'FabulousBirdsConfig', 'BirdHooks',
+               'worldgen', 'WorldGen', 'Worldgen', 'Feature', 'Biome', 'Spawn')
+
+
+def dump_jar(z, tag, depth=0):
     """Keep every data/ JSON, the mod metadata, lang and blockstate names, so the integration can be written offline."""
-    files = [n for n in z.namelist() if not n.endswith(('.class', '.png', '.ogg', '.nbt'))]
-    dump.writestr(f'{tag}/_files.txt', '\n'.join(z.namelist()))
-    for n in files:
-        if n.startswith('data/') or n == 'fabric.mod.json' or n.endswith('en_us.json') or n.endswith('.mixins.json'):
+    names = z.namelist()
+    dump.writestr(f'{tag}/_files.txt', '\n'.join(names))
+    for n in names:
+        keep = (n.startswith('data/') and n.endswith('.json')) or n == 'fabric.mod.json' or n.endswith('en_us.json') \
+            or n.endswith('.mixins.json') or (n.startswith('META-INF/') and n.endswith('.json') and '/data/' in n) \
+            or (n.endswith('.class') and any(h in n for h in CLASS_HINTS))
+        if keep:
             try:
                 dump.writestr(f'{tag}/{n}', z.read(n))
+            except Exception:
+                pass
+        if depth < 3 and n.startswith('META-INF/jars/') and n.endswith('.jar') and 'fabric-api' not in n and depth > 0:
+            try:
+                dump_jar(zipfile.ZipFile(io.BytesIO(z.read(n))), tag + '__' + os.path.basename(n), depth + 1)
             except Exception:
                 pass
 while queue:
@@ -71,7 +85,7 @@ while queue:
     for n in list(z.namelist()):
         if n.startswith('META-INF/jars/') and n.endswith('.jar') and 'fabric-api' not in n:
             try:
-                dump_jar(zipfile.ZipFile(io.BytesIO(z.read(n))), pid + '__' + os.path.basename(n))
+                dump_jar(zipfile.ZipFile(io.BytesIO(z.read(n))), pid + '__' + os.path.basename(n), 1)
             except Exception as e:
                 index.append(f'   nested {n}: {e}')
     dump_jar(z, pid)
