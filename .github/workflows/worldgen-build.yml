@@ -28,6 +28,7 @@ jobs:
           mkdir -p run/mods
           python3 tools/fetch_mods.py run/mods > ../fetch-mods.log 2>&1 || echo FETCH_FAILED >> ../fetch-mods.log
           cp run/mod-index.txt ../mod-index.txt 2>/dev/null || true
+          cp run/mod-dump.zip ../mod-dump.zip 2>/dev/null || true
       - name: Server self-test (generates part of the map, profiled)
         if: hashFiles('worldgen/build/libs/*.jar') != ''
         timeout-minutes: 25
@@ -39,7 +40,7 @@ jobs:
           echo "eula=true" > run/eula.txt
           printf "level-seed=20261124\nonline-mode=false\nspawn-protection=0\nmax-tick-time=-1\n" > run/server.properties
           timeout 1300 ./gradlew --no-daemon runServer -Pprofile=true > ../worldgen-server-full.log 2>&1
-          grep -E "\[selftest\]|ERROR|Exception|Caused by|Failed to|Couldn't|Mixin" ../worldgen-server-full.log | head -400 > ../worldgen-server.log
+          grep -E "\[selftest\]|ERROR|Exception|Caused by|Failed to|Couldn't|Mixin|Loading [0-9]+ mods|^\s+- " ../worldgen-server-full.log | head -500 > ../worldgen-server.log
           tail -150 ../worldgen-server-full.log >> ../worldgen-server.log
           if [ -f run/worldgen.jfr ]; then
             jfr print --events jdk.ExecutionSample --stack-depth 64 run/worldgen.jfr > ../samples.txt 2>/dev/null
@@ -62,7 +63,7 @@ jobs:
         run: |
           set +e
           rm -rf ci-worldgen && mkdir -p ci-worldgen/screenshots
-          cp worldgen-build.log worldgen-server.log worldgen-profile.txt worldgen-shots.log mod-index.txt fetch-mods.log ci-worldgen/ 2>/dev/null
+          cp worldgen-build.log worldgen-server.log worldgen-profile.txt worldgen-shots.log mod-index.txt mod-dump.zip fetch-mods.log ci-worldgen/ 2>/dev/null
           JAR=$(ls worldgen/build/libs/*.jar 2>/dev/null | grep -v sources | head -1)
           [ -n "$JAR" ] && cp "$JAR" ci-worldgen/phase-world.jar
           find worldgen -path '*screenshots*' -name '*.png' -exec cp {} ci-worldgen/screenshots/ \; 2>/dev/null
