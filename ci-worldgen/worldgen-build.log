@@ -5,20 +5,37 @@ Daemon will be stopped at the end of the build
 Fabric Loom: 1.19.4
 
 > Task :compileJava
-Note: /home/runner/work/phase-launcher/phase-launcher/worldgen/src/main/java/gg/phase/world/gen/feature/WaterFillFeature.java uses or overrides a deprecated API.
+/home/runner/work/phase-launcher/phase-launcher/worldgen/src/main/java/gg/phase/world/compat/SongbirdBiomes.java:56: error: cannot find symbol
+				if (type != null && BuiltInRegistries.ENTITY_TYPE.getKey(type).equals(SONGBIRD)) ctx.getSpawnSettings().addSpawn(type, 12, 3, 6);
+				                                                                                    ^
+  symbol:   method getSpawnSettings()
+  location: variable ctx of type BiomeModificationContext
+Note: Some input files use or override a deprecated API.
 Note: Recompile with -Xlint:deprecation for details.
+1 error
 
-> Task :processResources
-> Task :classes
-> Task :processIncludeJars
-> Task :validateAccessWidener NO-SOURCE
-> Task :check
-> Task :jar
-> Task :assemble
-> Task :build
+> Task :compileJava FAILED
 
 [Incubating] Problems report is available at: file:///home/runner/work/phase-launcher/phase-launcher/worldgen/build/reports/problems/problems-report.html
 
-BUILD SUCCESSFUL in 41s
-4 actionable tasks: 4 executed
-Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.2/userguide/configuration_cache_enabling.html
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava' (registered by plugin class 'org.gradle.api.plugins.JavaBasePlugin').
+> Compilation failed; see the compiler output below.
+  /home/runner/work/phase-launcher/phase-launcher/worldgen/src/main/java/gg/phase/world/compat/SongbirdBiomes.java:56: error: cannot find symbol
+  				if (type != null && BuiltInRegistries.ENTITY_TYPE.getKey(type).equals(SONGBIRD)) ctx.getSpawnSettings().addSpawn(type, 12, 3, 6);
+  				                                                                                    ^
+    symbol:   method getSpawnSettings()
+    location: variable ctx of type BiomeModificationContext
+  Note: Some input files use or override a deprecated API.
+  Note: Recompile with -Xlint:deprecation for details.
+  1 error
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 28s
+1 actionable task: 1 executed
+BUILD_FAILED
