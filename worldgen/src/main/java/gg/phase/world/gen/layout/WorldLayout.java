@@ -18,14 +18,14 @@ public final class WorldLayout {
 	/** Bottom of the world: 64 blocks deeper than vanilla. */
 	public static final int WORLD_MIN = -128;
 	/** Land fits into 5000 x 5000 blocks (radius 2500). */
-	public static final double MAP_RADIUS = 2500;
+	public static final double MAP_RADIUS = 3500;
 
 	public static final int ZONE_OCEAN = 0, ZONE_INNER_SEA = 1, ZONE_RING = 2, ZONE_ISLAND = 3, ZONE_ISLET = 4;
 
 	// Fuji: summit rim about 1200 blocks above sea level.
-	static final double FUJI_FOOT = 980;
-	static final double FUJI_RIM = 85;
-	static final double FUJI_H = 1172;
+	static final double FUJI_FOOT = 1260;
+	static final double FUJI_RIM = 125;
+	static final double FUJI_H = 770;
 	static final double CRATER_DEPTH = 78;
 
 	private static final Map<Long, WorldLayout> CACHE = new ConcurrentHashMap<>();
@@ -105,9 +105,9 @@ public final class WorldLayout {
 		ringCx = r.range(-45, 45); ringCz = r.range(-45, 45);
 		islandCx = r.range(-55, 55); islandCz = r.range(-55, 55);
 		fujiX = islandCx + r.range(-35, 35); fujiZ = islandCz + r.range(-35, 35);
-		ringInBase = r.range(1500, 1590);
-		ringOutBase = r.range(2260, 2330);
-		islandBase = r.range(1060, 1110);
+		ringInBase = r.range(1820, 1900);
+		ringOutBase = r.range(3080, 3160);
+		islandBase = r.range(1380, 1430);
 		northTh = -Math.PI / 2 + r.range(-0.45, 0.45);
 		// Osawa gully faces west-ish, Hoei crater south-east like the real mountain.
 		osawaTh = Math.PI + r.range(-0.5, 0.5);
@@ -120,8 +120,8 @@ public final class WorldLayout {
 		hoeiConeZ = fujiZ + Math.sin(hoeiTh) * (hoeiR + 105);
 
 		// ---- ring regions ----
-		int n = 18 + r.nextInt(5);
-		int extra = 5 + r.nextInt(4);
+		int n = 24 + r.nextInt(6);
+		int extra = 7 + r.nextInt(5);
 		regX = new double[n + extra];
 		regZ = new double[n + extra];
 		regStyle = new Style[n + extra];
@@ -534,7 +534,8 @@ public final class WorldLayout {
 		double h;
 		if (rw > FUJI_RIM) {
 			double s = (rw - FUJI_RIM) / (FUJI_FOOT - FUJI_RIM);
-			h = FUJI_H * Math.pow(1 - s, 1.45);
+			// concave like the real cone: steep near the rim, a long gentle apron at the foot
+			h = FUJI_H * (0.62 * Math.pow(1 - s, 2.1) + 0.38 * Math.pow(1 - s, 1.2));
 			h += (7 + peaks) * Math.exp(-sq((rw - FUJI_RIM) / 14));
 			double gm = Math.sin(Math.PI * Math.min(1, s * 1.25));
 			double g = 1 - Math.abs(gullyN.n3(Math.cos(th) * 11, Math.sin(th) * 11, rw / 300.0));
@@ -542,7 +543,7 @@ public final class WorldLayout {
 			double g2 = 1 - Math.abs(gullyN.n3(Math.cos(th) * 34 + 40, Math.sin(th) * 34, rw / 120.0 + 40));
 			h -= Math.pow(g2, 6) * 12 * gm;
 			double dth = angleDiff(th, osawaTh);
-			h -= 100 * Math.exp(-sq(dth / 0.03)) * smooth(0.0, 0.07, s) * (1 - smooth(0.45, 0.78, s));
+			h -= 70 * Math.exp(-sq(dth / 0.03)) * smooth(0.0, 0.07, s) * (1 - smooth(0.45, 0.78, s));
 		} else {
 			double rimH = FUJI_H + 7 + peaks;
 			double t = rw / FUJI_RIM;
@@ -685,7 +686,7 @@ public final class WorldLayout {
 		int fuji = 3 + r.nextInt(3);
 		for (int i = 0, tries = 0; i < fuji && tries < 200; tries++) {
 			double a = northTh + r.range(-1.45, 1.45);
-			double rad = r.range(800, 960);
+			double rad = r.range(1020, 1180);
 			double x = fujiX + Math.cos(a) * rad, z = fujiZ + Math.sin(a) * rad;
 			double size = r.range(45, 120);
 			land(x, z, L);
@@ -695,7 +696,7 @@ public final class WorldLayout {
 			i++;
 		}
 		// ring lakes in calmer regions
-		int ring = 3 + r.nextInt(4);
+		int ring = 6 + r.nextInt(4);
 		for (int i = 0, tries = 0; i < ring && tries < 400; tries++) {
 			double a = r.range(0, Math.PI * 2);
 			double m = r.range(0.28, 0.72);
@@ -761,7 +762,7 @@ public final class WorldLayout {
 			sources.add(new double[]{lk.x + Math.cos(bestA) * rs, lk.z + Math.sin(bestA) * rs, lk.level, Math.cos(bestA), Math.sin(bestA)});
 		}
 		// mountain springs along the ring spine
-		int count = 18 + r.nextInt(8);
+		int count = 30 + r.nextInt(8);
 		for (int i = 0, tries = 0; i < count && tries < 600; tries++) {
 			double a = r.range(0, Math.PI * 2);
 			double m = r.range(0.38, 0.62);
@@ -781,7 +782,7 @@ public final class WorldLayout {
 		// springs on the Fuji foothills (think Shiraito falls)
 		for (int i = 0; i < 3; i++) {
 			double a = northTh + Math.PI + r.range(-1.6, 1.6);
-			double rad = r.range(640, 800);
+			double rad = r.range(820, 1040);
 			double x = fujiX + Math.cos(a) * rad, z = fujiZ + Math.sin(a) * rad;
 			sources.add(new double[]{x, z, Double.NaN, Math.cos(a), Math.sin(a)});
 		}
@@ -1040,11 +1041,11 @@ public final class WorldLayout {
 		double h = c.height;
 		if (c.zone == ZONE_ISLAND && c.fujiR < FUJI_FOOT) {
 			double g = fujiGully(x, z);
-			double snow = SEA + 955 - 150 * g + 25 * misc.n2(x / 60.0, z / 60.0);
-			double tree = SEA + 690 + 45 * misc.n2(x / 120.0, z / 120.0);
+			double snow = SEA + 0.8 * FUJI_H - 110 * g + 25 * misc.n2(x / 60.0, z / 60.0);
+			double tree = SEA + 0.58 * FUJI_H + 35 * misc.n2(x / 120.0, z / 120.0);
 			if (h > snow) return PB.FUJI_SUMMIT;
 			if (h > tree) return PB.FUJI_SLOPES;
-			if (h > SEA + 420 + 30 * misc.n2(x / 90.0, z / 90.0)) return PB.FUJI_SUBALPINE;
+			if (h > SEA + 0.36 * FUJI_H + 25 * misc.n2(x / 90.0, z / 90.0)) return PB.FUJI_SUBALPINE;
 			if (Math.hypot(x - hoeiX, z - hoeiZ) < 95) return PB.FUJI_SLOPES;
 		}
 		if (h > SEA + 470 + 35 * misc.n2(x / 110.0, z / 110.0)) return PB.FROZEN_SUMMITS;
@@ -1119,7 +1120,7 @@ public final class WorldLayout {
 		boolean underFuji = c.zone == ZONE_ISLAND && c.fujiR < FUJI_FOOT * 0.95;
 		if (underFuji) {
 			// lava tubes inside the cone, wind and ice caves near its northern foot
-			if (y < SEA + 260 && c.fujiR < 650 && n1 > -0.25) return PB.MAGMA_TUBES;
+			if (y < SEA + 260 && c.fujiR < 850 && n1 > -0.25) return PB.MAGMA_TUBES;
 			double rel = Math.abs(angleDiff(Math.atan2(z - fujiZ, x - fujiX), northTh));
 			if (rel < 1.3 && y > 10 && y < SEA + 160 && n2 > 0.05) return PB.ICE_CAVES;
 		}
@@ -1142,7 +1143,7 @@ public final class WorldLayout {
 
 	/** Low-frequency 3D field of the giant halls: carve where it exceeds {@link #chamberThreshold}. */
 	double chamberField(int x, int y, int z) {
-		return caveC.fbm3(x / 210.0, y / 78.0, z / 210.0, 3);
+		return caveC.fbm3(x / 320.0, y / 105.0, z / 320.0, 3);
 	}
 
 	double chamberThreshold(int y, Column c) {
@@ -1150,7 +1151,7 @@ public final class WorldLayout {
 		double band = Math.exp(-sq((y + 5) / 55.0)) * 0.12 + Math.exp(-sq((y - 70) / 60.0)) * 0.06 + Math.exp(-sq((y + 85) / 30.0)) * 0.10;
 		Style st = c.style >= 0 ? Style.VALUES[c.style] : Style.SAKURA;
 		double mountain = (st == Style.ALPS || st == Style.SUGI || st == Style.MOMIJI || st == Style.KARST) ? 0.05 * smooth(120, 300, c.height - SEA) : 0;
-		return 0.37 - band - mountain;
+		return 0.33 - band - mountain;
 	}
 
 	/**
@@ -1201,7 +1202,7 @@ public final class WorldLayout {
 			double dy = Math.abs(y - h);
 			if (dy < band) {
 				double n = overhangN.fbm3(x / 34.0, y / 22.0, z / 34.0, 2);
-				h += n * amp * 1.5 * (1 - dy / band);
+				h += n * amp * 0.8 * (1 - dy / band);
 			}
 		}
 		double g = (h - y) / 8.0;
@@ -1233,7 +1234,7 @@ public final class WorldLayout {
 		int[] best = {(int) fujiX, (int) (fujiZ + 1000)};
 		double bestScore = -1e9;
 		for (int k = -10; k <= 10; k++) {
-			for (double rad = 820; rad <= 1020; rad += 25) {
+			for (double rad = 1060; rad <= 1300; rad += 25) {
 				double aa = a + k * 0.06;
 				int x = (int) (fujiX + Math.cos(aa) * rad), z = (int) (fujiZ + Math.sin(aa) * rad);
 				Column c = column(x, z);

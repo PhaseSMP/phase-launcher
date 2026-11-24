@@ -1,0 +1,22 @@
+{
+  "type": "phaseworld:giant_tree",
+  "shape": "emergent",
+  "log": {
+    "id": "minecraft:dark_oak_log",
+    "properties": {
+      "axis": "y"
+    }
+  },
+  "leaves": {
+    "id": "minecraft:jungle_leaves",
+    "properties": {
+      "distance": "7",
+      "persistent": "false",
+      "waterlogged": "false"
+    }
+  },
+  "min_height": 55,
+  "max_height": 85,
+  "hanging": "phaseworld:spirit_vine",
+  "decor": "phaseworld:lumen_fern"
+}

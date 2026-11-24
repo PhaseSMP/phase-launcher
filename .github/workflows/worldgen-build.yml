@@ -39,7 +39,8 @@ jobs:
             python3 tools/jfr_top.py ../samples.txt > ../worldgen-profile.txt
           fi
       - name: Client screenshots
-        if: hashFiles('worldgen/build/libs/*.jar') != ''
+        # off by default (slow); run the workflow by hand with shots=true to get them
+        if: github.event_name == 'workflow_dispatch' && hashFiles('worldgen/build/libs/*.jar') != ''
         timeout-minutes: 85
         continue-on-error: true
         working-directory: worldgen

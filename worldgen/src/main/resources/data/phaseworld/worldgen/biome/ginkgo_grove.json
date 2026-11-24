@@ -204,8 +204,13 @@
       "minecraft:glow_lichen",
       "phaseworld:giant_ginkgo",
       "phaseworld:trees_ginkgo_grove",
+      "phaseworld:tree_ferns_sparse",
+      "phaseworld:jungle_bushes_sparse",
+      "phaseworld:vines_tall",
+      "minecraft:patch_grass_jungle",
       "minecraft:patch_bush",
       "minecraft:patch_grass_forest",
+      "minecraft:patch_large_fern",
       "minecraft:patch_leaf_litter",
       "phaseworld:patch_susuki_sparse"
     ],

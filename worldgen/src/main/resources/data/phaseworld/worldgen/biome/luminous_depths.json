@@ -195,7 +195,8 @@
       "minecraft:spring_lava"
     ],
     [
-      "minecraft:glow_lichen"
+      "minecraft:glow_lichen",
+      "phaseworld:cave_trees"
     ],
     [
       "minecraft:freeze_top_layer"

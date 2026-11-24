@@ -15,8 +15,8 @@
       "waterlogged": "false"
     }
   },
-  "min_height": 26,
-  "max_height": 36,
+  "min_height": 34,
+  "max_height": 50,
   "hanging": "phaseworld:spirit_vine",
   "decor": "phaseworld:glowcap"
 }

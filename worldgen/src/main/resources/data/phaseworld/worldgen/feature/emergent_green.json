@@ -1,0 +1,21 @@
+{
+  "type": "phaseworld:giant_tree",
+  "shape": "emergent",
+  "log": {
+    "id": "minecraft:jungle_log",
+    "properties": {
+      "axis": "y"
+    }
+  },
+  "leaves": {
+    "id": "minecraft:jungle_leaves",
+    "properties": {
+      "distance": "7",
+      "persistent": "false",
+      "waterlogged": "false"
+    }
+  },
+  "min_height": 45,
+  "max_height": 70,
+  "decor": "minecraft:moss_carpet"
+}

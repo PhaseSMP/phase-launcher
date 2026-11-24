@@ -43,7 +43,8 @@ public record GiantTreeFeature(String shape, BlockState log, BlockState leaves, 
 		BlockState.CODEC.optionalFieldOf("decor").forGetter(GiantTreeFeature::decor)
 	).apply(i, GiantTreeFeature::new));
 
-	private static final int REACH = 15;
+	/** Giants are placed at a chunk centre, so 22 blocks still stays inside the 3x3 chunks a feature may write. */
+	private static final int REACH = 22;
 
 	@Override
 	public MapCodec<GiantTreeFeature> codec() {
@@ -64,6 +65,8 @@ public record GiantTreeFeature(String shape, BlockState log, BlockState leaves, 
 			case "weeping" -> weeping(b, h, random);
 			case "wisteria" -> wisteria(b, h, random);
 			case "ginkgo" -> ginkgo(b, h, random);
+			case "fern" -> fern(b, h, random);
+			case "emergent" -> emergent(b, h, random);
 			default -> broad(b, h, random);
 		}
 		b.commit(this.log, this.leaves);
@@ -71,10 +74,10 @@ public record GiantTreeFeature(String shape, BlockState log, BlockState leaves, 
 		BlockState curtain = this.hanging.orElse(null);
 		if (curtain == null && this.shape.equals("weeping")) curtain = this.leaves.setValue(LeavesBlock.PERSISTENT, true);
 		if (curtain != null) {
-			int chance = this.shape.equals("spirit") ? 5 : this.shape.equals("sugi") ? 30 : 3;
+			int chance = this.shape.equals("spirit") || this.shape.equals("emergent") ? 4 : this.shape.equals("sugi") ? 30 : 3;
 			b.curtains(curtain, chance, this.shape.equals("weeping") ? 9 : 10);
 		}
-		this.decor.ifPresent(d -> b.decorGround(d, this.shape.equals("spirit") ? 26 : 12));
+		this.decor.ifPresent(d -> b.decorGround(d, this.shape.equals("spirit") || this.shape.equals("emergent") ? 30 : 12));
 		return true;
 	}
 
@@ -143,12 +146,12 @@ public record GiantTreeFeature(String shape, BlockState log, BlockState leaves, 
 		double a0 = random.nextDouble() * 6.28;
 		for (int k = 0; k < limbs; k++) {
 			double a = a0 + k * 6.28 / limbs + random.nextDouble() * 0.6;
-			double reach = 5 + random.nextDouble() * 3;
+			double reach = 7 + random.nextDouble() * 5;
 			double up = h - split;
-			branch(b, b.tx, split, b.tz, Math.cos(a) * reach, up, Math.sin(a) * reach, Math.sqrt(reach * reach + up * up), 1.9);
+			branch(b, b.tx, split, b.tz, Math.cos(a) * reach, up, Math.sin(a) * reach, Math.sqrt(reach * reach + up * up), 2.2);
 			double ex = b.tx + Math.cos(a) * reach, ez = b.tz + Math.sin(a) * reach;
-			b.blob(ex, h + 1, ez, 7.0, 3.2, 7.0, 0.92);
-			b.blob(ex * 0.6, h + 3, ez * 0.6, 5.0, 2.6, 5.0, 0.9);
+			b.blob(ex, h + 1, ez, 9.0, 3.6, 9.0, 0.93);
+			b.blob(ex * 0.6, h + 3, ez * 0.6, 6.5, 3.0, 6.5, 0.9);
 			// side limbs
 			double sa = a + (random.nextBoolean() ? 0.9 : -0.9);
 			double sy = split + up * 0.45;
@@ -157,6 +160,48 @@ public record GiantTreeFeature(String shape, BlockState log, BlockState leaves, 
 			b.blob(sx + Math.cos(sa) * 5, sy + 2, sz + Math.sin(sa) * 5, 3.5, 2.0, 3.5, 0.9);
 		}
 		b.blob(b.tx, h + 4, b.tz, 6.0, 3.0, 6.0, 0.9);
+	}
+
+	/** Tree fern: a slim trunk and a crown of long arching fronds. */
+	private void fern(Builder b, int h, RandomSource random) {
+		trunk(b, h, 0.6, 0.5, 0.3, random);
+		int n = 9 + random.nextInt(5);
+		for (int k = 0; k < n; k++) {
+			double a = k * 6.28 / n + random.nextDouble() * 0.4;
+			double len = 4.5 + random.nextDouble() * 2.5;
+			for (double t = 0; t <= len; t += 0.5) {
+				double x = b.tx + Math.cos(a) * t, z = b.tz + Math.sin(a) * t;
+				double y = h + 1.2 * t - 0.22 * t * t;
+				b.blob(x, y, z, 0.7, 0.6, 0.7, 1.0);
+			}
+		}
+		b.blob(b.tx, h + 1, b.tz, 1.5, 1.0, 1.5, 1.0);
+	}
+
+	/** Pandora-scale emergent giant: huge buttressed trunk, a few heavy limbs and wide layered canopy far above the forest. */
+	private void emergent(Builder b, int h, RandomSource random) {
+		double r0 = 3.6 + random.nextDouble() * 1.4;
+		roots(b, r0 + 2, 9 + random.nextInt(4), 12, random);
+		int split = (int) (h * 0.68);
+		trunk(b, split, r0, r0 * 0.55, 3.2, random);
+		int limbs = 4 + random.nextInt(3);
+		double a0 = random.nextDouble() * 6.28;
+		for (int k = 0; k < limbs; k++) {
+			double a = a0 + k * 6.28 / limbs + random.nextDouble() * 0.5;
+			double reach = 8 + random.nextDouble() * 6;
+			double up = h - split;
+			branch(b, b.tx, split, b.tz, Math.cos(a) * reach, up, Math.sin(a) * reach, Math.sqrt(reach * reach + up * up), 1.8);
+			double ex = b.tx + Math.cos(a) * reach, ez = b.tz + Math.sin(a) * reach;
+			b.blob(ex, h + 1, ez, 8.5, 3.0, 8.5, 0.93);
+		}
+		// a lower, smaller canopy tier on side limbs
+		for (int k = 0; k < 4; k++) {
+			double a = a0 + 0.7 + k * 1.57;
+			double y = split * (0.55 + 0.1 * k);
+			branch(b, b.tx, y, b.tz, Math.cos(a), 0.3, Math.sin(a), 9, 1.0);
+			b.blob(b.tx + Math.cos(a) * 9, y + 2, b.tz + Math.sin(a) * 9, 5.5, 2.4, 5.5, 0.9);
+		}
+		b.blob(b.tx, h + 3, b.tz, 10.0, 3.5, 10.0, 0.9);
 	}
 
 	private void broad(Builder b, int h, RandomSource random) {
@@ -300,6 +345,7 @@ public record GiantTreeFeature(String shape, BlockState log, BlockState leaves, 
 
 		void commit(BlockState log, BlockState leafState) {
 			BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos();
+			java.util.Set<Long> placed = new java.util.HashSet<>();
 			for (Map.Entry<Long, int[]> e : this.logs.entrySet()) {
 				long k = e.getKey();
 				p.set(this.o.getX() + BlockPos.getX(k), this.o.getY() + BlockPos.getY(k), this.o.getZ() + BlockPos.getZ(k));
@@ -309,11 +355,12 @@ public record GiantTreeFeature(String shape, BlockState log, BlockState leaves, 
 					s = s.setValue(BlockStateProperties.AXIS, e.getValue()[0] == 0 ? Direction.Axis.X : e.getValue()[0] == 2 ? Direction.Axis.Z : Direction.Axis.Y);
 				}
 				this.level.setBlock(p, s, 2);
+				placed.add(k);
 			}
 			// leaf distances from the logs, so the canopy decays like a vanilla tree's when cut
 			Map<Long, Integer> dist = new HashMap<>();
 			ArrayDeque<Long> queue = new ArrayDeque<>();
-			for (long k : this.logs.keySet()) {
+			for (long k : placed) {
 				dist.put(k, 0);
 				queue.add(k);
 			}
@@ -338,7 +385,8 @@ public record GiantTreeFeature(String shape, BlockState log, BlockState leaves, 
 				BlockState s = leafState;
 				if (hasDistance) {
 					Integer d = dist.get(k);
-					s = d == null || d > 6 ? s.setValue(LeavesBlock.PERSISTENT, true).setValue(LeavesBlock.DISTANCE, 7)
+					if (d == null) continue;   // not connected to any wood: never leave it hanging in the air
+					s = d > 6 ? s.setValue(LeavesBlock.PERSISTENT, true).setValue(LeavesBlock.DISTANCE, 7)
 						: s.setValue(LeavesBlock.DISTANCE, Math.max(1, d)).setValue(LeavesBlock.PERSISTENT, false);
 				}
 				this.level.setBlock(p, s, 2);

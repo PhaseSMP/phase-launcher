@@ -200,6 +200,8 @@
       "minecraft:glow_lichen",
       "phaseworld:trees_cherry_sparse",
       "phaseworld:trees_matsu_sparse",
+      "phaseworld:tree_ferns_sparse",
+      "phaseworld:jungle_bushes_sparse",
       "minecraft:patch_bush",
       "minecraft:flower_default",
       "minecraft:patch_grass_plain",

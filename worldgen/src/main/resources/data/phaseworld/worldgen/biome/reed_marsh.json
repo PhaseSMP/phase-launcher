@@ -196,8 +196,13 @@
     [
       "minecraft:glow_lichen",
       "phaseworld:trees_marsh",
+      "phaseworld:tree_ferns_sparse",
+      "phaseworld:jungle_bushes_sparse",
+      "phaseworld:vines_tall",
+      "minecraft:patch_grass_jungle",
       "minecraft:patch_firefly_bush_near_water",
       "minecraft:patch_grass_plain",
+      "minecraft:patch_large_fern",
       "minecraft:patch_sugar_cane_swamp",
       "minecraft:patch_waterlily",
       "phaseworld:patch_lotus_sparse",

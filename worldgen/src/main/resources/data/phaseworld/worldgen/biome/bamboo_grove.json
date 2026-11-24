@@ -197,11 +197,18 @@
     ],
     [
       "minecraft:glow_lichen",
+      "phaseworld:moss_surface",
+      "phaseworld:emergent_rare",
       "minecraft:bamboo",
       "minecraft:bamboo_light",
+      "phaseworld:tree_ferns",
+      "phaseworld:jungle_bushes",
+      "phaseworld:vines_tall",
+      "minecraft:patch_grass_jungle",
       "minecraft:patch_firefly_bush_near_water",
       "minecraft:patch_grass_forest",
       "minecraft:patch_large_fern",
+      "minecraft:patch_leaf_litter",
       "phaseworld:patch_wild_tea",
       "phaseworld:patch_shiitake"
     ],

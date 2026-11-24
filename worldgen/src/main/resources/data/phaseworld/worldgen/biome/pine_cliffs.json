@@ -184,8 +184,13 @@
       "minecraft:glow_lichen",
       "minecraft:forest_rock",
       "phaseworld:trees_matsu",
+      "phaseworld:tree_ferns_sparse",
+      "phaseworld:jungle_bushes_sparse",
+      "phaseworld:vines_tall",
+      "minecraft:patch_grass_jungle",
       "minecraft:patch_bush",
       "minecraft:patch_grass_plain",
+      "minecraft:patch_large_fern",
       "phaseworld:patch_susuki_sparse"
     ],
     [

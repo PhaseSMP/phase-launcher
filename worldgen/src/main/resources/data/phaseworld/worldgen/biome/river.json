@@ -186,6 +186,8 @@
     ],
     [
       "minecraft:glow_lichen",
+      "phaseworld:jungle_bushes_sparse",
+      "phaseworld:vines_tall",
       "minecraft:patch_firefly_bush_near_water",
       "minecraft:patch_sugar_cane",
       "phaseworld:patch_wild_wasabi",

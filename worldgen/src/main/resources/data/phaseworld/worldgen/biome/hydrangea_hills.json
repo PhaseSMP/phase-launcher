@@ -209,10 +209,15 @@
     [
       "minecraft:glow_lichen",
       "phaseworld:trees_cherry_sparse",
+      "phaseworld:tree_ferns_sparse",
+      "phaseworld:jungle_bushes_sparse",
+      "phaseworld:vines_tall",
+      "minecraft:patch_grass_jungle",
       "minecraft:patch_firefly_bush_near_water",
       "minecraft:flower_flower_forest",
       "minecraft:patch_tall_grass",
       "minecraft:patch_grass_plain",
+      "minecraft:patch_large_fern",
       "phaseworld:patch_hydrangea"
     ],
     [
