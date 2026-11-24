@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:hikari_moss",
+    "phaseworld:hikari_moss_carpet",
+    "phaseworld:momiji_leaves",
+    "phaseworld:ginkgo_leaves",
+    "phaseworld:tatami"
+  ]
+}

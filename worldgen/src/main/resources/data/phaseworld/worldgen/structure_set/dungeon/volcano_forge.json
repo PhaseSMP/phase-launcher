@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 16,
+    "separation": 6,
+    "salt": 71503212
+  },
+  "structures": [
+    {
+      "structure": "phaseworld:dungeon/volcano_forge",
+      "weight": 1
+    }
+  ]
+}

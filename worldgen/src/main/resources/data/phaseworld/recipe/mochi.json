@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    "phaseworld:rice_flour",
+    "minecraft:sugar"
+  ],
+  "result": {
+    "id": "phaseworld:mochi",
+    "count": 2
+  }
+}

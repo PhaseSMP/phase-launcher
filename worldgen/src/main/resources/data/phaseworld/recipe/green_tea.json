@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    "phaseworld:tea_leaves",
+    "phaseworld:tea_leaves",
+    "minecraft:potion"
+  ],
+  "result": {
+    "id": "phaseworld:green_tea"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "condition": "minecraft:tool/can_shear",
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "phaseworld:wild_wasabi"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "phaseworld:wasabi_root",
+          "modifier": [
+            {
+              "type": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            },
+            {
+              "type": "minecraft:explosion_decay"
+            }
+          ]
+        }
+      ],
+      "condition": {
+        "type": "minecraft:inverted",
+        "term": "minecraft:tool/can_shear"
+      }
+    }
+  ],
+  "random_sequence": "phaseworld:blocks/wild_wasabi"
+}

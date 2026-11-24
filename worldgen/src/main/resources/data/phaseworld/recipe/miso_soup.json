@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    "phaseworld:miso_paste",
+    "phaseworld:tofu",
+    "minecraft:kelp",
+    "minecraft:bowl"
+  ],
+  "result": {
+    "id": "phaseworld:miso_soup"
+  }
+}

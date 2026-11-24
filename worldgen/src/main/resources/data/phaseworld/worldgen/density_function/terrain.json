@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:cache",
+  "input": {
+    "type": "phaseworld:layout",
+    "kind": "terrain"
+  }
+}

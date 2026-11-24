@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "phaseworld:shrine_bricks",
+    "minecraft:moss_block"
+  ],
+  "result": {
+    "id": "phaseworld:mossy_shrine_bricks"
+  }
+}

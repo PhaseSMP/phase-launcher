@@ -1,0 +1,67 @@
+{
+  "dimensions": {
+    "minecraft:overworld": {
+      "type": "minecraft:overworld",
+      "generator": {
+        "type": "minecraft:noise",
+        "biome_source": {
+          "type": "phaseworld:phase",
+          "biomes": {
+            "deep_ocean": "phaseworld:deep_ocean",
+            "ocean": "phaseworld:ocean",
+            "inner_sea": "phaseworld:inner_sea",
+            "beach": "phaseworld:beach",
+            "black_sand_beach": "phaseworld:black_sand_beach",
+            "rocky_shore": "phaseworld:rocky_shore",
+            "river": "phaseworld:river",
+            "sakura_valley": "phaseworld:sakura_valley",
+            "momiji_highlands": "phaseworld:momiji_highlands",
+            "sugi_forest": "phaseworld:sugi_forest",
+            "bamboo_grove": "phaseworld:bamboo_grove",
+            "rice_terraces": "phaseworld:rice_terraces",
+            "tea_hills": "phaseworld:tea_hills",
+            "alpine_peaks": "phaseworld:alpine_peaks",
+            "snowy_highlands": "phaseworld:snowy_highlands",
+            "onsen_valley": "phaseworld:onsen_valley",
+            "pine_cliffs": "phaseworld:pine_cliffs",
+            "reed_marsh": "phaseworld:reed_marsh",
+            "sand_dunes": "phaseworld:sand_dunes",
+            "frozen_summits": "phaseworld:frozen_summits",
+            "jukai_forest": "phaseworld:jukai_forest",
+            "fuji_subalpine": "phaseworld:fuji_subalpine",
+            "fuji_slopes": "phaseworld:fuji_slopes",
+            "fuji_summit": "phaseworld:fuji_summit",
+            "deep_caverns": "phaseworld:deep_caverns",
+            "hikari_grotto": "phaseworld:hikari_grotto",
+            "eclipse_hollows": "phaseworld:eclipse_hollows",
+            "magma_tubes": "phaseworld:magma_tubes",
+            "flooded_caves": "phaseworld:flooded_caves",
+            "ice_caves": "phaseworld:ice_caves"
+          }
+        },
+        "settings": "phaseworld:overworld"
+      }
+    },
+    "minecraft:the_end": {
+      "type": "minecraft:the_end",
+      "generator": {
+        "type": "minecraft:noise",
+        "biome_source": {
+          "type": "minecraft:the_end"
+        },
+        "settings": "minecraft:end"
+      }
+    },
+    "minecraft:the_nether": {
+      "type": "minecraft:the_nether",
+      "generator": {
+        "type": "minecraft:noise",
+        "biome_source": {
+          "type": "minecraft:multi_noise",
+          "preset": "minecraft:nether"
+        },
+        "settings": "minecraft:nether"
+      }
+    }
+  }
+}

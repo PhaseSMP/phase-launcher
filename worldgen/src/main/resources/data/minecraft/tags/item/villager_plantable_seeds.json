@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:rice",
+    "phaseworld:soybeans",
+    "phaseworld:daikon_seeds"
+  ]
+}

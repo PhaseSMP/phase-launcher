@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    "phaseworld:soybeans",
+    "phaseworld:soybeans",
+    "phaseworld:soybeans",
+    "minecraft:water_bucket"
+  ],
+  "result": {
+    "id": "phaseworld:tofu",
+    "count": 2
+  }
+}

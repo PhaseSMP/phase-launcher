@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "phaseworld:block/cracked_shrine_bricks"
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "attributes": {
+    "minecraft:audio/background_music": {
+      "default": {
+        "max_delay": 24000,
+        "min_delay": 12000,
+        "sound": "minecraft:music.overworld.sulfur_caves"
+      }
+    },
+    "minecraft:gameplay/natural_mob_spawns": {
+      "argument": {
+        "spawn_costs": {},
+        "spawns_by_category": {
+          "ambient": [
+            {
+              "type": "minecraft:bat",
+              "count": 8,
+              "weight": 10
+            }
+          ],
+          "monster": [
+            {
+              "type": "minecraft:sulfur_cube",
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 4,
+                "min_inclusive": 2
+              },
+              "weight": 100
+            },
+            {
+              "type": "minecraft:creeper",
+              "count": 2,
+              "weight": 50
+            },
+            {
+              "type": "minecraft:skeleton",
+              "count": 2,
+              "weight": 50
+            },
+            {
+              "type": "minecraft:slime",
+              "count": 1,
+              "weight": 25
+            },
+            {
+              "type": "minecraft:cave_spider",
+              "count": 1,
+              "weight": 20
+            },
+            {
+              "type": "minecraft:zombie",
+              "count": 2,
+              "weight": 50
+            },
+            {
+              "type": "minecraft:enderman",
+              "count": 1,
+              "weight": 10
+            },
+            {
+              "type": "minecraft:witch",
+              "count": 1,
+              "weight": 1
+            },
+            {
+              "type": "minecraft:zombie_villager",
+              "count": 1,
+              "weight": 5
+            }
+          ]
+        }
+      },
+      "modifier": "overlay"
+    },
+    "minecraft:visual/fog_color": "#8cb831",
+    "minecraft:visual/sky_color": "#78a7ff",
+    "minecraft:visual/water_fog_color": "#17543c"
+  },
+  "carvers": [],
+  "downfall": 0.0,
+  "effects": {
+    "grass_color": "#aba64f",
+    "water_color": "#5a8a6a"
+  },
+  "features": [
+    [],
+    [
+      "minecraft:lake_lava_underground",
+      "phaseworld:lava_lakes_deep"
+    ],
+    [
+      "minecraft:amethyst_geode",
+      "phaseworld:eclipse_geode_rare"
+    ],
+    [],
+    [],
+    [],
+    [
+      "minecraft:ore_dirt",
+      "minecraft:ore_gravel",
+      "minecraft:ore_granite_upper",
+      "minecraft:ore_granite_lower",
+      "minecraft:ore_diorite_upper",
+      "minecraft:ore_diorite_lower",
+      "minecraft:ore_andesite_upper",
+      "minecraft:ore_andesite_lower",
+      "minecraft:ore_tuff",
+      "phaseworld:ore_coal_upper",
+      "phaseworld:ore_coal_lower",
+      "phaseworld:ore_iron_upper",
+      "phaseworld:ore_iron_middle",
+      "phaseworld:ore_iron_small",
+      "phaseworld:ore_gold",
+      "phaseworld:ore_gold_lower",
+      "phaseworld:ore_redstone",
+      "phaseworld:ore_redstone_lower",
+      "phaseworld:ore_diamond",
+      "phaseworld:ore_diamond_medium",
+      "phaseworld:ore_diamond_large",
+      "phaseworld:ore_diamond_buried",
+      "phaseworld:ore_lapis",
+      "phaseworld:ore_lapis_buried",
+      "phaseworld:ore_copper",
+      "phaseworld:blob_scoria",
+      "phaseworld:blob_basalt",
+      "phaseworld:blob_blackstone",
+      "minecraft:ore_magma",
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel"
+    ],
+    [
+      "minecraft:fossil_upper",
+      "minecraft:fossil_lower",
+      "minecraft:dripstone_cluster",
+      "minecraft:large_dripstone",
+      "minecraft:pointed_dripstone",
+      "phaseworld:eclipse_clusters",
+      "phaseworld:hikari_patches",
+      "minecraft:lush_caves_ceiling_vegetation",
+      "minecraft:cave_vines",
+      "minecraft:lush_caves_clay",
+      "minecraft:spore_blossom"
+    ],
+    [
+      "minecraft:spring_water",
+      "minecraft:spring_lava"
+    ],
+    [
+      "minecraft:glow_lichen"
+    ],
+    [
+      "minecraft:freeze_top_layer"
+    ]
+  ],
+  "has_precipitation": false,
+  "temperature": 1.0
+}

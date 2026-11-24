@@ -1,0 +1,27 @@
+plugins {
+	id 'net.fabricmc.fabric-loom' version "${loom_version}"
+}
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+}
+processResources {
+	def version = project.version
+	inputs.property "version", version
+	filesMatching("fabric.mod.json") { expand "version": version }
+}
+tasks.withType(JavaCompile).configureEach { it.options.release = 25; it.options.encoding = 'UTF-8' }
+java { sourceCompatibility = JavaVersion.VERSION_25; targetCompatibility = JavaVersion.VERSION_25 }
+
+loom {
+	runs {
+		// CI smoke test: generates a strip of the map, logs it and stops (see SelfTest.java)
+		server {
+			vmArg "-Dphaseworld.selftest=true"
+			vmArg "-Xmx3G"
+		}
+	}
+}
+
+// the offline map preview and data generators live in tools/ and are not part of the jar

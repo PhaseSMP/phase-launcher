@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 30,
+    "separation": 12,
+    "salt": 71503211
+  },
+  "structures": [
+    {
+      "structure": "phaseworld:dungeon/forgotten_shrine",
+      "weight": 1
+    }
+  ]
+}

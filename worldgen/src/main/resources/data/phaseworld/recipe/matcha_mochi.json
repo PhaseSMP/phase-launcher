@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    "phaseworld:mochi",
+    "phaseworld:matcha"
+  ],
+  "result": {
+    "id": "phaseworld:matcha_mochi"
+  }
+}

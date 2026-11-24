@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " S ",
+    "STS",
+    " S "
+  ],
+  "key": {
+    "S": "phaseworld:shrine_bricks",
+    "T": "minecraft:torch"
+  },
+  "result": {
+    "id": "phaseworld:stone_lantern"
+  }
+}

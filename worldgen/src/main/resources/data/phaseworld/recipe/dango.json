@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " M",
+    " M",
+    "S "
+  ],
+  "key": {
+    "M": "phaseworld:mochi",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "id": "phaseworld:dango"
+  }
+}

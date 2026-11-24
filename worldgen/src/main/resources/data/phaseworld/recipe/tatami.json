@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "WWW",
+    "W#W",
+    "WWW"
+  ],
+  "key": {
+    "W": "minecraft:wheat",
+    "#": "minecraft:green_dye"
+  },
+  "result": {
+    "id": "phaseworld:tatami",
+    "count": 2
+  }
+}

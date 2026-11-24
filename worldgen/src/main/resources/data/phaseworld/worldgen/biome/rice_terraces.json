@@ -1,0 +1,208 @@
+{
+  "attributes": {
+    "minecraft:gameplay/natural_mob_spawns": {
+      "argument": {
+        "spawn_costs": {},
+        "spawns_by_category": {
+          "ambient": [
+            {
+              "type": "minecraft:bat",
+              "count": 8,
+              "weight": 10
+            }
+          ],
+          "creature": [
+            {
+              "type": "minecraft:sheep",
+              "count": 4,
+              "weight": 12
+            },
+            {
+              "type": "minecraft:pig",
+              "count": 4,
+              "weight": 10
+            },
+            {
+              "type": "minecraft:chicken",
+              "count": 4,
+              "weight": 10
+            },
+            {
+              "type": "minecraft:cow",
+              "count": 4,
+              "weight": 8
+            },
+            {
+              "type": "minecraft:horse",
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 6,
+                "min_inclusive": 2
+              },
+              "weight": 5
+            },
+            {
+              "type": "minecraft:donkey",
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 3,
+                "min_inclusive": 1
+              },
+              "weight": 1
+            }
+          ],
+          "monster": [
+            {
+              "type": "minecraft:spider",
+              "count": 4,
+              "weight": 100
+            },
+            {
+              "type": "minecraft:zombie",
+              "count": 4,
+              "weight": 90
+            },
+            {
+              "type": "minecraft:zombie_villager",
+              "count": 1,
+              "weight": 5
+            },
+            {
+              "type": "minecraft:zombie_horse",
+              "count": 1,
+              "weight": 5
+            },
+            {
+              "type": "minecraft:skeleton",
+              "count": 4,
+              "weight": 100
+            },
+            {
+              "type": "minecraft:creeper",
+              "count": 4,
+              "weight": 100
+            },
+            {
+              "type": "minecraft:slime",
+              "count": 4,
+              "weight": 100
+            },
+            {
+              "type": "minecraft:enderman",
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 4,
+                "min_inclusive": 1
+              },
+              "weight": 10
+            },
+            {
+              "type": "minecraft:witch",
+              "count": 1,
+              "weight": 5
+            }
+          ],
+          "underground_water_creature": [
+            {
+              "type": "minecraft:glow_squid",
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 6,
+                "min_inclusive": 4
+              },
+              "weight": 10
+            }
+          ]
+        }
+      },
+      "modifier": "overlay"
+    },
+    "minecraft:visual/sky_color": "#78a7ff"
+  },
+  "carvers": [
+    "minecraft:cave",
+    "minecraft:cave_extra_underground",
+    "minecraft:canyon"
+  ],
+  "downfall": 0.8,
+  "effects": {
+    "water_color": "#4db0d8",
+    "grass_color": "#8fd05a",
+    "foliage_color": "#78b84a"
+  },
+  "features": [
+    [],
+    [
+      "phaseworld:water_fill",
+      "phaseworld:paddy",
+      "minecraft:lake_lava_underground"
+    ],
+    [
+      "minecraft:amethyst_geode",
+      "phaseworld:eclipse_geode_rare"
+    ],
+    [],
+    [],
+    [],
+    [
+      "minecraft:ore_dirt",
+      "minecraft:ore_gravel",
+      "minecraft:ore_granite_upper",
+      "minecraft:ore_granite_lower",
+      "minecraft:ore_diorite_upper",
+      "minecraft:ore_diorite_lower",
+      "minecraft:ore_andesite_upper",
+      "minecraft:ore_andesite_lower",
+      "minecraft:ore_tuff",
+      "phaseworld:ore_coal_upper",
+      "phaseworld:ore_coal_lower",
+      "phaseworld:ore_iron_upper",
+      "phaseworld:ore_iron_middle",
+      "phaseworld:ore_iron_small",
+      "phaseworld:ore_gold",
+      "phaseworld:ore_gold_lower",
+      "phaseworld:ore_redstone",
+      "phaseworld:ore_redstone_lower",
+      "phaseworld:ore_diamond",
+      "phaseworld:ore_diamond_medium",
+      "phaseworld:ore_diamond_large",
+      "phaseworld:ore_diamond_buried",
+      "phaseworld:ore_lapis",
+      "phaseworld:ore_lapis_buried",
+      "phaseworld:ore_copper",
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel"
+    ],
+    [
+      "minecraft:fossil_upper",
+      "minecraft:fossil_lower",
+      "minecraft:dripstone_cluster",
+      "minecraft:large_dripstone",
+      "minecraft:pointed_dripstone",
+      "phaseworld:eclipse_clusters",
+      "phaseworld:hikari_patches",
+      "minecraft:lush_caves_ceiling_vegetation",
+      "minecraft:cave_vines",
+      "minecraft:lush_caves_clay",
+      "minecraft:spore_blossom"
+    ],
+    [
+      "minecraft:spring_water",
+      "minecraft:spring_lava"
+    ],
+    [
+      "minecraft:glow_lichen",
+      "phaseworld:trees_cherry_sparse",
+      "minecraft:patch_grass_plain",
+      "phaseworld:patch_wild_rice_common",
+      "phaseworld:patch_wild_soybean",
+      "phaseworld:patch_wild_daikon"
+    ],
+    [
+      "minecraft:freeze_top_layer"
+    ]
+  ],
+  "has_precipitation": true,
+  "temperature": 0.7
+}

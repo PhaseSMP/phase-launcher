@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/leaves",
+  "textures": {
+    "all": "phaseworld:block/ginkgo_leaves"
+  }
+}

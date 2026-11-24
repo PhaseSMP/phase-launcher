@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "phaseworld:mossy_shrine_bricks"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "phaseworld:blocks/mossy_shrine_bricks"
+}

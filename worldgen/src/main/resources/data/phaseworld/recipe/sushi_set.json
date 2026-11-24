@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    "phaseworld:salmon_nigiri",
+    "phaseworld:salmon_nigiri",
+    "phaseworld:maki_roll",
+    "phaseworld:maki_roll",
+    "phaseworld:wasabi_root"
+  ],
+  "result": {
+    "id": "phaseworld:sushi_set"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    "phaseworld:noodles",
+    "phaseworld:daikon",
+    "phaseworld:miso_paste",
+    "minecraft:bowl"
+  ],
+  "result": {
+    "id": "phaseworld:udon"
+  }
+}

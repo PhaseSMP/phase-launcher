@@ -1,0 +1,65 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:any_of",
+        "terms": [
+          "minecraft:tool/can_shear",
+          "minecraft:tool/can_silk_touch"
+        ]
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "phaseworld:ginkgo_leaves"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:inverted",
+        "term": {
+          "type": "minecraft:any_of",
+          "terms": [
+            "minecraft:tool/can_shear",
+            "minecraft:tool/can_silk_touch"
+          ]
+        }
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:stick",
+          "condition": {
+            "type": "minecraft:table_bonus",
+            "chances": [
+              0.02,
+              0.022222223,
+              0.025,
+              0.033333335,
+              0.1
+            ],
+            "enchantment": "minecraft:fortune"
+          },
+          "modifier": [
+            {
+              "type": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            },
+            {
+              "type": "minecraft:explosion_decay"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "random_sequence": "phaseworld:blocks/ginkgo_leaves"
+}

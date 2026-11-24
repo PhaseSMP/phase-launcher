@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:scoria",
+    "phaseworld:pumice",
+    "phaseworld:volcanic_ash"
+  ]
+}

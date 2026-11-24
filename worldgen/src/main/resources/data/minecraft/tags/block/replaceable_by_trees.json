@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:wild_rice",
+    "phaseworld:wild_soybean",
+    "phaseworld:wild_daikon",
+    "phaseworld:wild_wasabi",
+    "phaseworld:wild_tea",
+    "phaseworld:shiitake"
+  ]
+}

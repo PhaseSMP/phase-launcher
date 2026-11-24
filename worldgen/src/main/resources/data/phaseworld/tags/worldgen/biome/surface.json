@@ -1,0 +1,25 @@
+{
+  "values": [
+    "phaseworld:beach",
+    "phaseworld:black_sand_beach",
+    "phaseworld:rocky_shore",
+    "phaseworld:river",
+    "phaseworld:sakura_valley",
+    "phaseworld:momiji_highlands",
+    "phaseworld:sugi_forest",
+    "phaseworld:bamboo_grove",
+    "phaseworld:rice_terraces",
+    "phaseworld:tea_hills",
+    "phaseworld:alpine_peaks",
+    "phaseworld:snowy_highlands",
+    "phaseworld:onsen_valley",
+    "phaseworld:pine_cliffs",
+    "phaseworld:reed_marsh",
+    "phaseworld:sand_dunes",
+    "phaseworld:frozen_summits",
+    "phaseworld:jukai_forest",
+    "phaseworld:fuji_subalpine",
+    "phaseworld:fuji_slopes",
+    "phaseworld:fuji_summit"
+  ]
+}

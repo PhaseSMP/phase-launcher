@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    "phaseworld:noodles",
+    "minecraft:cooked_porkchop",
+    "minecraft:egg",
+    "phaseworld:nori",
+    "minecraft:bowl"
+  ],
+  "result": {
+    "id": "phaseworld:ramen"
+  }
+}

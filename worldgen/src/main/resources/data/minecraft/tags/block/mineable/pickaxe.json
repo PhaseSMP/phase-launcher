@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "phaseworld:scoria",
+    "phaseworld:pumice",
+    "phaseworld:eclipse_crystal_block",
+    "phaseworld:eclipse_crystal_cluster",
+    "phaseworld:shrine_bricks",
+    "phaseworld:mossy_shrine_bricks",
+    "phaseworld:cracked_shrine_bricks",
+    "phaseworld:stone_lantern"
+  ]
+}

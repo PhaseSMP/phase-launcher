@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "##"
+  ],
+  "key": {
+    "#": "phaseworld:hikari_moss"
+  },
+  "result": {
+    "id": "phaseworld:hikari_moss_carpet",
+    "count": 3
+  }
+}

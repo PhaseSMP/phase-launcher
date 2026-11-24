@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    "phaseworld:cooked_rice",
+    "phaseworld:nori",
+    "minecraft:cod"
+  ],
+  "result": {
+    "id": "phaseworld:maki_roll",
+    "count": 3
+  }
+}

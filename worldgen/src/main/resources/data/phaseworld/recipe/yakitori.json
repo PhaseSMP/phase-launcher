@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    "minecraft:cooked_chicken",
+    "minecraft:stick"
+  ],
+  "result": {
+    "id": "phaseworld:yakitori",
+    "count": 2
+  }
+}

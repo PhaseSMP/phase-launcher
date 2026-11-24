@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    "phaseworld:cooked_rice",
+    "phaseworld:nori"
+  ],
+  "result": {
+    "id": "phaseworld:onigiri"
+  }
+}

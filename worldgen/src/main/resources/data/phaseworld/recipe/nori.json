@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": "minecraft:dried_kelp"
+  },
+  "result": {
+    "id": "phaseworld:nori",
+    "count": 2
+  }
+}

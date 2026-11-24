@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "phaseworld:block/eclipse_crystal_block"
+  }
+}

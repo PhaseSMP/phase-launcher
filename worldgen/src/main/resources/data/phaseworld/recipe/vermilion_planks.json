@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#minecraft:planks",
+    "minecraft:red_dye"
+  ],
+  "result": {
+    "id": "phaseworld:vermilion_planks"
+  }
+}

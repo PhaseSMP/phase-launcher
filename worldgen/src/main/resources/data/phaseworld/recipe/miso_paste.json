@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "phaseworld:soybeans",
+    "phaseworld:soybeans",
+    "phaseworld:cooked_rice",
+    "minecraft:brown_mushroom"
+  ],
+  "result": {
+    "id": "phaseworld:miso_paste",
+    "count": 2
+  }
+}
