@@ -1,177 +1,223 @@
-[13:59:54] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/home/runner/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.17.5+mixin.0.8.7/cef8519a91129d0c21fa03bb9378f0e8ca810e5/sponge-mixin-0.17.5+mixin.0.8.7.jar Service=Knot/Fabric Env=SERVER
-[13:59:55] [main/INFO] (FabricLoader/MixinExtras|Service) Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.5).
-[14:00:03] [Worker-Main-2/ERROR] (Minecraft) Registry loading errors:
-java.lang.IllegalStateException: Unbound values in registry ResourceKey[minecraft:root / minecraft:worldgen/feature]: [phaseworld:camphor, phaseworld:giant_ginkgo, phaseworld:giant_momiji, phaseworld:giant_sugi, phaseworld:hikari_vegetation, phaseworld:hydrangea, phaseworld:spirit_tree, phaseworld:weeping_cherry, phaseworld:wisteria_tree]
-java.lang.IllegalStateException: Failed to parse phaseworld:camphor from pack phaseworld
-Caused by: java.lang.IllegalStateException: Failed to parse either. First: Not a string: {"Name":"minecraft:moss_carpet"}; Second: No key id in MapLike[{"Name":"minecraft:moss_carpet"}]; Failed to parse either. First: Not a string: {"Name":"minecraft:oak_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}; Second: No key id in MapLike[{"Name":"minecraft:oak_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}]; Failed to parse either. First: Not a string: {"Name":"minecraft:oak_log","Properties":{"axis":"y"}}; Second: No key id in MapLike[{"Name":"minecraft:oak_log","Properties":{"axis":"y"}}]
-java.lang.IllegalStateException: Failed to parse phaseworld:giant_ginkgo from pack phaseworld
-Caused by: java.lang.IllegalStateException: Failed to parse either. First: Not a string: {"Name":"phaseworld:ginkgo_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}; Second: No key id in MapLike[{"Name":"phaseworld:ginkgo_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}]; Failed to parse either. First: Not a string: {"Name":"minecraft:oak_log","Properties":{"axis":"y"}}; Second: No key id in MapLike[{"Name":"minecraft:oak_log","Properties":{"axis":"y"}}]
-java.lang.IllegalStateException: Failed to parse phaseworld:giant_momiji from pack phaseworld
-Caused by: java.lang.IllegalStateException: Failed to parse either. First: Not a string: {"Name":"phaseworld:momiji_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}; Second: No key id in MapLike[{"Name":"phaseworld:momiji_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}]; Failed to parse either. First: Not a string: {"Name":"minecraft:dark_oak_log","Properties":{"axis":"y"}}; Second: No key id in MapLike[{"Name":"minecraft:dark_oak_log","Properties":{"axis":"y"}}]
-java.lang.IllegalStateException: Failed to parse phaseworld:giant_sugi from pack phaseworld
-Caused by: java.lang.IllegalStateException: Failed to parse either. First: Not a string: {"Name":"minecraft:spruce_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}; Second: No key id in MapLike[{"Name":"minecraft:spruce_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}]; Failed to parse either. First: Not a string: {"Name":"minecraft:spruce_log","Properties":{"axis":"y"}}; Second: No key id in MapLike[{"Name":"minecraft:spruce_log","Properties":{"axis":"y"}}]
-java.lang.IllegalStateException: Failed to parse phaseworld:hikari_vegetation from pack phaseworld
-Caused by: java.lang.IllegalStateException: Failed to parse either. First: Not a string: {"Name":"minecraft:short_grass"}; Second: No key id in MapLike[{"Name":"minecraft:short_grass"}]; Failed to parse either. First: Not a string: {"Name":"phaseworld:lumen_fern"}; Second: No key id in MapLike[{"Name":"phaseworld:lumen_fern"}]; Failed to parse either. First: Not a string: {"Name":"phaseworld:glowcap"}; Second: No key id in MapLike[{"Name":"phaseworld:glowcap"}]; Failed to parse either. First: Not a string: {"Name":"phaseworld:hikari_moss_carpet"}; Second: No key id in MapLike[{"Name":"phaseworld:hikari_moss_carpet"}]; Weighted list must contain at least one entry with non-zero weight; No key id in MapLike[{"type":"minecraft:weighted","entries":[{"data":{"Name":"phaseworld:hikari_moss_carpet"},"weight":10},{"data":{"Name":"phaseworld:glowcap"},"weight":5},{"data":{"Name":"phaseworld:lumen_fern"},"weight":6},{"data":{"Name":"minecraft:short_grass"},"weight":3}]}]
-java.lang.IllegalStateException: Failed to parse phaseworld:hydrangea from pack phaseworld
-Caused by: java.lang.IllegalStateException: Failed to parse either. First: Not a string: {"Name":"phaseworld:hydrangea_pink"}; Second: No key id in MapLike[{"Name":"phaseworld:hydrangea_pink"}]; Failed to parse either. First: Not a string: {"Name":"phaseworld:hydrangea_purple"}; Second: No key id in MapLike[{"Name":"phaseworld:hydrangea_purple"}]; Failed to parse either. First: Not a string: {"Name":"phaseworld:hydrangea_blue"}; Second: No key id in MapLike[{"Name":"phaseworld:hydrangea_blue"}]; Weighted list must contain at least one entry with non-zero weight; No key id in MapLike[{"type":"minecraft:weighted","entries":[{"data":{"Name":"phaseworld:hydrangea_blue"},"weight":5},{"data":{"Name":"phaseworld:hydrangea_purple"},"weight":4},{"data":{"Name":"phaseworld:hydrangea_pink"},"weight":3}]}]
-java.lang.IllegalStateException: Failed to parse phaseworld:spirit_tree from pack phaseworld
-Caused by: java.lang.IllegalStateException: Failed to parse either. First: Not a string: {"Name":"phaseworld:glowcap"}; Second: No key id in MapLike[{"Name":"phaseworld:glowcap"}]; Failed to parse either. First: Not a string: {"Name":"phaseworld:spirit_vine"}; Second: No key id in MapLike[{"Name":"phaseworld:spirit_vine"}]; Failed to parse either. First: Not a string: {"Name":"minecraft:dark_oak_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}; Second: No key id in MapLike[{"Name":"minecraft:dark_oak_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}]; Failed to parse either. First: Not a string: {"Name":"minecraft:dark_oak_log","Properties":{"axis":"y"}}; Second: No key id in MapLike[{"Name":"minecraft:dark_oak_log","Properties":{"axis":"y"}}]
-java.lang.IllegalStateException: Failed to parse phaseworld:weeping_cherry from pack phaseworld
-Caused by: java.lang.IllegalStateException: Failed to parse either. First: Not a string: {"Name":"minecraft:cherry_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}; Second: No key id in MapLike[{"Name":"minecraft:cherry_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}]; Failed to parse either. First: Not a string: {"Name":"minecraft:cherry_log","Properties":{"axis":"y"}}; Second: No key id in MapLike[{"Name":"minecraft:cherry_log","Properties":{"axis":"y"}}]
-java.lang.IllegalStateException: Failed to parse phaseworld:wisteria_tree from pack phaseworld
-Caused by: java.lang.IllegalStateException: Failed to parse either. First: Not a string: {"Name":"phaseworld:wisteria_vine"}; Second: No key id in MapLike[{"Name":"phaseworld:wisteria_vine"}]; Failed to parse either. First: Not a string: {"Name":"phaseworld:wisteria_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}; Second: No key id in MapLike[{"Name":"phaseworld:wisteria_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}]; Failed to parse either. First: Not a string: {"Name":"minecraft:pale_oak_log","Properties":{"axis":"y"}}; Second: No key id in MapLike[{"Name":"minecraft:pale_oak_log","Properties":{"axis":"y"}}]
-[14:00:04] [main/WARN] (Minecraft) Failed to load datapacks, can't proceed with server load. You can either fix your datapacks or reset to vanilla with --safeMode
-java.util.concurrent.ExecutionException: net.minecraft.ReportedException: Registry Loading
-	at java.base/java.util.concurrent.CompletableFuture.wrapInExecutionException(CompletableFuture.java:345)
-Caused by: net.minecraft.ReportedException: Registry Loading
-Caused by: java.lang.IllegalStateException: Failed to load registries due to errors
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1825)
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.exec(CompletableFuture.java:1817)
-	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:511)
-	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1450)
-	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:2019)
-	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:187)
-Caused by: java.lang.IllegalStateException: Failed to parse either. First: Not a string: {"Name":"minecraft:spruce_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}; Second: No key id in MapLike[{"Name":"minecraft:spruce_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}]; Failed to parse either. First: Not a string: {"Name":"minecraft:spruce_log","Properties":{"axis":"y"}}; Second: No key id in MapLike[{"Name":"minecraft:spruce_log","Properties":{"axis":"y"}}]
-	at knot//com.mojang.serialization.DataResult$Error.getOrThrow(DataResult.java:287)
-	at knot//com.mojang.serialization.DataResult.getOrThrow(DataResult.java:81)
-	at knot//net.minecraft.resources.RegistryLoadTask$PendingRegistration.loadFromResource(RegistryLoadTask.java:109)
-	... 13 more
->> Errors in element phaseworld:hikari_vegetation:
-java.lang.IllegalStateException: Failed to parse phaseworld:hikari_vegetation from pack phaseworld
-	at knot//net.minecraft.resources.RegistryLoadTask$PendingRegistration.loadFromResource(RegistryLoadTask.java:111)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.mixinextras$bridge$loadFromResource$18(ResourceManagerRegistryLoadTask.java)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.wrapOperation$zbg000$fabric-advancement-api-v1$modifyAdvancement(ResourceManagerRegistryLoadTask.java:1050)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.mixinextras$bridge$wrapOperation$zbg000$fabric-advancement-api-v1$modifyAdvancement$19(ResourceManagerRegistryLoadTask.java)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.wrapOperation$zfj000$fabric-loot-api-v3$modifyLootTable(ResourceManagerRegistryLoadTask.java:1550)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.lambda$load$2(ResourceManagerRegistryLoadTask.java:46)
-	at knot//net.minecraft.util.thread.ParallelMapTransform$Container.applyOperation(ParallelMapTransform.java:89)
-	at knot//net.minecraft.util.thread.ParallelMapTransform$BatchedTaskSplitter.lambda$createTask$0(ParallelMapTransform.java:213)
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1825)
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.exec(CompletableFuture.java:1817)
-	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:511)
-	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1450)
-	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:2019)
-	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:187)
-Caused by: java.lang.IllegalStateException: Failed to parse either. First: Not a string: {"Name":"minecraft:short_grass"}; Second: No key id in MapLike[{"Name":"minecraft:short_grass"}]; Failed to parse either. First: Not a string: {"Name":"phaseworld:lumen_fern"}; Second: No key id in MapLike[{"Name":"phaseworld:lumen_fern"}]; Failed to parse either. First: Not a string: {"Name":"phaseworld:glowcap"}; Second: No key id in MapLike[{"Name":"phaseworld:glowcap"}]; Failed to parse either. First: Not a string: {"Name":"phaseworld:hikari_moss_carpet"}; Second: No key id in MapLike[{"Name":"phaseworld:hikari_moss_carpet"}]; Weighted list must contain at least one entry with non-zero weight; No key id in MapLike[{"type":"minecraft:weighted","entries":[{"data":{"Name":"phaseworld:hikari_moss_carpet"},"weight":10},{"data":{"Name":"phaseworld:glowcap"},"weight":5},{"data":{"Name":"phaseworld:lumen_fern"},"weight":6},{"data":{"Name":"minecraft:short_grass"},"weight":3}]}]
-	at knot//com.mojang.serialization.DataResult$Error.getOrThrow(DataResult.java:287)
-	at knot//com.mojang.serialization.DataResult.getOrThrow(DataResult.java:81)
-	at knot//net.minecraft.resources.RegistryLoadTask$PendingRegistration.loadFromResource(RegistryLoadTask.java:109)
-	... 13 more
->> Errors in element phaseworld:hydrangea:
-java.lang.IllegalStateException: Failed to parse phaseworld:hydrangea from pack phaseworld
-	at knot//net.minecraft.resources.RegistryLoadTask$PendingRegistration.loadFromResource(RegistryLoadTask.java:111)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.mixinextras$bridge$loadFromResource$18(ResourceManagerRegistryLoadTask.java)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.wrapOperation$zbg000$fabric-advancement-api-v1$modifyAdvancement(ResourceManagerRegistryLoadTask.java:1050)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.mixinextras$bridge$wrapOperation$zbg000$fabric-advancement-api-v1$modifyAdvancement$19(ResourceManagerRegistryLoadTask.java)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.wrapOperation$zfj000$fabric-loot-api-v3$modifyLootTable(ResourceManagerRegistryLoadTask.java:1550)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.lambda$load$2(ResourceManagerRegistryLoadTask.java:46)
-	at knot//net.minecraft.util.thread.ParallelMapTransform$Container.applyOperation(ParallelMapTransform.java:89)
-	at knot//net.minecraft.util.thread.ParallelMapTransform$BatchedTaskSplitter.lambda$createTask$0(ParallelMapTransform.java:213)
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1825)
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.exec(CompletableFuture.java:1817)
-	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:511)
-	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1450)
-	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:2019)
-	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:187)
-Caused by: java.lang.IllegalStateException: Failed to parse either. First: Not a string: {"Name":"phaseworld:hydrangea_pink"}; Second: No key id in MapLike[{"Name":"phaseworld:hydrangea_pink"}]; Failed to parse either. First: Not a string: {"Name":"phaseworld:hydrangea_purple"}; Second: No key id in MapLike[{"Name":"phaseworld:hydrangea_purple"}]; Failed to parse either. First: Not a string: {"Name":"phaseworld:hydrangea_blue"}; Second: No key id in MapLike[{"Name":"phaseworld:hydrangea_blue"}]; Weighted list must contain at least one entry with non-zero weight; No key id in MapLike[{"type":"minecraft:weighted","entries":[{"data":{"Name":"phaseworld:hydrangea_blue"},"weight":5},{"data":{"Name":"phaseworld:hydrangea_purple"},"weight":4},{"data":{"Name":"phaseworld:hydrangea_pink"},"weight":3}]}]
-	at knot//com.mojang.serialization.DataResult$Error.getOrThrow(DataResult.java:287)
-	at knot//com.mojang.serialization.DataResult.getOrThrow(DataResult.java:81)
-	at knot//net.minecraft.resources.RegistryLoadTask$PendingRegistration.loadFromResource(RegistryLoadTask.java:109)
-	... 13 more
->> Errors in element phaseworld:spirit_tree:
-java.lang.IllegalStateException: Failed to parse phaseworld:spirit_tree from pack phaseworld
-	at knot//net.minecraft.resources.RegistryLoadTask$PendingRegistration.loadFromResource(RegistryLoadTask.java:111)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.mixinextras$bridge$loadFromResource$18(ResourceManagerRegistryLoadTask.java)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.wrapOperation$zbg000$fabric-advancement-api-v1$modifyAdvancement(ResourceManagerRegistryLoadTask.java:1050)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.mixinextras$bridge$wrapOperation$zbg000$fabric-advancement-api-v1$modifyAdvancement$19(ResourceManagerRegistryLoadTask.java)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.wrapOperation$zfj000$fabric-loot-api-v3$modifyLootTable(ResourceManagerRegistryLoadTask.java:1550)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.lambda$load$2(ResourceManagerRegistryLoadTask.java:46)
-	at knot//net.minecraft.util.thread.ParallelMapTransform$Container.applyOperation(ParallelMapTransform.java:89)
-	at knot//net.minecraft.util.thread.ParallelMapTransform$BatchedTaskSplitter.lambda$createTask$0(ParallelMapTransform.java:213)
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1825)
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.exec(CompletableFuture.java:1817)
-	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:511)
-	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1450)
-	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:2019)
-	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:187)
-Caused by: java.lang.IllegalStateException: Failed to parse either. First: Not a string: {"Name":"phaseworld:glowcap"}; Second: No key id in MapLike[{"Name":"phaseworld:glowcap"}]; Failed to parse either. First: Not a string: {"Name":"phaseworld:spirit_vine"}; Second: No key id in MapLike[{"Name":"phaseworld:spirit_vine"}]; Failed to parse either. First: Not a string: {"Name":"minecraft:dark_oak_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}; Second: No key id in MapLike[{"Name":"minecraft:dark_oak_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}]; Failed to parse either. First: Not a string: {"Name":"minecraft:dark_oak_log","Properties":{"axis":"y"}}; Second: No key id in MapLike[{"Name":"minecraft:dark_oak_log","Properties":{"axis":"y"}}]
-	at knot//com.mojang.serialization.DataResult$Error.getOrThrow(DataResult.java:287)
-	at knot//com.mojang.serialization.DataResult.getOrThrow(DataResult.java:81)
-	at knot//net.minecraft.resources.RegistryLoadTask$PendingRegistration.loadFromResource(RegistryLoadTask.java:109)
-	... 13 more
->> Errors in element phaseworld:weeping_cherry:
-java.lang.IllegalStateException: Failed to parse phaseworld:weeping_cherry from pack phaseworld
-	at knot//net.minecraft.resources.RegistryLoadTask$PendingRegistration.loadFromResource(RegistryLoadTask.java:111)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.mixinextras$bridge$loadFromResource$18(ResourceManagerRegistryLoadTask.java)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.wrapOperation$zbg000$fabric-advancement-api-v1$modifyAdvancement(ResourceManagerRegistryLoadTask.java:1050)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.mixinextras$bridge$wrapOperation$zbg000$fabric-advancement-api-v1$modifyAdvancement$19(ResourceManagerRegistryLoadTask.java)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.wrapOperation$zfj000$fabric-loot-api-v3$modifyLootTable(ResourceManagerRegistryLoadTask.java:1550)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.lambda$load$2(ResourceManagerRegistryLoadTask.java:46)
-	at knot//net.minecraft.util.thread.ParallelMapTransform$Container.applyOperation(ParallelMapTransform.java:89)
-	at knot//net.minecraft.util.thread.ParallelMapTransform$BatchedTaskSplitter.lambda$createTask$0(ParallelMapTransform.java:213)
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1825)
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.exec(CompletableFuture.java:1817)
-	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:511)
-	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1450)
-	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:2019)
-	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:187)
-Caused by: java.lang.IllegalStateException: Failed to parse either. First: Not a string: {"Name":"minecraft:cherry_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}; Second: No key id in MapLike[{"Name":"minecraft:cherry_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}]; Failed to parse either. First: Not a string: {"Name":"minecraft:cherry_log","Properties":{"axis":"y"}}; Second: No key id in MapLike[{"Name":"minecraft:cherry_log","Properties":{"axis":"y"}}]
-	at knot//com.mojang.serialization.DataResult$Error.getOrThrow(DataResult.java:287)
-	at knot//com.mojang.serialization.DataResult.getOrThrow(DataResult.java:81)
-	at knot//net.minecraft.resources.RegistryLoadTask$PendingRegistration.loadFromResource(RegistryLoadTask.java:109)
-	... 13 more
->> Errors in element phaseworld:wisteria_tree:
-java.lang.IllegalStateException: Failed to parse phaseworld:wisteria_tree from pack phaseworld
-	at knot//net.minecraft.resources.RegistryLoadTask$PendingRegistration.loadFromResource(RegistryLoadTask.java:111)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.mixinextras$bridge$loadFromResource$18(ResourceManagerRegistryLoadTask.java)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.wrapOperation$zbg000$fabric-advancement-api-v1$modifyAdvancement(ResourceManagerRegistryLoadTask.java:1050)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.mixinextras$bridge$wrapOperation$zbg000$fabric-advancement-api-v1$modifyAdvancement$19(ResourceManagerRegistryLoadTask.java)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.wrapOperation$zfj000$fabric-loot-api-v3$modifyLootTable(ResourceManagerRegistryLoadTask.java:1550)
-	at knot//net.minecraft.resources.ResourceManagerRegistryLoadTask.lambda$load$2(ResourceManagerRegistryLoadTask.java:46)
-	at knot//net.minecraft.util.thread.ParallelMapTransform$Container.applyOperation(ParallelMapTransform.java:89)
-	at knot//net.minecraft.util.thread.ParallelMapTransform$BatchedTaskSplitter.lambda$createTask$0(ParallelMapTransform.java:213)
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1825)
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.exec(CompletableFuture.java:1817)
-	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:511)
-	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1450)
-	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:2019)
-	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:187)
-Caused by: java.lang.IllegalStateException: Failed to parse either. First: Not a string: {"Name":"phaseworld:wisteria_vine"}; Second: No key id in MapLike[{"Name":"phaseworld:wisteria_vine"}]; Failed to parse either. First: Not a string: {"Name":"phaseworld:wisteria_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}; Second: No key id in MapLike[{"Name":"phaseworld:wisteria_leaves","Properties":{"distance":"7","persistent":"false","waterlogged":"false"}}]; Failed to parse either. First: Not a string: {"Name":"minecraft:pale_oak_log","Properties":{"axis":"y"}}; Second: No key id in MapLike[{"Name":"minecraft:pale_oak_log","Properties":{"axis":"y"}}]
-	at knot//com.mojang.serialization.DataResult$Error.getOrThrow(DataResult.java:287)
-	at knot//com.mojang.serialization.DataResult.getOrThrow(DataResult.java:81)
-	at knot//net.minecraft.resources.RegistryLoadTask$PendingRegistration.loadFromResource(RegistryLoadTask.java:109)
-	... 13 more
+[14:06:03] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/home/runner/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.17.5+mixin.0.8.7/cef8519a91129d0c21fa03bb9378f0e8ca810e5/sponge-mixin-0.17.5+mixin.0.8.7.jar Service=Knot/Fabric Env=SERVER
+[14:06:04] [main/INFO] (FabricLoader/MixinExtras|Service) Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.5).
+[14:06:13] [Server thread/INFO] (Phase World) [selftest] seed 20261124 fuji at 0 1, spawn 132 962, islets 25, lakes 8, rivers 31
+[14:06:15] [Server thread/INFO] (Phase World) [selftest] d=0 x=0 z=1 surface=1189 layout=1182 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
+[14:06:16] [Server thread/INFO] (Phase World) [selftest] d=48 x=48 z=17 surface=1215 layout=1214 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
+[14:06:17] [Server thread/INFO] (Phase World) [selftest] d=96 x=96 z=33 surface=1225 layout=1224 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
+[14:06:19] [Server thread/INFO] (Phase World) [selftest] d=144 x=144 z=49 surface=1121 layout=1121 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
+[14:06:20] [Server thread/INFO] (Phase World) [selftest] d=192 x=192 z=65 surface=1025 layout=1025 biome=phaseworld:fuji_summit cave=phaseworld:deep_caverns
+[14:06:20] [Server thread/INFO] (Phase World) [selftest] d=240 x=240 z=81 surface=931 layout=933 biome=phaseworld:fuji_slopes cave=phaseworld:deep_caverns
+[14:06:21] [Server thread/INFO] (Phase World) [selftest] d=288 x=288 z=97 surface=844 layout=844 biome=phaseworld:fuji_slopes cave=phaseworld:deep_caverns
+[14:06:22] [Server thread/INFO] (Phase World) [selftest] d=336 x=336 z=113 surface=756 layout=756 biome=phaseworld:fuji_slopes cave=phaseworld:deep_caverns
+[14:06:23] [Server thread/INFO] (Phase World) [selftest] d=384 x=384 z=129 surface=668 layout=668 biome=phaseworld:fuji_subalpine cave=phaseworld:deep_caverns
+[14:06:24] [Server thread/INFO] (Phase World) [selftest] d=432 x=432 z=145 surface=589 layout=591 biome=phaseworld:fuji_subalpine cave=phaseworld:deep_caverns
+[14:06:24] [Server thread/INFO] (Phase World) [selftest] d=480 x=480 z=161 surface=520 layout=520 biome=phaseworld:fuji_subalpine cave=phaseworld:deep_caverns
+[14:06:25] [Server thread/INFO] (Phase World) [selftest] d=528 x=528 z=177 surface=452 layout=453 biome=phaseworld:wisteria_grove cave=phaseworld:deep_caverns
+[14:06:25] [Server thread/INFO] (Phase World) [selftest] d=576 x=576 z=193 surface=398 layout=398 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[14:06:26] [Server thread/INFO] (Phase World) [selftest] d=624 x=624 z=209 surface=341 layout=341 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[14:06:26] [Server thread/INFO] (Phase World) [selftest] d=672 x=672 z=225 surface=282 layout=282 biome=phaseworld:sakura_valley cave=phaseworld:deep_caverns
+[14:06:26] [Server thread/INFO] (Phase World) [selftest] d=720 x=720 z=241 surface=231 layout=230 biome=phaseworld:sakura_valley cave=phaseworld:deep_caverns
+[14:06:27] [Server thread/INFO] (Phase World) [selftest] d=768 x=768 z=257 surface=182 layout=181 biome=phaseworld:sakura_valley cave=phaseworld:luminous_depths
+[14:06:27] [Server thread/INFO] (Phase World) [selftest] d=816 x=816 z=273 surface=150 layout=138 biome=phaseworld:sakura_valley cave=phaseworld:deep_caverns
+[14:06:28] [Server thread/INFO] (Phase World) [selftest] d=864 x=864 z=289 surface=104 layout=102 biome=phaseworld:sakura_valley cave=phaseworld:deep_caverns
+[14:06:28] [Server thread/INFO] (Phase World) [selftest] d=912 x=912 z=305 surface=82 layout=80 biome=phaseworld:sakura_valley cave=phaseworld:luminous_depths
+[14:06:28] [Server thread/INFO] (Phase World) [selftest] d=960 x=960 z=321 surface=87 layout=77 biome=phaseworld:sakura_valley cave=phaseworld:luminous_depths
+[14:06:29] [Server thread/INFO] (Phase World) [selftest] d=1008 x=1008 z=337 surface=70 layout=69 biome=phaseworld:wisteria_grove cave=phaseworld:deep_caverns
+[14:06:29] [Server thread/INFO] (Phase World) [selftest] d=1056 x=1056 z=353 surface=63 layout=56 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
+[14:06:29] [Server thread/INFO] (Phase World) [selftest] d=1104 x=1104 z=369 surface=63 layout=46 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
+[14:06:29] [Server thread/INFO] (Phase World) [selftest] d=1152 x=1152 z=385 surface=63 layout=40 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
+[14:06:30] [Server thread/INFO] (Phase World) [selftest] d=1200 x=1200 z=401 surface=63 layout=36 biome=phaseworld:inner_sea cave=phaseworld:flooded_caves
+[14:06:30] [Server thread/INFO] (Phase World) [selftest] d=1248 x=1248 z=417 surface=63 layout=35 biome=phaseworld:inner_sea cave=phaseworld:flooded_caves
+[14:06:30] [Server thread/INFO] (Phase World) [selftest] d=1296 x=1296 z=433 surface=63 layout=39 biome=phaseworld:inner_sea cave=phaseworld:flooded_caves
+[14:06:30] [Server thread/INFO] (Phase World) [selftest] d=1344 x=1344 z=449 surface=63 layout=42 biome=phaseworld:inner_sea cave=phaseworld:flooded_caves
+[14:06:31] [Server thread/INFO] (Phase World) [selftest] d=1392 x=1392 z=465 surface=63 layout=47 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
+[14:06:31] [Server thread/INFO] (Phase World) [selftest] d=1440 x=1440 z=481 surface=63 layout=55 biome=phaseworld:inner_sea cave=phaseworld:deep_caverns
+[14:06:31] [Server thread/INFO] (Phase World) [selftest] d=1488 x=1488 z=497 surface=68 layout=67 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[14:06:32] [Server thread/INFO] (Phase World) [selftest] d=1536 x=1536 z=513 surface=78 layout=76 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[14:06:32] [Server thread/INFO] (Phase World) [selftest] d=1584 x=1584 z=529 surface=101 layout=100 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[14:06:32] [Server thread/INFO] (Phase World) [selftest] d=1632 x=1632 z=545 surface=124 layout=123 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[14:06:32] [Server thread/INFO] (Phase World) [selftest] d=1680 x=1680 z=561 surface=143 layout=143 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[14:06:32] [Server thread/INFO] (Phase World) [selftest] d=1728 x=1728 z=577 surface=159 layout=159 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[14:06:33] [Server thread/INFO] (Phase World) [selftest] d=1776 x=1776 z=593 surface=161 layout=160 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[14:06:33] [Server thread/INFO] (Phase World) [selftest] d=1824 x=1824 z=609 surface=152 layout=152 biome=phaseworld:higanbana_fields cave=phaseworld:deep_caverns
+[14:06:33] [Server thread/INFO] (Phase World) [selftest] d=1872 x=1872 z=625 surface=151 layout=151 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[14:06:34] [Server thread/INFO] (Phase World) [selftest] d=1920 x=1920 z=641 surface=151 layout=139 biome=phaseworld:tea_hills cave=phaseworld:deep_caverns
+[14:06:34] [Server thread/INFO] (Phase World) [selftest] d=1968 x=1968 z=657 surface=129 layout=128 biome=phaseworld:momiji_highlands cave=phaseworld:deep_caverns
+[14:06:34] [Server thread/INFO] (Phase World) [selftest] d=2016 x=2016 z=673 surface=116 layout=118 biome=phaseworld:momiji_highlands cave=phaseworld:deep_caverns
+[14:06:35] [Server thread/INFO] (Phase World) [selftest] d=2064 x=2064 z=689 surface=90 layout=90 biome=phaseworld:momiji_highlands cave=phaseworld:deep_caverns
+[14:06:35] [Server thread/INFO] (Phase World) [selftest] d=2112 x=2112 z=705 surface=66 layout=71 biome=phaseworld:ginkgo_grove cave=phaseworld:flooded_caves
+[14:06:36] [Server thread/INFO] (Phase World) [selftest] d=2160 x=2160 z=721 surface=66 layout=64 biome=phaseworld:beach cave=phaseworld:flooded_caves
+[14:06:36] [Server thread/INFO] (Phase World) [selftest] d=2208 x=2208 z=737 surface=63 layout=45 biome=phaseworld:ocean cave=phaseworld:luminous_depths
+[14:06:36] [Server thread/INFO] (Phase World) [selftest] d=2256 x=2256 z=753 surface=63 layout=39 biome=phaseworld:ocean cave=phaseworld:flooded_caves
+[14:06:36] [Server thread/INFO] (Phase World) [selftest] d=2304 x=2304 z=769 surface=63 layout=40 biome=phaseworld:ocean cave=phaseworld:flooded_caves
+[14:06:36] [Server thread/INFO] (Phase World) [selftest] d=2352 x=2352 z=785 surface=63 layout=36 biome=phaseworld:ocean cave=phaseworld:deep_caverns
+[14:06:37] [Server thread/INFO] (Phase World) [selftest] d=2400 x=2400 z=801 surface=63 layout=30 biome=phaseworld:deep_ocean cave=phaseworld:deep_caverns
+[14:06:37] [Server thread/INFO] (Phase World) [selftest] d=2448 x=2448 z=817 surface=63 layout=14 biome=phaseworld:deep_ocean cave=phaseworld:deep_caverns
+[14:06:37] [Server thread/INFO] (Phase World) [selftest] d=2496 x=2496 z=833 surface=63 layout=11 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
+[14:06:37] [Server thread/INFO] (Phase World) [selftest] d=2544 x=2544 z=849 surface=63 layout=8 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
+[14:06:38] [Server thread/INFO] (Phase World) [selftest] d=2592 x=2592 z=865 surface=63 layout=6 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
+[14:06:38] [Server thread/INFO] (Phase World) [selftest] d=2640 x=2640 z=881 surface=63 layout=6 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
+[14:06:38] [Server thread/INFO] (Phase World) [selftest] d=2688 x=2688 z=897 surface=63 layout=4 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
+[14:06:38] [Server thread/INFO] (Phase World) [selftest] d=2736 x=2736 z=913 surface=63 layout=3 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
+[14:06:39] [Server thread/INFO] (Phase World) [selftest] d=2784 x=2784 z=929 surface=63 layout=3 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
+[14:06:39] [Server thread/INFO] (Phase World) [selftest] d=2832 x=2832 z=945 surface=63 layout=1 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
+[14:06:39] [Server thread/INFO] (Phase World) [selftest] d=2880 x=2880 z=961 surface=63 layout=-2 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
+[14:06:39] [Server thread/INFO] (Phase World) [selftest] d=2928 x=2928 z=977 surface=63 layout=-3 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
+[14:06:40] [Server thread/INFO] (Phase World) [selftest] d=2976 x=2976 z=993 surface=63 layout=-3 biome=phaseworld:deep_ocean cave=phaseworld:deep_ocean
+[14:06:40] [Server thread/INFO] (Phase World) [selftest] strip: 63 chunks in 27076 ms (429 ms/chunk)
+[14:06:43] [Server thread/INFO] (Phase World) [selftest] land block: 64 chunks in 2856 ms (44 ms/chunk)
+[14:07:13] [Server Watchdog/ERROR] (Minecraft) A single server tick took 60.00 seconds (should be max 0.05)
+[14:07:13] [Server Watchdog/ERROR] (Minecraft) Considering it to be crashed, server will forcibly shutdown.
+		mixinextras: MixinExtras 0.5.5
+	Suppressed Exceptions: ~~NONE~~
+[14:07:14] [Server Watchdog/ERROR] (Minecraft) This crash report has been saved to: /home/runner/work/phase-launcher/phase-launcher/worldgen/run/crash-reports/crash-2026-11-24_14.07.14-server.txt
+	at java.base@25.0.5/jdk.internal.misc.Unsafe.park(Native Method)
+	-  waiting on java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject@62a4b885
+	at java.base@25.0.5/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:271)
+	at java.base@25.0.5/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:1803)
+	at java.base@25.0.5/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1166)
+	at java.base@25.0.5/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:883)
+	at java.base@25.0.5/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1016)
+	at java.base@25.0.5/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1076)
+	at java.base@25.0.5/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.base@25.0.5/java.lang.Thread.runWith(Thread.java:1487)
+	at java.base@25.0.5/java.lang.Thread.run(Thread.java:1474)
 
-[14:00:04] [main/WARN] (Minecraft) Failed to load datapacks, can't proceed with server load. You can either fix your datapacks or reset to vanilla with --safeMode
 
-java.util.concurrent.ExecutionException: net.minecraft.ReportedException: Registry Loading
-	at java.base/java.util.concurrent.CompletableFuture.wrapInExecutionException(CompletableFuture.java:345)
-	at java.base/java.util.concurrent.CompletableFuture.reportGet(CompletableFuture.java:440)
-	at java.base/java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2094)
-	at knot//net.minecraft.server.Main.main(Main.java:198)
-	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:517)
-	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
-	at net.fabricmc.loader.impl.launch.knot.KnotServer.main(KnotServer.java:23)
-	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
-Caused by: net.minecraft.ReportedException: Registry Loading
-	at knot//net.minecraft.resources.RegistryDataLoader.createReportWithBriefInfo(RegistryDataLoader.java:329)
-	at knot//net.minecraft.resources.RegistryDataLoader.logErrors(RegistryDataLoader.java:294)
-	at knot//net.minecraft.resources.RegistryDataLoader.lambda$load$2(RegistryDataLoader.java:263)
-	at knot//net.minecraft.resources.RegistryDataLoader.mdd77542$fabric-registry-sync-v0$lambda$thenApplyAsync$1$1(RegistryDataLoader.java:565)
-	at java.base/jdk.internal.vm.ScopedValueContainer.callWithoutScope(ScopedValueContainer.java:162)
-	at java.base/jdk.internal.vm.ScopedValueContainer.call(ScopedValueContainer.java:147)
-	at java.base/java.lang.ScopedValue$Carrier.call(ScopedValue.java:419)
-	at knot//net.minecraft.resources.RegistryDataLoader.mdd77542$fabric-registry-sync-v0$lambda$thenApplyAsync$0$0(RegistryDataLoader.java:565)
-	at java.base/java.util.concurrent.CompletableFuture$UniApply.tryFire(CompletableFuture.java:667)
-	at java.base/java.util.concurrent.CompletableFuture$Completion.exec(CompletableFuture.java:504)
-	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:511)
-	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1450)
-	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:2019)
-	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:187)
-Caused by: java.lang.IllegalStateException: Failed to load registries due to errors
-	at knot//net.minecraft.resources.RegistryDataLoader.createReportWithBriefInfo(RegistryDataLoader.java:313)
-	... 13 more
+"Timer hack thread" daemon prio=5 Id=40 TIMED_WAITING
+	at java.base@25.0.5/java.lang.Thread.sleepNanos0(Native Method)
+	at java.base@25.0.5/java.lang.Thread.sleepNanos(Thread.java:509)
+	at java.base@25.0.5/java.lang.Thread.sleep(Thread.java:540)
+	at knot//net.minecraft.util.Util$9.run(Util.java:1009)
 
-BUILD SUCCESSFUL in 20s
+
+Stacktrace:
+	at knot//net.minecraft.server.dedicated.ServerWatchdog.createWatchdogCrashReport(ServerWatchdog.java:95)
+	at knot//net.minecraft.server.dedicated.ServerWatchdog.run(ServerWatchdog.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+
+-- Performance stats --
+Details:
+	Random tick rate: 3
+	Level stats: minecraft:overworld: players: 0, entities: 19,19,12,419,419,0,0 [minecraft:rabbit:8,minecraft:fox:4,minecraft:wolf:2,minecraft:cow:2,minecraft:sheep:2], block_entities: 1 [minecraft:beehive:1], block_ticks: 41905, fluid_ticks: 2346, chunk_source: Chunks[S] W: 21110 E: 19,19,12,419,419,0,0,
+minecraft:the_nether: players: 0, entities: 0,0,0,0,0,0,0 [], block_entities: 0 [], block_ticks: 0, fluid_ticks: 0, chunk_source: Chunks[S] W: 0 E: 0,0,0,0,0,0,0,
+minecraft:the_end: players: 0, entities: 0,0,0,0,0,0,0 [], block_entities: 0 [], block_ticks: 0, fluid_ticks: 0, chunk_source: Chunks[S] W: 0 E: 0,0,0,0,0,0,0
+
+-- System Details --
+Details:
+	Minecraft Version: 26.3
+	Minecraft Version ID: 26.3
+	Operating System: Linux (amd64) version 7.0.0-1016-aws
+	Java Version: 25.0.5, Eclipse Adoptium
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode, sharing), Eclipse Adoptium
+	Memory: 411566056 bytes (392 MiB) / 2694840320 bytes (2570 MiB) up to 3221225472 bytes (3072 MiB)
+	Memory (heap): init: 246MiB, used: 2174MiB, committed: 2570MiB, max: 3072MiB
+	Memory (non-heap): init: 007MiB, used: 150MiB, committed: 155MiB, max: 000MiB
+	CPUs: 4
+	Processor Vendor: GenuineIntel
+	Processor Name: Intel(R) Xeon(R) 6975P-C
+	Identifier: Intel64 Family 6 Model 173 Stepping 1
+	Microarchitecture: unknown
+	Frequency (GHz): -0.00
+	Number of physical packages: 1
+	Number of physical CPUs: 2
+	Number of logical CPUs: 4
+	Graphics card #0 name: 82371AB/EB/MB PIIX4 ACPI
+	Graphics card #0 vendor: Intel Corporation (0x8086)
+	Graphics card #0 VRAM (MiB): 0.00
+	Graphics card #0 deviceId: 0x7113
+	Graphics card #0 versionInfo: unknown
+	Graphics card #1 name: Device
+	Graphics card #1 vendor: Amazon.com, Inc. (0x1d0f)
+	Graphics card #1 VRAM (MiB): 4.00
+	Graphics card #1 deviceId: 0x1111
+	Graphics card #1 versionInfo: unknown
+	Virtual memory max (MiB): 7850.36
+	Virtual memory used (MiB): 4398.45
+	Swap memory total (MiB): 0.00
+	Swap memory used (MiB): 0.00
+	Space in storage for jna.tmpdir (MiB): <path not set>
+	Space in storage for org.lwjgl.system.SharedLibraryExtractPath (MiB): <path not set>
+	Space in storage for io.netty.native.workdir (MiB): <path not set>
+	Space in storage for java.io.tmpdir (MiB): available: 91904.77, total: 147813.48
+	Space in storage for workdir (MiB): available: 91904.77, total: 147813.48
+	Operating System Version: GNU/Linux Ubuntu 26.04.1 LTS (Resolute Raccoon) build 7.0.0-1016-aws
+	Process Elevated: false
+	Process Loads: Uptime: 72s, user: 210s (293.08%), kernel: 3s (4.35%), total: 213s (297.43%)
+	Process Virtual Size (MiB): 6790.54
+	Process Resident Size (MiB): 2988.70
+	JVM Flags: 2 total; -XX:StartFlightRecording=filename=/home/runner/work/phase-launcher/phase-launcher/worldgen/run/worldgen.jfr,settings=profile,dumponexit=true -Xmx3G
+	Debug Flags: 0 total; 
+	Fabric Mods: 
+		fabric-advancement-api-v1: Fabric Advancement API (v1) 1.0.1+38c7a2d55d
+		fabric-api: Fabric API 0.165.0+26.3
+		fabric-api-base: Fabric API Base 2.0.6+fcdff87f5d
+		fabric-api-lookup-api-v1: Fabric API Lookup API (v1) 2.0.24+3434d6d95d
+		fabric-biome-api-v1: Fabric Biome API (v1) 20.1.1+85210bca5d
+		fabric-block-api-v1: Fabric Block API (v1) 3.1.0+0ae6f9115d
+		fabric-block-getter-api-v2: Fabric BlockGetter API (v2) 2.0.9+3434d6d95d
+		fabric-command-api-v2: Fabric Command API (v2) 3.1.2+fcdff87f5d
+		fabric-content-registries-v0: Fabric Content Registries (v0) 15.0.6+74ed1ea55d
+		fabric-convention-tags-v2: Fabric Convention Tags (v2) 4.10.5+187b64905d
+		fabric-crash-report-info-v1: Fabric Crash Report Info (v1) 1.0.7+fcdff87f5d
+		fabric-creative-tab-api-v1: Fabric Creative Tab API (v1) 5.0.22+fcdff87f5d
+		fabric-data-attachment-api-v1: Fabric Data Attachment API (v1) 2.2.33+b9b88df45d
+		fabric-data-generation-api-v1: Fabric Data Generation API (v1) 27.4.2+187b64905d
+		fabric-debug-api-v1: Fabric Debug API (v1) 1.0.5+5af7744b5d
+		fabric-dimensions-v1: Fabric Dimensions API (v1) 5.1.20+5af7744b5d
+		fabric-entity-events-v1: Fabric Entity Events (v1) 6.0.4+3434d6d95d
+		fabric-events-interaction-v0: Fabric Events Interaction (v0) 5.3.9+b9b88df45d
+		fabric-game-rule-api-v1: Fabric Game Rule API (v1) 4.0.10+3434d6d95d
+		fabric-gametest-api-v1: Fabric Game Test API (v1) 4.0.35+3434d6d95d
+		fabric-item-api-v1: Fabric Item API (v1) 14.8.0+d1c0d72b5d
+		fabric-lifecycle-events-v1: Fabric Lifecycle Events (v1) 4.1.9+ffef5f675d
+		fabric-loot-api-v3: Fabric Loot API (v3) 4.0.9+4068fd645d
+		fabric-menu-api-v1: Fabric Menu API (v1) 2.0.30+ed66f0a35d
+		fabric-message-api-v1: Fabric Message API (v1) 7.0.10+3434d6d95d
+		fabric-networking-api-v1: Fabric Networking API (v1) 6.4.0+a21c9eb65d
+		fabric-object-builder-api-v1: Fabric Object Builder API (v1) 24.1.12+e2f63d3e5d
+		fabric-particles-v1: Fabric Particles (v1) 5.0.27+3434d6d95d
+		fabric-permission-api-v1: Fabric Permission API (v1) 1.0.8+fcdff87f5d
+		fabric-recipe-api-v1: Fabric Recipe API (v1) 10.0.11+b9b88df45d
+		fabric-registry-sync-v0: Fabric Registry Sync (v0) 8.0.4+1ca9f6365d
+		fabric-rendering-fluids-v1: Fabric Rendering Fluids (v1) 6.0.6+3434d6d95d
+		fabric-resource-conditions-api-v1: Fabric Resource Conditions API (v1) 6.2.0+0d124ae85d
+		fabric-resource-loader-v0: Fabric Resource Loader (v0) 3.3.27+4fc5413f5d
+		fabric-resource-loader-v1: Fabric Resource Loader (v1) 3.1.0+5af7744b5d
+		fabric-serialization-api-v1: Fabric Serialization API (v1) 2.0.7+74ed1ea55d
+		fabric-tag-api-v1: Fabric Tag API (v1) 2.1.11+fcdff87f5d
+		fabric-transfer-api-v1: Fabric Transfer API (v1) 8.0.25+fcdff87f5d
+		fabric-transitive-access-wideners-v1: Fabric Transitive Access Wideners (v1) 8.1.17+e2f63d3e5d
+		fabricloader: Fabric Loader 0.20.1
+		java: OpenJDK 64-Bit Server VM 25
+		minecraft: Minecraft 26.3
+		mixinextras: MixinExtras 0.5.5
+		phaseworld: Phase World 1.1.0
+	Server Running: true
+	Player Count: 0 / 20; []
+	Active Data Packs: vanilla, fabric-convention-tags-v2, fabric-gametest-api-v1, phaseworld
+	Available Data Packs: fabric-convention-tags-v2, fabric-gametest-api-v1, minecart_improvements, phaseworld, redstone_experiments, trade_rebalance, vanilla
+	Enabled Feature Flags: minecraft:vanilla
+	World Generation: Stable
+	World Seed: 20261124
+	Suppressed Exceptions: ~~NONE~~
+	Is Modded: Definitely; Server brand changed to 'fabric'
+	Type: Dedicated Server
+[14:07:14] [Server Watchdog/ERROR] (Minecraft) This crash report has been saved to: /home/runner/work/phase-launcher/phase-launcher/worldgen/run/crash-reports/crash-2026-11-24_14.07.14-server.txt
+
+> Task :runServer FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':runServer' (registered by plugin 'fabric-loom').
+> Process 'command '/usr/lib/jvm/temurin-25-jdk-amd64/bin/java'' finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1m 28s
 7 actionable tasks: 4 executed, 3 up-to-date
-Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.2/userguide/configuration_cache_enabling.html
