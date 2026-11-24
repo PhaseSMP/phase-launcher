@@ -1,7 +1,21 @@
 {
   "variants": {
-    "": {
-      "model": "phaseworld:block/wisteria_vine"
-    }
+    "": [
+      {
+        "model": "phaseworld:block/wisteria_vine"
+      },
+      {
+        "model": "phaseworld:block/wisteria_vine",
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/wisteria_vine",
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/wisteria_vine",
+        "y": 270
+      }
+    ]
   }
 }

@@ -1,7 +1,21 @@
 {
   "variants": {
-    "": {
-      "model": "phaseworld:block/wild_soybean"
-    }
+    "": [
+      {
+        "model": "phaseworld:block/wild_soybean"
+      },
+      {
+        "model": "phaseworld:block/wild_soybean",
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/wild_soybean",
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/wild_soybean",
+        "y": 270
+      }
+    ]
   }
 }

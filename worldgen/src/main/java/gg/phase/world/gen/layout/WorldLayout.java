@@ -120,8 +120,8 @@ public final class WorldLayout {
 		hoeiConeZ = fujiZ + Math.sin(hoeiTh) * (hoeiR + 105);
 
 		// ---- ring regions ----
-		int n = 24 + r.nextInt(6);
-		int extra = 7 + r.nextInt(5);
+		int n = 38 + r.nextInt(8);
+		int extra = 14 + r.nextInt(6);
 		regX = new double[n + extra];
 		regZ = new double[n + extra];
 		regStyle = new Style[n + extra];
@@ -231,7 +231,7 @@ public final class WorldLayout {
 		Style[] cold = {Style.SNOWLAND, Style.ALPS, Style.SUGI, Style.BIRCH, Style.SNOWLAND, Style.BIRCH};
 		Style[] cool = {Style.SUGI, Style.MOMIJI, Style.ALPS, Style.ONSEN, Style.TERRACES, Style.MOMIJI, Style.SPIRIT, Style.KARST, Style.BIRCH};
 		Style[] warm = {Style.TERRACES, Style.TEA, Style.SAKURA, Style.BAMBOO, Style.ONSEN, Style.MARSH, Style.MOMIJI, Style.SPIRIT, Style.KARST};
-		Style[] hot = {Style.BAMBOO, Style.DUNES, Style.SAKURA, Style.MARSH, Style.TEA, Style.BAMBOO, Style.KARST};
+		Style[] hot = {Style.BAMBOO, Style.DUNES, Style.SAKURA, Style.MARSH, Style.TEA, Style.KARST, Style.SPIRIT, Style.TERRACES};
 		for (int pass = 0; pass < 60; pass++) {
 			for (int i = 0; i < n; i++) {
 				double t = temperature(ang[i]);
@@ -266,8 +266,8 @@ public final class WorldLayout {
 		}
 		Style[] must = {Style.ALPS, Style.SAKURA, Style.BAMBOO, Style.TERRACES, Style.ONSEN, Style.SUGI, Style.MOMIJI, Style.SPIRIT, Style.KARST, Style.TEA};
 		for (Style s : must) if (count[s.ordinal()] == 0) return false;
-		return count[Style.DUNES.ordinal()] <= 1 && count[Style.MARSH.ordinal()] <= 2 && count[Style.ALPS.ordinal()] <= 3
-			&& count[Style.KARST.ordinal()] <= 2 && count[Style.SPIRIT.ordinal()] <= 3;
+		return count[Style.DUNES.ordinal()] <= 2 && count[Style.MARSH.ordinal()] <= 4 && count[Style.ALPS.ordinal()] <= 5
+			&& count[Style.KARST.ordinal()] <= 4 && count[Style.SPIRIT.ordinal()] <= 5 && count[Style.BAMBOO.ordinal()] <= 4;
 	}
 
 	// ------------------------------------------------------------------ land shape
@@ -1050,46 +1050,77 @@ public final class WorldLayout {
 		}
 		if (h > SEA + 470 + 35 * misc.n2(x / 110.0, z / 110.0)) return PB.FROZEN_SUMMITS;
 		// sub-biomes: patches of a few hundred blocks inside each region
-		double sub = 8.3 * (misc.fbm2(x / 260.0 + 111, z / 260.0 - 37, 3) + 0.15 * misc.n2(x / 50.0, z / 50.0));
+		double sub = 8.3 * (misc.fbm2(x / 160.0 + 111, z / 160.0 - 37, 3) + 0.15 * misc.n2(x / 40.0, z / 40.0));
+		double sub2 = 8.3 * (overhangN.fbm2(x / 190.0 - 71, z / 190.0 + 53, 3) + 0.15 * overhangN.n2(x / 45.0, z / 45.0));
 		if ((st == Style.SAKURA || st == Style.TERRACES || st == Style.TEA) && c.riverDist > 2.5f && c.riverDist < 16
 			&& misc.n2(x / 40.0, z / 40.0) > 0.1) return PB.HIGANBANA_FIELDS;
+		if (d < 70 && h < SEA + 5 && warmth(x, z) > 0.62 && (st == Style.MARSH || st == Style.BAMBOO || st == Style.KARST || sub2 > 0.3))
+			return PB.MANGROVE_COAST;
 		switch (st) {
 			case SAKURA:
 				if (sub > 0.55) return PB.WISTERIA_GROVE;
 				if (sub < -0.75) return PB.HIGANBANA_FIELDS;
+				if (sub2 > 0.6) return PB.TSUTSUJI_HILLS;
 				break;
 			case MOMIJI:
 				if (sub > 0.5) return PB.GINKGO_GROVE;
+				if (sub2 > 0.6) return PB.TSUTSUJI_HILLS;
+				if (sub2 < -0.7) return PB.SUSUKI_PLAINS;
 				break;
 			case SUGI:
 				if (sub > 0.6) return PB.SPIRIT_FOREST;
+				if (sub2 > 0.5) return PB.YAKUSHIMA_MOSS;
 				break;
 			case JUKAI:
 				if (sub > 0.7) return PB.SPIRIT_FOREST;
+				if (sub2 > 0.55) return PB.YAKUSHIMA_MOSS;
+				break;
+			case BAMBOO:
+				if (sub > 0.45) return PB.TROPICAL_FOREST;
+				if (sub < -0.6) return PB.TSUTSUJI_HILLS;
+				if (sub2 > 0.6) return PB.HYDRANGEA_HILLS;
 				break;
 			case TERRACES:
 				if (sub > 0.55) return PB.HYDRANGEA_HILLS;
+				if (sub2 < -0.6) return PB.SUSUKI_PLAINS;
 				break;
 			case TEA:
 				if (sub < -0.6) return PB.HYDRANGEA_HILLS;
+				if (sub2 > 0.6) return PB.TSUTSUJI_HILLS;
+				if (sub2 < -0.65) return PB.SUSUKI_PLAINS;
 				break;
 			case ALPS:
 				if (h < SEA + 230 + 30 * misc.n2(x / 80.0, z / 80.0) && sub > -0.3) return PB.ALPINE_MEADOW;
+				if (sub2 > 0.7) return PB.SHIRAKABA_PLATEAU;
 				break;
 			case SNOWLAND:
 				if (sub > 0.4) return PB.SHIRAKABA_PLATEAU;
+				if (sub2 < -0.6) return PB.SUSUKI_PLAINS;
 				break;
 			case ONSEN:
 				if (sub > 0.45) return PB.JIGOKU_WASTES;
+				if (sub2 > 0.5) return PB.SUSUKI_PLAINS;
 				break;
 			case MARSH:
 				if (sub > 0.1) return PB.LOTUS_MARSH;
 				break;
 			case BIRCH:
 				if (sub < -0.6) return PB.ALPINE_MEADOW;
+				if (sub2 > 0.6) return PB.SUSUKI_PLAINS;
 				break;
 			case SPIRIT:
 				if (sub < -0.9) return PB.MOMIJI_HIGHLANDS;
+				if (sub2 > 0.55) return PB.YAKUSHIMA_MOSS;
+				if (sub2 < -0.6) return PB.TROPICAL_FOREST;
+				break;
+			case KARST:
+				if (sub2 > 0.6) return PB.TROPICAL_FOREST;
+				break;
+			case DUNES:
+				if (sub2 > 0.5) return PB.SUSUKI_PLAINS;
+				break;
+			case PINE_CLIFFS:
+				if (sub2 > 0.6) return PB.TSUTSUJI_HILLS;
 				break;
 			default:
 				break;

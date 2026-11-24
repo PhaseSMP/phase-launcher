@@ -1,7 +1,21 @@
 {
   "variants": {
-    "": {
-      "model": "phaseworld:block/wild_wasabi"
-    }
+    "": [
+      {
+        "model": "phaseworld:block/wild_wasabi"
+      },
+      {
+        "model": "phaseworld:block/wild_wasabi",
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/wild_wasabi",
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/wild_wasabi",
+        "y": 270
+      }
+    ]
   }
 }

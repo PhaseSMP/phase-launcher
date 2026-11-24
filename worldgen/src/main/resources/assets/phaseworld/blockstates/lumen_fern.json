@@ -1,7 +1,21 @@
 {
   "variants": {
-    "": {
-      "model": "phaseworld:block/lumen_fern"
-    }
+    "": [
+      {
+        "model": "phaseworld:block/lumen_fern"
+      },
+      {
+        "model": "phaseworld:block/lumen_fern",
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/lumen_fern",
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/lumen_fern",
+        "y": 270
+      }
+    ]
   }
 }

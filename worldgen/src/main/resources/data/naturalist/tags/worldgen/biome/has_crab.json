@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "phaseworld:mangrove_coast",
     "phaseworld:beach",
     "phaseworld:black_sand_beach",
     "phaseworld:rocky_shore"

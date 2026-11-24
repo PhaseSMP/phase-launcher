@@ -1,7 +1,21 @@
 {
   "variants": {
-    "": {
-      "model": "phaseworld:block/wild_tea"
-    }
+    "": [
+      {
+        "model": "phaseworld:block/wild_tea"
+      },
+      {
+        "model": "phaseworld:block/wild_tea",
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/wild_tea",
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/wild_tea",
+        "y": 270
+      }
+    ]
   }
 }

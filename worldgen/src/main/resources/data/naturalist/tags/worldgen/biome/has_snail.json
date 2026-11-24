@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
+    "phaseworld:yakushima_moss",
+    "phaseworld:tropical_forest",
     "phaseworld:spirit_forest",
     "phaseworld:jukai_forest",
     "phaseworld:hydrangea_hills",

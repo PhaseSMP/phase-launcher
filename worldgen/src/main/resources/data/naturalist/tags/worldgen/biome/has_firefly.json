@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
+    "phaseworld:mangrove_coast",
+    "phaseworld:tropical_forest",
     "phaseworld:rice_terraces",
     "phaseworld:reed_marsh",
     "phaseworld:lotus_marsh",

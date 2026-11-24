@@ -186,10 +186,22 @@ def main():
         wj(f'{A}/models/item/{name}.json', {'parent': 'minecraft:item/generated', 'textures': {'layer0': tex}})
         item_def(name, P('item/' + name))
 
+    # random rotations so natural blocks never show a repeating pattern
+    ISOTROPIC = {'volcanic_ash', 'black_sand', 'scoria', 'pumice', 'eclipse_crystal_block', 'glowcap_block'}
+    YROT = {'hydrangea_blue', 'hydrangea_purple', 'hydrangea_pink'} | set(LEAVES)
+
+    def rotated_state(name, full):
+        xs = (0, 90, 180, 270) if full else (0,)
+        wj(f'{A}/blockstates/{name}.json', {'variants': {'': [dict({'model': P('block/' + name)}, **({'x': x} if x else {}), **({'y': y} if y else {}))
+                                                              for x in xs for y in (0, 90, 180, 270)]}})
+
     for name in CUBES + LEAVES:
         parent = 'minecraft:block/leaves' if name in LEAVES else 'minecraft:block/cube_all'
         wj(f'{A}/models/block/{name}.json', {'parent': parent, 'textures': {'all': P('block/' + name)}})
-        simple_state(name)
+        if name in ISOTROPIC or name in YROT:
+            rotated_state(name, name in ISOTROPIC or name in LEAVES)
+        else:
+            simple_state(name)
         item_def(name, P('block/' + name))
     # hikari moss: three textures, random rotations, so a patch never looks stamped
     for v in ('hikari_moss', 'hikari_moss_1', 'hikari_moss_2'):
@@ -232,7 +244,7 @@ def main():
         wj(f'{A}/blockstates/{c}_crop.json', {'variants': {f'age={a}': {'model': P(f'block/{c}_stage{stage_of[a]}')} for a in range(8)}})
     for w in WILD + CROSS:
         wj(f'{A}/models/block/{w}.json', {'parent': 'minecraft:block/cross', 'textures': {'cross': P('block/' + w)}})
-        simple_state(w)
+        wj(f'{A}/blockstates/{w}.json', {'variants': {'': [dict({'model': P('block/' + w)}, **({'y': y} if y else {})) for y in (0, 90, 180, 270)]}})
         flat_item(w, P('block/' + w))
     # susuki: a two-block grass
     for half in ('bottom', 'top'):
@@ -279,7 +291,10 @@ def main():
         'karst_spires': ('Парящие скалы', 'Karst Spires'), 'coral_coast': ('Коралловый берег', 'Coral Coast'),
         'jigoku_wastes': ('Долина Дзигоку', 'Jigoku Wastes'), 'shirakaba_plateau': ('Берёзовое плато сиракаба', 'Shirakaba Plateau'),
         'alpine_meadow': ('Альпийские луга', 'Alpine Meadow'), 'luminous_depths': ('Светящиеся глубины', 'Luminous Depths'),
-        'root_halls': ('Залы корней', 'Root Halls'), 'abyss': ('Бездна', 'The Abyss')})
+        'root_halls': ('Залы корней', 'Root Halls'), 'abyss': ('Бездна', 'The Abyss'),
+        'tsutsuji_hills': ('Азалиевые холмы цуцудзи', 'Tsutsuji Hills'), 'yakushima_moss': ('Моховой лес Якусима', 'Yakushima Moss Forest'),
+        'susuki_plains': ('Равнины сусуки', 'Susuki Plains'), 'mangrove_coast': ('Мангровое побережье', 'Mangrove Coast'),
+        'tropical_forest': ('Тропический лес Окинавы', 'Okinawa Rainforest')})
     for b in B:
         ru[f'biome.{NS}.{b}'], en[f'biome.{NS}.{b}'] = bnames[b]
     wj(f'{A}/lang/ru_ru.json', ru)

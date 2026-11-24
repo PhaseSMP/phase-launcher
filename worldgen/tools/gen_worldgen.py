@@ -267,6 +267,12 @@ SURF = {
                               (0.25, 0.55, block('minecraft:calcite')), block('minecraft:coarse_dirt'))), block('minecraft:tuff')),
     'shirakaba_plateau': (mix((0.55, 1e9, block('minecraft:podzol')), GRASS), DIRT),
     'alpine_meadow': (seq(cond(STEEP, block('minecraft:stone')), mix((0.7, 1e9, block('minecraft:gravel')), GRASS)), DIRT),
+    'tsutsuji_hills': (mix((0.6, 1e9, block('minecraft:coarse_dirt')), GRASS), DIRT),
+    'yakushima_moss': (seq(cond(STEEP, mix((-1e9, 0.1, block('minecraft:mossy_cobblestone')), block('minecraft:moss_block'))),
+                           mix((-1e9, 0.35, block('minecraft:moss_block')), (0.6, 1e9, block('minecraft:podzol')), GRASS)), DIRT),
+    'susuki_plains': (mix((0.65, 1e9, block('minecraft:coarse_dirt')), GRASS), DIRT),
+    'mangrove_coast': (mix((-0.45, 0.5, block('minecraft:mud')), GRASS), block('minecraft:mud')),
+    'tropical_forest': (mix((-1e9, -0.5, block('minecraft:moss_block')), (0.5, 1e9, block('minecraft:podzol')), GRASS), DIRT),
 }
 SANDY_DEEP = ['beach', 'sand_dunes', 'ocean', 'inner_sea', 'coral_coast']
 
@@ -533,6 +539,12 @@ def features():
     PF['jungle_bushes'] = placed('minecraft:jungle_bush', tree_placement('minecraft:oak_sapling', 5, 4))
     PF['jungle_bushes_sparse'] = placed('minecraft:jungle_bush', tree_placement('minecraft:oak_sapling', 2, 2))
     PF['cave_trees'] = placed(P('cave_tree'), cave_floor(3))
+    PF['trees_azalea'] = placed('minecraft:azalea_tree', tree_placement('minecraft:azalea', 3, 3))
+    F['azalea_bush'] = {'type': 'minecraft:simple_block', 'to_place': {'type': 'minecraft:weighted', 'entries': [
+        {'data': 'minecraft:flowering_azalea', 'weight': 3}, {'data': 'minecraft:azalea', 'weight': 1}]}}
+    PF['patch_azalea'] = patch(P('azalea_bush'), 1, 14, 6, False, 'minecraft:azalea')
+    PF['trees_jungle_tropical'] = placed('minecraft:jungle_tree', tree_placement('minecraft:jungle_sapling', 4, 3))
+    PF['trees_mega_jungle'] = placed('minecraft:mega_jungle_tree', [rarity(2)] + tree_placement('minecraft:jungle_sapling', 1))
 
     # ---- wild plants
     for name in ['wild_rice', 'wild_soybean', 'wild_daikon', 'wild_wasabi', 'wild_tea', 'shiitake', 'higanbana', 'glowcap', 'lumen_fern', 'susuki', 'lotus']:
@@ -738,7 +750,7 @@ MASTER = [
      P('trees_cherry'), P('trees_cherry_sparse'), P('trees_momiji'), P('trees_momiji_small'), P('trees_ginkgo'), P('trees_ginkgo_grove'),
      P('trees_sugi'), P('trees_sugi_spruce'), P('trees_jukai'), P('trees_jukai_oak'), P('trees_subalpine'),
      P('trees_subalpine_birch'), P('trees_snowy'), P('trees_alpine'), P('trees_matsu'), P('trees_matsu_sparse'), P('trees_matsu_karst'),
-     P('trees_marsh'), P('trees_shirakaba'), P('trees_shirakaba_small'), P('trees_wisteria_small'), P('trees_meadow_sparse'),
+     P('trees_marsh'), P('trees_azalea'), P('trees_jungle_tropical'), P('trees_mega_jungle'), 'minecraft:trees_mangrove', P('trees_shirakaba'), P('trees_shirakaba_small'), P('trees_wisteria_small'), P('trees_meadow_sparse'),
      'minecraft:bamboo', 'minecraft:bamboo_light', P('tree_ferns'), P('tree_ferns_sparse'), P('jungle_bushes'), P('jungle_bushes_sparse'),
      P('vines_tall'), 'minecraft:patch_grass_jungle',
      'minecraft:fallen_oak_tree', 'minecraft:fallen_spruce_tree', 'minecraft:fallen_birch_tree', 'minecraft:patch_bush',
@@ -749,7 +761,7 @@ MASTER = [
      'minecraft:patch_grass_forest', 'minecraft:patch_grass_taiga', 'minecraft:patch_large_fern', 'minecraft:patch_dead_bush',
      'minecraft:patch_dry_grass_desert', 'minecraft:patch_leaf_litter', 'minecraft:brown_mushroom_normal', 'minecraft:red_mushroom_normal',
      'minecraft:patch_sugar_cane', 'minecraft:patch_sugar_cane_swamp', 'minecraft:patch_waterlily', 'minecraft:patch_pumpkin',
-     P('patch_hydrangea'), P('patch_hydrangea_sparse'), P('patch_higanbana'), P('patch_higanbana_sparse'), P('patch_susuki'), P('patch_susuki_sparse'),
+     P('patch_azalea'), 'minecraft:patch_melon', P('patch_hydrangea'), P('patch_hydrangea_sparse'), P('patch_higanbana'), P('patch_higanbana_sparse'), P('patch_susuki'), P('patch_susuki_sparse'),
      P('patch_glowcap'), P('patch_lumen_fern'), P('patch_lumen_fern_sparse'), P('patch_lotus'), P('patch_lotus_sparse'),
      P('patch_wild_rice_common'), P('patch_wild_rice'), P('patch_wild_soybean'), P('patch_wild_daikon'), P('patch_wild_wasabi'),
      P('patch_wild_tea_fields'), P('patch_wild_tea'), P('patch_shiitake'),
@@ -912,6 +924,21 @@ biome('shirakaba_plateau', 'old_growth_birch_forest', 0.3, 0.7, grass='#8ab86a',
 biome('alpine_meadow', 'meadow', 0.35, 0.8, grass='#83bf60', foliage='#6aa850', water='#3d70d0', spawns='meadow',
       extra={9: [P('trees_meadow_sparse'), 'minecraft:wildflowers_meadow', 'minecraft:flower_meadow', 'minecraft:patch_grass_meadow',
                  P('patch_susuki'), P('boulders')]})
+biome('tsutsuji_hills', 'flower_forest', 0.65, 0.8, grass='#79bf55', foliage='#64a845', water=W_JAPAN, spawns='meadow',
+      extra={4: [P('shrine_decor_sparse')], 9: [P('trees_azalea'), P('patch_azalea'), 'minecraft:flower_flower_forest', 'minecraft:patch_grass_plain',
+                                                'minecraft:patch_tall_grass', P('patch_hydrangea_sparse')] + LUSH})
+biome('yakushima_moss', 'old_growth_spruce_taiga', 0.7, 1.0, grass='#4fa04a', foliage='#2f7f38', water='#3b8bb0', spawns='deep_forest',
+      extra={6: [P('ore_emerald')], 9: [P('moss_surface'), P('giant_sugi'), P('trees_sugi_spruce'), 'minecraft:forest_rock', P('patch_lumen_fern_sparse'),
+                                        P('patch_shiitake'), P('patch_wild_wasabi'), 'minecraft:fallen_spruce_tree'] + JUNGLE})
+biome('susuki_plains', 'plains', 0.75, 0.4, grass='#b8b260', foliage='#9a9a4a', water=W_JAPAN, spawns='meadow',
+      extra={4: [P('shrine_decor_sparse')], 9: [P('trees_matsu_sparse'), P('patch_susuki'), P('patch_susuki_sparse'),
+                                                P('patch_higanbana_sparse'), 'minecraft:patch_tall_grass', 'minecraft:patch_grass_plain']})
+biome('mangrove_coast', 'mangrove_swamp', 0.9, 0.9, grass='#7fae4a', foliage='#6a9a3a', water='#3a9a8a', spawns='marsh',
+      extra={9: ['minecraft:trees_mangrove', 'minecraft:patch_waterlily', 'minecraft:patch_grass_plain', 'minecraft:seagrass_warm',
+                 'minecraft:patch_firefly_bush_near_water', P('patch_lotus_sparse'), P('vines_tall')]})
+biome('tropical_forest', 'jungle', 0.95, 0.95, grass='#59c95a', foliage='#3fb84a', water='#3aa0c0', spawns='forest',
+      extra={9: [P('emergent_rare'), P('trees_mega_jungle'), P('trees_jungle_tropical'), 'minecraft:bamboo_light', 'minecraft:patch_melon',
+                 P('patch_glowcap')] + JUNGLE})
 # caves
 DRIP = {7: ['minecraft:dripstone_cluster', 'minecraft:large_dripstone', 'minecraft:pointed_dripstone']}
 biome('deep_caverns', 'dripstone_caves', 0.6, 0.4, water=W_JAPAN, cave=True, extra=DRIP)
@@ -952,20 +979,10 @@ def biomes():
         attrs = out.setdefault('attributes', {})
         if spec['music']:
             attrs['minecraft:audio/background_music'] = {'default': {'max_delay': 24000, 'min_delay': 12000, 'sound': spec['music']}}
-        if spec['fog'] is not None:
-            attrs['minecraft:visual/fog_end_distance'] = {'argument': spec['fog'], 'modifier': 'multiply'}
-            attrs['minecraft:visual/fog_start_distance'] = {'argument': spec['fog'] * 0.6, 'modifier': 'multiply'}
-        if spec['fog_color']:
-            attrs['minecraft:visual/fog_color'] = spec['fog_color']
-        if spec['water_fog']:
-            attrs['minecraft:visual/water_fog_color'] = spec['water_fog']
-        elif spec['water']:
-            attrs['minecraft:visual/water_fog_color'] = spec['water']
-        if spec['parts']:
-            attrs['minecraft:visual/ambient_particles'] = {
-                'argument': [{'particle': {'type': 'minecraft:' + k}, 'probability': p} for k, p in spec['parts']], 'modifier': 'append'}
-        else:
-            attrs.pop('minecraft:visual/ambient_particles', None)
+        # No custom fog, fog colours or ambient particles: they fought with shader packs. Atmosphere comes from
+        # the Atmospherics mod on the client; the template's own visual attributes are dropped too.
+        for k in [k for k in attrs if k.startswith('minecraft:visual/') and k not in ('minecraft:visual/sky_color', 'minecraft:visual/water_fog_color')]:
+            del attrs[k]
         if spec['spawns'] is not None and 'minecraft:gameplay/natural_mob_spawns' in attrs:
             cats = attrs['minecraft:gameplay/natural_mob_spawns']['argument']['spawns_by_category']
             cats['creature'] = SPAWNS[spec['spawns']]
@@ -991,21 +1008,21 @@ def biomes():
 # Naturalist (optional): its animals spawn through these biome tags. Japan-shaped wildlife only:
 # sika deer, boar, Asian black bear, foxes come from vanilla, fireflies over the paddies, namazu in the rivers...
 NATURALIST = {
-    'has_deer': ['momiji_highlands', 'ginkgo_grove', 'sugi_forest', 'spirit_forest', 'jukai_forest', 'fuji_subalpine', 'shirakaba_plateau',
+    'has_deer': ['tsutsuji_hills', 'yakushima_moss', 'susuki_plains', 'momiji_highlands', 'ginkgo_grove', 'sugi_forest', 'spirit_forest', 'jukai_forest', 'fuji_subalpine', 'shirakaba_plateau',
                  'tea_hills', 'sakura_valley', 'alpine_meadow', 'wisteria_grove'],
     'has_boar': ['bamboo_grove', 'jukai_forest', 'momiji_highlands', 'sugi_forest', 'spirit_forest', 'rice_terraces'],
     'has_black_bear': ['sugi_forest', 'jukai_forest', 'momiji_highlands', 'spirit_forest', 'shirakaba_plateau', 'fuji_subalpine'],
     'has_bear': ['snowy_highlands', 'shirakaba_plateau'],
     'has_snake': ['rice_terraces', 'reed_marsh', 'bamboo_grove', 'lotus_marsh', 'tea_hills'],
-    'has_firefly': ['rice_terraces', 'reed_marsh', 'lotus_marsh', 'river', 'spirit_forest', 'bamboo_grove', 'sakura_valley', 'hydrangea_hills',
+    'has_firefly': ['mangrove_coast', 'tropical_forest', 'rice_terraces', 'reed_marsh', 'lotus_marsh', 'river', 'spirit_forest', 'bamboo_grove', 'sakura_valley', 'hydrangea_hills',
                     'wisteria_grove', 'jukai_forest'],
     'has_dragonfly': ['rice_terraces', 'reed_marsh', 'lotus_marsh', 'river', 'hydrangea_hills', 'higanbana_fields'],
-    'has_butterfly': ['sakura_valley', 'tea_hills', 'wisteria_grove', 'hydrangea_hills', 'higanbana_fields', 'alpine_meadow', 'rice_terraces'],
+    'has_butterfly': ['tsutsuji_hills', 'susuki_plains', 'tropical_forest', 'sakura_valley', 'tea_hills', 'wisteria_grove', 'hydrangea_hills', 'higanbana_fields', 'alpine_meadow', 'rice_terraces'],
     'has_duck': ['river', 'reed_marsh', 'lotus_marsh'],
     'has_catfish': ['river', 'lotus_marsh', 'reed_marsh'],
     'has_bass': ['river'],
-    'has_crab': ['beach', 'black_sand_beach', 'rocky_shore'],
-    'has_snail': ['spirit_forest', 'jukai_forest', 'hydrangea_hills', 'bamboo_grove'],
+    'has_crab': ['mangrove_coast', 'beach', 'black_sand_beach', 'rocky_shore'],
+    'has_snail': ['yakushima_moss', 'tropical_forest', 'spirit_forest', 'jukai_forest', 'hydrangea_hills', 'bamboo_grove'],
     'has_sparrow': ['rice_terraces', 'tea_hills', 'sakura_valley', 'higanbana_fields'],
     'has_finch': ['sakura_valley', 'momiji_highlands', 'ginkgo_grove', 'wisteria_grove'],
     'has_robin': ['momiji_highlands', 'sugi_forest', 'shirakaba_plateau'],

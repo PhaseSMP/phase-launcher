@@ -111,19 +111,7 @@
       "modifier": "overlay"
     },
     "minecraft:visual/sky_color": "#78a7ff",
-    "minecraft:visual/water_fog_color": "#4c7d6a",
-    "minecraft:visual/water_fog_end_distance": {
-      "argument": 0.85,
-      "modifier": "multiply"
-    },
-    "minecraft:visual/fog_end_distance": {
-      "argument": 0.8,
-      "modifier": "multiply"
-    },
-    "minecraft:visual/fog_start_distance": {
-      "argument": 0.48,
-      "modifier": "multiply"
-    }
+    "minecraft:visual/water_fog_color": "#232317"
   },
   "carvers": [
     "minecraft:cave",

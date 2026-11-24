@@ -99,8 +99,7 @@
         "min_delay": 12000,
         "sound": "minecraft:music.overworld.stony_peaks"
       }
-    },
-    "minecraft:visual/water_fog_color": "#3d57d6"
+    }
   },
   "carvers": [
     "minecraft:cave",

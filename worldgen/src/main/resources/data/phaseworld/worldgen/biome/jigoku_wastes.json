@@ -79,27 +79,7 @@
       "modifier": "overlay"
     },
     "minecraft:gameplay/snow_golem_melts": true,
-    "minecraft:visual/sky_color": "#6eb1ff",
-    "minecraft:visual/fog_end_distance": {
-      "argument": 0.6,
-      "modifier": "multiply"
-    },
-    "minecraft:visual/fog_start_distance": {
-      "argument": 0.36,
-      "modifier": "multiply"
-    },
-    "minecraft:visual/water_fog_color": "#7ad0c0",
-    "minecraft:visual/ambient_particles": {
-      "argument": [
-        {
-          "particle": {
-            "type": "minecraft:white_ash"
-          },
-          "probability": 0.012
-        }
-      ],
-      "modifier": "append"
-    }
+    "minecraft:visual/sky_color": "#6eb1ff"
   },
   "carvers": [
     "minecraft:cave",

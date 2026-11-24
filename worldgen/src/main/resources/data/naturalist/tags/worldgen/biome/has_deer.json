@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
+    "phaseworld:tsutsuji_hills",
+    "phaseworld:yakushima_moss",
+    "phaseworld:susuki_plains",
     "phaseworld:momiji_highlands",
     "phaseworld:ginkgo_grove",
     "phaseworld:sugi_forest",

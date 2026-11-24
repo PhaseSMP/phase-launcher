@@ -1,7 +1,78 @@
 {
   "variants": {
-    "": {
-      "model": "phaseworld:block/ginkgo_leaves"
-    }
+    "": [
+      {
+        "model": "phaseworld:block/ginkgo_leaves"
+      },
+      {
+        "model": "phaseworld:block/ginkgo_leaves",
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/ginkgo_leaves",
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/ginkgo_leaves",
+        "y": 270
+      },
+      {
+        "model": "phaseworld:block/ginkgo_leaves",
+        "x": 90
+      },
+      {
+        "model": "phaseworld:block/ginkgo_leaves",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/ginkgo_leaves",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/ginkgo_leaves",
+        "x": 90,
+        "y": 270
+      },
+      {
+        "model": "phaseworld:block/ginkgo_leaves",
+        "x": 180
+      },
+      {
+        "model": "phaseworld:block/ginkgo_leaves",
+        "x": 180,
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/ginkgo_leaves",
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/ginkgo_leaves",
+        "x": 180,
+        "y": 270
+      },
+      {
+        "model": "phaseworld:block/ginkgo_leaves",
+        "x": 270
+      },
+      {
+        "model": "phaseworld:block/ginkgo_leaves",
+        "x": 270,
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/ginkgo_leaves",
+        "x": 270,
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/ginkgo_leaves",
+        "x": 270,
+        "y": 270
+      }
+    ]
   }
 }

@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
+    "phaseworld:tsutsuji_hills",
+    "phaseworld:susuki_plains",
+    "phaseworld:tropical_forest",
     "phaseworld:sakura_valley",
     "phaseworld:tea_hills",
     "phaseworld:wisteria_grove",

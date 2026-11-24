@@ -1,7 +1,78 @@
 {
   "variants": {
-    "": {
-      "model": "phaseworld:block/black_sand"
-    }
+    "": [
+      {
+        "model": "phaseworld:block/black_sand"
+      },
+      {
+        "model": "phaseworld:block/black_sand",
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/black_sand",
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/black_sand",
+        "y": 270
+      },
+      {
+        "model": "phaseworld:block/black_sand",
+        "x": 90
+      },
+      {
+        "model": "phaseworld:block/black_sand",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/black_sand",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/black_sand",
+        "x": 90,
+        "y": 270
+      },
+      {
+        "model": "phaseworld:block/black_sand",
+        "x": 180
+      },
+      {
+        "model": "phaseworld:block/black_sand",
+        "x": 180,
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/black_sand",
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/black_sand",
+        "x": 180,
+        "y": 270
+      },
+      {
+        "model": "phaseworld:block/black_sand",
+        "x": 270
+      },
+      {
+        "model": "phaseworld:block/black_sand",
+        "x": 270,
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/black_sand",
+        "x": 270,
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/black_sand",
+        "x": 270,
+        "y": 270
+      }
+    ]
   }
 }

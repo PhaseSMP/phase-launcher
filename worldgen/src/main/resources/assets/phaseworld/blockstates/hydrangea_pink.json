@@ -1,7 +1,21 @@
 {
   "variants": {
-    "": {
-      "model": "phaseworld:block/hydrangea_pink"
-    }
+    "": [
+      {
+        "model": "phaseworld:block/hydrangea_pink"
+      },
+      {
+        "model": "phaseworld:block/hydrangea_pink",
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/hydrangea_pink",
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/hydrangea_pink",
+        "y": 270
+      }
+    ]
   }
 }

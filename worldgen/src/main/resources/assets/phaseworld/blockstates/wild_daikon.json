@@ -1,7 +1,21 @@
 {
   "variants": {
-    "": {
-      "model": "phaseworld:block/wild_daikon"
-    }
+    "": [
+      {
+        "model": "phaseworld:block/wild_daikon"
+      },
+      {
+        "model": "phaseworld:block/wild_daikon",
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/wild_daikon",
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/wild_daikon",
+        "y": 270
+      }
+    ]
   }
 }

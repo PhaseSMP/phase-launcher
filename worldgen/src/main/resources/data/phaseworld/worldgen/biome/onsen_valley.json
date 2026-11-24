@@ -119,19 +119,7 @@
       },
       "modifier": "overlay"
     },
-    "minecraft:visual/sky_color": "#7da2ff",
-    "minecraft:visual/water_fog_color": "#5ac9c0",
-    "minecraft:visual/ambient_particles": {
-      "argument": [
-        {
-          "particle": {
-            "type": "minecraft:white_ash"
-          },
-          "probability": 0.002
-        }
-      ],
-      "modifier": "append"
-    }
+    "minecraft:visual/sky_color": "#7da2ff"
   },
   "carvers": [
     "minecraft:cave",

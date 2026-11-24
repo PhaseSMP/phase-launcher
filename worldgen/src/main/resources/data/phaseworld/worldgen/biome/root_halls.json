@@ -97,19 +97,7 @@
       },
       "modifier": "overlay"
     },
-    "minecraft:visual/sky_color": "#7ba4ff",
-    "minecraft:visual/water_fog_color": "#3f9ad0",
-    "minecraft:visual/ambient_particles": {
-      "argument": [
-        {
-          "particle": {
-            "type": "minecraft:spore_blossom_air"
-          },
-          "probability": 0.002
-        }
-      ],
-      "modifier": "append"
-    }
+    "minecraft:visual/sky_color": "#7ba4ff"
   },
   "carvers": [],
   "downfall": 0.7,

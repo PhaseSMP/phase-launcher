@@ -339,8 +339,10 @@ def leaves(seed, cols, holes=0.2, flowers=None):
     # leaf clusters with highlight on top-left and dark at bottom-right
     for _ in range(18):
         x, y = r.randrange(S), r.randrange(S)
-        img.putpixel((x, y), pal[-1])
-        img.putpixel(((x + 1) % S, (y + 1) % S), pal[1])
+        if img.getpixel((x, y))[3]:
+            img.putpixel((x, y), pal[-1])
+        if img.getpixel(((x + 1) % S, (y + 1) % S))[3]:
+            img.putpixel(((x + 1) % S, (y + 1) % S), pal[1])
     if flowers:
         fp = [hexc(c) for c in flowers]
         for _ in range(9):
@@ -352,36 +354,38 @@ def leaves(seed, cols, holes=0.2, flowers=None):
 
 def momiji_leaves():
     # five-point maple leaves: red with orange and a few deep crimson
-    img = leaves(60, ['#5e0f0c', '#8c1a14', '#b52a1c', '#d9472a', '#f06a36'], 0.18)
+    img = leaves(60, ['#5e0f0c', '#8c1a14', '#b52a1c', '#d9472a', '#f06a36'], 0.4)
     r = random.Random(61)
     star = [(0, -1), (-1, 0), (1, 0), (0, 0), (-1, 1), (1, 1)]
     for _ in range(5):
         x, y = r.randrange(S), r.randrange(S)
         for dx, dy in star:
-            img.putpixel(((x + dx) % S, (y + dy) % S), hexc('#f4823d') if dy < 0 else hexc('#d9472a'))
+            if img.getpixel(((x + dx) % S, (y + dy) % S))[3]:
+                img.putpixel(((x + dx) % S, (y + dy) % S), hexc('#f4823d') if dy < 0 else hexc('#d9472a'))
     return img
 
 
 def ginkgo_leaves():
-    img = leaves(62, ['#7a5a08', '#a87d10', '#d2a51e', '#efc83a', '#fbe274'], 0.17)
+    img = leaves(62, ['#7a5a08', '#a87d10', '#d2a51e', '#efc83a', '#fbe274'], 0.47)
     r = random.Random(63)
     fan = [(-1, 0), (0, 0), (1, 0), (0, 1)]
     for _ in range(6):
         x, y = r.randrange(S), r.randrange(S)
         for dx, dy in fan:
-            img.putpixel(((x + dx) % S, (y + dy) % S), hexc('#fde68a') if dy == 0 else hexc('#b98c14'))
+            if img.getpixel(((x + dx) % S, (y + dy) % S))[3]:
+                img.putpixel(((x + dx) % S, (y + dy) % S), hexc('#fde68a') if dy == 0 else hexc('#b98c14'))
     return img
 
 
 def wisteria_leaves():
     """Mostly hanging purple flower clusters over a little green."""
-    img = leaves(64, ['#244a1e', '#2f5f25', '#3d7530', '#4f8c3b', '#68a84a'], 0.3)
+    img = leaves(64, ['#244a1e', '#2f5f25', '#3d7530', '#4f8c3b', '#68a84a'], 0.4)
     fp = [hexc(c) for c in ('#3e2470', '#5d3a9e', '#8462c4', '#ad8ce6', '#d8c4fb')]
     f = field(65, ((4, 0.5), (8, 0.3), (16, 0.2)))
     for y in range(S):
         for x in range(S):
             v = f[y][x]
-            if v > 0.38:
+            if v > 0.38 and img.getpixel((x, y))[3]:
                 # vertical streaks: racemes hang down, lighter at the top of each
                 k = quant(v * 0.6 + ((y + x * 3) % 4) / 10, 5, 0.25, x, y)
                 img.putpixel((x, y), fp[k])

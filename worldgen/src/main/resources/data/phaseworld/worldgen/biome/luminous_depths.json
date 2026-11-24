@@ -97,34 +97,7 @@
       },
       "modifier": "overlay"
     },
-    "minecraft:visual/sky_color": "#7ba4ff",
-    "minecraft:visual/fog_end_distance": {
-      "argument": 0.85,
-      "modifier": "multiply"
-    },
-    "minecraft:visual/fog_start_distance": {
-      "argument": 0.51,
-      "modifier": "multiply"
-    },
-    "minecraft:visual/fog_color": "#10303a",
-    "minecraft:visual/water_fog_color": "#1f6f7a",
-    "minecraft:visual/ambient_particles": {
-      "argument": [
-        {
-          "particle": {
-            "type": "minecraft:glow"
-          },
-          "probability": 0.0012
-        },
-        {
-          "particle": {
-            "type": "minecraft:spore_blossom_air"
-          },
-          "probability": 0.004
-        }
-      ],
-      "modifier": "append"
-    }
+    "minecraft:visual/sky_color": "#7ba4ff"
   },
   "carvers": [],
   "downfall": 0.7,

@@ -1,7 +1,78 @@
 {
   "variants": {
-    "": {
-      "model": "phaseworld:block/volcanic_ash"
-    }
+    "": [
+      {
+        "model": "phaseworld:block/volcanic_ash"
+      },
+      {
+        "model": "phaseworld:block/volcanic_ash",
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/volcanic_ash",
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/volcanic_ash",
+        "y": 270
+      },
+      {
+        "model": "phaseworld:block/volcanic_ash",
+        "x": 90
+      },
+      {
+        "model": "phaseworld:block/volcanic_ash",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/volcanic_ash",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/volcanic_ash",
+        "x": 90,
+        "y": 270
+      },
+      {
+        "model": "phaseworld:block/volcanic_ash",
+        "x": 180
+      },
+      {
+        "model": "phaseworld:block/volcanic_ash",
+        "x": 180,
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/volcanic_ash",
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/volcanic_ash",
+        "x": 180,
+        "y": 270
+      },
+      {
+        "model": "phaseworld:block/volcanic_ash",
+        "x": 270
+      },
+      {
+        "model": "phaseworld:block/volcanic_ash",
+        "x": 270,
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/volcanic_ash",
+        "x": 270,
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/volcanic_ash",
+        "x": 270,
+        "y": 270
+      }
+    ]
   }
 }

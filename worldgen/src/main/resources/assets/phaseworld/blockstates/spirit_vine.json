@@ -1,7 +1,21 @@
 {
   "variants": {
-    "": {
-      "model": "phaseworld:block/spirit_vine"
-    }
+    "": [
+      {
+        "model": "phaseworld:block/spirit_vine"
+      },
+      {
+        "model": "phaseworld:block/spirit_vine",
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/spirit_vine",
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/spirit_vine",
+        "y": 270
+      }
+    ]
   }
 }

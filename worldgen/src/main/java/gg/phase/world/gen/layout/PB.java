@@ -50,7 +50,13 @@ public enum PB {
 	ALPINE_MEADOW("alpine_meadow", false),
 	LUMINOUS_DEPTHS("luminous_depths", true),
 	ROOT_HALLS("root_halls", true),
-	ABYSS("abyss", true);
+	ABYSS("abyss", true),
+	// ---- 1.3
+	TSUTSUJI_HILLS("tsutsuji_hills", false),
+	YAKUSHIMA_MOSS("yakushima_moss", false),
+	SUSUKI_PLAINS("susuki_plains", false),
+	MANGROVE_COAST("mangrove_coast", false),
+	TROPICAL_FOREST("tropical_forest", false);
 
 	public static final PB[] VALUES = values();
 

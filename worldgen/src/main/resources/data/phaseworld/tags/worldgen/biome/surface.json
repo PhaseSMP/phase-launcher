@@ -30,6 +30,11 @@
     "phaseworld:karst_spires",
     "phaseworld:jigoku_wastes",
     "phaseworld:shirakaba_plateau",
-    "phaseworld:alpine_meadow"
+    "phaseworld:alpine_meadow",
+    "phaseworld:tsutsuji_hills",
+    "phaseworld:yakushima_moss",
+    "phaseworld:susuki_plains",
+    "phaseworld:mangrove_coast",
+    "phaseworld:tropical_forest"
   ]
 }

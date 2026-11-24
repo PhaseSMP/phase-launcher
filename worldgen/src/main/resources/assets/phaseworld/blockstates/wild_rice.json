@@ -1,7 +1,21 @@
 {
   "variants": {
-    "": {
-      "model": "phaseworld:block/wild_rice"
-    }
+    "": [
+      {
+        "model": "phaseworld:block/wild_rice"
+      },
+      {
+        "model": "phaseworld:block/wild_rice",
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/wild_rice",
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/wild_rice",
+        "y": 270
+      }
+    ]
   }
 }

@@ -1,7 +1,78 @@
 {
   "variants": {
-    "": {
-      "model": "phaseworld:block/pumice"
-    }
+    "": [
+      {
+        "model": "phaseworld:block/pumice"
+      },
+      {
+        "model": "phaseworld:block/pumice",
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/pumice",
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/pumice",
+        "y": 270
+      },
+      {
+        "model": "phaseworld:block/pumice",
+        "x": 90
+      },
+      {
+        "model": "phaseworld:block/pumice",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/pumice",
+        "x": 90,
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/pumice",
+        "x": 90,
+        "y": 270
+      },
+      {
+        "model": "phaseworld:block/pumice",
+        "x": 180
+      },
+      {
+        "model": "phaseworld:block/pumice",
+        "x": 180,
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/pumice",
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/pumice",
+        "x": 180,
+        "y": 270
+      },
+      {
+        "model": "phaseworld:block/pumice",
+        "x": 270
+      },
+      {
+        "model": "phaseworld:block/pumice",
+        "x": 270,
+        "y": 90
+      },
+      {
+        "model": "phaseworld:block/pumice",
+        "x": 270,
+        "y": 180
+      },
+      {
+        "model": "phaseworld:block/pumice",
+        "x": 270,
+        "y": 270
+      }
+    ]
   }
 }
