@@ -34,8 +34,14 @@ public class PhaseSpace implements ModInitializer {
 		ServerTickEvents.END_SERVER_TICK.register(SpaceTravel::tick);
 		SpaceCommands.register();
 		PayloadTypeRegistry.clientboundPlay().register(AtlasPayload.TYPE, AtlasPayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(EclipsePayload.TYPE, EclipsePayload.CODEC);
 		ServerTickEvents.END_SERVER_TICK.register(Atlas::tick);
-		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> Atlas.sync(handler.getPlayer()));
+		ServerTickEvents.END_SERVER_TICK.register(EclipseChaos::tick);
+		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+			Atlas.sync(handler.getPlayer());
+			EclipseChaos.sync(handler.getPlayer());
+		});
+		ServerLifecycleEvents.SERVER_STOPPING.register(EclipseChaos::stop);
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			if (Boolean.getBoolean("phasespace.selftest")) SelfTest.run(server);
 		});

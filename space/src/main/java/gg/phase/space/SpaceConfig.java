@@ -45,6 +45,25 @@ public final class SpaceConfig {
 	/** Клиент: блики объектива от Солнца */
 	public boolean lensFlare = true;
 
+	// ── Хаос затмения (/space eclipse) ──
+	/** Центр затмения, если мод карты Phase World не стоит (с ним — кратер Фудзи) */
+	public double eclipseX = 0, eclipseZ = 0;
+	/** Длительность по умолчанию, секунд */
+	public int eclipseSeconds = 360;
+	/** При запуске поставить полдень и ясную погоду, чтобы Солнце было видно */
+	public boolean eclipseSetNoon = true;
+	/** Ударные волны от кратера (отбрасывают; щит в блоке гасит, присед ослабляет) и их урон */
+	public boolean eclipseWaves = true;
+	public boolean eclipseWaveDamage = true;
+	/** Луч из кратера поднимает игроков вверх (до космоса) */
+	public boolean eclipseBeam = true;
+	/** Дождь осколков затмения в полной тени */
+	public boolean eclipseCrystals = true;
+	/** Фантомы в полной тени */
+	public boolean eclipseMobs = true;
+	/** Клиент: насколько сильно темнеет мир в полной фазе (0 — не темнеет, 1 — максимум) */
+	public double eclipseDarkness = 1.0;
+
 	private static SpaceConfig instance;
 
 	public static SpaceConfig get() {

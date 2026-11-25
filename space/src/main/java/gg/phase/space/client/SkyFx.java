@@ -36,8 +36,8 @@ public final class SkyFx {
 	private static final int FULL = 0xF000F0;
 	private static final Set<String> KNOWN = new HashSet<>();
 	private static final double[] V = new double[3], W = new double[3], E = new double[3], T = new double[3], S = new double[3];
-	private static float camYaw, camPitch;
-	private static double fwX, fwY, fwZ, rtX, rtZ, upX, upY, upZ;
+	static float camYaw, camPitch;
+	static double fwX, fwY, fwZ, rtX, rtZ, upX, upY, upZ;
 	private static double aimFade;
 	private static int aimIndex = -1;
 
@@ -64,7 +64,7 @@ public final class SkyFx {
 		};
 	}
 
-	private static void camera(Minecraft mc) {
+	static void camera(Minecraft mc) {
 		Camera camera = mc.gameRenderer.mainCamera();
 		camYaw = camera.yRot();
 		camPitch = camera.xRot();
@@ -89,6 +89,8 @@ public final class SkyFx {
 		double sunAngle = Math.toRadians(mc.level.environmentAttributes().getValue(EnvironmentAttributes.SUN_ANGLE, at));
 		// выше облаков звёзд больше (край космоса)
 		stars = (float) Math.max(stars, Math.max(0, Math.min(1, (cam.y - 1300) / 600)));
+		// в полной фазе затмения днём видны звёзды и планеты
+		stars = (float) Math.max(stars, EclipseFx.starBoost());
 		if (stars < 0.02F) return;
 		double t = mc.level.getGameTime() + mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
 		double D = Math.max(40, mc.options.getEffectiveRenderDistance() * 16.0 * 0.78);
@@ -214,7 +216,7 @@ public final class SkyFx {
 
 	// ───────── спрайты ─────────
 
-	private static void billboard(PoseStack pose, SubmitNodeCollector out, double rx, double ry, double rz, double size, String model, float roll) {
+	static void billboard(PoseStack pose, SubmitNodeCollector out, double rx, double ry, double rz, double size, String model, float roll) {
 		if (size <= 0) return;
 		pose.pushPose();
 		pose.translate(rx, ry, rz);
@@ -228,7 +230,7 @@ public final class SkyFx {
 	}
 
 	/** Линия между двумя точками (относительно камеры): вытянутый спрайт-луч, повёрнутый по экрану */
-	private static void line(PoseStack pose, SubmitNodeCollector out, double ax, double ay, double az, double bx, double by, double bz, double width, String model) {
+	static void line(PoseStack pose, SubmitNodeCollector out, double ax, double ay, double az, double bx, double by, double bz, double width, String model) {
 		double fa = ax * fwX + ay * fwY + az * fwZ, fb = bx * fwX + by * fwY + bz * fwZ;
 		if (fa < 0.2 || fb < 0.2) return;
 		double sax = (ax * rtX + az * rtZ) / fa, say = (ax * upX + ay * upY + az * upZ) / fa;

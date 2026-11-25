@@ -691,7 +691,7 @@ public final class SpaceTravel {
 	}
 
 	/** Сообщить клиенту новую скорость после push (сам клиент движет игрока) */
-	private static void syncMotion(ServerPlayer p) {
+	static void syncMotion(ServerPlayer p) {
 		p.connection.send(new ClientboundSetEntityMotionPacket(p.getId(), p.getDeltaMovement()));
 	}
 

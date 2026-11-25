@@ -48,6 +48,8 @@ public final class Atlas {
 	private static final int STUDY_TICKS = 160;
 	private static final double AIM = Math.toRadians(8);
 	private static Map<UUID, Set<String>> data;
+	/** Темнота затмения у текущего игрока (для изучения днём) */
+	private static double eclipseDark;
 	private static final Map<UUID, double[]> STUDY = new HashMap<>(); // {индекс созвездия, прогресс}
 	private static final double[] V = new double[3], E = new double[3], T = new double[3];
 	private static long tick;
@@ -132,6 +134,7 @@ public final class Atlas {
 				continue;
 			}
 			double angle = 0;
+			eclipseDark = space && SpaceConfig.get().events ? SpaceEvents.eclipse(t) : 0;
 			if (earth) {
 				ServerLevel level = (ServerLevel) p.level();
 				BlockPos head = BlockPos.containing(p.getX(), p.getEyeY(), p.getZ());
@@ -139,7 +142,8 @@ public final class Atlas {
 				angle = Math.toRadians(level.environmentAttributes().getValue(EnvironmentAttributes.STAR_ANGLE, head));
 				if (!level.canSeeSky(head.above())) { STUDY.remove(p.getUUID()); continue; }
 				if (telescopePlanets(p, level, head, t)) continue;
-				if (stars < 0.2F) {
+				eclipseDark = EclipseChaos.darkness(p);
+				if (stars < 0.2F && eclipseDark < 0.6) {
 					if (tick % 20 == 0) p.sendOverlayMessage(Component.literal("Звёзд не видно — дождитесь ночи").withStyle(ChatFormatting.GRAY));
 					STUDY.remove(p.getUUID());
 					continue;
@@ -182,6 +186,12 @@ public final class Atlas {
 		}
 		Constellation c = SolarSystem.CONSTELLATIONS.get(bestI);
 		boolean known = of(p.getUUID()).contains("c:" + c.id);
+		// «Кольцо Затмения» открывается только в тени затмения
+		if (!known && c.id.equals("eclipse") && eclipseDark < 0.6) {
+			STUDY.remove(p.getUUID());
+			if (tick % 20 == 0) p.sendOverlayMessage(Component.literal("✦ " + c.name + " — изучить можно только во время затмения (/space eclipse или «Затмение Фазы» в космосе)").withStyle(s -> s.withColor(c.color)));
+			return;
+		}
 		double[] st = STUDY.get(p.getUUID());
 		if (st == null || st[0] != bestI) st = new double[] { bestI, 0 };
 		STUDY.put(p.getUUID(), st);
@@ -289,6 +299,12 @@ public final class Atlas {
 		}
 		m.append(Component.literal("\nМиры: " + visitedCount(p) + "/" + SolarSystem.BODIES.stream().filter(x -> x.dim != null).count() + "  ").withStyle(ChatFormatting.GRAY));
 		for (Body b : SolarSystem.BODIES) if (s.contains("v:" + b.id)) m.append(Component.literal(b.name + "  ").withStyle(st -> st.withColor(b.color)));
+		m.append(Component.literal("\nЗатмение: ").withStyle(ChatFormatting.GRAY));
+		String[][] ecl = { { "e:witness", "Свидетель" }, { "e:beam", "Луч" }, { "e:wave", "Щит против волны" } };
+		for (String[] e : ecl) {
+			boolean k = s.contains(e[0]);
+			m.append(Component.literal((k ? e[1] : "???") + "  ").withStyle(st -> st.withColor(k ? 0xC27DFF : 0x555566)));
+		}
 		m.append(Component.literal("\nДальний космос: ").withStyle(ChatFormatting.GRAY));
 		for (Deep d : SolarSystem.DEEP) {
 			boolean k = s.contains("d:" + d.id);

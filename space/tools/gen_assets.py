@@ -605,6 +605,14 @@ def fx_textures():
     a = smooth(1.0, 0.94, r)
     save_png('fx/disc', np.concatenate([np.zeros(r.shape + (3,), np.float32), a[..., None]], -1))
     sprite_model('fx/disc', 'fx/disc')
+    # затемнение мира в затмении: ровная чёрная вуаль 8 уровней и виньетка по краям
+    for k in range(1, 9):
+        a = np.full(r.shape, k * 0.08, np.float32)
+        save_png(f'fx/shade_{k}', np.concatenate([np.zeros(r.shape + (3,), np.float32), a[..., None]], -1))
+        sprite_model(f'fx/shade_{k}', f'fx/shade_{k}')
+    a = 0.6 * smooth(0.35, 1.3, r)
+    save_png('fx/vignette', np.concatenate([np.full(r.shape + (3,), 0.02, np.float32), a[..., None]], -1))
+    sprite_model('fx/vignette', 'fx/vignette')
     # лепесток сакуры
     pet = np.clip(1 - ((U / 0.55) ** 2 + ((V + 0.1) / 0.85) ** 2), 0, 1) ** 0.4 * (1 - np.exp(-((U) / 0.08) ** 2) * (V < -0.6))
     rgb = mix(np.broadcast_to(hexc('#ff9cc8'), r.shape + (3,)), np.broadcast_to(hexc('#fff0f6'), r.shape + (3,)), smooth(0.9, 0.1, r))

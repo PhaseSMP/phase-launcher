@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityRenderLayerRegist
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import gg.phase.space.AtlasPayload;
+import gg.phase.space.EclipsePayload;
 
 /** Клиент: отрисовка космоса. Работает только в мире phasespace:space, в остальных мирах ничего не делает. */
 public class PhaseSpaceClient implements ClientModInitializer {
@@ -20,5 +21,6 @@ public class PhaseSpaceClient implements ClientModInitializer {
 		LevelRenderEvents.COLLECT_SUBMITS.register(ctx -> SpaceRenderer.render(ctx.poseStack(), ctx.submitNodeCollector()));
 		ClientTickEvents.END_CLIENT_TICK.register(SpaceRenderer::tick);
 		ClientPlayNetworking.registerGlobalReceiver(AtlasPayload.TYPE, (payload, context) -> SkyFx.setKnown(payload.data()));
+		ClientPlayNetworking.registerGlobalReceiver(EclipsePayload.TYPE, (payload, context) -> EclipseFx.set(payload));
 	}
 }

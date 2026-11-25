@@ -167,6 +167,7 @@ public final class SpaceRenderer {
 		if (!inSpace(mc)) {
 			SkyFx.renderEarth(pose, out);
 			AtmosphereFx.render(pose, out);
+			EclipseFx.render(pose, out);
 			return;
 		}
 		if (!Models.ready()) return;
@@ -1054,6 +1055,7 @@ public final class SpaceRenderer {
 
 	public static void tick(Minecraft mc) {
 		AtmosphereFx.tick(mc);
+		EclipseFx.tick(mc);
 		if (!inSpace(mc)) {
 			motesInit = false;
 			METEORS.clear();

@@ -38,6 +38,7 @@ import net.minecraft.world.level.Level;
  * /space land &lt;тело&gt; [игроки] — сразу на поверхность мира планеты
  * /space open | close     — открыть / закрыть космос (закрытие отправляет всех домой)
  * /space reload           — перечитать config/phasespace.json
+ * /space eclipse          — хаос затмения: start [сек] (над Фудзи) · here [сек] (здесь) · stop
  * </pre>
  * Админ-команды требуют прав гейм-мастера (op 2+). go и home для себя — всем, если playerCommands: true.
  */
@@ -82,6 +83,8 @@ public final class SpaceCommands {
 							.executes(c -> land(c, self(c)))
 							.then(Commands.argument("targets", EntityArgument.players())
 								.executes(c -> land(c, EntityArgument.getPlayers(c, "targets"))))))
+					.then(eclipse("eclipse"))
+					.then(eclipse("затмение"))
 					.then(Commands.literal("open").requires(SpaceCommands::admin).executes(c -> setOpen(c.getSource(), true)))
 					.then(Commands.literal("close").requires(SpaceCommands::admin).executes(c -> setOpen(c.getSource(), false)))
 					.then(Commands.literal("reload").requires(SpaceCommands::admin).executes(c -> {
@@ -91,6 +94,37 @@ public final class SpaceCommands {
 					})));
 			}
 		});
+	}
+
+	/** /space eclipse — хаос затмения над Фудзи */
+	private static com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> eclipse(String name) {
+		return Commands.literal(name)
+			.executes(c -> { c.getSource().sendSystemMessage(EclipseChaos.info(c.getSource().getServer())); return 1; })
+			.then(Commands.literal("start").requires(SpaceCommands::admin)
+				.executes(c -> eclipseStart(c.getSource(), SpaceConfig.get().eclipseSeconds, false))
+				.then(Commands.argument("seconds", com.mojang.brigadier.arguments.IntegerArgumentType.integer(60, 3600))
+					.executes(c -> eclipseStart(c.getSource(), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(c, "seconds"), false))))
+			.then(Commands.literal("here").requires(SpaceCommands::admin)
+				.executes(c -> eclipseStart(c.getSource(), SpaceConfig.get().eclipseSeconds, true))
+				.then(Commands.argument("seconds", com.mojang.brigadier.arguments.IntegerArgumentType.integer(60, 3600))
+					.executes(c -> eclipseStart(c.getSource(), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(c, "seconds"), true))))
+			.then(Commands.literal("stop").requires(SpaceCommands::admin).executes(c -> {
+				if (!EclipseChaos.active()) {
+					c.getSource().sendSystemMessage(Component.literal("Затмения сейчас нет.").withStyle(ChatFormatting.GRAY));
+					return 0;
+				}
+				EclipseChaos.stop(c.getSource().getServer());
+				return 1;
+			}));
+	}
+
+	private static int eclipseStart(CommandSourceStack src, int seconds, boolean here) {
+		if (here && !src.getLevel().dimension().equals(Level.OVERWORLD)) {
+			src.sendSystemMessage(Component.literal("Затмение бывает только в обычном мире.").withStyle(s -> s.withColor(0xFF8A5C)));
+			return 0;
+		}
+		ok(src, EclipseChaos.start(src.getServer(), seconds, here ? src.getPosition() : null));
+		return 1;
 	}
 
 	// ───────── права ─────────
@@ -137,12 +171,14 @@ public final class SpaceCommands {
 			+ "Элитры и огнестойкость спасают.");
 		line(m, "Звёзды", "ночью в подзорную трубу изучайте созвездия (12 штук, у каждого игрового дня своё), "
 			+ "наводите трубу на планеты в небе. Прогресс — /space atlas, небо сезона — /space sky.");
+		line(m, "Затмение", "по команде над Фудзи: Луна закрывает Солнце, из кратера бьёт луч до космоса, "
+			+ "по карте идут ударные волны (щит или присед), падают осколки, в темноте летают фантомы. /space eclipse");
 		line(m, "Опасно", "Солнце и звёзды жгут, чёрная дыра Ёми притягивает, пульсар облучает.");
 		line(m, "Команды", "/space info · /space atlas · /space sky · /space events · /space list"
 			+ (canTravel(src) ? " · /space go · /space home · /space fall" : ""));
 		if (admin(src)) {
 			line(m, "Админ", "/space tp <тело> [игроки] · /space land <тело> [игроки] · /space go|home|fall [игроки] · "
-				+ "/space open · /space close · /space reload");
+				+ "/space open · /space close · /space reload · /space eclipse start|here [сек] · /space eclipse stop");
 		}
 		m.append(Component.literal("Космос сейчас: ").withStyle(ChatFormatting.GRAY))
 			.append(cfg.spaceOpen ? Component.literal("открыт").withStyle(s -> s.withColor(0x7DFFB4)) : Component.literal("закрыт").withStyle(s -> s.withColor(0xFF8A5C)));
