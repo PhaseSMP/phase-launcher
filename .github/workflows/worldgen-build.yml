@@ -29,6 +29,13 @@ jobs:
           python3 tools/fetch_mods.py run/mods > ../fetch-mods.log 2>&1 || echo FETCH_FAILED >> ../fetch-mods.log
           cp run/mod-index.txt ../mod-index.txt 2>/dev/null || true
           cp run/mod-dump.zip ../mod-dump.zip 2>/dev/null || true
+          mkdir -p ../pack && cp run/mods/*.jar run/extra/*.jar ../pack/ 2>/dev/null || true
+      - name: Upload mod pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-mods
+          path: pack/*.jar
+          if-no-files-found: warn
       - name: Server self-test (generates part of the map, profiled)
         if: hashFiles('worldgen/build/libs/*.jar') != ''
         timeout-minutes: 25

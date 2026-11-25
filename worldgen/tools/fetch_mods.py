@@ -76,6 +76,9 @@ while queue:
     data = get(f['url'])
     if pid not in ('P7dR8mSH', 'fabric-api'):   # the dev run already has Fabric API on its classpath
         open(os.path.join(out_dir, f['filename']), 'wb').write(data)
+    else:   # kept apart for the players' pack (phase-mods.zip)
+        os.makedirs(os.path.join(out_dir, '..', 'extra'), exist_ok=True)
+        open(os.path.join(out_dir, '..', 'extra', f['filename']), 'wb').write(data)
     index.append(f'== {pid} {v["version_number"]} {f["filename"]}')
     for d in v.get('dependencies', []):
         if d.get('dependency_type') == 'required' and d.get('project_id'):
