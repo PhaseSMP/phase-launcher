@@ -1,14 +1,6 @@
-F net/minecraft/server/level/ServerBossEvent.java
-G net/minecraft/world/BossEvent.java (enum |PURPLE|NOTCHED|PROGRESS|public )
-G net/minecraft/world/entity/LightningBolt.java public
-G net/minecraft/server/level/ServerLevel.java (public .*(sendParticles|getSeed|addFreshEntity|players|setWeatherParameters|getRandomPlayer)\()
-G net/minecraft/world/entity/Entity.java (public .*(snapTo|moveTo|setPos|setGlowingTag|setCustomName|setNoGravity|discard|setDeltaMovement|addTag|getTags|setInvulnerable)\()
-G net/minecraft/world/entity/EntityType.java (public .*create\(|PHANTOM =|VEX =|ENDERMAN =|LIGHTNING_BOLT =|ITEM =|FIREWORK_ROCKET =|SMALL_FIREBALL =)
-G net/minecraft/world/entity/item/ItemEntity.java (public ItemEntity\(|setPickUpDelay|setExtendedLifetime|setGlowingTag)
-G net/minecraft/sounds/SoundEvents.java (WARDEN_HEARTBEAT|WARDEN_SONIC_BOOM|END_PORTAL_SPAWN|WITHER_SPAWN|ELDER_GUARDIAN_CURSE|LIGHTNING_BOLT_THUNDER|AMETHYST_BLOCK|RESPAWN_ANCHOR|ENDER_DRAGON_GROWL|TOTEM_USE|SCULK_SHRIEKER_SHRIEK|AMBIENT_CAVE|BEACON_)
-G net/minecraft/world/entity/Mob.java (public .*(finalizeSpawn|setPersistenceRequired|setTarget)\()
-G net/minecraft/world/entity/EntitySpawnReason.java [A-Z_]+[,;(]
-G net/minecraft/core/particles/ParticleTypes.java (REVERSE_PORTAL|SCULK_SOUL|SOUL|END_ROD|DRAGON_BREATH|SONIC_BOOM|FLASH|ELECTRIC_SPARK|WITCH|ASH|CAMPFIRE_SIGNAL_SMOKE|EXPLOSION_EMITTER|TRIAL_OMEN|OMINOUS_SPAWNING|PORTAL|LARGE_SMOKE|FLAME|LAVA) 
-G net/minecraft/world/effect/MobEffects.java (LEVITATION|SLOW_FALLING|DARKNESS|GLOWING|NIGHT_VISION|BLINDNESS|NAUSEA|SPEED|STRENGTH|RESISTANCE|REGENERATION|ABSORPTION)
-G net/minecraft/server/players/PlayerList.java (public .*broadcast|public .*getPlayers)
-S class ServerLevel extends
+G net/minecraft/world/entity/Relative.java (public|[A-Z_]+ =|[A-Z_]+\()
+G net/minecraft/world/level/portal/TeleportTransition.java (public TeleportTransition\(|public static)
+G net/minecraft/network/chat/ClickEvent.java (record|interface|public static)
+G net/minecraft/world/entity/LivingEntity.java (public .*(isBlocking|removeEffect|onGround|hasEffect)\()
+G net/minecraft/world/damagesource/DamageSources.java public DamageSource (playerAttack|magic|explosion)\(
+G net/minecraft/server/network/ServerGamePacketListenerImpl.java (moved too quickly|isSingleplayerOwner|300\.0F|100\.0F|isChangingDimension)
