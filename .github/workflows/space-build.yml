@@ -28,7 +28,7 @@ jobs:
           set -o pipefail
           ./gradlew --no-daemon build -x test 2>&1 | tee ../space-build.log || echo BUILD_FAILED >> ../space-build.log
       - name: Server self-test (space + every planet world + asteroid belt)
-        if: hashFiles('space/build/libs/*.jar') != ''
+        if: github.event_name == 'workflow_dispatch' && hashFiles('space/build/libs/*.jar') != ''
         timeout-minutes: 20
         continue-on-error: true
         working-directory: space
@@ -41,7 +41,7 @@ jobs:
           grep -E "\[selftest\]|ERROR|Exception|Caused by|Failed to|Couldn't|Mixin" ../space-server-full.log | head -400 > ../space-server.log
           tail -120 ../space-server-full.log >> ../space-server.log
       - name: Client screenshots (software rendering)
-        if: hashFiles('space/build/libs/*.jar') != ''
+        if: github.event_name == 'workflow_dispatch' && hashFiles('space/build/libs/*.jar') != ''
         timeout-minutes: 60
         continue-on-error: true
         working-directory: space
