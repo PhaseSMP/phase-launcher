@@ -1,190 +1,188 @@
-samples on worldgen/server threads: 11870
+samples on worldgen/server threads: 15263
 
 == self time (top 35)
- 12.2%  net.minecraft.world.level.levelgen.synth.GradientNoise.permute
-  9.9%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.computeSubstance
-  6.0%  net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator.doFill
-  5.5%  net.minecraft.world.level.levelgen.material.rule.SequenceRule.lambda$compile$0
-  4.2%  net.minecraft.world.level.levelgen.densityfunction.op.InterpolatedFunction$Sampler.fillCell
-  3.8%  net.minecraft.world.level.chunk.PalettedContainer.getAndSet
-  3.5%  net.minecraft.world.level.chunk.LinearPalette.idFor
-  2.9%  gg.phase.world.gen.layout.WorldLayout.waterGuard
-  2.6%  net.minecraft.world.level.levelgen.material.rule.ConditionRule.lambda$compile$0
-  2.6%  net.minecraft.world.level.material.FluidState.isEmpty
-  2.6%  net.minecraft.world.level.levelgen.material.rule.OreVeinRule.lambda$compile$1
-  2.5%  net.minecraft.world.level.levelgen.densityfunction.DensityBuffer.set
-  2.1%  gg.phase.world.gen.LayoutFunction$Sampler.value
-  1.7%  net.minecraft.world.level.levelgen.densityfunction.op.UnaryFunction$SqueezeSampler.sampleVolume
-  1.6%  net.minecraft.world.level.levelgen.densityfunction.op.RangeChoiceFunction$Sampler.sampleVolume
-  1.5%  gg.phase.world.gen.LayoutFunction$Sampler.sampleVolume
-  1.4%  net.minecraft.world.level.levelgen.Heightmap.update
-  1.3%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$MaxSampler.sampleVolume
-  1.2%  net.minecraft.world.level.biome.BiomeManager.getBiome
-  1.2%  net.minecraft.world.level.chunk.LevelChunkSection.setBlockState
-  1.1%  net.minecraft.world.level.chunk.ProtoChunk.setBlockState
-  1.1%  gg.phase.world.gen.layout.WorldLayout.biome
-  1.0%  gg.phase.world.gen.layout.Noise.n3
-  0.9%  java.util.BitSet.expandTo
-  0.9%  net.minecraft.world.level.levelgen.material.MaterialRuleContext$LazyYCondition.test
-  0.7%  net.minecraft.core.TypedInstance.is
-  0.6%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$MinSampler.sampleVolume
-  0.6%  net.minecraft.world.level.levelgen.densityfunction.generator.GradientFunction$GradientSampler.sampleVolume
-  0.5%  java.lang.StrictMath.atan2
-  0.5%  gg.phase.world.gen.layout.Noise.n2
-  0.5%  net.minecraft.world.level.levelgen.material.MaterialSystem.buildSurface
-  0.4%  net.minecraft.world.level.levelgen.placement.FeaturePlacer.place
-  0.4%  net.minecraft.world.level.chunk.PalettedContainer.get
+ 12.7%  net.minecraft.world.level.levelgen.synth.GradientNoise.permute
+  9.7%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.computeSubstance
+  6.7%  net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator.doFill
+  6.7%  net.minecraft.world.level.chunk.LinearPalette.idFor
+  5.7%  net.minecraft.world.level.levelgen.material.rule.SequenceRule.lambda$compile$0
+  4.4%  net.minecraft.world.level.levelgen.densityfunction.op.InterpolatedFunction$Sampler.fillCell
+  3.0%  net.minecraft.world.level.levelgen.material.rule.ConditionRule.lambda$compile$0
+  2.8%  gg.phase.world.gen.LayoutFunction$Sampler.value
+  2.8%  net.minecraft.world.level.material.FluidState.isEmpty
+  2.5%  net.minecraft.world.level.levelgen.material.rule.OreVeinRule.lambda$compile$1
+  2.4%  net.minecraft.world.level.levelgen.densityfunction.DensityBuffer.set
+  2.0%  net.minecraft.world.level.chunk.ProtoChunk.setBlockState
+  1.9%  gg.phase.world.gen.layout.WorldLayout.waterGuard
+  1.9%  net.minecraft.world.level.levelgen.densityfunction.op.RangeChoiceFunction$Sampler.sampleVolume
+  1.8%  net.minecraft.world.level.levelgen.Heightmap.update
+  1.6%  net.minecraft.world.level.levelgen.densityfunction.op.UnaryFunction$SqueezeSampler.sampleVolume
+  1.6%  gg.phase.world.gen.LayoutFunction$Sampler.sampleVolume
+  1.2%  gg.phase.world.gen.layout.WorldLayout.biome
+  1.1%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$MaxSampler.sampleVolume
+  1.1%  net.minecraft.world.level.levelgen.material.MaterialRuleContext$LazyYCondition.test
+  1.1%  net.minecraft.world.level.chunk.LevelChunkSection.setBlockState
+  1.0%  net.minecraft.world.level.chunk.ImposterProtoChunk.getNoiseBiome
+  0.9%  gg.phase.world.gen.layout.Noise.n3
+  0.8%  net.minecraft.core.TypedInstance.is
+  0.8%  net.minecraft.world.level.levelgen.BitRandomSource.nextFloat
+  0.6%  java.lang.StrictMath.atan2
+  0.5%  java.util.ImmutableCollections$SetN.probe
+  0.5%  net.minecraft.world.level.levelgen.densityfunction.generator.GradientFunction$GradientSampler.sampleVolume
+  0.5%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$MinSampler.sampleVolume
   0.4%  net.minecraft.server.level.WorldGenRegion.isWithinWriteZone
-  0.4%  net.minecraft.world.level.block.MultifaceSpreader$DefaultSpreaderConfig.canSpreadInto
+  0.3%  net.minecraft.world.level.levelgen.material.MaterialSystem.buildSurface
+  0.3%  net.minecraft.world.level.levelgen.blockpredicates.StateTestingPredicate.test
+  0.3%  net.minecraft.world.level.levelgen.densityfunction.op.ClampFunction$Sampler.sampleVolume
+  0.3%  gg.phase.world.gen.layout.WorldLayout.baseHeight
+  0.3%  gg.phase.world.gen.layout.Noise.n2
 
 == inclusive, our code and worldgen (top 45)
- 81.4%  net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator.lambda$buildTerrain$0
- 54.3%  net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator.doFill
- 36.7%  net.minecraft.world.level.levelgen.densityfunction.DensitySampler$Bound.sampleVolume
- 33.5%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$MaxSampler.sampleVolume
- 26.3%  net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator.buildSurface
- 26.3%  net.minecraft.world.level.levelgen.material.MaterialSystem.buildSurface
- 24.5%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$AddSampler.sampleVolume
+ 82.8%  net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator.lambda$buildTerrain$0
+ 55.3%  net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator.doFill
+ 36.6%  net.minecraft.world.level.levelgen.densityfunction.DensitySampler$Bound.sampleVolume
+ 33.4%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$MaxSampler.sampleVolume
+ 26.8%  net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator.buildSurface
+ 26.8%  net.minecraft.world.level.levelgen.material.MaterialSystem.buildSurface
+ 24.4%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$AddSampler.sampleVolume
  23.6%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$MinSampler.sampleVolume
- 23.3%  net.minecraft.world.level.levelgen.densityfunction.op.RangeChoiceFunction$Sampler.sampleVolume
- 20.3%  net.minecraft.world.level.levelgen.densityfunction.op.InterpolatedFunction$Sampler.sampleVolume
- 20.2%  net.minecraft.world.level.levelgen.densityfunction.op.InterpolatedFunction$Sampler.sampleWithBlockStep
- 16.5%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$ConstMulSampler.sampleVolume
- 15.0%  net.minecraft.world.level.levelgen.densityfunction.op.UnaryFunction$SqueezeSampler.sampleVolume
- 12.7%  net.minecraft.world.level.levelgen.material.rule.SequenceRule.lambda$compile$0
- 12.2%  net.minecraft.world.level.levelgen.synth.GradientNoise.permute
- 12.1%  net.minecraft.world.level.levelgen.densityfunction.generator.NoiseFunction$Sampler.sampleVolume
- 12.1%  net.minecraft.world.level.levelgen.synth.NoiseStack$Perlin.addToVolume
- 12.1%  net.minecraft.world.level.levelgen.synth.PerlinNoise.addToVolume
- 11.9%  net.minecraft.world.level.levelgen.densityfunction.op.LerpFunction$ConstFirstSampler.sampleVolume
- 11.9%  net.minecraft.world.level.levelgen.densityfunction.op.BlendDensityFunction$Sampler.sampleVolume
- 11.9%  net.minecraft.world.level.levelgen.synth.GradientNoise.permuteToGrad
- 11.3%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.computeSubstance
- 11.1%  net.minecraft.world.level.levelgen.placement.FeaturePlacer.placeWithBiomeCheck
- 11.1%  net.minecraft.world.level.levelgen.placement.FeaturePlacer.place
+ 23.5%  net.minecraft.world.level.levelgen.densityfunction.op.RangeChoiceFunction$Sampler.sampleVolume
+ 20.9%  net.minecraft.world.level.levelgen.densityfunction.op.InterpolatedFunction$Sampler.sampleWithBlockStep
+ 20.9%  net.minecraft.world.level.levelgen.densityfunction.op.InterpolatedFunction$Sampler.sampleVolume
+ 16.7%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$ConstMulSampler.sampleVolume
+ 15.1%  net.minecraft.world.level.levelgen.densityfunction.op.UnaryFunction$SqueezeSampler.sampleVolume
+ 13.3%  net.minecraft.world.level.levelgen.material.rule.SequenceRule.lambda$compile$0
+ 12.7%  net.minecraft.world.level.levelgen.synth.GradientNoise.permute
+ 12.5%  net.minecraft.world.level.levelgen.densityfunction.generator.NoiseFunction$Sampler.sampleVolume
+ 12.5%  net.minecraft.world.level.levelgen.synth.NoiseStack$Perlin.addToVolume
+ 12.5%  net.minecraft.world.level.levelgen.synth.PerlinNoise.addToVolume
+ 12.4%  net.minecraft.world.level.levelgen.synth.GradientNoise.permuteToGrad
+ 12.1%  net.minecraft.world.level.levelgen.densityfunction.op.BlendDensityFunction$Sampler.sampleVolume
+ 12.1%  net.minecraft.world.level.levelgen.densityfunction.op.LerpFunction$ConstFirstSampler.sampleVolume
+ 11.0%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.computeSubstance
+ 10.5%  net.minecraft.world.level.levelgen.placement.FeaturePlacer.placeWithBiomeCheck
+ 10.5%  net.minecraft.world.level.levelgen.placement.FeaturePlacer.place
   9.5%  gg.phase.world.gen.LayoutFunction$Sampler.sampleVolume
-  8.7%  net.minecraft.world.level.levelgen.densityfunction.op.UnaryFunction$AbsSampler.sampleVolume
-  8.4%  net.minecraft.world.level.levelgen.densityfunction.op.ClampFunction$Sampler.sampleVolume
-  7.9%  gg.phase.world.gen.LayoutFunction$Sampler.value
-  7.5%  net.minecraft.world.level.levelgen.densityfunction.CachingDensitySampler.sampleVolume
-  7.4%  net.minecraft.world.level.levelgen.densityfunction.SamplerContext.sampleVolumeCached
-  6.5%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$ConstAddSampler.sampleVolume
-  6.5%  net.minecraft.world.level.levelgen.densityfunction.op.InterpolatedFunction$Sampler.fillCell
+  8.9%  net.minecraft.world.level.levelgen.densityfunction.op.UnaryFunction$AbsSampler.sampleVolume
+  8.8%  net.minecraft.world.level.levelgen.densityfunction.op.ClampFunction$Sampler.sampleVolume
+  7.6%  net.minecraft.world.level.levelgen.densityfunction.CachingDensitySampler.sampleVolume
+  7.5%  net.minecraft.world.level.levelgen.densityfunction.SamplerContext.sampleVolumeCached
+  7.4%  gg.phase.world.gen.LayoutFunction$Sampler.value
+  6.7%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$ConstAddSampler.sampleVolume
+  6.6%  net.minecraft.world.level.levelgen.densityfunction.op.InterpolatedFunction$Sampler.fillCell
   6.3%  net.minecraft.world.level.levelgen.material.MaterialSystem$1.setBlock
-  4.7%  net.minecraft.world.level.levelgen.material.rule.ConditionRule.lambda$compile$0
+  5.1%  net.minecraft.world.level.levelgen.material.rule.ConditionRule.lambda$compile$0
   4.5%  net.minecraft.world.level.levelgen.densityfunction.op.IntervalSelectFunction$Sampler.sampleVolume
-  3.7%  net.minecraft.world.level.levelgen.material.rule.SequenceRule.compile
-  3.7%  net.minecraft.world.level.levelgen.material.rule.MaterialRule$HolderHolder.compile
+  3.6%  net.minecraft.world.level.levelgen.material.rule.MaterialRule$HolderHolder.compile
+  3.6%  net.minecraft.world.level.levelgen.material.rule.SequenceRule.compile
   3.6%  net.minecraft.world.level.levelgen.material.rule.OreVeinRule.compile
   3.6%  net.minecraft.world.level.levelgen.material.MaterialRuleContext.getDensitiesInChunk
   3.2%  gg.phase.world.gen.layout.WorldLayout.column
-  2.9%  gg.phase.world.gen.layout.WorldLayout.waterGuard
+  2.7%  net.minecraft.world.level.levelgen.material.MaterialSystem.isStone
   2.7%  gg.phase.world.gen.layout.WorldLayout.compute
   2.6%  net.minecraft.world.level.levelgen.material.rule.OreVeinRule.lambda$compile$1
-  2.6%  net.minecraft.world.level.levelgen.material.MaterialSystem.isStone
-  2.5%  net.minecraft.world.level.levelgen.feature.SculkPatchFeature.place
   2.5%  net.minecraft.world.level.levelgen.feature.SequenceFeature.place
-  2.5%  net.minecraft.world.level.levelgen.densityfunction.DensityBuffer.set
-  2.4%  net.minecraft.world.level.levelgen.feature.OreFeature.place
-  2.4%  gg.phase.world.gen.layout.WorldLayout.biome
-  2.3%  net.minecraft.world.level.levelgen.densityfunction.DensitySampler$Bound.sampleValue
-  2.2%  gg.phase.world.gen.LayoutFunction$Sampler.sampleValue
-  2.2%  net.minecraft.world.level.levelgen.feature.OreFeature.doPlace
+  2.5%  net.minecraft.world.level.levelgen.feature.SculkPatchFeature.place
+  2.4%  net.minecraft.world.level.levelgen.densityfunction.DensityBuffer.set
+  2.2%  gg.phase.world.gen.layout.WorldLayout.biome
+  2.1%  net.minecraft.world.level.levelgen.densityfunction.DensitySampler$Bound.sampleValue
+  2.0%  net.minecraft.world.level.levelgen.feature.OreFeature.place
+  2.0%  net.minecraft.world.level.levelgen.Heightmap.update
+  2.0%  gg.phase.world.gen.LayoutFunction$Sampler.sampleValue
   2.0%  gg.phase.world.gen.layout.WorldLayout.baseHeight
-  1.9%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$MulSampler.sampleVolume
-  1.7%  gg.phase.world.gen.PhaseBiomeSource.lambda$createResolver$0
-  1.6%  net.minecraft.world.level.levelgen.material.MaterialRuleContext$LazyYCondition.test
-  1.5%  net.minecraft.world.level.levelgen.Heightmap.update
-  1.2%  net.minecraft.world.level.levelgen.placement.PlacementFilter.modify
-  1.2%  gg.phase.world.gen.layout.Noise.fbm3
-  1.1%  net.minecraft.world.level.levelgen.densityfunction.op.RangeChoiceFunction$ConstSampler.sampleVolume
-  1.1%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.getAquiferStatus
-  1.0%  gg.phase.world.gen.layout.WorldLayout.caveBiome
-  1.0%  gg.phase.world.gen.layout.Noise.n3
-  1.0%  gg.phase.world.gen.layout.WorldLayout.land
-  1.0%  net.minecraft.world.level.levelgen.placement.BiomeFilter.shouldPlace
-  0.9%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.computeFluid
+  1.9%  gg.phase.world.gen.layout.WorldLayout.waterGuard
+  1.8%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$MulSampler.sampleVolume
+  1.8%  net.minecraft.world.level.levelgen.feature.OreFeature.doPlace
+  1.5%  net.minecraft.world.level.levelgen.material.MaterialRuleContext$LazyYCondition.test
+  1.4%  gg.phase.world.gen.PhaseBiomeSource.lambda$createResolver$0
+  1.3%  net.minecraft.world.level.levelgen.feature.AbstractOreFeature.canPlaceOre
+  1.1%  net.minecraft.world.level.levelgen.placement.PlacementFilter.modify
+  1.1%  gg.phase.world.gen.layout.WorldLayout.land
+  1.0%  gg.phase.world.gen.layout.Noise.fbm3
+  1.0%  net.minecraft.world.level.levelgen.densityfunction.op.RangeChoiceFunction$ConstSampler.sampleVolume
+  1.0%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.getAquiferStatus
+  0.9%  gg.phase.world.gen.layout.Noise.n3
+  0.9%  net.minecraft.world.level.levelgen.placement.BiomeFilter.shouldPlace
+  0.9%  gg.phase.world.gen.layout.WorldLayout.caveBiome
+  0.8%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.computeFluid
+  0.8%  net.minecraft.world.level.levelgen.feature.TreeFeature.place
+  0.8%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$ConstSubSampler.sampleVolume
+  0.8%  net.minecraft.world.level.levelgen.BitRandomSource.nextFloat
+  0.8%  net.minecraft.world.level.levelgen.feature.AbstractOreFeature.shouldSkipAirCheck
   0.7%  gg.phase.world.gen.feature.WaterFillFeature.place
-  0.7%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$ConstSubSampler.sampleVolume
-  0.6%  net.minecraft.world.level.levelgen.densityfunction.generator.GradientFunction$GradientSampler.sampleVolume
-  0.6%  net.minecraft.world.level.levelgen.densityfunction.generator.GradientFunction$ClampedSampler.sampleVolume
-  0.6%  net.minecraft.world.level.levelgen.feature.TreeFeature.place
-  0.5%  gg.phase.world.gen.layout.WorldLayout.styleRelief
-  0.5%  gg.phase.world.gen.layout.Noise.n2
-  0.5%  gg.phase.world.gen.layout.WorldLayout.chamberField
-  0.5%  net.minecraft.world.level.levelgen.blockpredicates.StateTestingPredicate.test
   0.5%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.surfaceLevel
-  0.4%  net.minecraft.world.level.levelgen.densityfunction.op.SliceFunction$XzSampler.sampleVolume
-  0.4%  net.minecraft.world.level.levelgen.feature.TreeFeature.lambda$place$4
-  0.4%  net.minecraft.world.level.levelgen.feature.SpeleothemClusterFeature.place
-  0.4%  net.minecraft.world.level.levelgen.synth.NoiseStack$Perlin.get
-  0.4%  net.minecraft.world.level.levelgen.placement.PlacedFeature.place
-  0.4%  gg.phase.world.SelfTest.run
-  0.4%  gg.phase.world.PhaseWorld.lambda$onInitialize$2
-  0.4%  net.minecraft.world.level.levelgen.placement.EnvironmentScanPlacement.modify
+  0.5%  net.minecraft.world.level.levelgen.blockpredicates.StateTestingPredicate.test
+  0.5%  net.minecraft.world.level.levelgen.feature.TreeFeature.lambda$place$4
+  0.5%  net.minecraft.world.level.levelgen.densityfunction.generator.GradientFunction$ClampedSampler.sampleVolume
+  0.5%  net.minecraft.world.level.levelgen.densityfunction.generator.GradientFunction$GradientSampler.sampleVolume
+  0.5%  net.minecraft.world.level.levelgen.placement.EnvironmentScanPlacement.modify
+  0.5%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.lambda$surfaceLevel$0
+  0.5%  net.minecraft.world.level.levelgen.synth.NoiseStack$Perlin.get
+  0.4%  gg.phase.world.gen.layout.WorldLayout.chamberField
   0.4%  net.minecraft.world.level.levelgen.densityfunction.op.SliceFunction$YSampler.sampleValue
-  0.4%  net.minecraft.world.level.levelgen.feature.SpeleothemClusterFeature.placeColumn
-  0.4%  net.minecraft.world.level.levelgen.densityfunction.op.UnaryFunction$CubeSampler.sampleVolume
-  0.4%  gg.phase.world.gen.layout.WorldLayout.cavern
+  0.4%  gg.phase.world.gen.layout.WorldLayout.styleRelief
   0.4%  net.minecraft.world.level.levelgen.feature.GeodeFeature.place
-  0.4%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.lambda$surfaceLevel$0
-  0.4%  net.minecraft.world.level.levelgen.material.condition.BiomeCondition$1.compute
-  0.4%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.computeSurfaceLevel
-  0.4%  net.minecraft.world.level.levelgen.material.MaterialRuleContext.getBiome
-  0.4%  net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator.generateCarvers
-  0.3%  net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator.createNoiseChunk
-  0.3%  net.minecraft.world.level.levelgen.feature.AbstractOreFeature.canPlaceOre
-  0.3%  net.minecraft.world.level.levelgen.NoiseChunk.<init>
-  0.3%  net.minecraft.world.level.levelgen.synth.PerlinNoise.get
-  0.3%  net.minecraft.world.level.levelgen.synth.PerlinNoise.sampleAndLerp
-  0.3%  net.minecraft.world.level.levelgen.feature.VegetationPatchFeature.place
-  0.3%  net.minecraft.world.level.levelgen.Heightmap.primeHeightmaps
-  0.3%  net.minecraft.world.level.levelgen.material.condition.VerticalGradientCondition$1.compute
+  0.4%  gg.phase.world.gen.layout.WorldLayout.cavern
+  0.4%  gg.phase.world.PhaseWorld.lambda$onInitialize$2
+  0.4%  gg.phase.world.SelfTest.run
+  0.4%  net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator.createNoiseChunk
+  0.4%  net.minecraft.world.level.levelgen.NoiseChunk.<init>
+  0.4%  net.minecraft.world.level.levelgen.feature.MultifaceGrowthFeature.place
+  0.4%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.<init>
+  0.4%  net.minecraft.world.level.levelgen.Aquifer$Config.create
+  0.4%  net.minecraft.world.level.levelgen.synth.PerlinNoise.sampleAndLerp
+  0.4%  net.minecraft.world.level.levelgen.synth.PerlinNoise.get
+  0.4%  net.minecraft.world.level.levelgen.densityfunction.op.UnaryFunction$CubeSampler.sampleVolume
   0.3%  net.minecraft.world.level.levelgen.densityfunction.op.UnaryFunction$SquareSampler.sampleVolume
-  0.3%  net.minecraft.world.level.levelgen.feature.TreeFeature.updateLeaves
-  0.3%  net.minecraft.world.level.levelgen.feature.MultifaceGrowthFeature.place
-  0.3%  net.minecraft.world.level.levelgen.feature.SnowAndFreezeFeature.place
-  0.3%  net.minecraft.world.level.levelgen.Aquifer$Config.create
-  0.3%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.<init>
-  0.3%  gg.phase.world.gen.layout.Noise.fbm2
+  0.3%  net.minecraft.world.level.levelgen.material.condition.AbovePreliminarySurfaceCondition.lambda$compile$0
+  0.3%  net.minecraft.world.level.levelgen.material.MaterialRuleContext.getMinSurfaceLevel
   0.3%  net.minecraft.world.level.levelgen.densityfunction.op.SliceFunction$YSampler.sampleVolume
-  0.3%  net.minecraft.world.level.levelgen.densityfunction.op.RangeChoiceFunction$ConstSampler.choose
+  0.3%  net.minecraft.world.level.levelgen.Heightmap.primeHeightmaps
+  0.3%  net.minecraft.world.level.levelgen.feature.TreeFeature.updateLeaves
+  0.3%  net.minecraft.world.level.levelgen.placement.PlacedFeature.place
+  0.3%  net.minecraft.world.level.levelgen.feature.SpeleothemClusterFeature.place
+  0.3%  net.minecraft.world.level.levelgen.feature.SpeleothemClusterFeature.placeColumn
+  0.3%  gg.phase.world.gen.layout.Noise.n2
+  0.3%  net.minecraft.world.level.levelgen.densityfunction.op.SliceFunction$XzSampler.sampleVolume
   0.3%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.maxSurfaceLevel
-  0.3%  net.minecraft.world.level.levelgen.XoroshiroRandomSource$XoroshiroPositionalRandomFactory.at
-  0.3%  net.minecraft.world.level.levelgen.feature.SimpleRandomSelectorFeature.place
-  0.2%  net.minecraft.world.level.levelgen.feature.MultifaceGrowthFeature.placeGrowthIfPossible
-  0.2%  net.minecraft.world.level.levelgen.material.condition.AbovePreliminarySurfaceCondition.lambda$compile$0
-  0.2%  net.minecraft.world.level.levelgen.material.MaterialRuleContext.getMinSurfaceLevel
-  0.2%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.calculatePressure
-  0.2%  net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest.test
-  0.2%  net.minecraft.world.level.levelgen.feature.VegetationPatchFeature.placeGroundPatch
-  0.2%  net.minecraft.world.level.levelgen.feature.VinesFeature.place
+  0.3%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.computeSurfaceLevel
+  0.3%  net.minecraft.world.level.levelgen.feature.SnowAndFreezeFeature.place
+  0.3%  net.minecraft.world.level.levelgen.feature.VegetationPatchFeature.place
+  0.3%  net.minecraft.world.level.levelgen.feature.MultifaceGrowthFeature.placeGrowthIfPossible
+  0.2%  net.minecraft.world.level.levelgen.material.condition.BiomeCondition$1.compute
   0.2%  net.minecraft.world.level.levelgen.material.MaterialRuleContext.updateXZ
   0.2%  net.minecraft.world.level.levelgen.material.MaterialSystem.getSurfaceDepth
-  0.2%  net.minecraft.world.level.levelgen.Column.scan
   0.2%  net.minecraft.world.level.levelgen.placement.OffsetPlacement.modify
-  0.2%  net.minecraft.world.level.levelgen.Column.scanDirection
-  0.2%  gg.phase.world.gen.layout.WorldLayout.surfaceBiome
+  0.2%  net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest.test
+  0.2%  net.minecraft.world.level.levelgen.densityfunction.op.RangeChoiceFunction$ConstSampler.choose
+  0.2%  net.minecraft.world.level.levelgen.feature.SimpleRandomSelectorFeature.place
+  0.2%  gg.phase.world.gen.layout.Noise.fbm2
+  0.2%  net.minecraft.world.level.levelgen.material.condition.VerticalGradientCondition$1.compute
+  0.2%  net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator.generateCarvers
+  0.2%  net.minecraft.world.level.levelgen.Aquifer$NoiseBasedAquifer.calculatePressure
+  0.2%  net.minecraft.world.level.levelgen.material.MaterialRuleContext.getBiome
   0.2%  net.minecraft.world.level.levelgen.feature.TreeFeature.doPlace
-  0.2%  net.minecraft.world.level.levelgen.Heightmap.lambda$static$1
+  0.2%  net.minecraft.world.level.levelgen.XoroshiroRandomSource$XoroshiroPositionalRandomFactory.at
+  0.2%  gg.phase.world.gen.layout.WorldLayout.surfaceBiome
+  0.2%  net.minecraft.world.level.levelgen.feature.VegetationPatchFeature.placeGroundPatch
+  0.2%  net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.updateShapeAtEdge
   0.2%  net.minecraft.world.level.levelgen.placement.BlockPredicateFilter.shouldPlace
-  0.1%  gg.phase.world.gen.layout.WorldLayout.per
-  0.1%  gg.phase.world.gen.layout.WorldLayout.warmth
-  0.1%  net.minecraft.world.level.levelgen.blockpredicates.MatchingBlockTagPredicate.test
-  0.1%  net.minecraft.world.level.levelgen.WorldgenRandom.next
+  0.2%  net.minecraft.world.level.levelgen.Heightmap.lambda$static$1
+  0.2%  net.minecraft.world.level.levelgen.blockpredicates.MatchingBlockTagPredicate.test
+  0.2%  net.minecraft.world.level.levelgen.feature.VinesFeature.place
+  0.2%  gg.phase.world.gen.layout.WorldLayout.ringOut
+  0.1%  net.minecraft.world.level.levelgen.densityfunction.SamplerContext.acquireBuffer
   0.1%  gg.phase.world.gen.layout.WorldLayout.karstSpires
-  0.1%  net.minecraft.world.level.levelgen.densityfunction.DensityFunctionCompiler.getSampler
-  0.1%  net.minecraft.world.level.levelgen.RandomState.getSampler
-  0.1%  net.minecraft.world.level.levelgen.placement.PlacedFeature.hashCode
-  0.1%  net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator.spawnOriginalMobs
+  0.1%  net.minecraft.world.level.levelgen.Column.scan
   0.1%  net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer.createFoliage
   0.1%  net.minecraft.world.level.levelgen.feature.TreeFeature.lambda$doPlace$1
-  0.1%  net.minecraft.world.level.levelgen.blockpredicates.AnyOfPredicate.test
-  0.1%  net.minecraft.world.level.levelgen.densityfunction.DensityBuffer.fill
-  0.1%  net.minecraft.world.level.levelgen.densityfunction.SamplerContext.acquireBuffer
   0.1%  net.minecraft.world.level.levelgen.blockpredicates.AllOfPredicate.test
-  0.1%  gg.phase.world.gen.layout.WorldLayout.ringOut
-  0.1%  net.minecraft.world.level.levelgen.material.MaterialSystem$1.getBlock
-  0.1%  net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator.getBiomeGenerationSettingsForCarver
-  0.1%  net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator.lambda$generateCarvers$0
-  0.1%  net.minecraft.world.level.levelgen.BitRandomSource.nextInt
+  0.1%  net.minecraft.world.level.levelgen.WorldgenRandom.next
+  0.1%  net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer.tryPlaceLeaf
+  0.1%  net.minecraft.world.level.levelgen.densityfunction.op.BinaryFunction$MaxSampler.sampleValue
+  0.1%  net.minecraft.world.level.levelgen.placement.PlacedFeature.hashCode
+  0.1%  net.minecraft.world.level.levelgen.Column.scanDirection
+  0.1%  net.minecraft.world.level.levelgen.blockpredicates.AnyOfPredicate.test
+  0.1%  net.minecraft.world.level.levelgen.densityfunction.DensityBufferPool.tryTakeBest
+  0.1%  net.minecraft.world.level.levelgen.densityfunction.DensityBufferPool.acquire
+  0.1%  net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer.placeLeavesRow
