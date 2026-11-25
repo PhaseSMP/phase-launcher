@@ -3,6 +3,7 @@ package gg.phase.space;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.core.Registry;
@@ -35,11 +36,18 @@ public class PhaseSpace implements ModInitializer {
 		SpaceCommands.register();
 		PayloadTypeRegistry.clientboundPlay().register(AtlasPayload.TYPE, AtlasPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(EclipsePayload.TYPE, EclipsePayload.CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(ViltrumPayload.TYPE, ViltrumPayload.CODEC);
+		ServerTickEvents.END_SERVER_TICK.register(Viltrum::tick);
+		AttackEntityCallback.EVENT.register((player, world, hand, entity, hit) -> {
+			if (!world.isClientSide() && player instanceof net.minecraft.server.level.ServerPlayer sp) Viltrum.punch(sp, entity);
+			return net.minecraft.world.InteractionResult.PASS;
+		});
 		ServerTickEvents.END_SERVER_TICK.register(Atlas::tick);
 		ServerTickEvents.END_SERVER_TICK.register(EclipseChaos::tick);
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			Atlas.sync(handler.getPlayer());
 			EclipseChaos.sync(handler.getPlayer());
+			Viltrum.sync(handler.getPlayer());
 		});
 		ServerLifecycleEvents.SERVER_STOPPING.register(EclipseChaos::stop);
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {

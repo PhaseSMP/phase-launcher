@@ -45,6 +45,19 @@ public final class SpaceConfig {
 	/** Клиент: блики объектива от Солнца */
 	public boolean lensFlare = true;
 
+	// ── Сила вильтрумита (/space viltrum) ──
+	/** Предел скорости полёта вне космоса (flying speed; 0.3 ≈ 130 бл/с) */
+	public double viltrumFlyEarth = 0.3;
+	/** Предел обычного разгона в космосе (дальше — гиперполёт) */
+	public double viltrumWarp = 0.32;
+	/** Гиперполёт: блоков за тик в системе и в дальнем космосе */
+	public double viltrumHyperSystem = 60;
+	public double viltrumHyperDeep = 150;
+	/** Удар о землю ранит и игроков (мобов — всегда) */
+	public boolean viltrumHurtPlayers = false;
+	/** Ночное зрение вместе с силой */
+	public boolean viltrumNightVision = true;
+
 	// ── Хаос затмения (/space eclipse) ──
 	/** Центр затмения, если мод карты Phase World не стоит (с ним — кратер Фудзи) */
 	public double eclipseX = 0, eclipseZ = 0;

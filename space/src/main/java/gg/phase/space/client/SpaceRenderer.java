@@ -164,6 +164,7 @@ public final class SpaceRenderer {
 
 	public static void render(PoseStack pose, SubmitNodeCollector out) {
 		Minecraft mc = Minecraft.getInstance();
+		ViltrumFx.render(pose, out);
 		if (!inSpace(mc)) {
 			SkyFx.renderEarth(pose, out);
 			AtmosphereFx.render(pose, out);
@@ -1056,6 +1057,7 @@ public final class SpaceRenderer {
 	public static void tick(Minecraft mc) {
 		AtmosphereFx.tick(mc);
 		EclipseFx.tick(mc);
+		ViltrumFx.tick(mc);
 		if (!inSpace(mc)) {
 			motesInit = false;
 			METEORS.clear();

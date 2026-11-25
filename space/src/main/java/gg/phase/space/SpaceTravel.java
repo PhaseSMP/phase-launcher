@@ -131,8 +131,9 @@ public final class SpaceTravel {
 		double perTick = Math.sqrt(mx * mx + my * my + mz * mz);
 		w[1] = x; w[2] = y; w[3] = z;
 		w[4] = w[4] * 0.8 + perTick * 20 * 0.2;
-		double cap = fromSun > DEEP_SPACE ? cfg.warpMaxDeep : cfg.warpMaxSystem;
-		if (p.isSprinting() && perTick > 0.6 && perTick < 60) w[0] = Math.min(cap, w[0] + (fromSun > DEEP_SPACE ? 0.004 : 0.0025));
+		boolean vil = Viltrum.has(p);
+		double cap = vil ? cfg.viltrumWarp : fromSun > DEEP_SPACE ? cfg.warpMaxDeep : cfg.warpMaxSystem;
+		if (p.isSprinting() && perTick > 0.6 && perTick < 200) w[0] = Math.min(cap, w[0] + (vil ? 0.012 : fromSun > DEEP_SPACE ? 0.004 : 0.0025));
 		else w[0] = Math.max(0, w[0] - 0.03);
 		Abilities ab = p.getAbilities();
 		boolean changed = false;
@@ -144,6 +145,8 @@ public final class SpaceTravel {
 		FLYERS.add(p.getUUID());
 		if (p.isFallFlying()) p.stopFallFlying();
 		p.resetFallDistance();
+		// вильтрумит: гиперполёт — прыжки вперёд, когда разгон на пределе
+		if (vil && Viltrum.hyper(p, level, w[0] >= cap * 0.97 && p.isSprinting(), fromSun, t, x, ey, z)) return;
 
 		// низ — дорога домой, верх — граница
 		int max = level.getMinY() + level.getHeight();
@@ -166,12 +169,12 @@ public final class SpaceTravel {
 		if (fromSun < sr + 6) {
 			double k = (sr + 20) / Math.max(1e-3, fromSun);
 			teleport(p, level, x * k, SolarSystem.PLANE_Y + (ey - SolarSystem.PLANE_Y) * k - 0.9, z * k, p.getYRot(), p.getXRot());
-			p.setRemainingFireTicks(200);
+			if (!vil) p.setRemainingFireTicks(200);
 			p.sendOverlayMessage(Component.literal("Солнце не пускает дальше").withStyle(s -> s.withColor(0xFFB347)));
 			return;
 		}
 		double flare = ev != null && ev.type() == SpaceEvents.Type.SOLAR_FLARE ? SpaceEvents.flare(t) : 0;
-		if (cfg.starHeat && tick % 20 == 0 && (fromSun < sr * 2.1 || (flare > 0.3 && fromSun < 2500))) {
+		if (cfg.starHeat && !vil && tick % 20 == 0 && (fromSun < sr * 2.1 || (flare > 0.3 && fromSun < 2500))) {
 			p.setRemainingFireTicks(Math.max(p.getRemainingFireTicks(), 60));
 		}
 		if (flare > 0 && fromSun < 6000) {   // солнечный ветер
@@ -215,6 +218,8 @@ public final class SpaceTravel {
 
 	/** Чёрная дыра, квазар, пульсар, двойная звезда. true — игрок перемещён */
 	private static boolean deepSpace(MinecraftServer server, ServerPlayer p, ServerLevel level, double x, double y, double z, SpaceConfig cfg) {
+		boolean vil = Viltrum.has(p);
+		boolean heat = cfg.starHeat && !vil;
 		for (Deep d : SolarSystem.DEEP) {
 			double dx = d.x - x, dy = d.y - y, dz = d.z - z;
 			double dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
@@ -234,11 +239,11 @@ public final class SpaceTravel {
 							.withStyle(s -> s.withColor(d.color)));
 						return true;
 					}
-					double k = Math.min(1.4, 450000.0 / (dist * dist)) / dist;
+					double k = Math.min(1.4, 450000.0 / (dist * dist)) / dist * (vil ? 0.12 : 1);
 					p.push(dx * k, dy * k, dz * k);
 					syncMotion(p);
-					if (dist < 1500 && tick % 40 == 0) p.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 120, 0, false, false));
-					if (dist < 700 && tick % 40 == 0) p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0, false, false));
+					if (!vil && dist < 1500 && tick % 40 == 0) p.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 120, 0, false, false));
+					if (!vil && dist < 700 && tick % 40 == 0) p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0, false, false));
 				}
 				case "quasar" -> {
 					double horiz = Math.sqrt(dx * dx + dz * dz);
@@ -251,19 +256,19 @@ public final class SpaceTravel {
 						p.sendSystemMessage(Component.literal("Квазар TON 618 вернул вас домой.").withStyle(s -> s.withColor(d.color)));
 						return true;
 					}
-					if (cfg.starHeat && tick % 20 == 0 && (dist < d.size * 1.6 || (horiz < 500 && Math.abs(dy) > d.size * 0.4 && Math.abs(dy) < d.jet))) {
+					if (heat && tick % 20 == 0 && (dist < d.size * 1.6 || (horiz < 500 && Math.abs(dy) > d.size * 0.4 && Math.abs(dy) < d.jet))) {
 						p.setRemainingFireTicks(Math.max(p.getRemainingFireTicks(), 60));
 						if (horiz < 500) { p.push(0, dy > 0 ? -1.2 : 1.2, 0); syncMotion(p); } // джет сносит
 					}
 				}
 				case "pulsar" -> {
-					if (cfg.starHeat && dist < 1400 && tick % 40 == 0) {
+					if (heat && dist < 1400 && tick % 40 == 0) {
 						p.addEffect(new MobEffectInstance(MobEffects.WITHER, 60, dist < 500 ? 1 : 0, false, true));
 						p.sendOverlayMessage(Component.literal("Излучение пульсара").withStyle(s -> s.withColor(d.color)));
 					}
 				}
 				case "binary" -> {
-					if (!cfg.starHeat || dist > d.sep * 2) continue;
+					if (!heat || dist > d.sep * 2) continue;
 					double t = server.overworld().getGameTime();
 					for (int k = 0; k < 2; k++) {
 						binaryStar(d, t, k, Q);
@@ -534,6 +539,11 @@ public final class SpaceTravel {
 	static void release(ServerPlayer p) {
 		if (!FLYERS.remove(p.getUUID())) return;
 		Abilities ab = p.getAbilities();
+		if (Viltrum.has(p)) {                  // вильтрумит летает и вне космоса — полёт не выключаем
+			ab.setFlyingSpeed(VANILLA_FLY_SPEED);
+			p.onUpdateAbilities();
+			return;
+		}
 		ab.setFlyingSpeed(VANILLA_FLY_SPEED);
 		if (!p.isCreative() && !p.isSpectator()) {
 			ab.mayfly = false;
@@ -695,7 +705,7 @@ public final class SpaceTravel {
 		p.connection.send(new ClientboundSetEntityMotionPacket(p.getId(), p.getDeltaMovement()));
 	}
 
-	private static void teleport(ServerPlayer p, ServerLevel level, double x, double y, double z, float yaw, float pitch) {
+	static void teleport(ServerPlayer p, ServerLevel level, double x, double y, double z, float yaw, float pitch) {
 		p.teleport(new TeleportTransition(level, new Vec3(x, y, z), Vec3.ZERO, yaw, pitch, TeleportTransition.DO_NOTHING));
 	}
 

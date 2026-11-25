@@ -38,6 +38,7 @@ import net.minecraft.world.level.Level;
  * /space land &lt;тело&gt; [игроки] — сразу на поверхность мира планеты
  * /space open | close     — открыть / закрыть космос (закрытие отправляет всех домой)
  * /space reload           — перечитать config/phasespace.json
+ * /space viltrum          — сила вильтрумита: on|off [игроки] · go &lt;тело&gt; (рывок) · scan (чутьё)
  * /space eclipse          — хаос затмения: start [сек] (над Фудзи) · here [сек] (здесь) · stop
  * </pre>
  * Админ-команды требуют прав гейм-мастера (op 2+). go и home для себя — всем, если playerCommands: true.
@@ -83,6 +84,8 @@ public final class SpaceCommands {
 							.executes(c -> land(c, self(c)))
 							.then(Commands.argument("targets", EntityArgument.players())
 								.executes(c -> land(c, EntityArgument.getPlayers(c, "targets"))))))
+					.then(viltrum("viltrum"))
+					.then(viltrum("вильтрумит"))
 					.then(eclipse("eclipse"))
 					.then(eclipse("затмение"))
 					.then(Commands.literal("open").requires(SpaceCommands::admin).executes(c -> setOpen(c.getSource(), true)))
@@ -94,6 +97,42 @@ public final class SpaceCommands {
 					})));
 			}
 		});
+	}
+
+	/** /space viltrum — сила вильтрумита (только админы) */
+	private static com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> viltrum(String name) {
+		return Commands.literal(name).requires(SpaceCommands::admin)
+			.executes(c -> { c.getSource().sendSystemMessage(Viltrum.status(c.getSource().getServer())); return 1; })
+			.then(Commands.literal("on")
+				.executes(c -> viltrumSet(c.getSource(), self(c), true))
+				.then(Commands.argument("targets", EntityArgument.players())
+					.executes(c -> viltrumSet(c.getSource(), EntityArgument.getPlayers(c, "targets"), true))))
+			.then(Commands.literal("off")
+				.executes(c -> viltrumSet(c.getSource(), self(c), false))
+				.then(Commands.argument("targets", EntityArgument.players())
+					.executes(c -> viltrumSet(c.getSource(), EntityArgument.getPlayers(c, "targets"), false))))
+			.then(Commands.literal("go")
+				.then(Commands.argument("body", StringArgumentType.word()).suggests(ALL_TARGETS)
+					.executes(c -> {
+						ServerPlayer p = c.getSource().getPlayerOrException();
+						if (!Viltrum.has(p)) {
+							c.getSource().sendFailure(Component.literal("Сначала /space viltrum on"));
+							return 0;
+						}
+						p.sendSystemMessage(Viltrum.go(p, StringArgumentType.getString(c, "body").toLowerCase(Locale.ROOT)));
+						return 1;
+					})))
+			.then(Commands.literal("scan").executes(c -> {
+				ServerPlayer p = c.getSource().getPlayerOrException();
+				p.sendSystemMessage(Viltrum.scan(c.getSource().getServer(), p));
+				return 1;
+			}));
+	}
+
+	private static int viltrumSet(CommandSourceStack src, Collection<ServerPlayer> players, boolean on) {
+		for (ServerPlayer p : players) Viltrum.set(p, on);
+		ok(src, Component.literal("Сила вильтрумита " + (on ? "дана: " : "снята: ") + names(players)).withStyle(s -> s.withColor(Viltrum.COLOR)));
+		return players.size();
 	}
 
 	/** /space eclipse — хаос затмения над Фудзи */
@@ -178,7 +217,8 @@ public final class SpaceCommands {
 			+ (canTravel(src) ? " · /space go · /space home · /space fall" : ""));
 		if (admin(src)) {
 			line(m, "Админ", "/space tp <тело> [игроки] · /space land <тело> [игроки] · /space go|home|fall [игроки] · "
-				+ "/space open · /space close · /space reload · /space eclipse start|here [сек] · /space eclipse stop");
+				+ "/space open · /space close · /space reload · /space eclipse start|here [сек] · /space eclipse stop · "
+				+ "/space viltrum on|off [игроки] · /space viltrum go <тело> · /space viltrum scan");
 		}
 		m.append(Component.literal("Космос сейчас: ").withStyle(ChatFormatting.GRAY))
 			.append(cfg.spaceOpen ? Component.literal("открыт").withStyle(s -> s.withColor(0x7DFFB4)) : Component.literal("закрыт").withStyle(s -> s.withColor(0xFF8A5C)));
