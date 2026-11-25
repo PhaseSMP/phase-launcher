@@ -1,0 +1,202 @@
+=== net/minecraft/world/BossEvent.java
+9:public abstract class BossEvent {
+19:	public BossEvent(final UUID id, final Component name, final BossEvent.BossBarColor color, final BossEvent.BossBarOverlay overlay) {
+27:	public UUID getId() {
+31:	public Component getName() {
+35:	public void setName(final Component name) {
+39:	public float getProgress() {
+43:	public void setProgress(final float progress) {
+47:	public BossEvent.BossBarColor getColor() {
+51:	public void setColor(final BossEvent.BossBarColor color) {
+55:	public BossEvent.BossBarOverlay getOverlay() {
+59:	public void setOverlay(final BossEvent.BossBarOverlay overlay) {
+63:	public boolean shouldDarkenScreen() {
+67:	public BossEvent setDarkenScreen(final boolean darkenScreen) {
+72:	public boolean shouldPlayBossMusic() {
+76:	public BossEvent setPlayBossMusic(final boolean playBossMusic) {
+81:	public BossEvent setCreateWorldFog(final boolean createWorldFog) {
+86:	public boolean shouldCreateWorldFog() {
+90:	public enum BossBarColor implements StringRepresentable {
+96:		PURPLE("purple", ChatFormatting.DARK_BLUE),
+99:		public static final Codec<BossEvent.BossBarColor> CODEC = StringRepresentable.fromEnum(BossEvent.BossBarColor::values);
+108:		public ChatFormatting getFormatting() {
+112:		public String getName() {
+117:		public String getSerializedName() {
+122:	public enum BossBarOverlay implements StringRepresentable {
+123:		PROGRESS("progress"),
+124:		NOTCHED_6("notched_6"),
+125:		NOTCHED_10("notched_10"),
+126:		NOTCHED_12("notched_12"),
+127:		NOTCHED_20("notched_20");
+129:		public static final Codec<BossEvent.BossBarOverlay> CODEC = StringRepresentable.fromEnum(BossEvent.BossBarOverlay::values);
+136:		public String getName() {
+141:		public String getSerializedName() {
+=== net/minecraft/world/entity/LightningBolt.java
+31:public class LightningBolt extends Entity {
+36:	public long seed;
+43:	public LightningBolt(final EntityType<? extends LightningBolt> type, final Level level) {
+50:	public void setVisualOnly(final boolean visualOnly) {
+55:	public SoundSource getSoundSource() {
+59:	public @Nullable ServerPlayer getCause() {
+63:	public void setCause(final @Nullable ServerPlayer cause) {
+76:	public void tick() {
+222:	public boolean shouldRenderAtSqrDistance(final double distance) {
+239:	public int getBlocksSetOnFire() {
+243:	public Stream<Entity> getHitEntities() {
+248:	public final boolean hurtServer(final ServerLevel level, final DamageSource source, final float damage) {
+=== net/minecraft/server/level/ServerLevel.java
+956:	public @Nullable ServerPlayer getRandomPlayer() {
+962:	public boolean addFreshEntity(final Entity entity) {
+1314:	public <T extends ParticleOptions> int sendParticles(
+1328:	public <T extends ParticleOptions> int sendParticles(
+1343:	public <T extends ParticleOptions> int sendParticles(
+1361:	public <T extends ParticleOptions> int sendParticles(
+1378:	public <T extends ParticleOptions> int sendParticles(
+1396:	public <T extends ParticleOptions> int sendParticles(
+1413:	public <T extends ParticleOptions> int sendParticles(
+1457:	public <T extends ParticleOptions> boolean sendParticles(
+1480:	public final boolean sendParticles(
+1627:	public List<ServerPlayer> players() {
+1794:	public long getSeed() {
+=== net/minecraft/world/entity/Entity.java
+409:	public boolean addTag(final String tag) {
+422:	public final void discard() {
+480:	public final void setPos(final Vec3 pos) {
+484:	public void setPos(final double x, final double y, final double z) {
+1547:	public void setNoGravity(final boolean noGravity) {
+1820:	public void snapTo(final Vec3 pos) {
+1824:	public void snapTo(final double x, final double y, final double z) {
+1828:	public void snapTo(final BlockPos spawnPos, final float yRot, final float xRot) {
+1832:	public void snapTo(final Vec3 spawnPos, final float yRot, final float xRot) {
+1836:	public void snapTo(final double x, final double y, final double z, final float yRot, final float xRot) {
+2816:	public final void setGlowingTag(final boolean value) {
+3392:	public void setCustomName(final @Nullable Component name) {
+3845:	public void setDeltaMovement(final Vec3 deltaMovement) {
+3857:	public void setDeltaMovement(final double xd, final double yd, final double zd) {
+=== net/minecraft/world/entity/EntityType.java
+183:	public @Nullable T create(
+304:	public @Nullable T create(final Level level, final EntitySpawnReason reason) {
+308:	public @Nullable T create(final Level level, final EntitySpawnRequest request) {
+312:	public static Optional<Entity> create(final ValueInput input, final Level level, final EntitySpawnRequest request) {
+320:	public static Optional<Entity> create(final EntityType<?> type, final ValueInput input, final Level level, final EntitySpawnReason reason) {
+=== net/minecraft/world/entity/item/ItemEntity.java
+57:	public ItemEntity(final EntityType<? extends ItemEntity> type, final Level level) {
+62:	public ItemEntity(final Level level, final double x, final double y, final double z, final ItemStack itemStack) {
+69:	public ItemEntity(
+404:	public void setPickUpDelay(final int ticks) {
+416:	public void setExtendedLifetime() {
+=== net/minecraft/sounds/SoundEvents.java
+31:	public static final Holder.Reference<SoundEvent> AMBIENT_CAVE = registerForHolder("ambient.cave");
+53:	public static final SoundEvent AMETHYST_BLOCK_BREAK = register("block.amethyst_block.break");
+54:	public static final SoundEvent AMETHYST_BLOCK_CHIME = register("block.amethyst_block.chime");
+55:	public static final SoundEvent AMETHYST_BLOCK_FALL = register("block.amethyst_block.fall");
+56:	public static final SoundEvent AMETHYST_BLOCK_HIT = register("block.amethyst_block.hit");
+57:	public static final SoundEvent AMETHYST_BLOCK_PLACE = register("block.amethyst_block.place");
+58:	public static final SoundEvent AMETHYST_BLOCK_RESONATE = register("block.amethyst_block.resonate");
+59:	public static final SoundEvent AMETHYST_BLOCK_STEP = register("block.amethyst_block.step");
+176:	public static final SoundEvent BEACON_ACTIVATE = register("block.beacon.activate");
+177:	public static final SoundEvent BEACON_AMBIENT = register("block.beacon.ambient");
+178:	public static final SoundEvent BEACON_DEACTIVATE = register("block.beacon.deactivate");
+179:	public static final SoundEvent BEACON_POWER_SELECT = register("block.beacon.power_select");
+574:	public static final SoundEvent ELDER_GUARDIAN_CURSE = register("entity.elder_guardian.curse");
+588:	public static final SoundEvent ENDER_DRAGON_GROWL = register("entity.ender_dragon.growl");
+606:	public static final SoundEvent END_PORTAL_SPAWN = register("block.end_portal.spawn");
+930:	public static final SoundEvent LIGHTNING_BOLT_THUNDER = register("entity.lightning_bolt.thunder");
+1365:	public static final SoundEvent RESPAWN_ANCHOR_AMBIENT = register("block.respawn_anchor.ambient");
+1366:	public static final SoundEvent RESPAWN_ANCHOR_CHARGE = register("block.respawn_anchor.charge");
+1367:	public static final Holder.Reference<SoundEvent> RESPAWN_ANCHOR_DEPLETE = registerForHolder("block.respawn_anchor.deplete");
+1368:	public static final SoundEvent RESPAWN_ANCHOR_SET_SPAWN = register("block.respawn_anchor.set_spawn");
+1413:	public static final SoundEvent SCULK_SHRIEKER_SHRIEK = register("block.sculk_shrieker.shriek");
+1606:	public static final SoundEvent TOTEM_USE = register("item.totem.use");
+1724:	public static final SoundEvent WARDEN_HEARTBEAT = register("entity.warden.heartbeat");
+1733:	public static final SoundEvent WARDEN_SONIC_BOOM = register("entity.warden.sonic_boom");
+1771:	public static final SoundEvent WITHER_SPAWN = register("entity.wither.spawn");
+=== net/minecraft/world/entity/Mob.java
+250:	public void setTarget(final @Nullable LivingEntity target) {
+1074:	public @Nullable SpawnGroupData finalizeSpawn(
+1089:	public void setPersistenceRequired() {
+=== net/minecraft/world/entity/EntitySpawnReason.java
+4:	NATURAL,
+5:	CHUNK_GENERATION,
+6:	SPAWNER,
+7:	STRUCTURE,
+8:	BREEDING,
+9:	MOB_SUMMONED,
+10:	JOCKEY,
+11:	EVENT,
+12:	CONVERSION,
+13:	REINFORCEMENT,
+14:	TRIGGERED,
+15:	BUCKET,
+16:	SPAWN_ITEM_USE,
+17:	COMMAND,
+18:	DISPENSER,
+19:	PATROL,
+20:	TRIAL_SPAWNER,
+21:	LOAD,
+22:	DIMENSION_TRAVEL;
+25:		return reason == SPAWNER || reason == TRIAL_SPAWNER;
+29:		return reason == TRIAL_SPAWNER;
+=== net/minecraft/core/particles/ParticleTypes.java
+34:	public static final SimpleParticleType COPPER_FIRE_FLAME = register("copper_fire_flame", false);
+37:	public static final ParticleType<PowerParticleOption> DRAGON_BREATH = register(
+40:	public static final SimpleParticleType DRIPPING_LAVA = register("dripping_lava", false);
+41:	public static final SimpleParticleType FALLING_LAVA = register("falling_lava", false);
+42:	public static final SimpleParticleType LANDING_LAVA = register("landing_lava", false);
+53:	public static final SimpleParticleType END_ROD = register("end_rod", false);
+57:	public static final SimpleParticleType EXPLOSION_EMITTER = register("explosion_emitter", true);
+63:	public static final SimpleParticleType SONIC_BOOM = register("sonic_boom", true);
+69:	public static final SimpleParticleType FLAME = register("flame", false);
+79:	public static final SimpleParticleType SCULK_SOUL = register("sculk_soul", false);
+84:	public static final SimpleParticleType SOUL_FIRE_FLAME = register("soul_fire_flame", false);
+85:	public static final SimpleParticleType SOUL = register("soul", false);
+86:	public static final ParticleType<ColorParticleOption> FLASH = register("flash", false, ColorParticleOption::codec, ColorParticleOption::streamCodec);
+103:	public static final SimpleParticleType LARGE_SMOKE = register("large_smoke", false);
+104:	public static final SimpleParticleType LAVA = register("lava", false);
+108:	public static final SimpleParticleType PORTAL = register("portal", false);
+118:	public static final SimpleParticleType SPLASH = register("splash", false);
+119:	public static final SimpleParticleType WITCH = register("witch", false);
+126:	public static final SimpleParticleType CAMPFIRE_SIGNAL_SMOKE = register("campfire_signal_smoke", true);
+132:	public static final SimpleParticleType ASH = register("ash", false);
+139:	public static final SimpleParticleType REVERSE_PORTAL = register("reverse_portal", false);
+140:	public static final SimpleParticleType WHITE_ASH = register("white_ash", false);
+141:	public static final SimpleParticleType SMALL_FLAME = register("small_flame", false);
+143:	public static final SimpleParticleType DRIPPING_DRIPSTONE_LAVA = register("dripping_dripstone_lava", false);
+144:	public static final SimpleParticleType FALLING_DRIPSTONE_LAVA = register("falling_dripstone_lava", false);
+151:	public static final SimpleParticleType ELECTRIC_SPARK = register("electric_spark", true);
+164:	public static final SimpleParticleType OMINOUS_SPAWNING = register("ominous_spawning", true);
+166:	public static final SimpleParticleType TRIAL_OMEN = register("trial_omen", false);
+=== net/minecraft/world/effect/MobEffects.java
+14:	private static final int DARKNESS_EFFECT_FACTOR_PADDING_DURATION_TICKS = 22;
+15:	public static final Holder<MobEffect> SPEED = register(
+18:			.addAttributeModifier(Attributes.MOVEMENT_SPEED, Identifier.withDefaultNamespace("effect.speed"), 0.2F, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+24:				Attributes.MOVEMENT_SPEED, Identifier.withDefaultNamespace("effect.slowness"), -0.15F, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+30:			.addAttributeModifier(Attributes.ATTACK_SPEED, Identifier.withDefaultNamespace("effect.haste"), 0.1F, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+36:				Attributes.ATTACK_SPEED, Identifier.withDefaultNamespace("effect.mining_fatigue"), -0.1F, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+39:	public static final Holder<MobEffect> STRENGTH = register(
+51:	public static final Holder<MobEffect> NAUSEA = register("nausea", new MobEffect(MobEffectCategory.HARMFUL, 5578058).setBlendDuration(150, 20, 60));
+52:	public static final Holder<MobEffect> REGENERATION = register("regeneration", new RegenerationMobEffect(MobEffectCategory.BENEFICIAL, 13458603));
+53:	public static final Holder<MobEffect> RESISTANCE = register("resistance", new MobEffect(MobEffectCategory.BENEFICIAL, 9520880));
+54:	public static final Holder<MobEffect> FIRE_RESISTANCE = register("fire_resistance", new MobEffect(MobEffectCategory.BENEFICIAL, 16750848));
+66:	public static final Holder<MobEffect> BLINDNESS = register("blindness", new MobEffect(MobEffectCategory.HARMFUL, 2039587));
+67:	public static final Holder<MobEffect> NIGHT_VISION = register("night_vision", new MobEffect(MobEffectCategory.BENEFICIAL, 12779366));
+81:	public static final Holder<MobEffect> ABSORPTION = register(
+84:			.addAttributeModifier(Attributes.MAX_ABSORPTION, Identifier.withDefaultNamespace("effect.absorption"), 4.0, AttributeModifier.Operation.ADD_VALUE)
+87:	public static final Holder<MobEffect> GLOWING = register("glowing", new MobEffect(MobEffectCategory.NEUTRAL, 9740385));
+88:	public static final Holder<MobEffect> LEVITATION = register("levitation", new MobEffect(MobEffectCategory.HARMFUL, 13565951));
+99:	public static final Holder<MobEffect> SLOW_FALLING = register("slow_falling", new MobEffect(MobEffectCategory.BENEFICIAL, 15978425));
+106:	public static final Holder<MobEffect> DARKNESS = register("darkness", new MobEffect(MobEffectCategory.HARMFUL, 2696993).setBlendDuration(22));
+128:		return SPEED;
+=== net/minecraft/server/players/PlayerList.java
+482:	public void broadcastAll(final Packet<?> packet) {
+488:	public void broadcastAll(final Packet<?> packet, final ResourceKey<Level> dimension) {
+496:	public void broadcastSystemToTeam(final Player player, final Component message) {
+508:	public void broadcastSystemToAllExceptTeam(final Player player, final Component message) {
+606:	public void broadcast(
+680:	public List<ServerPlayer> getPlayersWithAddress(final String ip) {
+710:	public void broadcastSystemMessage(final Component message, final boolean overlay) {
+714:	public void broadcastSystemMessage(final Component message, final Function<ServerPlayer, Component> playerMessages, final boolean overlay) {
+725:	public void broadcastChatMessage(final PlayerChatMessage message, final CommandSourceStack sender, final ChatType.Bound chatType) {
+729:	public void broadcastChatMessage(final PlayerChatMessage message, final ServerPlayer sender, final ChatType.Bound chatType) {
+818:	public List<ServerPlayer> getPlayers() {
+822:	public Map<UUID, ServerPlayer> getPlayersByUUID() {
