@@ -19,6 +19,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -176,7 +177,7 @@ public final class SpaceTravel {
 		if (flare > 0 && fromSun < 6000) {   // солнечный ветер
 			double k = 0.06 * flare * (1 - fromSun / 6000) / Math.max(1, fromSun);
 			p.push(x * k, (ey - SolarSystem.PLANE_Y) * k, z * k);
-			p.hurtMarked = true;
+			syncMotion(p);
 		}
 
 		// дальний космос
@@ -235,7 +236,7 @@ public final class SpaceTravel {
 					}
 					double k = Math.min(1.4, 450000.0 / (dist * dist)) / dist;
 					p.push(dx * k, dy * k, dz * k);
-					p.hurtMarked = true;
+					syncMotion(p);
 					if (dist < 1500 && tick % 40 == 0) p.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 120, 0, false, false));
 					if (dist < 700 && tick % 40 == 0) p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0, false, false));
 				}
@@ -252,7 +253,7 @@ public final class SpaceTravel {
 					}
 					if (cfg.starHeat && tick % 20 == 0 && (dist < d.size * 1.6 || (horiz < 500 && Math.abs(dy) > d.size * 0.4 && Math.abs(dy) < d.jet))) {
 						p.setRemainingFireTicks(Math.max(p.getRemainingFireTicks(), 60));
-						if (horiz < 500) { p.push(0, dy > 0 ? -1.2 : 1.2, 0); p.hurtMarked = true; } // джет сносит
+						if (horiz < 500) { p.push(0, dy > 0 ? -1.2 : 1.2, 0); syncMotion(p); } // джет сносит
 					}
 				}
 				case "pulsar" -> {
@@ -686,6 +687,11 @@ public final class SpaceTravel {
 
 	private static float yawTo(double dx, double dz) {
 		return (float) Math.toDegrees(Math.atan2(-dx, dz));
+	}
+
+	/** Сообщить клиенту новую скорость после push (сам клиент движет игрока) */
+	private static void syncMotion(ServerPlayer p) {
+		p.connection.send(new ClientboundSetEntityMotionPacket(p.getId(), p.getDeltaMovement()));
 	}
 
 	private static void teleport(ServerPlayer p, ServerLevel level, double x, double y, double z, float yaw, float pitch) {
