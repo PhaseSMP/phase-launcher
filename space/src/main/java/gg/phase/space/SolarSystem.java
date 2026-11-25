@@ -33,6 +33,7 @@ public final class SolarSystem {
 	public static final List<Comet> COMETS;         // все кометы: именные и мелкие
 	public static final int NAMED_COMETS;
 	public static final List<Deep> DEEP;
+	public static final List<Constellation> CONSTELLATIONS;
 	public static final double BELT_INNER, BELT_OUTER, KUIPER_INNER, KUIPER_OUTER;
 	public static final int BELT_DECOR, KUIPER_DECOR;
 	public static final Body TORII_PARENT;
@@ -40,6 +41,7 @@ public final class SolarSystem {
 	private static final Map<String, Body> BY_ID = new HashMap<>();
 	private static final Map<String, Body> BY_DIM = new HashMap<>();
 	private static final Map<String, Deep> DEEP_BY_ID = new HashMap<>();
+	private static final Map<String, Constellation> CONST_BY_ID = new HashMap<>();
 
 	/** Планета, спутник или Солнце. Все величины — блоки, тики, градусы (в JSON). */
 	public static final class Body {
@@ -174,6 +176,77 @@ public final class SolarSystem {
 		}
 	}
 
+	/**
+	 * Созвездие. Звёзды заданы на «небесной сфере» мода: alpha — угол вдоль суточного вращения неба (как у Солнца),
+	 * delta — отклонение к северу/югу. Над Землёй сфера крутится вместе с ванильными звёздами (STAR_ANGLE),
+	 * в космосе стоит неподвижно — созвездия те же самые.
+	 */
+	public static final class Constellation {
+		public final String id, name, lore;
+		public final int color;
+		public final double[][] stars;     // направления звёзд на неповёрнутой сфере (единичные векторы)
+		public final double[] center;
+		public final int[][] lines;
+
+		Constellation(JsonObject o) {
+			id = str(o, "id", "?");
+			name = str(o, "name", id);
+			lore = str(o, "lore", "");
+			color = rgb(str(o, "color", "#ffffff"));
+			double a0 = num(o, "alpha", 0), d0 = num(o, "delta", 0);
+			JsonArray st = o.getAsJsonArray("stars");
+			stars = new double[st.size()][];
+			double cx = 0, cy = 0, cz = 0;
+			for (int i = 0; i < st.size(); i++) {
+				JsonArray p = st.get(i).getAsJsonArray();
+				double d = d0 + p.get(1).getAsDouble();
+				double a = a0 + p.get(0).getAsDouble() / Math.max(0.3, Math.cos(Math.toRadians(d0)));
+				stars[i] = sphere(a, d);
+				cx += stars[i][0]; cy += stars[i][1]; cz += stars[i][2];
+			}
+			double l = Math.sqrt(cx * cx + cy * cy + cz * cz);
+			center = new double[] { cx / l, cy / l, cz / l };
+			JsonArray ln = o.getAsJsonArray("lines");
+			lines = new int[ln.size()][2];
+			for (int i = 0; i < ln.size(); i++) {
+				lines[i][0] = ln.get(i).getAsJsonArray().get(0).getAsInt();
+				lines[i][1] = ln.get(i).getAsJsonArray().get(1).getAsInt();
+			}
+		}
+	}
+
+	/** Точка небесной сферы по углам (градусы): при alpha 0 и delta 0 — зенит в полдень */
+	public static double[] sphere(double alphaDeg, double deltaDeg) {
+		double a = Math.toRadians(alphaDeg), d = Math.toRadians(deltaDeg);
+		return new double[] { Math.sin(d), Math.cos(d) * Math.cos(a), Math.cos(d) * Math.sin(a) };
+	}
+
+	/**
+	 * Повернуть точку сферы так же, как игра поворачивает звёзды: Ry(−90°)·Rx(angle).
+	 * angle — радианы (STAR_ANGLE или SUN_ANGLE из атрибутов окружения); в космосе — 0.
+	 */
+	public static void skyDir(double[] v, double angle, double[] out) {
+		double c = Math.cos(angle), s = Math.sin(angle);
+		double x = v[0], y = v[1] * c - v[2] * s, z = v[1] * s + v[2] * c;
+		out[0] = -z;
+		out[1] = y;
+		out[2] = x;
+	}
+
+	/**
+	 * Где на небе Земли видна планета: элонгация от Солнца вдоль эклиптики (путь Солнца) и небольшая широта.
+	 * Возвращает точку на неповёрнутой сфере (дальше — skyDir с углом Солнца). null, если тело — сама Земля.
+	 */
+	public static double[] seenFromEarth(double[] earth, double[] target) {
+		double sx = -earth[0], sz = -earth[2];
+		double px = target[0] - earth[0], pz = target[2] - earth[2], py = target[1] - earth[1];
+		double dist = Math.sqrt(px * px + pz * pz);
+		if (dist < 1) return null;
+		double elong = Math.atan2(sx * pz - sz * px, sx * px + sz * pz);
+		double lat = Math.atan2(py, dist);
+		return sphere(Math.toDegrees(elong), Math.toDegrees(lat) * 3 + 4);
+	}
+
 	static {
 		JsonObject root;
 		try (InputStream in = SolarSystem.class.getResourceAsStream("/phasespace/bodies.json")) {
@@ -231,6 +304,15 @@ public final class SolarSystem {
 			DEEP_BY_ID.put(d.id, d);
 		}
 		DEEP = Collections.unmodifiableList(deep);
+		List<Constellation> cons = new ArrayList<>();
+		if (root.has("constellations")) {
+			for (JsonElement el : root.getAsJsonArray("constellations")) {
+				Constellation c = new Constellation(el.getAsJsonObject());
+				cons.add(c);
+				CONST_BY_ID.put(c.id, c);
+			}
+		}
+		CONSTELLATIONS = Collections.unmodifiableList(cons);
 
 		JsonObject belt = root.getAsJsonObject("belt"), kuiper = root.getAsJsonObject("kuiper"), torii = root.getAsJsonObject("torii");
 		BELT_INNER = num(belt, "inner", 5400);
@@ -250,6 +332,8 @@ public final class SolarSystem {
 	public static Body byId(String id) { return BY_ID.get(id); }
 
 	public static Deep deep(String id) { return DEEP_BY_ID.get(id); }
+
+	public static Constellation constellation(String id) { return CONST_BY_ID.get(id); }
 
 	/** Тело, в мир которого ведёт измерение (например phasespace:mars), или null */
 	public static Body byDimension(String dimId) { return BY_DIM.get(dimId); }

@@ -1,138 +1,2621 @@
 {
-  "_comment": "Вселенная Phase Space. Читают мод (орбиты, порталы, отрисовка) и tools/gen_assets.py (текстуры, миры). Время в тиках (20 = 1 с), расстояния и размеры в блоках. Плоскость Солнечной системы — Y 0. Если у планеты нет period, год считается по Кеплеру от орбиты (Земля 3000 бл = 2 часа). portal:false — тело без своего мира. После правки: python3 tools/gen_assets.py",
-  "sun": { "id": "sun", "name": "Солнце", "size": 520, "spin": 72000, "tilt": 7.25, "color": "#ffcf5a" },
-  "bodies": [
-    { "id": "mercury", "name": "Меркурий", "orbit": 1300, "phase": 40, "yAmp": 160, "node": 48,
-      "size": 24, "spin": 60000, "tilt": 0.03, "gravity": 0.38, "color": "#b9aea2", "tex": 16, "style": "mercury",
-      "surface": { "sky": "#000000", "fog": "#0c0b0a", "layers": [["bedrock", 1], ["deepslate", 46], ["tuff", 12], ["gravel", 3], ["light_gray_concrete_powder", 2]] } },
-    { "id": "venus", "name": "Венера", "orbit": 2100, "phase": 160, "yAmp": 90, "node": 76,
-      "size": 58, "spin": -120000, "tilt": 2.6, "gravity": 0.9, "color": "#f2c879", "tex": 16, "style": "venus",
-      "atmo": "#ffd27a", "atmoScale": 1.12, "clouds": true,
-      "surface": { "sky": "#d9a441", "fog": "#c98f3a", "layers": [["bedrock", 1], ["stone", 44], ["basalt", 10], ["orange_terracotta", 4], ["yellow_terracotta", 4]] } },
-    { "id": "earth", "name": "Земля", "orbit": 3000, "phase": 250, "yAmp": 0, "node": 0,
-      "size": 64, "spin": 24000, "tilt": 23.4, "gravity": 1.0, "color": "#6fb3ff", "tex": 16, "style": "earth",
-      "atmo": "#6fb3ff", "atmoScale": 1.10, "clouds": true, "lights": true, "aurora": "#7dffb4", "dim": "minecraft:overworld" },
-    { "id": "moon", "name": "Луна", "parent": "earth", "orbit": 190, "period": 36000, "phase": 0, "yAmp": 20, "node": 0,
-      "size": 18, "spin": 36000, "tilt": 6.7, "gravity": 0.17, "color": "#d6d6d6", "tex": 16, "style": "moon",
-      "surface": { "sky": "#000000", "fog": "#0a0a0a", "layers": [["bedrock", 1], ["deepslate", 40], ["andesite", 18], ["gravel", 2], ["light_gray_concrete_powder", 3]] } },
-    { "id": "mars", "name": "Марс", "orbit": 4200, "phase": 10, "yAmp": 110, "node": 50,
-      "size": 40, "spin": 25000, "tilt": 25.2, "gravity": 0.38, "color": "#ff8a5c", "tex": 16, "style": "mars",
-      "atmo": "#ff9e7a", "atmoScale": 1.06,
-      "surface": { "sky": "#d9a184", "fog": "#c98a6a", "layers": [["bedrock", 1], ["stone", 40], ["red_sandstone", 18], ["red_sand", 5]] } },
-    { "id": "phobos", "name": "Фобос", "parent": "mars", "orbit": 52, "period": 3000, "phase": 30, "yAmp": 4, "node": 0,
-      "size": 6, "spin": 3000, "tilt": 0, "gravity": 0.12, "color": "#9a8e84", "tex": 8, "style": "rock_dark", "shape": [1.4, 0.9, 1.1],
-      "surface": { "sky": "#000000", "fog": "#080706", "layers": [["bedrock", 1], ["deepslate", 52], ["tuff", 8], ["gravel", 2]] } },
-    { "id": "deimos", "name": "Деймос", "parent": "mars", "orbit": 80, "period": 9000, "phase": 200, "yAmp": 5, "node": 0,
-      "size": 4, "spin": 9000, "tilt": 0, "gravity": 0.12, "color": "#a69a8e", "tex": 8, "style": "rock_light", "shape": [1.3, 1.0, 1.1],
-      "surface": { "sky": "#000000", "fog": "#080706", "layers": [["bedrock", 1], ["deepslate", 50], ["andesite", 10], ["gravel", 2]] } },
-    { "id": "sakura", "name": "Сакура", "orbit": 4800, "phase": 280, "yAmp": 320, "node": 30,
-      "size": 22, "spin": 16000, "tilt": 30, "gravity": 0.4, "color": "#ffb7d5", "tex": 16, "style": "sakura",
-      "atmo": "#ffc8e0", "atmoScale": 1.12, "petals": true,
-      "surface": { "sky": "#ffc8e0", "fog": "#ffb0d0", "layers": [["bedrock", 1], ["stone", 40], ["dirt", 12], ["pink_terracotta", 3], ["pink_wool", 1]] } },
-    { "id": "vesta", "name": "Веста", "orbit": 5700, "phase": 120, "yAmp": 140, "node": 100,
-      "size": 10, "spin": 6400, "tilt": 29, "gravity": 0.12, "color": "#bfb2a4", "tex": 16, "style": "vesta", "shape": [1.1, 0.85, 1.0],
-      "surface": { "sky": "#000000", "fog": "#0b0a09", "layers": [["bedrock", 1], ["basalt", 30], ["andesite", 24], ["gravel", 3]] } },
-    { "id": "ceres", "name": "Церера", "orbit": 6000, "phase": 200, "yAmp": 160, "node": 80,
-      "size": 16, "spin": 9000, "tilt": 4, "gravity": 0.12, "color": "#9d968f", "tex": 16, "style": "ceres",
-      "surface": { "sky": "#000000", "fog": "#0a0a0a", "layers": [["bedrock", 1], ["deepslate", 40], ["tuff", 14], ["calcite", 2], ["gray_concrete_powder", 2]] } },
-    { "id": "florana", "name": "Флорана", "orbit": 7400, "phase": 300, "yAmp": 220, "node": 120,
-      "size": 72, "spin": 30000, "tilt": 15, "gravity": 0.75, "color": "#c77dff", "tex": 16, "style": "florana",
-      "atmo": "#b06bff", "atmoScale": 1.14, "clouds": true, "lights": true, "ring": "florana", "ringInner": 0.78, "ringOuter": 1.32, "spores": true, "aurora": "#d68bff",
-      "surface": { "sky": "#b48cff", "fog": "#9b6bff", "water": "#7b2cbf", "layers": [["bedrock", 1], ["stone", 44], ["purple_terracotta", 12], ["magenta_terracotta", 3], ["purple_concrete_powder", 2]] } },
-    { "id": "lumi", "name": "Луми", "parent": "florana", "orbit": 120, "period": 14000, "phase": 70, "yAmp": 30, "node": 0,
-      "size": 10, "spin": 14000, "tilt": 0, "gravity": 0.14, "color": "#8ff6ff", "tex": 16, "style": "lumi",
-      "surface": { "sky": "#000000", "fog": "#061214", "layers": [["bedrock", 1], ["deepslate", 40], ["prismarine", 12], ["sea_lantern", 1]] } },
-    { "id": "jupiter", "name": "Юпитер", "orbit": 9000, "phase": 120, "yAmp": 80, "node": 100,
-      "size": 260, "spin": 12000, "tilt": 3.1, "gravity": 1.4, "color": "#e8c9a0", "tex": 32, "style": "jupiter",
-      "atmo": "#ffd9a8", "atmoScale": 1.04, "aurora": "#9fb8ff",
-      "surface": { "sky": "#c79a6b", "fog": "#a8774c", "layers": [["bedrock", 1], ["magma_block", 3], ["air", 40], ["brown_terracotta", 2], ["orange_terracotta", 3], ["white_terracotta", 2], ["white_wool", 1]] } },
-    { "id": "amalthea", "name": "Амальтея", "parent": "jupiter", "orbit": 175, "period": 2600, "phase": 0, "yAmp": 2, "node": 0, "portal": false,
-      "size": 6, "spin": 2600, "tilt": 0, "color": "#b5574a", "tex": 8, "style": "amalthea", "shape": [1.6, 0.9, 1.0] },
-    { "id": "io", "name": "Ио", "parent": "jupiter", "orbit": 220, "period": 6000, "phase": 0, "yAmp": 6, "node": 0,
-      "size": 15, "spin": 6000, "tilt": 0, "gravity": 0.18, "color": "#f0d84a", "tex": 16, "style": "io",
-      "surface": { "sky": "#000000", "fog": "#120d02", "layers": [["bedrock", 1], ["basalt", 40], ["magma_block", 2], ["yellow_terracotta", 16], ["yellow_concrete_powder", 2]] } },
-    { "id": "europa", "name": "Европа", "parent": "jupiter", "orbit": 280, "period": 12000, "phase": 90, "yAmp": 8, "node": 0,
-      "size": 13, "spin": 12000, "tilt": 0, "gravity": 0.13, "color": "#e8dcc4", "tex": 16, "style": "europa",
-      "surface": { "sky": "#000000", "fog": "#0a0b10", "layers": [["bedrock", 1], ["stone", 20], ["water", 30], ["blue_ice", 6], ["packed_ice", 6], ["snow_block", 1]] } },
-    { "id": "ganymede", "name": "Ганимед", "parent": "jupiter", "orbit": 360, "period": 24000, "phase": 200, "yAmp": 10, "node": 0,
-      "size": 21, "spin": 24000, "tilt": 0, "gravity": 0.15, "color": "#b8ab98", "tex": 16, "style": "ganymede",
-      "surface": { "sky": "#000000", "fog": "#0a0a0a", "layers": [["bedrock", 1], ["deepslate", 40], ["tuff", 14], ["packed_ice", 3], ["gravel", 2]] } },
-    { "id": "callisto", "name": "Каллисто", "parent": "jupiter", "orbit": 460, "period": 56000, "phase": 300, "yAmp": 14, "node": 0,
-      "size": 19, "spin": 56000, "tilt": 0, "gravity": 0.13, "color": "#8c7f72", "tex": 16, "style": "callisto",
-      "surface": { "sky": "#000000", "fog": "#070606", "layers": [["bedrock", 1], ["deepslate", 46], ["blackstone", 12], ["gravel", 3]] } },
-    { "id": "saturn", "name": "Сатурн", "orbit": 11500, "phase": 210, "yAmp": 140, "node": 113,
-      "size": 220, "spin": 13000, "tilt": 26.7, "gravity": 1.1, "color": "#f2deae", "tex": 32, "style": "saturn",
-      "atmo": "#ffe9b0", "atmoScale": 1.04, "ring": "saturn", "ringInner": 0.66, "ringOuter": 1.25, "aurora": "#a0c4ff",
-      "surface": { "sky": "#e2c98f", "fog": "#cdb27a", "layers": [["bedrock", 1], ["magma_block", 3], ["air", 40], ["yellow_terracotta", 3], ["white_terracotta", 3], ["white_wool", 1]] } },
-    { "id": "mimas", "name": "Мимас", "parent": "saturn", "orbit": 310, "period": 5000, "phase": 120, "yAmp": 6, "node": 0, "portal": false,
-      "size": 7, "spin": 5000, "tilt": 0, "color": "#d0cfcc", "tex": 8, "style": "mimas" },
-    { "id": "enceladus", "name": "Энцелад", "parent": "saturn", "orbit": 360, "period": 8000, "phase": 60, "yAmp": 8, "node": 0,
-      "size": 9, "spin": 8000, "tilt": 0, "gravity": 0.12, "color": "#f2f6fa", "tex": 8, "style": "enceladus", "geysers": true,
-      "surface": { "sky": "#000000", "fog": "#0a0c10", "layers": [["bedrock", 1], ["stone", 18], ["water", 26], ["blue_ice", 10], ["packed_ice", 6], ["snow_block", 2]] } },
-    { "id": "titan", "name": "Титан", "parent": "saturn", "orbit": 560, "period": 30000, "phase": 160, "yAmp": 20, "node": 0,
-      "size": 22, "spin": 30000, "tilt": 0, "gravity": 0.14, "color": "#f0a64a", "tex": 16, "style": "titan",
-      "atmo": "#ffad42", "atmoScale": 1.16,
-      "surface": { "sky": "#c9803a", "fog": "#b56f2c", "water": "#3a2a10", "layers": [["bedrock", 1], ["packed_ice", 30], ["mud", 10], ["orange_terracotta", 16], ["brown_terracotta", 3]] } },
-    { "id": "iapetus", "name": "Япет", "parent": "saturn", "orbit": 760, "period": 70000, "phase": 300, "yAmp": 90, "node": 0, "portal": false,
-      "size": 12, "spin": 70000, "tilt": 0, "color": "#a79c8c", "tex": 16, "style": "iapetus" },
-    { "id": "uranus", "name": "Уран", "orbit": 14000, "phase": 60, "yAmp": 110, "node": 74,
-      "size": 120, "spin": -18000, "tilt": 97.8, "gravity": 0.9, "color": "#b5f2ff", "tex": 16, "style": "uranus",
-      "atmo": "#b5f2ff", "atmoScale": 1.06, "ring": "uranus", "ringInner": 0.8, "ringOuter": 1.05,
-      "surface": { "sky": "#9fdbe6", "fog": "#86c6d2", "layers": [["bedrock", 1], ["packed_ice", 40], ["air", 20], ["light_blue_terracotta", 3], ["cyan_terracotta", 2], ["light_blue_wool", 1]] } },
-    { "id": "miranda", "name": "Миранда", "parent": "uranus", "orbit": 120, "period": 7000, "phase": 40, "yAmp": 80, "node": 0, "portal": false,
-      "size": 7, "spin": 7000, "tilt": 0, "color": "#bdb8b2", "tex": 8, "style": "miranda" },
-    { "id": "titania", "name": "Титания", "parent": "uranus", "orbit": 190, "period": 20000, "phase": 10, "yAmp": 120, "node": 0,
-      "size": 10, "spin": 20000, "tilt": 0, "gravity": 0.12, "color": "#a9a097", "tex": 8, "style": "rock_light",
-      "surface": { "sky": "#000000", "fog": "#090909", "layers": [["bedrock", 1], ["deepslate", 40], ["andesite", 18], ["snow_block", 2]] } },
-    { "id": "oberon", "name": "Оберон", "parent": "uranus", "orbit": 245, "period": 30000, "phase": 190, "yAmp": 150, "node": 0,
-      "size": 10, "spin": 30000, "tilt": 0, "gravity": 0.12, "color": "#958a80", "tex": 8, "style": "rock_dark",
-      "surface": { "sky": "#000000", "fog": "#090909", "layers": [["bedrock", 1], ["deepslate", 46], ["tuff", 12], ["gravel", 2]] } },
-    { "id": "neptune", "name": "Нептун", "orbit": 16500, "phase": 330, "yAmp": 130, "node": 131,
-      "size": 115, "spin": 16000, "tilt": 28.3, "gravity": 1.1, "color": "#6f9bff", "tex": 16, "style": "neptune",
-      "atmo": "#5a8cff", "atmoScale": 1.07,
-      "surface": { "sky": "#3d63c9", "fog": "#2f4fa8", "layers": [["bedrock", 1], ["blue_ice", 40], ["air", 20], ["blue_terracotta", 3], ["light_blue_terracotta", 2], ["blue_wool", 1]] } },
-    { "id": "proteus", "name": "Протей", "parent": "neptune", "orbit": 125, "period": 4000, "phase": 300, "yAmp": 4, "node": 0, "portal": false,
-      "size": 6, "spin": 4000, "tilt": 0, "color": "#6c6660", "tex": 8, "style": "rock_dark", "shape": [1.2, 1.0, 1.1] },
-    { "id": "triton", "name": "Тритон", "parent": "neptune", "orbit": 210, "period": -24000, "phase": 40, "yAmp": 40, "node": 0,
-      "size": 14, "spin": 24000, "tilt": 0, "gravity": 0.12, "color": "#e6c8b8", "tex": 16, "style": "triton", "geysers": true,
-      "surface": { "sky": "#000000", "fog": "#0d0a09", "layers": [["bedrock", 1], ["packed_ice", 36], ["white_terracotta", 14], ["pink_terracotta", 4], ["snow_block", 2]] } },
-    { "id": "pluto", "name": "Плутон", "orbit": 18500, "phase": 90, "yAmp": 900, "node": 110,
-      "size": 20, "spin": -9000, "tilt": 120, "gravity": 0.12, "color": "#e8cfae", "tex": 16, "style": "pluto",
-      "surface": { "sky": "#000000", "fog": "#0b0a09", "layers": [["bedrock", 1], ["deepslate", 30], ["packed_ice", 22], ["white_terracotta", 6], ["snow_block", 3]] } },
-    { "id": "charon", "name": "Харон", "parent": "pluto", "orbit": 44, "period": 15000, "phase": 180, "yAmp": 10, "node": 0,
-      "size": 10, "spin": 15000, "tilt": 0, "gravity": 0.12, "color": "#b0a8a2", "tex": 8, "style": "charon",
-      "surface": { "sky": "#000000", "fog": "#090909", "layers": [["bedrock", 1], ["deepslate", 44], ["gray_concrete_powder", 14], ["snow_block", 2]] } },
-    { "id": "haumea", "name": "Хаумеа", "orbit": 20500, "phase": 200, "yAmp": 1100, "node": 240,
-      "size": 18, "spin": 1600, "tilt": 10, "gravity": 0.12, "color": "#f4f6fa", "tex": 16, "style": "haumea", "shape": [2.0, 0.8, 1.25],
-      "ring": "haumea", "ringInner": 0.9, "ringOuter": 1.3,
-      "surface": { "sky": "#000000", "fog": "#0b0c10", "layers": [["bedrock", 1], ["blue_ice", 30], ["packed_ice", 24], ["snow_block", 3]] } },
-    { "id": "makemake", "name": "Макемаке", "orbit": 22000, "phase": 20, "yAmp": 700, "node": 80,
-      "size": 16, "spin": 9000, "tilt": 0, "gravity": 0.12, "color": "#d7a27c", "tex": 16, "style": "makemake",
-      "surface": { "sky": "#000000", "fog": "#0b0907", "layers": [["bedrock", 1], ["packed_ice", 40], ["brown_terracotta", 10], ["snow_block", 2]] } },
-    { "id": "eris", "name": "Эрида", "orbit": 26000, "phase": 330, "yAmp": 1600, "node": 36,
-      "size": 20, "spin": 26000, "tilt": 0, "gravity": 0.12, "color": "#f0f0f2", "tex": 16, "style": "eris",
-      "surface": { "sky": "#000000", "fog": "#0c0c0c", "layers": [["bedrock", 1], ["packed_ice", 46], ["snow_block", 6], ["white_concrete_powder", 2]] } },
-    { "id": "sedna", "name": "Седна", "orbit": 34000, "phase": 160, "yAmp": 500, "node": 144,
-      "size": 16, "spin": 200000, "tilt": 0, "gravity": 0.12, "color": "#d6573c", "tex": 16, "style": "sedna",
-      "surface": { "sky": "#000000", "fog": "#0e0605", "layers": [["bedrock", 1], ["packed_ice", 40], ["red_terracotta", 12], ["red_sand", 2]] } }
-  ],
-  "comets": [
-    { "id": "hyakutake", "name": "Комета Хякутакэ", "q": 620, "Q": 22000, "period": 300000, "phase": 0.93, "omega": 35, "yAmp": 1200, "size": 7, "tail": 1.6 },
-    { "id": "ikeya_seki", "name": "Комета Икэя — Сэки", "q": 330, "Q": 15000, "period": 210000, "phase": 0.48, "omega": 160, "yAmp": 900, "size": 5, "tail": 2.0 },
-    { "id": "halley", "name": "Комета Галлея", "q": 1250, "Q": 18000, "period": 260000, "phase": 0.08, "omega": 250, "yAmp": 1400, "size": 9, "tail": 1.4 },
-    { "id": "hale_bopp", "name": "Комета Хейла — Боппа", "q": 2200, "Q": 26000, "period": 420000, "phase": 0.985, "omega": 300, "yAmp": 1700, "size": 12, "tail": 2.2 },
-    { "id": "encke", "name": "Комета Энке", "q": 800, "Q": 10000, "period": 90000, "phase": 0.6, "omega": 110, "yAmp": 400, "size": 4, "tail": 0.9 },
-    { "id": "tsuki", "name": "Комета Цуки", "q": 900, "Q": 13000, "period": 150000, "phase": 0.3, "omega": 200, "yAmp": 1000, "size": 6, "tail": 1.2 }
-  ],
-  "minorComets": { "count": 40, "seed": 618 },
-  "belt": { "inner": 5400, "outer": 6600, "decor": 1300 },
-  "kuiper": { "inner": 19500, "outer": 25000, "decor": 500 },
-  "torii": { "parent": "earth", "orbit": 80, "period": 7200, "size": 12 },
-  "deep": [
-    { "id": "yomi", "type": "black_hole", "name": "Чёрная дыра Ёми", "pos": [-42000, 0, 31000], "size": 600, "disk": 4.2, "pull": 14000, "color": "#ffb060" },
-    { "id": "ton618", "type": "quasar", "name": "Квазар TON 618", "pos": [110000, 300, -70000], "size": 2400, "disk": 5.0, "jet": 42000, "color": "#bfe0ff" },
-    { "id": "kagura", "type": "pulsar", "name": "Пульсар Кагура", "pos": [-26000, -400, -61000], "size": 40, "beam": 5000, "period": 30, "color": "#a8d8ff" },
-    { "id": "izanagi", "type": "binary", "name": "Двойная звезда Идзанаги и Идзанами", "pos": [-88000, 200, 76000], "size": 800, "sep": 4200, "period": 24000, "color": "#9fc6ff", "color2": "#ff9a5a" },
-    { "id": "amaterasu", "type": "nebula", "name": "Туманность Аматэрасу", "pos": [64000, 0, 52000], "size": 14000, "color": "#ff5aa8", "color2": "#5ac8ff" }
-  ]
+ "_comment": "Вселенная Phase Space. Читают мод (орбиты, порталы, отрисовка) и tools/gen_assets.py (текстуры, миры). Время в тиках (20 = 1 с), расстояния и размеры в блоках. Плоскость Солнечной системы — Y 0. Если у планеты нет period, год считается по Кеплеру от орбиты (Земля 3000 бл = 2 часа). portal:false — тело без своего мира. После правки: python3 tools/gen_assets.py",
+ "sun": {
+  "id": "sun",
+  "name": "Солнце",
+  "size": 520,
+  "spin": 72000,
+  "tilt": 7.25,
+  "color": "#ffcf5a"
+ },
+ "bodies": [
+  {
+   "id": "mercury",
+   "name": "Меркурий",
+   "orbit": 1300,
+   "phase": 40,
+   "yAmp": 160,
+   "node": 48,
+   "size": 24,
+   "spin": 60000,
+   "tilt": 0.03,
+   "gravity": 0.38,
+   "color": "#b9aea2",
+   "tex": 16,
+   "style": "mercury",
+   "surface": {
+    "sky": "#000000",
+    "fog": "#0c0b0a",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "deepslate",
+      46
+     ],
+     [
+      "tuff",
+      12
+     ],
+     [
+      "gravel",
+      3
+     ],
+     [
+      "light_gray_concrete_powder",
+      2
+     ]
+    ]
+   }
+  },
+  {
+   "id": "venus",
+   "name": "Венера",
+   "orbit": 2100,
+   "phase": 160,
+   "yAmp": 90,
+   "node": 76,
+   "size": 58,
+   "spin": -120000,
+   "tilt": 2.6,
+   "gravity": 0.9,
+   "color": "#f2c879",
+   "tex": 16,
+   "style": "venus",
+   "atmo": "#ffd27a",
+   "atmoScale": 1.12,
+   "clouds": true,
+   "surface": {
+    "sky": "#d9a441",
+    "fog": "#c98f3a",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "stone",
+      44
+     ],
+     [
+      "basalt",
+      10
+     ],
+     [
+      "orange_terracotta",
+      4
+     ],
+     [
+      "yellow_terracotta",
+      4
+     ]
+    ]
+   }
+  },
+  {
+   "id": "earth",
+   "name": "Земля",
+   "orbit": 3000,
+   "phase": 250,
+   "yAmp": 0,
+   "node": 0,
+   "size": 64,
+   "spin": 24000,
+   "tilt": 23.4,
+   "gravity": 1.0,
+   "color": "#6fb3ff",
+   "tex": 16,
+   "style": "earth",
+   "atmo": "#6fb3ff",
+   "atmoScale": 1.1,
+   "clouds": true,
+   "lights": true,
+   "aurora": "#7dffb4",
+   "dim": "minecraft:overworld"
+  },
+  {
+   "id": "moon",
+   "name": "Луна",
+   "parent": "earth",
+   "orbit": 190,
+   "period": 36000,
+   "phase": 0,
+   "yAmp": 20,
+   "node": 0,
+   "size": 18,
+   "spin": 36000,
+   "tilt": 6.7,
+   "gravity": 0.17,
+   "color": "#d6d6d6",
+   "tex": 16,
+   "style": "moon",
+   "surface": {
+    "sky": "#000000",
+    "fog": "#0a0a0a",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "deepslate",
+      40
+     ],
+     [
+      "andesite",
+      18
+     ],
+     [
+      "gravel",
+      2
+     ],
+     [
+      "light_gray_concrete_powder",
+      3
+     ]
+    ]
+   }
+  },
+  {
+   "id": "mars",
+   "name": "Марс",
+   "orbit": 4200,
+   "phase": 10,
+   "yAmp": 110,
+   "node": 50,
+   "size": 40,
+   "spin": 25000,
+   "tilt": 25.2,
+   "gravity": 0.38,
+   "color": "#ff8a5c",
+   "tex": 16,
+   "style": "mars",
+   "atmo": "#ff9e7a",
+   "atmoScale": 1.06,
+   "surface": {
+    "sky": "#d9a184",
+    "fog": "#c98a6a",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "stone",
+      40
+     ],
+     [
+      "red_sandstone",
+      18
+     ],
+     [
+      "red_sand",
+      5
+     ]
+    ]
+   }
+  },
+  {
+   "id": "phobos",
+   "name": "Фобос",
+   "parent": "mars",
+   "orbit": 52,
+   "period": 3000,
+   "phase": 30,
+   "yAmp": 4,
+   "node": 0,
+   "size": 6,
+   "spin": 3000,
+   "tilt": 0,
+   "gravity": 0.12,
+   "color": "#9a8e84",
+   "tex": 8,
+   "style": "rock_dark",
+   "shape": [
+    1.4,
+    0.9,
+    1.1
+   ],
+   "surface": {
+    "sky": "#000000",
+    "fog": "#080706",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "deepslate",
+      52
+     ],
+     [
+      "tuff",
+      8
+     ],
+     [
+      "gravel",
+      2
+     ]
+    ]
+   }
+  },
+  {
+   "id": "deimos",
+   "name": "Деймос",
+   "parent": "mars",
+   "orbit": 80,
+   "period": 9000,
+   "phase": 200,
+   "yAmp": 5,
+   "node": 0,
+   "size": 4,
+   "spin": 9000,
+   "tilt": 0,
+   "gravity": 0.12,
+   "color": "#a69a8e",
+   "tex": 8,
+   "style": "rock_light",
+   "shape": [
+    1.3,
+    1.0,
+    1.1
+   ],
+   "surface": {
+    "sky": "#000000",
+    "fog": "#080706",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "deepslate",
+      50
+     ],
+     [
+      "andesite",
+      10
+     ],
+     [
+      "gravel",
+      2
+     ]
+    ]
+   }
+  },
+  {
+   "id": "sakura",
+   "name": "Сакура",
+   "orbit": 4800,
+   "phase": 280,
+   "yAmp": 320,
+   "node": 30,
+   "size": 22,
+   "spin": 16000,
+   "tilt": 30,
+   "gravity": 0.4,
+   "color": "#ffb7d5",
+   "tex": 16,
+   "style": "sakura",
+   "atmo": "#ffc8e0",
+   "atmoScale": 1.12,
+   "petals": true,
+   "surface": {
+    "sky": "#ffc8e0",
+    "fog": "#ffb0d0",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "stone",
+      40
+     ],
+     [
+      "dirt",
+      12
+     ],
+     [
+      "pink_terracotta",
+      3
+     ],
+     [
+      "pink_wool",
+      1
+     ]
+    ]
+   }
+  },
+  {
+   "id": "vesta",
+   "name": "Веста",
+   "orbit": 5700,
+   "phase": 120,
+   "yAmp": 140,
+   "node": 100,
+   "size": 10,
+   "spin": 6400,
+   "tilt": 29,
+   "gravity": 0.12,
+   "color": "#bfb2a4",
+   "tex": 16,
+   "style": "vesta",
+   "shape": [
+    1.1,
+    0.85,
+    1.0
+   ],
+   "surface": {
+    "sky": "#000000",
+    "fog": "#0b0a09",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "basalt",
+      30
+     ],
+     [
+      "andesite",
+      24
+     ],
+     [
+      "gravel",
+      3
+     ]
+    ]
+   }
+  },
+  {
+   "id": "ceres",
+   "name": "Церера",
+   "orbit": 6000,
+   "phase": 200,
+   "yAmp": 160,
+   "node": 80,
+   "size": 16,
+   "spin": 9000,
+   "tilt": 4,
+   "gravity": 0.12,
+   "color": "#9d968f",
+   "tex": 16,
+   "style": "ceres",
+   "surface": {
+    "sky": "#000000",
+    "fog": "#0a0a0a",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "deepslate",
+      40
+     ],
+     [
+      "tuff",
+      14
+     ],
+     [
+      "calcite",
+      2
+     ],
+     [
+      "gray_concrete_powder",
+      2
+     ]
+    ]
+   }
+  },
+  {
+   "id": "florana",
+   "name": "Флорана",
+   "orbit": 7400,
+   "phase": 300,
+   "yAmp": 220,
+   "node": 120,
+   "size": 72,
+   "spin": 30000,
+   "tilt": 15,
+   "gravity": 0.75,
+   "color": "#c77dff",
+   "tex": 16,
+   "style": "florana",
+   "atmo": "#b06bff",
+   "atmoScale": 1.14,
+   "clouds": true,
+   "lights": true,
+   "ring": "florana",
+   "ringInner": 0.78,
+   "ringOuter": 1.32,
+   "spores": true,
+   "aurora": "#d68bff",
+   "surface": {
+    "sky": "#b48cff",
+    "fog": "#9b6bff",
+    "water": "#7b2cbf",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "stone",
+      44
+     ],
+     [
+      "purple_terracotta",
+      12
+     ],
+     [
+      "magenta_terracotta",
+      3
+     ],
+     [
+      "purple_concrete_powder",
+      2
+     ]
+    ]
+   }
+  },
+  {
+   "id": "lumi",
+   "name": "Луми",
+   "parent": "florana",
+   "orbit": 120,
+   "period": 14000,
+   "phase": 70,
+   "yAmp": 30,
+   "node": 0,
+   "size": 10,
+   "spin": 14000,
+   "tilt": 0,
+   "gravity": 0.14,
+   "color": "#8ff6ff",
+   "tex": 16,
+   "style": "lumi",
+   "surface": {
+    "sky": "#000000",
+    "fog": "#061214",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "deepslate",
+      40
+     ],
+     [
+      "prismarine",
+      12
+     ],
+     [
+      "sea_lantern",
+      1
+     ]
+    ]
+   }
+  },
+  {
+   "id": "jupiter",
+   "name": "Юпитер",
+   "orbit": 9000,
+   "phase": 120,
+   "yAmp": 80,
+   "node": 100,
+   "size": 260,
+   "spin": 12000,
+   "tilt": 3.1,
+   "gravity": 1.4,
+   "color": "#e8c9a0",
+   "tex": 32,
+   "style": "jupiter",
+   "atmo": "#ffd9a8",
+   "atmoScale": 1.04,
+   "aurora": "#9fb8ff",
+   "surface": {
+    "sky": "#c79a6b",
+    "fog": "#a8774c",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "magma_block",
+      3
+     ],
+     [
+      "air",
+      40
+     ],
+     [
+      "brown_terracotta",
+      2
+     ],
+     [
+      "orange_terracotta",
+      3
+     ],
+     [
+      "white_terracotta",
+      2
+     ],
+     [
+      "white_wool",
+      1
+     ]
+    ]
+   }
+  },
+  {
+   "id": "amalthea",
+   "name": "Амальтея",
+   "parent": "jupiter",
+   "orbit": 175,
+   "period": 2600,
+   "phase": 0,
+   "yAmp": 2,
+   "node": 0,
+   "portal": false,
+   "size": 6,
+   "spin": 2600,
+   "tilt": 0,
+   "color": "#b5574a",
+   "tex": 8,
+   "style": "amalthea",
+   "shape": [
+    1.6,
+    0.9,
+    1.0
+   ]
+  },
+  {
+   "id": "io",
+   "name": "Ио",
+   "parent": "jupiter",
+   "orbit": 220,
+   "period": 6000,
+   "phase": 0,
+   "yAmp": 6,
+   "node": 0,
+   "size": 15,
+   "spin": 6000,
+   "tilt": 0,
+   "gravity": 0.18,
+   "color": "#f0d84a",
+   "tex": 16,
+   "style": "io",
+   "surface": {
+    "sky": "#000000",
+    "fog": "#120d02",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "basalt",
+      40
+     ],
+     [
+      "magma_block",
+      2
+     ],
+     [
+      "yellow_terracotta",
+      16
+     ],
+     [
+      "yellow_concrete_powder",
+      2
+     ]
+    ]
+   }
+  },
+  {
+   "id": "europa",
+   "name": "Европа",
+   "parent": "jupiter",
+   "orbit": 280,
+   "period": 12000,
+   "phase": 90,
+   "yAmp": 8,
+   "node": 0,
+   "size": 13,
+   "spin": 12000,
+   "tilt": 0,
+   "gravity": 0.13,
+   "color": "#e8dcc4",
+   "tex": 16,
+   "style": "europa",
+   "surface": {
+    "sky": "#000000",
+    "fog": "#0a0b10",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "stone",
+      20
+     ],
+     [
+      "water",
+      30
+     ],
+     [
+      "blue_ice",
+      6
+     ],
+     [
+      "packed_ice",
+      6
+     ],
+     [
+      "snow_block",
+      1
+     ]
+    ]
+   }
+  },
+  {
+   "id": "ganymede",
+   "name": "Ганимед",
+   "parent": "jupiter",
+   "orbit": 360,
+   "period": 24000,
+   "phase": 200,
+   "yAmp": 10,
+   "node": 0,
+   "size": 21,
+   "spin": 24000,
+   "tilt": 0,
+   "gravity": 0.15,
+   "color": "#b8ab98",
+   "tex": 16,
+   "style": "ganymede",
+   "surface": {
+    "sky": "#000000",
+    "fog": "#0a0a0a",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "deepslate",
+      40
+     ],
+     [
+      "tuff",
+      14
+     ],
+     [
+      "packed_ice",
+      3
+     ],
+     [
+      "gravel",
+      2
+     ]
+    ]
+   }
+  },
+  {
+   "id": "callisto",
+   "name": "Каллисто",
+   "parent": "jupiter",
+   "orbit": 460,
+   "period": 56000,
+   "phase": 300,
+   "yAmp": 14,
+   "node": 0,
+   "size": 19,
+   "spin": 56000,
+   "tilt": 0,
+   "gravity": 0.13,
+   "color": "#8c7f72",
+   "tex": 16,
+   "style": "callisto",
+   "surface": {
+    "sky": "#000000",
+    "fog": "#070606",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "deepslate",
+      46
+     ],
+     [
+      "blackstone",
+      12
+     ],
+     [
+      "gravel",
+      3
+     ]
+    ]
+   }
+  },
+  {
+   "id": "saturn",
+   "name": "Сатурн",
+   "orbit": 11500,
+   "phase": 210,
+   "yAmp": 140,
+   "node": 113,
+   "size": 220,
+   "spin": 13000,
+   "tilt": 26.7,
+   "gravity": 1.1,
+   "color": "#f2deae",
+   "tex": 32,
+   "style": "saturn",
+   "atmo": "#ffe9b0",
+   "atmoScale": 1.04,
+   "ring": "saturn",
+   "ringInner": 0.66,
+   "ringOuter": 1.25,
+   "aurora": "#a0c4ff",
+   "surface": {
+    "sky": "#e2c98f",
+    "fog": "#cdb27a",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "magma_block",
+      3
+     ],
+     [
+      "air",
+      40
+     ],
+     [
+      "yellow_terracotta",
+      3
+     ],
+     [
+      "white_terracotta",
+      3
+     ],
+     [
+      "white_wool",
+      1
+     ]
+    ]
+   }
+  },
+  {
+   "id": "mimas",
+   "name": "Мимас",
+   "parent": "saturn",
+   "orbit": 310,
+   "period": 5000,
+   "phase": 120,
+   "yAmp": 6,
+   "node": 0,
+   "portal": false,
+   "size": 7,
+   "spin": 5000,
+   "tilt": 0,
+   "color": "#d0cfcc",
+   "tex": 8,
+   "style": "mimas"
+  },
+  {
+   "id": "enceladus",
+   "name": "Энцелад",
+   "parent": "saturn",
+   "orbit": 360,
+   "period": 8000,
+   "phase": 60,
+   "yAmp": 8,
+   "node": 0,
+   "size": 9,
+   "spin": 8000,
+   "tilt": 0,
+   "gravity": 0.12,
+   "color": "#f2f6fa",
+   "tex": 8,
+   "style": "enceladus",
+   "geysers": true,
+   "surface": {
+    "sky": "#000000",
+    "fog": "#0a0c10",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "stone",
+      18
+     ],
+     [
+      "water",
+      26
+     ],
+     [
+      "blue_ice",
+      10
+     ],
+     [
+      "packed_ice",
+      6
+     ],
+     [
+      "snow_block",
+      2
+     ]
+    ]
+   }
+  },
+  {
+   "id": "titan",
+   "name": "Титан",
+   "parent": "saturn",
+   "orbit": 560,
+   "period": 30000,
+   "phase": 160,
+   "yAmp": 20,
+   "node": 0,
+   "size": 22,
+   "spin": 30000,
+   "tilt": 0,
+   "gravity": 0.14,
+   "color": "#f0a64a",
+   "tex": 16,
+   "style": "titan",
+   "atmo": "#ffad42",
+   "atmoScale": 1.16,
+   "surface": {
+    "sky": "#c9803a",
+    "fog": "#b56f2c",
+    "water": "#3a2a10",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "packed_ice",
+      30
+     ],
+     [
+      "mud",
+      10
+     ],
+     [
+      "orange_terracotta",
+      16
+     ],
+     [
+      "brown_terracotta",
+      3
+     ]
+    ]
+   }
+  },
+  {
+   "id": "iapetus",
+   "name": "Япет",
+   "parent": "saturn",
+   "orbit": 760,
+   "period": 70000,
+   "phase": 300,
+   "yAmp": 90,
+   "node": 0,
+   "portal": false,
+   "size": 12,
+   "spin": 70000,
+   "tilt": 0,
+   "color": "#a79c8c",
+   "tex": 16,
+   "style": "iapetus"
+  },
+  {
+   "id": "uranus",
+   "name": "Уран",
+   "orbit": 14000,
+   "phase": 60,
+   "yAmp": 110,
+   "node": 74,
+   "size": 120,
+   "spin": -18000,
+   "tilt": 97.8,
+   "gravity": 0.9,
+   "color": "#b5f2ff",
+   "tex": 16,
+   "style": "uranus",
+   "atmo": "#b5f2ff",
+   "atmoScale": 1.06,
+   "ring": "uranus",
+   "ringInner": 0.8,
+   "ringOuter": 1.05,
+   "surface": {
+    "sky": "#9fdbe6",
+    "fog": "#86c6d2",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "packed_ice",
+      40
+     ],
+     [
+      "air",
+      20
+     ],
+     [
+      "light_blue_terracotta",
+      3
+     ],
+     [
+      "cyan_terracotta",
+      2
+     ],
+     [
+      "light_blue_wool",
+      1
+     ]
+    ]
+   }
+  },
+  {
+   "id": "miranda",
+   "name": "Миранда",
+   "parent": "uranus",
+   "orbit": 120,
+   "period": 7000,
+   "phase": 40,
+   "yAmp": 80,
+   "node": 0,
+   "portal": false,
+   "size": 7,
+   "spin": 7000,
+   "tilt": 0,
+   "color": "#bdb8b2",
+   "tex": 8,
+   "style": "miranda"
+  },
+  {
+   "id": "titania",
+   "name": "Титания",
+   "parent": "uranus",
+   "orbit": 190,
+   "period": 20000,
+   "phase": 10,
+   "yAmp": 120,
+   "node": 0,
+   "size": 10,
+   "spin": 20000,
+   "tilt": 0,
+   "gravity": 0.12,
+   "color": "#a9a097",
+   "tex": 8,
+   "style": "rock_light",
+   "surface": {
+    "sky": "#000000",
+    "fog": "#090909",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "deepslate",
+      40
+     ],
+     [
+      "andesite",
+      18
+     ],
+     [
+      "snow_block",
+      2
+     ]
+    ]
+   }
+  },
+  {
+   "id": "oberon",
+   "name": "Оберон",
+   "parent": "uranus",
+   "orbit": 245,
+   "period": 30000,
+   "phase": 190,
+   "yAmp": 150,
+   "node": 0,
+   "size": 10,
+   "spin": 30000,
+   "tilt": 0,
+   "gravity": 0.12,
+   "color": "#958a80",
+   "tex": 8,
+   "style": "rock_dark",
+   "surface": {
+    "sky": "#000000",
+    "fog": "#090909",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "deepslate",
+      46
+     ],
+     [
+      "tuff",
+      12
+     ],
+     [
+      "gravel",
+      2
+     ]
+    ]
+   }
+  },
+  {
+   "id": "neptune",
+   "name": "Нептун",
+   "orbit": 16500,
+   "phase": 330,
+   "yAmp": 130,
+   "node": 131,
+   "size": 115,
+   "spin": 16000,
+   "tilt": 28.3,
+   "gravity": 1.1,
+   "color": "#6f9bff",
+   "tex": 16,
+   "style": "neptune",
+   "atmo": "#5a8cff",
+   "atmoScale": 1.07,
+   "surface": {
+    "sky": "#3d63c9",
+    "fog": "#2f4fa8",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "blue_ice",
+      40
+     ],
+     [
+      "air",
+      20
+     ],
+     [
+      "blue_terracotta",
+      3
+     ],
+     [
+      "light_blue_terracotta",
+      2
+     ],
+     [
+      "blue_wool",
+      1
+     ]
+    ]
+   }
+  },
+  {
+   "id": "proteus",
+   "name": "Протей",
+   "parent": "neptune",
+   "orbit": 125,
+   "period": 4000,
+   "phase": 300,
+   "yAmp": 4,
+   "node": 0,
+   "portal": false,
+   "size": 6,
+   "spin": 4000,
+   "tilt": 0,
+   "color": "#6c6660",
+   "tex": 8,
+   "style": "rock_dark",
+   "shape": [
+    1.2,
+    1.0,
+    1.1
+   ]
+  },
+  {
+   "id": "triton",
+   "name": "Тритон",
+   "parent": "neptune",
+   "orbit": 210,
+   "period": -24000,
+   "phase": 40,
+   "yAmp": 40,
+   "node": 0,
+   "size": 14,
+   "spin": 24000,
+   "tilt": 0,
+   "gravity": 0.12,
+   "color": "#e6c8b8",
+   "tex": 16,
+   "style": "triton",
+   "geysers": true,
+   "surface": {
+    "sky": "#000000",
+    "fog": "#0d0a09",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "packed_ice",
+      36
+     ],
+     [
+      "white_terracotta",
+      14
+     ],
+     [
+      "pink_terracotta",
+      4
+     ],
+     [
+      "snow_block",
+      2
+     ]
+    ]
+   }
+  },
+  {
+   "id": "pluto",
+   "name": "Плутон",
+   "orbit": 18500,
+   "phase": 90,
+   "yAmp": 900,
+   "node": 110,
+   "size": 20,
+   "spin": -9000,
+   "tilt": 120,
+   "gravity": 0.12,
+   "color": "#e8cfae",
+   "tex": 16,
+   "style": "pluto",
+   "surface": {
+    "sky": "#000000",
+    "fog": "#0b0a09",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "deepslate",
+      30
+     ],
+     [
+      "packed_ice",
+      22
+     ],
+     [
+      "white_terracotta",
+      6
+     ],
+     [
+      "snow_block",
+      3
+     ]
+    ]
+   }
+  },
+  {
+   "id": "charon",
+   "name": "Харон",
+   "parent": "pluto",
+   "orbit": 44,
+   "period": 15000,
+   "phase": 180,
+   "yAmp": 10,
+   "node": 0,
+   "size": 10,
+   "spin": 15000,
+   "tilt": 0,
+   "gravity": 0.12,
+   "color": "#b0a8a2",
+   "tex": 8,
+   "style": "charon",
+   "surface": {
+    "sky": "#000000",
+    "fog": "#090909",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "deepslate",
+      44
+     ],
+     [
+      "gray_concrete_powder",
+      14
+     ],
+     [
+      "snow_block",
+      2
+     ]
+    ]
+   }
+  },
+  {
+   "id": "haumea",
+   "name": "Хаумеа",
+   "orbit": 20500,
+   "phase": 200,
+   "yAmp": 1100,
+   "node": 240,
+   "size": 18,
+   "spin": 1600,
+   "tilt": 10,
+   "gravity": 0.12,
+   "color": "#f4f6fa",
+   "tex": 16,
+   "style": "haumea",
+   "shape": [
+    2.0,
+    0.8,
+    1.25
+   ],
+   "ring": "haumea",
+   "ringInner": 0.9,
+   "ringOuter": 1.3,
+   "surface": {
+    "sky": "#000000",
+    "fog": "#0b0c10",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "blue_ice",
+      30
+     ],
+     [
+      "packed_ice",
+      24
+     ],
+     [
+      "snow_block",
+      3
+     ]
+    ]
+   }
+  },
+  {
+   "id": "makemake",
+   "name": "Макемаке",
+   "orbit": 22000,
+   "phase": 20,
+   "yAmp": 700,
+   "node": 80,
+   "size": 16,
+   "spin": 9000,
+   "tilt": 0,
+   "gravity": 0.12,
+   "color": "#d7a27c",
+   "tex": 16,
+   "style": "makemake",
+   "surface": {
+    "sky": "#000000",
+    "fog": "#0b0907",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "packed_ice",
+      40
+     ],
+     [
+      "brown_terracotta",
+      10
+     ],
+     [
+      "snow_block",
+      2
+     ]
+    ]
+   }
+  },
+  {
+   "id": "eris",
+   "name": "Эрида",
+   "orbit": 26000,
+   "phase": 330,
+   "yAmp": 1600,
+   "node": 36,
+   "size": 20,
+   "spin": 26000,
+   "tilt": 0,
+   "gravity": 0.12,
+   "color": "#f0f0f2",
+   "tex": 16,
+   "style": "eris",
+   "surface": {
+    "sky": "#000000",
+    "fog": "#0c0c0c",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "packed_ice",
+      46
+     ],
+     [
+      "snow_block",
+      6
+     ],
+     [
+      "white_concrete_powder",
+      2
+     ]
+    ]
+   }
+  },
+  {
+   "id": "sedna",
+   "name": "Седна",
+   "orbit": 34000,
+   "phase": 160,
+   "yAmp": 500,
+   "node": 144,
+   "size": 16,
+   "spin": 200000,
+   "tilt": 0,
+   "gravity": 0.12,
+   "color": "#d6573c",
+   "tex": 16,
+   "style": "sedna",
+   "surface": {
+    "sky": "#000000",
+    "fog": "#0e0605",
+    "layers": [
+     [
+      "bedrock",
+      1
+     ],
+     [
+      "packed_ice",
+      40
+     ],
+     [
+      "red_terracotta",
+      12
+     ],
+     [
+      "red_sand",
+      2
+     ]
+    ]
+   }
+  }
+ ],
+ "comets": [
+  {
+   "id": "hyakutake",
+   "name": "Комета Хякутакэ",
+   "q": 620,
+   "Q": 22000,
+   "period": 300000,
+   "phase": 0.93,
+   "omega": 35,
+   "yAmp": 1200,
+   "size": 7,
+   "tail": 1.6
+  },
+  {
+   "id": "ikeya_seki",
+   "name": "Комета Икэя — Сэки",
+   "q": 330,
+   "Q": 15000,
+   "period": 210000,
+   "phase": 0.48,
+   "omega": 160,
+   "yAmp": 900,
+   "size": 5,
+   "tail": 2.0
+  },
+  {
+   "id": "halley",
+   "name": "Комета Галлея",
+   "q": 1250,
+   "Q": 18000,
+   "period": 260000,
+   "phase": 0.08,
+   "omega": 250,
+   "yAmp": 1400,
+   "size": 9,
+   "tail": 1.4
+  },
+  {
+   "id": "hale_bopp",
+   "name": "Комета Хейла — Боппа",
+   "q": 2200,
+   "Q": 26000,
+   "period": 420000,
+   "phase": 0.985,
+   "omega": 300,
+   "yAmp": 1700,
+   "size": 12,
+   "tail": 2.2
+  },
+  {
+   "id": "encke",
+   "name": "Комета Энке",
+   "q": 800,
+   "Q": 10000,
+   "period": 90000,
+   "phase": 0.6,
+   "omega": 110,
+   "yAmp": 400,
+   "size": 4,
+   "tail": 0.9
+  },
+  {
+   "id": "tsuki",
+   "name": "Комета Цуки",
+   "q": 900,
+   "Q": 13000,
+   "period": 150000,
+   "phase": 0.3,
+   "omega": 200,
+   "yAmp": 1000,
+   "size": 6,
+   "tail": 1.2
+  }
+ ],
+ "minorComets": {
+  "count": 40,
+  "seed": 618
+ },
+ "belt": {
+  "inner": 5400,
+  "outer": 6600,
+  "decor": 1300
+ },
+ "kuiper": {
+  "inner": 19500,
+  "outer": 25000,
+  "decor": 500
+ },
+ "torii": {
+  "parent": "earth",
+  "orbit": 80,
+  "period": 7200,
+  "size": 12
+ },
+ "deep": [
+  {
+   "id": "yomi",
+   "type": "black_hole",
+   "name": "Чёрная дыра Ёми",
+   "pos": [
+    -42000,
+    0,
+    31000
+   ],
+   "size": 600,
+   "disk": 4.2,
+   "pull": 14000,
+   "color": "#ffb060"
+  },
+  {
+   "id": "ton618",
+   "type": "quasar",
+   "name": "Квазар TON 618",
+   "pos": [
+    110000,
+    300,
+    -70000
+   ],
+   "size": 2400,
+   "disk": 5.0,
+   "jet": 42000,
+   "color": "#bfe0ff"
+  },
+  {
+   "id": "kagura",
+   "type": "pulsar",
+   "name": "Пульсар Кагура",
+   "pos": [
+    -26000,
+    -400,
+    -61000
+   ],
+   "size": 40,
+   "beam": 5000,
+   "period": 30,
+   "color": "#a8d8ff"
+  },
+  {
+   "id": "izanagi",
+   "type": "binary",
+   "name": "Двойная звезда Идзанаги и Идзанами",
+   "pos": [
+    -88000,
+    200,
+    76000
+   ],
+   "size": 800,
+   "sep": 4200,
+   "period": 24000,
+   "color": "#9fc6ff",
+   "color2": "#ff9a5a"
+  },
+  {
+   "id": "amaterasu",
+   "type": "nebula",
+   "name": "Туманность Аматэрасу",
+   "pos": [
+    64000,
+    0,
+    52000
+   ],
+   "size": 14000,
+   "color": "#ff5aa8",
+   "color2": "#5ac8ff"
+  }
+ ],
+ "constellations": [
+  {
+   "id": "kitsune",
+   "name": "Кицунэ",
+   "lore": "Лиса-оборотень с девятью хвостами: говорят, она видит все фазы сразу.",
+   "color": "#ffb36b",
+   "alpha": 15,
+   "delta": 22,
+   "stars": [
+    [
+     -8,
+     2
+    ],
+    [
+     -5,
+     6
+    ],
+    [
+     -2,
+     4
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     4,
+     -1
+    ],
+    [
+     8,
+     2
+    ],
+    [
+     11,
+     6
+    ],
+    [
+     12,
+     10
+    ],
+    [
+     9,
+     9
+    ],
+    [
+     13,
+     1
+    ],
+    [
+     15,
+     -3
+    ]
+   ],
+   "lines": [
+    [
+     0,
+     1
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     3
+    ],
+    [
+     3,
+     4
+    ],
+    [
+     4,
+     5
+    ],
+    [
+     5,
+     6
+    ],
+    [
+     6,
+     7
+    ],
+    [
+     6,
+     8
+    ],
+    [
+     5,
+     9
+    ],
+    [
+     9,
+     10
+    ]
+   ]
+  },
+  {
+   "id": "torii",
+   "name": "Тории",
+   "lore": "Врата между мирами. Через них прошли первые, кто увидел затмение.",
+   "color": "#ff6a4a",
+   "alpha": 45,
+   "delta": -10,
+   "stars": [
+    [
+     -7,
+     -7
+    ],
+    [
+     -6,
+     5
+    ],
+    [
+     6,
+     5
+    ],
+    [
+     7,
+     -7
+    ],
+    [
+     -9,
+     7
+    ],
+    [
+     9,
+     7
+    ],
+    [
+     -6,
+     2
+    ],
+    [
+     6,
+     2
+    ]
+   ],
+   "lines": [
+    [
+     0,
+     1
+    ],
+    [
+     3,
+     2
+    ],
+    [
+     4,
+     1
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     5
+    ],
+    [
+     6,
+     7
+    ]
+   ]
+  },
+  {
+   "id": "fuji",
+   "name": "Фудзи",
+   "lore": "Священная гора. В ясную ночь её вершина касается этих звёзд.",
+   "color": "#bfd7ff",
+   "alpha": 75,
+   "delta": 30,
+   "stars": [
+    [
+     -12,
+     -6
+    ],
+    [
+     -6,
+     0
+    ],
+    [
+     -2,
+     5
+    ],
+    [
+     2,
+     5
+    ],
+    [
+     6,
+     0
+    ],
+    [
+     12,
+     -6
+    ],
+    [
+     0,
+     7
+    ]
+   ],
+   "lines": [
+    [
+     0,
+     1
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     6
+    ],
+    [
+     6,
+     3
+    ],
+    [
+     3,
+     4
+    ],
+    [
+     4,
+     5
+    ]
+   ]
+  },
+  {
+   "id": "tsuru",
+   "name": "Цуру",
+   "lore": "Журавль: тысяча бумажных журавлей — одно желание.",
+   "color": "#f4f6ff",
+   "alpha": 105,
+   "delta": -28,
+   "stars": [
+    [
+     0,
+     0
+    ],
+    [
+     -6,
+     4
+    ],
+    [
+     -12,
+     6
+    ],
+    [
+     6,
+     4
+    ],
+    [
+     12,
+     6
+    ],
+    [
+     0,
+     6
+    ],
+    [
+     1,
+     10
+    ],
+    [
+     0,
+     -6
+    ],
+    [
+     2,
+     -10
+    ]
+   ],
+   "lines": [
+    [
+     0,
+     1
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     0,
+     3
+    ],
+    [
+     3,
+     4
+    ],
+    [
+     0,
+     5
+    ],
+    [
+     5,
+     6
+    ],
+    [
+     0,
+     7
+    ],
+    [
+     7,
+     8
+    ]
+   ]
+  },
+  {
+   "id": "koi",
+   "name": "Кои",
+   "lore": "Карп, что поднялся по водопаду и стал драконом.",
+   "color": "#ff8a3d",
+   "alpha": 135,
+   "delta": 12,
+   "stars": [
+    [
+     -9,
+     0
+    ],
+    [
+     -5,
+     3
+    ],
+    [
+     0,
+     3
+    ],
+    [
+     5,
+     1
+    ],
+    [
+     8,
+     -2
+    ],
+    [
+     5,
+     -3
+    ],
+    [
+     0,
+     -3
+    ],
+    [
+     -5,
+     -2
+    ],
+    [
+     11,
+     2
+    ],
+    [
+     11,
+     -5
+    ]
+   ],
+   "lines": [
+    [
+     0,
+     1
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     3
+    ],
+    [
+     3,
+     4
+    ],
+    [
+     4,
+     5
+    ],
+    [
+     5,
+     6
+    ],
+    [
+     6,
+     7
+    ],
+    [
+     7,
+     0
+    ],
+    [
+     4,
+     8
+    ],
+    [
+     4,
+     9
+    ]
+   ]
+  },
+  {
+   "id": "ryu",
+   "name": "Рю",
+   "lore": "Небесный дракон. Его хвост тянется через полнеба.",
+   "color": "#7dffb4",
+   "alpha": 165,
+   "delta": 35,
+   "stars": [
+    [
+     -16,
+     -4
+    ],
+    [
+     -12,
+     0
+    ],
+    [
+     -8,
+     -3
+    ],
+    [
+     -4,
+     1
+    ],
+    [
+     0,
+     -2
+    ],
+    [
+     4,
+     2
+    ],
+    [
+     8,
+     -1
+    ],
+    [
+     12,
+     3
+    ],
+    [
+     16,
+     1
+    ],
+    [
+     18,
+     5
+    ],
+    [
+     15,
+     6
+    ]
+   ],
+   "lines": [
+    [
+     0,
+     1
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     3
+    ],
+    [
+     3,
+     4
+    ],
+    [
+     4,
+     5
+    ],
+    [
+     5,
+     6
+    ],
+    [
+     6,
+     7
+    ],
+    [
+     7,
+     8
+    ],
+    [
+     8,
+     9
+    ],
+    [
+     9,
+     10
+    ],
+    [
+     10,
+     7
+    ]
+   ]
+  },
+  {
+   "id": "katana",
+   "name": "Катана",
+   "lore": "Клинок, выкованный из упавшей звезды.",
+   "color": "#cfe0ff",
+   "alpha": 195,
+   "delta": -15,
+   "stars": [
+    [
+     -12,
+     -6
+    ],
+    [
+     -7,
+     -3
+    ],
+    [
+     -2,
+     0
+    ],
+    [
+     3,
+     2
+    ],
+    [
+     8,
+     4
+    ],
+    [
+     12,
+     5
+    ],
+    [
+     -9,
+     -7
+    ],
+    [
+     -7,
+     -1
+    ]
+   ],
+   "lines": [
+    [
+     0,
+     1
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     3
+    ],
+    [
+     3,
+     4
+    ],
+    [
+     4,
+     5
+    ],
+    [
+     6,
+     1
+    ],
+    [
+     1,
+     7
+    ]
+   ]
+  },
+  {
+   "id": "sakura",
+   "name": "Сакура",
+   "lore": "Цветок, который цветёт даже среди звёзд.",
+   "color": "#ffb7d5",
+   "alpha": 225,
+   "delta": 25,
+   "stars": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     6
+    ],
+    [
+     6,
+     2
+    ],
+    [
+     4,
+     -5
+    ],
+    [
+     -4,
+     -5
+    ],
+    [
+     -6,
+     2
+    ],
+    [
+     0,
+     3
+    ],
+    [
+     2,
+     1
+    ],
+    [
+     1,
+     -2
+    ],
+    [
+     -1,
+     -2
+    ],
+    [
+     -2,
+     1
+    ]
+   ],
+   "lines": [
+    [
+     0,
+     6
+    ],
+    [
+     0,
+     7
+    ],
+    [
+     0,
+     8
+    ],
+    [
+     0,
+     9
+    ],
+    [
+     0,
+     10
+    ],
+    [
+     6,
+     1
+    ],
+    [
+     7,
+     2
+    ],
+    [
+     8,
+     3
+    ],
+    [
+     9,
+     4
+    ],
+    [
+     10,
+     5
+    ]
+   ]
+  },
+  {
+   "id": "toro",
+   "name": "Тōро",
+   "lore": "Каменный фонарь: его свет ведёт путников домой.",
+   "color": "#ffd27a",
+   "alpha": 255,
+   "delta": -30,
+   "stars": [
+    [
+     -3,
+     -8
+    ],
+    [
+     3,
+     -8
+    ],
+    [
+     -2,
+     -3
+    ],
+    [
+     2,
+     -3
+    ],
+    [
+     -4,
+     0
+    ],
+    [
+     4,
+     0
+    ],
+    [
+     -4,
+     4
+    ],
+    [
+     4,
+     4
+    ],
+    [
+     0,
+     8
+    ]
+   ],
+   "lines": [
+    [
+     0,
+     2
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     2,
+     3
+    ],
+    [
+     2,
+     4
+    ],
+    [
+     3,
+     5
+    ],
+    [
+     4,
+     6
+    ],
+    [
+     5,
+     7
+    ],
+    [
+     6,
+     8
+    ],
+    [
+     7,
+     8
+    ],
+    [
+     4,
+     5
+    ]
+   ]
+  },
+  {
+   "id": "usagi",
+   "name": "Усаги",
+   "lore": "Лунный заяц толчёт моти. Смотри, когда Луна полная.",
+   "color": "#e8e8f2",
+   "alpha": 285,
+   "delta": 8,
+   "stars": [
+    [
+     0,
+     0
+    ],
+    [
+     3,
+     3
+    ],
+    [
+     1,
+     8
+    ],
+    [
+     3,
+     10
+    ],
+    [
+     5,
+     4
+    ],
+    [
+     -3,
+     -1
+    ],
+    [
+     -6,
+     1
+    ],
+    [
+     -4,
+     -5
+    ],
+    [
+     0,
+     -5
+    ],
+    [
+     6,
+     -3
+    ]
+   ],
+   "lines": [
+    [
+     0,
+     1
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     3
+    ],
+    [
+     1,
+     4
+    ],
+    [
+     0,
+     5
+    ],
+    [
+     5,
+     6
+    ],
+    [
+     5,
+     7
+    ],
+    [
+     7,
+     8
+    ],
+    [
+     8,
+     0
+    ],
+    [
+     8,
+     9
+    ]
+   ]
+  },
+  {
+   "id": "ogi",
+   "name": "Оги",
+   "lore": "Веер, раскрытый ветром перемен.",
+   "color": "#c77dff",
+   "alpha": 315,
+   "delta": -5,
+   "stars": [
+    [
+     0,
+     -6
+    ],
+    [
+     -9,
+     3
+    ],
+    [
+     -5,
+     6
+    ],
+    [
+     0,
+     7
+    ],
+    [
+     5,
+     6
+    ],
+    [
+     9,
+     3
+    ]
+   ],
+   "lines": [
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     2
+    ],
+    [
+     0,
+     3
+    ],
+    [
+     0,
+     4
+    ],
+    [
+     0,
+     5
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     3
+    ],
+    [
+     3,
+     4
+    ],
+    [
+     4,
+     5
+    ]
+   ]
+  },
+  {
+   "id": "eclipse",
+   "name": "Кольцо Затмения",
+   "lore": "Двенадцать звёзд по кругу и пустота внутри. Фаза начинается здесь.",
+   "color": "#ffe7b0",
+   "alpha": 345,
+   "delta": -38,
+   "stars": [
+    [
+     7.0,
+     0.0
+    ],
+    [
+     6.06,
+     3.5
+    ],
+    [
+     3.5,
+     6.06
+    ],
+    [
+     0.0,
+     7.0
+    ],
+    [
+     -3.5,
+     6.06
+    ],
+    [
+     -6.06,
+     3.5
+    ],
+    [
+     -7.0,
+     0.0
+    ],
+    [
+     -6.06,
+     -3.5
+    ],
+    [
+     -3.5,
+     -6.06
+    ],
+    [
+     0.0,
+     -7.0
+    ],
+    [
+     3.5,
+     -6.06
+    ],
+    [
+     6.06,
+     -3.5
+    ]
+   ],
+   "lines": [
+    [
+     0,
+     1
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     2,
+     3
+    ],
+    [
+     3,
+     4
+    ],
+    [
+     4,
+     5
+    ],
+    [
+     5,
+     6
+    ],
+    [
+     6,
+     7
+    ],
+    [
+     7,
+     8
+    ],
+    [
+     8,
+     9
+    ],
+    [
+     9,
+     10
+    ],
+    [
+     10,
+     11
+    ],
+    [
+     11,
+     0
+    ]
+   ]
+  }
+ ]
 }

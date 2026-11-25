@@ -929,7 +929,7 @@ def datapack():
         'type': f'{NS}:space',
         'generator': {'type': 'minecraft:flat', 'settings': {
             'biome': f'{NS}:space', 'features': True, 'lakes': False,
-            'layers': [{'block': 'minecraft:air', 'height': 1}], 'structure_overrides': []}}})
+            'layers': [{'block': 'minecraft:structure_void', 'height': 1}], 'structure_overrides': []}}})
     for b in SYS['bodies']:
         if 'surface' not in b:
             continue
@@ -961,6 +961,40 @@ def contact_sheet(name, tiles, scale=4, cols=8):
         a = t[..., 3:4].astype(np.float32) / 255
         sheet[y:y + t.shape[0], x:x + t.shape[1], :3] = (t[..., :3] * a + 24 * (1 - a)).astype(np.uint8)
     Image.fromarray(sheet).save(os.path.join(PREVIEW, name + '.png'))
+
+
+def celestial():
+    """Солнце и Луна на небе Земли — наши кубические, вместо ванильных (атлас celestials).
+    Небесные тела рисуются аддитивно: чёрное = прозрачное, поэтому тёмная сторона Луны просто не видна."""
+    base = os.path.join(RES, 'assets', 'minecraft', 'textures', 'environment', 'celestial')
+    os.makedirs(os.path.join(base, 'moon'), exist_ok=True)
+    R = 32
+    u = (np.arange(R) + 0.5) / R * 2 - 1
+    U, V = np.meshgrid(u, u)
+    # Солнце: пиксельная грань куба в центре, вокруг — квадратное свечение и лучи
+    d = face_dirs('s', 16)
+    g = fbm(d * 9 + 3, 4, 401)
+    face = mix(hexc('#ff9a1f'), hexc('#ffe27a'), smooth(0.25, 0.85, g))
+    img = np.zeros((R, R, 3), np.float32)
+    cheb = np.maximum(np.abs(U), np.abs(V))
+    glow = np.exp(-((cheb - 0.5).clip(0) / 0.22) ** 2) * (cheb > 0.5)
+    rays = (np.exp(-(np.abs(U) / 0.06) ** 2) + np.exp(-(np.abs(V) / 0.06) ** 2)) * np.exp(-cheb * 2.2) * 0.6
+    img += hexc('#ffb347') * (glow * 0.7 + rays)[..., None]
+    img[8:24, 8:24] = face
+    Image.fromarray((np.clip(img, 0, 1) * 255).astype(np.uint8), 'RGB').save(os.path.join(base, 'sun.png'))
+    # Луна: грань нашего кубического спутника, фаза — тень по кубу (пиксельно)
+    d = face_dirs('s', 16)
+    m = paint('moon', d, (sum(map(ord, 'moon')) * 7) % 997)[0]
+    phases = ['full_moon', 'waning_gibbous', 'third_quarter', 'waning_crescent', 'new_moon', 'waxing_crescent', 'first_quarter', 'waxing_gibbous']
+    lit_x = [(-1, 1), (-0.5, 1), (0, 1), (0.5, 1), (2, 2), (-1, -0.5), (-1, 0), (-1, 0.5)]
+    col = (np.arange(16) + 0.5) / 16 * 2 - 1
+    for name, (a, b) in zip(phases, lit_x):
+        lit = ((col >= a) & (col <= b)).astype(np.float32)
+        shade = np.broadcast_to(0.04 + 0.96 * lit, (16, 16))[..., None]
+        img = np.zeros((R, R, 3), np.float32)
+        img[8:24, 8:24] = m * shade
+        img += hexc('#9fb8ff') * (np.exp(-((cheb - 0.5).clip(0) / 0.12) ** 2) * (cheb > 0.5) * 0.12 * (name != 'new_moon'))[..., None]
+        Image.fromarray((np.clip(img, 0, 1) * 255).astype(np.uint8), 'RGB').save(os.path.join(base, 'moon', name + '.png'))
 
 
 def main():
@@ -997,6 +1031,7 @@ def main():
         Image.fromarray(np.concatenate([pv['cap_top'], pv['cap_bottom']], 1)).resize((1024, 512)).save(os.path.join(PREVIEW, 'sky_caps.png'))
     print('datapack')
     datapack()
+    celestial()
     n_models = sum(len(f) for _, _, f in os.walk(os.path.join(ASSETS, 'models')))
     n_tex = sum(len(f) for _, _, f in os.walk(os.path.join(ASSETS, 'textures')))
     print(f'done: {n_models} models, {n_tex} textures')

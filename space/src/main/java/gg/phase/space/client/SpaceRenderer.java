@@ -165,6 +165,7 @@ public final class SpaceRenderer {
 	public static void render(PoseStack pose, SubmitNodeCollector out) {
 		Minecraft mc = Minecraft.getInstance();
 		if (!inSpace(mc)) {
+			SkyFx.renderEarth(pose, out);
 			AtmosphereFx.render(pose, out);
 			return;
 		}
@@ -200,7 +201,7 @@ public final class SpaceRenderer {
 
 		if (!ShaderCompat.shadersOn() || cfg.skyWithShaders) sky(pose, out);
 		twinkle(pose, out, t);
-		haze(pose, out);
+		SkyFx.renderSpace(pose, out, skyR, t);
 		decor(pose, out, t);
 
 		// всё остальное — от дальних к ближним, чтобы полупрозрачное ложилось правильно
@@ -572,7 +573,7 @@ public final class SpaceRenderer {
 			b = Math.max(ambient, Math.pow(b, 0.85) * dim);
 			bright[f] = b;
 			int lv = (int) Math.round(15 * 4 * b / (1 + 3 * b));
-			light[f] = sky(Math.max(1, Math.min(15, lv)));
+			light[f] = sky(Math.max(3, Math.min(15, lv)));
 		}
 	}
 
@@ -854,7 +855,7 @@ public final class SpaceRenderer {
 			for (int i = 0; i < n; i++) {
 				double f = (i + 0.5) / n;
 				double L = o.jet * f * side;
-				double w = Math.max((o.size * 0.5 + o.jet * 0.07 * f) * g, o.jet / n * 2.2);
+				double w = Math.max((o.size * 0.5 + o.jet * 0.07 * f) * g, o.jet / n * 3.5);
 				billboard(pose, out, rx + jx * L * s, ry + jy * L * s, rz + jz * L * s, w * s,
 					f < 0.2 ? "fx/glow_quasar_b" : f < 0.6 ? "fx/glow_quasar_c" : "fx/glow_quasar_d", FULL, (float) (i * 53));
 			}

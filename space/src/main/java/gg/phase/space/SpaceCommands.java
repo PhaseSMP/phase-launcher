@@ -55,6 +55,11 @@ public final class SpaceCommands {
 					.then(Commands.literal("info").executes(c -> info(c.getSource())))
 					.then(Commands.literal("events").executes(c -> events(c.getSource())))
 					.then(Commands.literal("list").executes(c -> list(c.getSource())))
+					.then(Commands.literal("atlas").executes(c -> {
+						c.getSource().sendSystemMessage(Atlas.report(c.getSource().getPlayerOrException()));
+						return 1;
+					}))
+					.then(Commands.literal("sky").executes(c -> sky(c.getSource())))
 					.then(Commands.literal("go").requires(SpaceCommands::canTravel)
 						.executes(c -> go(c, self(c), null))
 						.then(Commands.argument("targets", EntityArgument.players()).requires(SpaceCommands::admin)
@@ -130,8 +135,10 @@ public final class SpaceCommands {
 		line(m, "Полёт", "в космосе невесомость. Бег по прямой — разгон до ~240 бл/с.");
 		line(m, "Атмосфера", "быстрый спуск выше Y " + cfg.atmosphereY + " раскаляет: пламя, искры, на сильном нагреве жжёт. "
 			+ "Элитры и огнестойкость спасают.");
+		line(m, "Звёзды", "ночью в подзорную трубу изучайте созвездия (12 штук, у каждого игрового дня своё), "
+			+ "наводите трубу на планеты в небе. Прогресс — /space atlas, небо сезона — /space sky.");
 		line(m, "Опасно", "Солнце и звёзды жгут, чёрная дыра Ёми притягивает, пульсар облучает.");
-		line(m, "Команды", "/space info · /space events · /space list"
+		line(m, "Команды", "/space info · /space atlas · /space sky · /space events · /space list"
 			+ (canTravel(src) ? " · /space go · /space home · /space fall" : ""));
 		if (admin(src)) {
 			line(m, "Админ", "/space tp <тело> [игроки] · /space land <тело> [игроки] · /space go|home|fall [игроки] · "
@@ -199,6 +206,20 @@ public final class SpaceCommands {
 		if (!SpaceConfig.get().events) m.append(Component.literal("\n(события выключены в конфиге)").withStyle(ChatFormatting.DARK_GRAY));
 		src.sendSystemMessage(m);
 		return shown;
+	}
+
+	private static int sky(CommandSourceStack src) {
+		double t = src.getServer().overworld().getGameTime();
+		SolarSystem.Constellation c = Atlas.seasonal(t);
+		long day = (long) (t / 24000);
+		MutableComponent m = Component.literal("Небо Земли").withStyle(s -> s.withColor(ACCENT));
+		if (c != null) m.append(Component.literal("\nСозвездие сезона (день " + (day % 12 + 1) + " из 12): ").withStyle(ChatFormatting.GRAY))
+			.append(Component.literal(c.name).withStyle(s -> s.withColor(c.color)));
+		m.append(Component.literal("\nПланеты: Меркурий и Венера — у Солнца в сумерках, Марс, Юпитер, Сатурн и фиолетовая Флорана — "
+			+ "на пути Солнца. Наведите подзорную трубу — узнаете, что это.").withStyle(ChatFormatting.GRAY));
+		m.append(Component.literal("\nИзучение: ночью смотрите на созвездие в подзорную трубу ~8 секунд. Атлас — /space atlas").withStyle(ChatFormatting.GRAY));
+		src.sendSystemMessage(m);
+		return 1;
 	}
 
 	private static int list(CommandSourceStack src) {

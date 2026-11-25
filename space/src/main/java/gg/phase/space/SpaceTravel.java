@@ -324,6 +324,7 @@ public final class SpaceTravel {
 		p.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, ground ? 60 : 600, 0, false, false));
 		target.playSound(null, bx + 0.5, y + 1.0, bz + 0.5, SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 0.7F, 0.6F);
 		p.sendOverlayMessage(Component.literal(b.name).withStyle(s -> s.withColor(b.color)));
+		Atlas.visited(p, b);
 	}
 
 	/** Спуск ниже Y −2000: падение на Землю туда, откуда игрок улетал */

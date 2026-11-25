@@ -3,6 +3,8 @@ package gg.phase.space;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -31,6 +33,9 @@ public class PhaseSpace implements ModInitializer {
 		SpaceConfig.get();
 		ServerTickEvents.END_SERVER_TICK.register(SpaceTravel::tick);
 		SpaceCommands.register();
+		PayloadTypeRegistry.clientboundPlay().register(AtlasPayload.TYPE, AtlasPayload.CODEC);
+		ServerTickEvents.END_SERVER_TICK.register(Atlas::tick);
+		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> Atlas.sync(handler.getPlayer()));
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			if (Boolean.getBoolean("phasespace.selftest")) SelfTest.run(server);
 		});
