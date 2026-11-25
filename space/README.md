@@ -1,4 +1,4 @@
-# Phase Space 2.3 — космос Phase
+# Phase Space 2.4 — космос Phase
 
 Команды, нагрев при входе в атмосферу и открытие и закрытие космоса описаны в [ИНСТРУКЦИЯ.md](ИНСТРУКЦИЯ.md).
 
@@ -19,6 +19,17 @@ Fabric-мод для Minecraft 26.3 (Java 25, Fabric API 0.165.0+26.3). Нуже
 * Над хотбаром — на что смотришь (планета, комета, объект дальнего космоса), расстояние и шкала разгона.
 
 Админам — ванильные команды: `/execute in phasespace:space run tp @s 3000 120 0`.
+
+## Сила вильтрумита (2.4)
+
+`/space viltrum on|off [игроки]`, `go <тело>`, `scan` — только админы. Код: `Viltrum` (сервер), `ViltrumPayload`
+(`phasespace:viltrum`, id сущностей владельцев), `client/ViltrumFx` (след и хлопки). Владельцы — `config/phasespace_viltrum.json`.
+
+* Полёт вне космоса — `Abilities.flyingSpeed` до `viltrumFlyEarth` (≈6,6 бл/тик, ниже проверки «moved too quickly»
+  в 10 бл/тик). В космосе разгон до `viltrumWarp`, дальше гиперполёт — `teleportTo` с относительным поворотом и скоростью
+  (`Relative.ROTATION + DELTA`) раз в 2 тика, шаг ограничен расстоянием до ближайшего тела.
+* Рывок — разгон 40 тиков, затем `SpaceTravel.sendToSpace / sendToDeep`. Удар рукой — `AttackEntityCallback`.
+* SpaceTravel: у вильтрумита нет жара звёзд, тяга чёрной дыры ×0,12, `release()` не выключает полёт.
 
 ## Хаос затмения (2.3)
 
