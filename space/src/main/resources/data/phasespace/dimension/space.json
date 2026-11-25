@@ -1,0 +1,18 @@
+{
+  "type": "phasespace:space",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "phasespace:space",
+      "features": true,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:air",
+          "height": 1
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

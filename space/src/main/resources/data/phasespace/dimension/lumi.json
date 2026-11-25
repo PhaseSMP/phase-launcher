@@ -1,0 +1,30 @@
+{
+  "type": "phasespace:planet",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "phasespace:lumi",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:deepslate",
+          "height": 40
+        },
+        {
+          "block": "minecraft:prismarine",
+          "height": 12
+        },
+        {
+          "block": "minecraft:sea_lantern",
+          "height": 1
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

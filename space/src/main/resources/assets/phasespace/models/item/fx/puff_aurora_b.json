@@ -1,0 +1,32 @@
+{
+  "textures": {
+    "t": "phasespace:item/fx/puff_aurora_b",
+    "particle": "phasespace:item/fx/puff_aurora_b"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        8
+      ],
+      "to": [
+        16,
+        16,
+        8
+      ],
+      "shade": false,
+      "faces": {
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#t"
+        }
+      }
+    }
+  ]
+}

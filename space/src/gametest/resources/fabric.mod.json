@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "id": "phasespace-test",
+  "version": "1.0.0",
+  "name": "Phase Space screenshots",
+  "environment": "*",
+  "entrypoints": { "fabric-client-gametest": ["gg.phase.space.test.SpaceShots"] }
+}

@@ -1,0 +1,32 @@
+{
+  "textures": {
+    "t": "phasespace:item/fx/spark_neb_violet_c",
+    "particle": "phasespace:item/fx/spark_neb_violet_c"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        8
+      ],
+      "to": [
+        16,
+        16,
+        8
+      ],
+      "shade": false,
+      "faces": {
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#t"
+        }
+      }
+    }
+  ]
+}

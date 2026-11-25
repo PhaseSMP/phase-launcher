@@ -1,0 +1,38 @@
+{
+  "type": "phasespace:planet",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "phasespace:neptune",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:blue_ice",
+          "height": 40
+        },
+        {
+          "block": "minecraft:air",
+          "height": 20
+        },
+        {
+          "block": "minecraft:blue_terracotta",
+          "height": 3
+        },
+        {
+          "block": "minecraft:light_blue_terracotta",
+          "height": 2
+        },
+        {
+          "block": "minecraft:blue_wool",
+          "height": 1
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

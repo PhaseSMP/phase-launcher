@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "phasespace",
+  "version": "${version}",
+  "name": "Phase Space",
+  "description": "Космос Phase: Солнечная система из кубических планет-порталов, Флорана, кометы, пояс астероидов. Нужен и на сервере, и у игроков. Совместим с Sodium и Iris (Photon).",
+  "authors": ["Phase"],
+  "contact": { "homepage": "https://phase.fujimc.workers.dev" },
+  "license": "All-Rights-Reserved",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["gg.phase.space.PhaseSpace"],
+    "client": ["gg.phase.space.client.PhaseSpaceClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.20.1",
+    "minecraft": "~26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "sodium": "*",
+    "iris": "*",
+    "phaseworld": "*"
+  }
+}

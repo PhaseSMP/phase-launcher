@@ -1,0 +1,82 @@
+{
+  "textures": {
+    "n": "phasespace:item/rock/rock_5_n",
+    "s": "phasespace:item/rock/rock_5_s",
+    "e": "phasespace:item/rock/rock_5_e",
+    "w": "phasespace:item/rock/rock_5_w",
+    "u": "phasespace:item/rock/rock_5_u",
+    "d": "phasespace:item/rock/rock_5_d",
+    "particle": "phasespace:item/rock/rock_5_n"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#n"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#s"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#e"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#w"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#u"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#d"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "type": "phasespace:planet",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "phasespace:titania",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:deepslate",
+          "height": 40
+        },
+        {
+          "block": "minecraft:andesite",
+          "height": 18
+        },
+        {
+          "block": "minecraft:snow_block",
+          "height": 2
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

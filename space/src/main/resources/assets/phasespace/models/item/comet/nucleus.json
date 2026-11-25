@@ -1,0 +1,82 @@
+{
+  "textures": {
+    "n": "phasespace:item/comet/nucleus_n",
+    "s": "phasespace:item/comet/nucleus_s",
+    "e": "phasespace:item/comet/nucleus_e",
+    "w": "phasespace:item/comet/nucleus_w",
+    "u": "phasespace:item/comet/nucleus_u",
+    "d": "phasespace:item/comet/nucleus_d",
+    "particle": "phasespace:item/comet/nucleus_n"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#n"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#s"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#e"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#w"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#u"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#d"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "type": "phasespace:planet",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "phasespace:mercury",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:deepslate",
+          "height": 46
+        },
+        {
+          "block": "minecraft:tuff",
+          "height": 12
+        },
+        {
+          "block": "minecraft:gravel",
+          "height": 3
+        },
+        {
+          "block": "minecraft:light_gray_concrete_powder",
+          "height": 2
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

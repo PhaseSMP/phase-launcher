@@ -1,0 +1,42 @@
+{
+  "type": "phasespace:planet",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "phasespace:jupiter",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:magma_block",
+          "height": 3
+        },
+        {
+          "block": "minecraft:air",
+          "height": 40
+        },
+        {
+          "block": "minecraft:brown_terracotta",
+          "height": 2
+        },
+        {
+          "block": "minecraft:orange_terracotta",
+          "height": 3
+        },
+        {
+          "block": "minecraft:white_terracotta",
+          "height": 2
+        },
+        {
+          "block": "minecraft:white_wool",
+          "height": 1
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

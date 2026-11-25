@@ -1,0 +1,32 @@
+{
+  "textures": {
+    "t": "phasespace:item/ring/uranus",
+    "particle": "phasespace:item/ring/uranus"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        8,
+        0
+      ],
+      "to": [
+        16,
+        8,
+        16
+      ],
+      "shade": false,
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#t"
+        }
+      }
+    }
+  ]
+}

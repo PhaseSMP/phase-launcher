@@ -1,0 +1,34 @@
+{
+  "type": "phasespace:planet",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "phasespace:venus",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:stone",
+          "height": 44
+        },
+        {
+          "block": "minecraft:basalt",
+          "height": 10
+        },
+        {
+          "block": "minecraft:orange_terracotta",
+          "height": 4
+        },
+        {
+          "block": "minecraft:yellow_terracotta",
+          "height": 4
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

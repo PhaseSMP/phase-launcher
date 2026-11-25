@@ -1,0 +1,34 @@
+{
+  "type": "phasespace:planet",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "phasespace:ganymede",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:deepslate",
+          "height": 40
+        },
+        {
+          "block": "minecraft:tuff",
+          "height": 14
+        },
+        {
+          "block": "minecraft:packed_ice",
+          "height": 3
+        },
+        {
+          "block": "minecraft:gravel",
+          "height": 2
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

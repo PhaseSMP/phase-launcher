@@ -1,0 +1,30 @@
+{
+  "type": "phasespace:planet",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "phasespace:phobos",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:deepslate",
+          "height": 52
+        },
+        {
+          "block": "minecraft:tuff",
+          "height": 8
+        },
+        {
+          "block": "minecraft:gravel",
+          "height": 2
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

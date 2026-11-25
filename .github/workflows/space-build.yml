@@ -1,0 +1,64 @@
+name: space-build
+on:
+  push:
+    branches: [mod]
+    paths: ['space/**', '.github/workflows/space-build.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: { group: space-build, cancel-in-progress: true }
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '25' }
+      - name: Generate assets if they are not committed
+        working-directory: space
+        run: |
+          if [ ! -d src/main/resources/assets/phasespace/models ]; then
+            pip install -q numpy pillow && python3 tools/gen_assets.py
+          fi
+      - name: Build
+        working-directory: space
+        run: |
+          chmod +x gradlew
+          for i in 1 2 3 4 5 6; do ./gradlew --no-daemon --version >/dev/null 2>&1 && break; echo "Gradle retry $i"; sleep 20; done
+          set -o pipefail
+          ./gradlew --no-daemon build -x test 2>&1 | tee ../space-build.log || echo BUILD_FAILED >> ../space-build.log
+      - name: Server self-test (space + every planet world + asteroid belt)
+        if: hashFiles('space/build/libs/*.jar') != ''
+        timeout-minutes: 20
+        continue-on-error: true
+        working-directory: space
+        run: |
+          set +e
+          mkdir -p run
+          echo "eula=true" > run/eula.txt
+          printf "level-seed=20261124\nonline-mode=false\nspawn-protection=0\nmax-tick-time=-1\n" > run/server.properties
+          timeout 1000 ./gradlew --no-daemon runServer > ../space-server-full.log 2>&1
+          grep -E "\[selftest\]|ERROR|Exception|Caused by|Failed to|Couldn't|Mixin" ../space-server-full.log | head -400 > ../space-server.log
+          tail -120 ../space-server-full.log >> ../space-server.log
+      - name: Client screenshots (software rendering)
+        if: hashFiles('space/build/libs/*.jar') != ''
+        timeout-minutes: 60
+        continue-on-error: true
+        working-directory: space
+        run: |
+          set +e
+          (sudo apt-get update -qq; for p in xvfb mesa-utils libgl1-mesa-dri libglx-mesa0 libegl1 mesa-vulkan-drivers libvulkan1 vulkan-tools; do sudo apt-get install -y -qq $p || echo "no package $p"; done) > ../apt.log 2>&1
+          LIBGL_ALWAYS_SOFTWARE=1 timeout 3300 xvfb-run -a -s "-screen 0 1280x720x24 +extension GLX +render -noreset" ./gradlew --no-daemon runClientGameTest > ../shots-full.log 2>&1
+          grep -E "\[shots\]|ERROR|Exception|Caused by|Phase Space" ../shots-full.log | head -300 > ../space-shots.log
+          tail -120 ../shots-full.log >> ../space-shots.log
+      - name: Publish result
+        if: always()
+        run: |
+          set +e
+          rm -rf ci-space && mkdir -p ci-space/screenshots
+          cp space-build.log space-server.log space-shots.log ci-space/ 2>/dev/null
+          JAR=$(ls space/build/libs/*.jar 2>/dev/null | grep -v sources | head -1)
+          [ -n "$JAR" ] && cp "$JAR" ci-space/phase-space.jar
+          find space -path '*screenshots*' -name '*.png' -exec cp {} ci-space/screenshots/ \; 2>/dev/null
+          git config user.name "phase-ci"; git config user.email "ci@phase.local"
+          git add -A ci-space && git commit -qm "CI: Phase Space [skip ci]" && git pull -q --rebase && git push -q

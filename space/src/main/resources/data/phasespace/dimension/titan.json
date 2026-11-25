@@ -1,0 +1,34 @@
+{
+  "type": "phasespace:planet",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "phasespace:titan",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:packed_ice",
+          "height": 30
+        },
+        {
+          "block": "minecraft:mud",
+          "height": 10
+        },
+        {
+          "block": "minecraft:orange_terracotta",
+          "height": 16
+        },
+        {
+          "block": "minecraft:brown_terracotta",
+          "height": 3
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

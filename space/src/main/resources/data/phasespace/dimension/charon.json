@@ -1,0 +1,30 @@
+{
+  "type": "phasespace:planet",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "phasespace:charon",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:deepslate",
+          "height": 44
+        },
+        {
+          "block": "minecraft:gray_concrete_powder",
+          "height": 14
+        },
+        {
+          "block": "minecraft:snow_block",
+          "height": 2
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

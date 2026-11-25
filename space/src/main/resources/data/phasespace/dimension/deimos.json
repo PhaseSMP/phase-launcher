@@ -1,0 +1,30 @@
+{
+  "type": "phasespace:planet",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "phasespace:deimos",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:deepslate",
+          "height": 50
+        },
+        {
+          "block": "minecraft:andesite",
+          "height": 10
+        },
+        {
+          "block": "minecraft:gravel",
+          "height": 2
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "type": "phasespace:planet",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "phasespace:io",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:basalt",
+          "height": 40
+        },
+        {
+          "block": "minecraft:magma_block",
+          "height": 2
+        },
+        {
+          "block": "minecraft:yellow_terracotta",
+          "height": 16
+        },
+        {
+          "block": "minecraft:yellow_concrete_powder",
+          "height": 2
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

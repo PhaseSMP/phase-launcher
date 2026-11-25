@@ -1,0 +1,30 @@
+{
+  "type": "phasespace:planet",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "phasespace:callisto",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:bedrock",
+          "height": 1
+        },
+        {
+          "block": "minecraft:deepslate",
+          "height": 46
+        },
+        {
+          "block": "minecraft:blackstone",
+          "height": 12
+        },
+        {
+          "block": "minecraft:gravel",
+          "height": 3
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}
