@@ -1,2 +1,0 @@
-=== search class ServerLevel extends
-net/minecraft/server/level/ServerLevel.java:189:public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGetter {
