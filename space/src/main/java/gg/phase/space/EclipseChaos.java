@@ -466,8 +466,7 @@ public final class EclipseChaos {
 		double a = RND.nextDouble() * Math.PI * 2, r = 10 + RND.nextDouble() * 26;
 		double x = p.getX() + Math.cos(a) * r, z = p.getZ() + Math.sin(a) * r;
 		int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING, (int) Math.floor(x), (int) Math.floor(z));
-		LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(level, EntitySpawnReason.EVENT);
-		if (bolt == null) return;
+		if (!(spawn(level, "lightning_bolt") instanceof LightningBolt bolt)) return;
 		bolt.setVisualOnly(true);
 		bolt.snapTo(x, y, z);
 		level.addFreshEntity(bolt);
@@ -485,7 +484,7 @@ public final class EclipseChaos {
 		if (alive >= 3) return;
 		double a = RND.nextDouble() * Math.PI * 2;
 		double x = p.getX() + Math.cos(a) * 24, z = p.getZ() + Math.sin(a) * 24, y = p.getY() + 22;
-		Entity e = EntityType.PHANTOM.create(level, EntitySpawnReason.EVENT);
+		Entity e = spawn(level, "phantom");
 		if (e == null) return;
 		e.snapTo(x, y, z, (float) Math.toDegrees(a) + 90F, 0F);
 		e.addTag("phasespace_eclipse");
@@ -495,6 +494,12 @@ public final class EclipseChaos {
 			MOB_OWNER.put(e.getUUID(), p.getId());
 			level.sendParticles(ParticleTypes.REVERSE_PORTAL, x, y, z, 30, 0.8, 0.8, 0.8, 0.1);
 		}
+	}
+
+	/** Создать сущность ванильного типа по id (без добавления в мир) */
+	private static Entity spawn(ServerLevel level, String id) {
+		Optional<EntityType<?>> type = BuiltInRegistries.ENTITY_TYPE.getOptional(Identifier.withDefaultNamespace(id));
+		return type.isPresent() ? type.get().create(level, EntitySpawnReason.EVENT) : null;
 	}
 
 	/** Строки для /space eclipse */
