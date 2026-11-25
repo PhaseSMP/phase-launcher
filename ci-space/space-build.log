@@ -5,53 +5,15 @@ Daemon will be stopped at the end of the build
 Fabric Loom: 1.19.4
 
 > Task :compileJava
-/home/runner/work/phase-launcher/phase-launcher/space/src/main/java/gg/phase/space/SpaceTravel.java:179: error: cannot find symbol
-			p.hurtMarked = true;
-			 ^
-  symbol:   variable hurtMarked
-  location: variable p of type ServerPlayer
-/home/runner/work/phase-launcher/phase-launcher/space/src/main/java/gg/phase/space/SpaceTravel.java:238: error: cannot find symbol
-					p.hurtMarked = true;
-					 ^
-  symbol:   variable hurtMarked
-  location: variable p of type ServerPlayer
-/home/runner/work/phase-launcher/phase-launcher/space/src/main/java/gg/phase/space/SpaceTravel.java:255: error: cannot find symbol
-						if (horiz < 500) { p.push(0, dy > 0 ? -1.2 : 1.2, 0); p.hurtMarked = true; } // джет сносит
-						                                                       ^
-  symbol:   variable hurtMarked
-  location: variable p of type ServerPlayer
-3 errors
+> Task :processResources
+> Task :classes
+> Task :processIncludeJars
+> Task :validateAccessWidener NO-SOURCE
+> Task :check
+> Task :jar
+> Task :assemble
+> Task :build
 
-> Task :compileJava FAILED
-
-[Incubating] Problems report is available at: file:///home/runner/work/phase-launcher/phase-launcher/space/build/reports/problems/problems-report.html
-
-FAILURE: Build failed with an exception.
-
-* What went wrong:
-Execution failed for task ':compileJava' (registered by plugin class 'org.gradle.api.plugins.JavaBasePlugin').
-> Compilation failed; see the compiler output below.
-  /home/runner/work/phase-launcher/phase-launcher/space/src/main/java/gg/phase/space/SpaceTravel.java:179: error: cannot find symbol
-  			p.hurtMarked = true;
-  			 ^
-    symbol:   variable hurtMarked
-    location: variable p of type ServerPlayer
-  /home/runner/work/phase-launcher/phase-launcher/space/src/main/java/gg/phase/space/SpaceTravel.java:238: error: cannot find symbol
-  					p.hurtMarked = true;
-  					 ^
-    symbol:   variable hurtMarked
-    location: variable p of type ServerPlayer
-  /home/runner/work/phase-launcher/phase-launcher/space/src/main/java/gg/phase/space/SpaceTravel.java:255: error: cannot find symbol
-  						if (horiz < 500) { p.push(0, dy > 0 ? -1.2 : 1.2, 0); p.hurtMarked = true; } // джет сносит
-  						                                                       ^
-    symbol:   variable hurtMarked
-    location: variable p of type ServerPlayer
-  3 errors
-
-* Try:
-> Check your code and dependencies to fix the compilation error(s)
-> Run with --scan to get full insights from a Build Scan (powered by Develocity).
-
-BUILD FAILED in 24s
-1 actionable task: 1 executed
-BUILD_FAILED
+BUILD SUCCESSFUL in 35s
+4 actionable tasks: 4 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.2/userguide/configuration_cache_enabling.html
