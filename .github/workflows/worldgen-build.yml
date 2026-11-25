@@ -73,6 +73,7 @@ jobs:
           git pull -q --rebase --autostash origin mod
           rm -rf ci-worldgen && mkdir -p ci-worldgen/screenshots
           cp worldgen-build.log worldgen-server.log worldgen-profile.txt worldgen-shots.log mod-index.txt mod-dump.zip fetch-mods.log ci-worldgen/ 2>/dev/null
+          mkdir -p ci-worldgen/pack && cp pack/*.jar ci-worldgen/pack/ 2>/dev/null
           JAR=$(ls worldgen/build/libs/*.jar 2>/dev/null | grep -v sources | head -1)
           [ -n "$JAR" ] && cp "$JAR" ci-worldgen/phase-world.jar
           find worldgen -path '*screenshots*' -name '*.png' -exec cp {} ci-worldgen/screenshots/ \; 2>/dev/null
