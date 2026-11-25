@@ -1,0 +1,70 @@
+=== search SUN_ANGLE 
+net/minecraft/client/renderer/fog/environment/AtmosphericFogEnvironment.java:34:			float sunAngle = camera.attributeProbe().getValue(EnvironmentAttributes.SUN_ANGLE, partialTicks) * (float) (Math.PI / 180.0);
+net/minecraft/client/renderer/item/properties/numeric/Time.java:61:				return level.environmentAttributes().getValue(EnvironmentAttributes.SUN_ANGLE, owner.position()) / 360.0F;
+net/minecraft/client/renderer/SkyRenderer.java:119:				state.sunAngle = attributeProbe.getValue(EnvironmentAttributes.SUN_ANGLE, partialTicks) * (float) (Math.PI / 180.0);
+net/minecraft/world/level/block/DaylightDetectorBlock.java:49:		float sunAngle = level.environmentAttributes().getValue(EnvironmentAttributes.SUN_ANGLE, pos) * (float) (Math.PI / 180.0);
+net/minecraft/world/attribute/EnvironmentAttributes.java:61:	EnvironmentAttribute<Float> SUN_ANGLE = register(
+net/minecraft/world/timeline/Timelines.java:53:				.addTrack(EnvironmentAttributes.SUN_ANGLE, track -> track.setEasing(skyAngleEase).addKeyframe(6000, 360.0F).addKeyframe(6000, 0.0F))
+=== search STAR_ANGLE 
+net/minecraft/client/renderer/SkyRenderer.java:121:				state.starAngle = attributeProbe.getValue(EnvironmentAttributes.STAR_ANGLE, partialTicks) * (float) (Math.PI / 180.0);
+net/minecraft/world/attribute/EnvironmentAttributes.java:67:	EnvironmentAttribute<Float> STAR_ANGLE = register(
+net/minecraft/world/timeline/Timelines.java:55:				.addTrack(EnvironmentAttributes.STAR_ANGLE, track -> track.setEasing(skyAngleEase).addKeyframe(6000, 360.0F).addKeyframe(6000, 0.0F))
+=== search MOON_PHASE 
+net/minecraft/server/level/ServerLevel.java:703:		MoonPhase moonPhase = this.environmentAttributes.getValue(EnvironmentAttributes.MOON_PHASE, pos);
+net/minecraft/client/renderer/item/properties/numeric/Time.java:64:		MOON_PHASE("moon_phase") {
+net/minecraft/client/renderer/item/properties/numeric/Time.java:67:				return (float)level.environmentAttributes().getValue(EnvironmentAttributes.MOON_PHASE, owner.position()).index() / MoonPhase.COUNT;
+net/minecraft/client/renderer/SkyRenderer.java:125:				state.moonPhase = attributeProbe.getValue(EnvironmentAttributes.MOON_PHASE, partialTicks);
+net/minecraft/world/attribute/EnvironmentAttributes.java:70:	EnvironmentAttribute<MoonPhase> MOON_PHASE = register(
+net/minecraft/world/attribute/EnvironmentAttributes.java:71:		"visual/moon_phase", EnvironmentAttribute.builder(AttributeTypes.MOON_PHASE).defaultValue(MoonPhase.FULL_MOON).syncable()
+net/minecraft/world/attribute/AttributeTypes.java:41:	AttributeType<MoonPhase> MOON_PHASE = register("moon_phase", AttributeType.ofNotInterpolated(MoonPhase.CODEC));
+net/minecraft/world/timeline/Timelines.java:166:		Timeline.Builder moonPhases = Timeline.builder(overworldClock).setPeriodTicks(24000 * MoonPhase.COUNT).addTrack(EnvironmentAttributes.MOON_PHASE, track -> {
+net/minecraft/world/entity/variant/MoonBrightnessCheck.java:17:		MoonPhase moonPhase = context.environmentAttributes().getValue(EnvironmentAttributes.MOON_PHASE, Vec3.atCenterOf(context.pos()));
+=== search environmentAttributes\(\) 
+net/minecraft/server/level/WorldGenRegion.java:527:	public EnvironmentAttributeReader environmentAttributes() {
+net/minecraft/server/level/ServerLevel.java:349:	public EnvironmentAttributeSystem environmentAttributes() {
+net/minecraft/server/level/ServerLevel.java:364:		this.environmentAttributes().invalidateTickCache();
+net/minecraft/client/resources/sounds/BiomeAmbientSoundsHandler.java:48:		EnvironmentAttributeSystem environmentAttributes = level.environmentAttributes();
+net/minecraft/client/multiplayer/ClientPacketListener.java:1130:		this.level.environmentAttributes().invalidateTickCache();
+net/minecraft/client/multiplayer/ClientLevel.java:339:		this.environmentAttributes().invalidateTickCache();
+net/minecraft/client/multiplayer/ClientLevel.java:608:			for (AmbientParticle particle : this.environmentAttributes().getValue(EnvironmentAttributes.AMBIENT_PARTICLES, pos)) {
+net/minecraft/client/multiplayer/ClientLevel.java:800:	public EnvironmentAttributeSystem environmentAttributes() {
+net/minecraft/client/renderer/item/properties/numeric/Time.java:61:				return level.environmentAttributes().getValue(EnvironmentAttributes.SUN_ANGLE, owner.position()) / 360.0F;
+net/minecraft/client/renderer/item/properties/numeric/Time.java:67:				return (float)level.environmentAttributes().getValue(EnvironmentAttributes.MOON_PHASE, owner.position()).index() / MoonPhase.COUNT;
+net/minecraft/world/clock/ServerClockManager.java:121:			level.environmentAttributes().invalidateTickCache();
+net/minecraft/world/level/storage/loot/predicates/EnvironmentAttributeCheck.java:30:		Value actualValue = context.getLevel().environmentAttributes().getValue(context, this.attribute);
+net/minecraft/world/level/storage/loot/providers/number/floats/EnvironmentAttributeValue.java:29:		Value value = context.getLevel().environmentAttributes().getValue(context, attribute);
+net/minecraft/world/level/storage/loot/providers/number/ints/EnvironmentAttributeValue.java:29:		Value value = context.getLevel().environmentAttributes().getValue(context, attribute);
+net/minecraft/world/level/Level.java:736:		this.skyDarken = (int)(15.0F - this.environmentAttributes().getDimensionValue(EnvironmentAttributes.SKY_LIGHT_LEVEL));
+net/minecraft/world/level/Level.java:1107:	public abstract EnvironmentAttributeSystem environmentAttributes();
+net/minecraft/world/level/LevelReader.java:231:	EnvironmentAttributeReader environmentAttributes();
+net/minecraft/world/level/NaturalSpawner.java:81:						MobSpawnSettings naturalMobSpawns = level.environmentAttributes().getValue(EnvironmentAttributes.NATURAL_MOB_SPAWNS, pos);
+net/minecraft/world/level/NaturalSpawner.java:351:			EnvironmentAttributeReader attributes = level.environmentAttributes();
+net/minecraft/world/level/NaturalSpawner.java:476:			MobSpawnSettings naturalMobSpawns = level.environmentAttributes().getValue(EnvironmentAttributes.NATURAL_MOB_SPAWNS, testPos);
+net/minecraft/world/level/NaturalSpawner.java:496:				MobSpawnSettings naturalMobSpawns = mob.level().environmentAttributes().getValue(EnvironmentAttributes.NATURAL_MOB_SPAWNS, pos);
+net/minecraft/world/level/levelgen/PatrolSpawner.java:39:											if (level.environmentAttributes().getValue(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, spawnPos)) {
+net/minecraft/world/level/block/FlowerPotBlock.java:132:			boolean shouldBeOpen = level.environmentAttributes().getValue(EnvironmentAttributes.EYEBLOSSOM_OPEN, pos).toBoolean(isOpen);
+net/minecraft/world/level/block/CreakingHeartBlock.java:70:		if (level.environmentAttributes().getValue(EnvironmentAttributes.CREAKING_ACTIVE, pos)) {
+net/minecraft/world/level/block/CreakingHeartBlock.java:107:				STATE, level.environmentAttributes().getValue(EnvironmentAttributes.CREAKING_ACTIVE, pos) ? CreakingHeartState.AWAKE : CreakingHeartState.DORMANT
+net/minecraft/world/level/block/TurtleEggBlock.java:131:		float chance = level.environmentAttributes().getValue(EnvironmentAttributes.TURTLE_EGG_HATCH_CHANCE, pos);
+net/minecraft/world/level/block/PointedDripstoneBlock.java:175:			if (aboveState.is(Blocks.MUD) && !level.environmentAttributes().getValue(EnvironmentAttributes.WATER_EVAPORATES, abovePos)) {
+net/minecraft/world/level/block/PointedDripstoneBlock.java:197:			return level.environmentAttributes().getValue(EnvironmentAttributes.DEFAULT_DRIPSTONE_PARTICLE, posAbove);
+net/minecraft/world/level/block/NetherPortalBlock.java:65:			&& level.environmentAttributes().getValue(EnvironmentAttributes.NETHER_PORTAL_SPAWNS_PIGLINS, pos)
+net/minecraft/world/level/block/IceBlock.java:40:			if (level.environmentAttributes().getValue(EnvironmentAttributes.WATER_EVAPORATES, pos)) {
+net/minecraft/world/level/block/IceBlock.java:60:		if (level.environmentAttributes().getValue(EnvironmentAttributes.WATER_EVAPORATES, pos)) {
+net/minecraft/world/level/block/EyeblossomBlock.java:69:		boolean shouldBeOpen = level.environmentAttributes().getValue(EnvironmentAttributes.EYEBLOSSOM_OPEN, pos).toBoolean(this.type.open);
+net/minecraft/world/level/block/WetSpongeBlock.java:27:		if (level.environmentAttributes().getValue(EnvironmentAttributes.WATER_EVAPORATES, pos)) {
+net/minecraft/world/level/block/AbstractBedBlock.java:64:		return level.environmentAttributes().getValue(this.getBedEnvironmentAttribute(), pos);
+net/minecraft/world/level/block/FireflyBushBlock.java:30:			&& level.environmentAttributes().getValue(EnvironmentAttributes.FIREFLY_BUSH_SOUNDS, pos)
+net/minecraft/world/level/block/RespawnAnchorBlock.java:165:		return level.environmentAttributes().getValue(EnvironmentAttributes.RESPAWN_ANCHOR_WORKS, pos);
+net/minecraft/world/level/block/FireBlock.java:162:				boolean increasedBurnout = level.environmentAttributes().getValue(EnvironmentAttributes.INCREASED_FIRE_BURNOUT, pos);
+net/minecraft/world/level/block/DaylightDetectorBlock.java:49:		float sunAngle = level.environmentAttributes().getValue(EnvironmentAttributes.SUN_ANGLE, pos) * (float) (Math.PI / 180.0);
+net/minecraft/world/level/block/entity/CreakingHeartBlockEntity.java:127:						if (!level.environmentAttributes().getValue(EnvironmentAttributes.CREAKING_ACTIVE, pos) && !creaking.isPersistenceRequired()
+net/minecraft/world/level/block/entity/CreakingHeartBlockEntity.java:143:		CreakingHeartState heartState = level.environmentAttributes().getValue(EnvironmentAttributes.CREAKING_ACTIVE, pos)
+=== search celestial/ 
+=== search class.*SkyRenderState 
+net/minecraft/client/renderer/state/level/SkyRenderState.java:12:public class SkyRenderState implements FabricRenderState {
+=== search hurtMarked 
+=== search getDayTime\( 
+=== search getDefaultClockTime 
+net/minecraft/client/multiplayer/ClientLevel.java:314:			this.endFlashState.tick(this.getDefaultClockTime());
+net/minecraft/world/level/Level.java:884:	public long getDefaultClockTime() {
